@@ -7,6 +7,9 @@ import logger from 'koa-logger';
 // 路由
 import users from './src/routes/users';
 
+// 中间件
+import verifyToken from './src/middle/verify-token';
+
 const app = new Koa();
 
 // error handler
@@ -21,6 +24,7 @@ app.use(
 app.use(json());
 app.use(logger());
 app.use(require('koa-static')(__dirname + '/public'));
+app.use(verifyToken);
 
 // logger
 app.use(async (ctx, next) => {
