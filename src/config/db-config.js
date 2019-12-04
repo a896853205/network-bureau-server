@@ -2,7 +2,7 @@ import { DATA_BASE_KEY, LOCATION_DATA_BASE_KEY } from '../keys/keys';
 import { SAP_CONTROL } from './app-config';
 import { ENVIRONMENT } from '../constants/app-constants';
 
-let SQL_CONFIG = {
+const SQL_CONFIG = {
   // 开发时配置
   [ENVIRONMENT.DEV]: {
     host: 'localhost',

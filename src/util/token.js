@@ -1,5 +1,5 @@
-import { TOKEN_KEY } from './keys/keys';
-import { TOKEN_DURATION } from './config/system-config';
+import { TOKEN_KEY } from '../keys/keys';
+import { TOKEN_DURATION } from '../config/system-config';
 import jwt from 'jsonwebtoken';
 
 // TOKEN配置项
