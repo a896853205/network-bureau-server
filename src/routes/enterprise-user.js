@@ -26,4 +26,30 @@ router.put('/getEnterpriseToken', async (ctx, next) => {
   }
 });
 
+/**
+ * 创建新用户
+ */
+router.post('/createNewEnterprise', async (ctx, next) => {
+  let { name, password, phone, code } = ctx.state.param;
+
+  const status = await enterpriseService.createNewEnterprise({
+    name,
+    password,
+    phone,
+    code
+  });
+
+  if (status) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      msg: '创建用户成功'
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error,
+      msg: '用户已存在'
+    });
+  }
+});
+
 export default router;

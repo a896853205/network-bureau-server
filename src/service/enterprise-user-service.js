@@ -6,9 +6,9 @@ export default {
    */
   getEnterpriseToken: async (code, password) => {
     const enterprise = await enterpriseUserDao.selectEnterpriseUserByCode(code);
-  
+
     if (!enterprise || enterprise.password !== password) {
-      return;
+      return false;
     }
 
     return {
@@ -16,6 +16,26 @@ export default {
         uuid: enterprise.uuid
       }),
       enterprise
+    };
+  },
+
+  selectEnterpriseUserByName: async name => {
+    return await enterpriseUserDao.selectEnterpriseByName(name);
+  },
+
+  createNewEnterprise: async ({ code, name, password, phone }) => {
+    if (await enterpriseUserDao.selectEnterpriseByName(name)) {
+      return false;
     }
+
+    // 需要表单认证
+    await enterpriseUserDao.createNewEnterprise({
+      name,
+      password,
+      phone,
+      code
+    });
+
+    return true;
   }
 };

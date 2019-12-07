@@ -10,7 +10,7 @@ export default db.define('enterprise_user', {
     autoIncrement: true
   },
   code: Sequelize.STRING(32),
-  uuid: Sequelize.STRING(32),
+  uuid: Sequelize.STRING(36),
   phone: Sequelize.STRING(32),
   password: Sequelize.STRING(32),
   name: Sequelize.STRING(32)
