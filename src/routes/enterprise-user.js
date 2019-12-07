@@ -6,14 +6,17 @@ const router = new Router();
 
 router.prefix('/enterpriseUser');
 
+/**
+ * 用户登录
+ */
 router.put('/getEnterpriseToken', async (ctx, next) => {
-  let { username } = ctx.request.body,
-    user = await enterpriseService.selectEnterpriseUserByCode(username);
+  let { username, password } = ctx.state.param,
+    token = await enterpriseService.getEnterpriseToken(username, password);
 
-  if (user) {
+  if (token) {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
-      data: user
+      data: token
     });
   } else {
     ctx.body = new Res({

@@ -12,6 +12,7 @@ import users from './src/routes/enterprise-user';
 
 // 中间件
 import verifyToken from './src/middle/verify-token';
+import param from './src/middle/param';
 
 const app = new Koa();
 
@@ -30,6 +31,7 @@ app.use(json());
 app.use(logger());
 app.use(require('koa-static')(__dirname + '/public'));
 app.use(verifyToken);
+app.use(param);
 
 // logger
 app.use(async (ctx, next) => {

@@ -24,9 +24,7 @@ export default async (ctx, next) => {
 
       let user = await enterpriseUserService.getUserInfo(data.uuid);
 
-      ctx.state = {
-        data: user
-      };
+      ctx.state.user = user;
 
       await next();
     } catch (error) {
