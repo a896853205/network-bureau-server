@@ -19,10 +19,9 @@ export default {
     };
   },
 
-  selectEnterpriseUserByName: async name => {
-    return await enterpriseUserDao.selectEnterpriseByName(name);
-  },
-
+  /**
+   * 企业注册
+   */
   createNewEnterprise: async ({ code, name, password, phone }) => {
     if (await enterpriseUserDao.selectEnterpriseByName(name)) {
       return false;
