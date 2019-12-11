@@ -16,9 +16,9 @@ export default {
   /**
    * 根据用户名查找是否有相同企业
    */
-  selectEnterpriseByName: async name => {
+  selectEnterpriseByCode: async code => {
     return await enterpriseUser.findOne({
-      where: { name }
+      where: { code }
     });
   },
 

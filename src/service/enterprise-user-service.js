@@ -23,7 +23,7 @@ export default {
    * 企业注册
    */
   createNewEnterprise: async ({ code, name, password, phone }) => {
-    if (await enterpriseUserDao.selectEnterpriseByName(name)) {
+    if (await enterpriseUserDao.selectEnterpriseByCode(code)) {
       return false;
     }
 
