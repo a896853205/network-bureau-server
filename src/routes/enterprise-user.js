@@ -7,7 +7,7 @@ const router = new Router();
 router.prefix('/enterpriseUser');
 
 /**
- * 用户登录
+ * 企业用户登录
  */
 router.get('/getEnterpriseToken', async (ctx, next) => {
   let { code, password } = ctx.state.param,
@@ -27,7 +27,7 @@ router.get('/getEnterpriseToken', async (ctx, next) => {
 });
 
 /**
- * 创建新用户
+ * 创建新企业用户
  */
 router.post('/createNewEnterprise', async (ctx, next) => {
   let { name, password, phone, code } = ctx.state.param;
