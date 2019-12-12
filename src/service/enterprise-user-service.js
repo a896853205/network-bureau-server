@@ -1,5 +1,7 @@
 import enterpriseUserDao from '../dao/enterprise-user-dao';
 
+import webToken from '../util/token';
+
 export default {
   /**
    * 根据企业的用户名和密码判断之后生成token

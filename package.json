@@ -28,6 +28,6 @@
   "devDependencies": {
     "babel-preset-env": "^1.7.0",
     "babel-register": "^6.26.0",
-    "nodemon": "^1.19.1"
+    "nodemon": "F:\\laboratory\\network-bureau\\network-bureau-server>\"C:\\Program Files\\nodejs\\\\node.exe\"  \"C:\\Program Files\\nodejs\\\\node_modules\\npm\\bin\\npm-cli.js\" config get save-prefix \r\n^1.19.4"
   }
 }
