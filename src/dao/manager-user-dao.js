@@ -1,17 +1,15 @@
 import managerUser from '../db/models/manager-user';
 
+import uuid from 'uuid';
+
 export default {
+  /**
+   * 通过用户名查询管理员
+   */
   selectManagerUserByUsername: async username => {
     return await managerUser.findOne({
       where: { username },
-      attributes: [
-        'uuid',
-        'phone',
-        'username',
-        'password',
-        'name',
-        'role'
-      ]
+      attributes: ['uuid', 'phone', 'username', 'password', 'name', 'role']
     });
   },
 
