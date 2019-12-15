@@ -8,8 +8,8 @@ import logger from 'koa-logger';
 import cors from 'koa2-cors';
 
 // 路由
-import users from './src/routes/enterprise-user';
-
+import enterpriseUsers from './src/routes/enterprise-user';
+import managerUsers from './src/routes/manager-user';
 // 中间件
 import verifyToken from './src/middle/verify-token';
 import param from './src/middle/param';
@@ -42,8 +42,8 @@ app.use(async (ctx, next) => {
 });
 
 // routes
-app.use(users.routes(), users.allowedMethods());
-
+app.use(enterpriseUsers.routes(), enterpriseUsers.allowedMethods());
+app.use(managerUsers.routes(), managerUsers.allowedMethods());
 // error-handling
 app.on('error', (err, ctx) => {
   console.error('server error', err, ctx);
