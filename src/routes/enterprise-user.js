@@ -41,7 +41,7 @@ router.post('/createNewEnterprise', async (ctx, next) => {
 
   if (status) {
     ctx.body = new Res({
-      status: RESPONSE_CODE.success,
+      status: RESPONSE_CODE.created,
       msg: '创建用户成功'
     });
   } else {

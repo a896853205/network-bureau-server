@@ -16,5 +16,19 @@ export default {
         'role'
       ]
     });
+  },
+
+  /**
+   * 创建管理员
+   */
+  createNewManagerUser: async (username, phone, password, name, role) => {
+    return await managerUser.create({
+      username,
+      password,
+      phone,
+      name,
+      role,
+      uuid: uuid.v1()
+    });
   }
 };

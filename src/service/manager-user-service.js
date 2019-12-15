@@ -18,8 +18,6 @@ export default {
       return false;
     }
 
-    delete manager.password;
-
     return {
       token: webToken.parseToken({
         uuid: manager.uuid,
@@ -27,5 +25,24 @@ export default {
       }),
       manager
     };
+  },
+
+  /**
+   * 创建管理账号
+   */
+  createNewManager: async (username, phone, password, name, role) => {
+    if (await managerUserDao.selectManagerUserByUsername(username)) {
+      return false;
+    }
+
+    await managerUserDao.createNewManagerUser(
+      username,
+      phone,
+      password,
+      name,
+      role
+    );
+
+    return true;
   }
 };

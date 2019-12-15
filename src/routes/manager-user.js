@@ -27,4 +27,31 @@ router.get('/getManagerToken', async (ctx, next) => {
   }
 });
 
+/**
+ * 增加管理账号
+ */
+router.post('/createNewManager', async (ctx, next) => {
+  let { username, phone, password, name, role } = ctx.state.param;
+
+  const status = await managerUserService.createNewManager(
+    username,
+    phone,
+    password,
+    name,
+    role
+  );
+
+  if (status) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.created,
+      msg: '创建管理用户成功'
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error,
+      msg: '用户已存在'
+    });
+  }
+});
+
 export default router;
