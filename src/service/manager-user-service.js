@@ -7,10 +7,12 @@ export default {
   /**
    * 根据账号查找用户
    */
-  selectManagerUserByUsername: async username => {
-    return await managerUserDao.selectManagerUserByUsername(username);
-  },
-
+  // selectManagerUserByUsername: async username => {
+  //   return await managerUserDao.selectManagerUserByUsername(username);
+  // },
+  /**
+   * 管理账号登录
+   */
   getManagerToken: async (username, password) => {
     const manager = await managerUserDao.selectManagerUserByUsername(username);
 
