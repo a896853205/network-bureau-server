@@ -1,4 +1,5 @@
 import managerUser from '../db/models/manager-user';
+import enterpriseUser from '../db/models/enterprise-user';
 
 import uuid from 'uuid';
 
@@ -25,5 +26,15 @@ export default {
       role,
       uuid: uuid.v1()
     });
-  }
+  },
+
+   /**
+   * 查询企业用户
+   */
+  queryEnterpriseUser: async () => {
+    return await enterpriseUser.findAll({
+      attributes: ['id', 'code', 'uuid', 'phone', 'password', 'name'],
+      limit: 10
+    });
+  },
 };

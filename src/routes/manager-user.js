@@ -54,4 +54,25 @@ router.post('/createNewManager', async (ctx, next) => {
   }
 });
 
+/**
+ * 查询企业账号
+ */
+router.get('/queryEnterprise', async (ctx, next) => {
+  let { id, code, uuid, phone, password, name } = ctx.state.param;
+  const data = await managerUserService.queryEnterprise();
+  if (data) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      msg: '查询成功'
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.noContent,
+      msg: '没有用户数据'
+    });
+  };
+});
+
+
+
 export default router;

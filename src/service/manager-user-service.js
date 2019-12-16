@@ -45,5 +45,35 @@ export default {
     );
 
     return true;
-  }
+  },
+
+  /**
+   * 查询企业数据
+   */
+  createNewManager: async (username, phone, password, name, role) => {
+    if (await managerUserDao.selectManagerUserByUsername(username)) {
+      return false;
+    }
+
+    await managerUserDao.createNewManagerUser(
+      username,
+      phone,
+      password,
+      name,
+      role
+    );
+
+    return true;
+  },
+
+  /**
+  * 查询企业用户
+  */
+  queryEnterprise: async () => {
+    if (await managerUserDao.queryEnterpriseUser())
+      return true;
+    else
+      return false;
+  },
+
 };

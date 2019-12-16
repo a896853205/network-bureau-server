@@ -33,5 +33,6 @@ export default {
       code,
       uuid: uuid.v1()
     });
-  }
+  },
+
 };

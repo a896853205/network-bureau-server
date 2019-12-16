@@ -8,5 +8,6 @@ export const UNLESS_PATH_ARR = [
    * 管理端
    */
   '/managerUser/getManagerToken',
-  '/managerUser/createNewManager'
+  '/managerUser/createNewManager',
+  '/managerUser/queryEnterprise'
 ];
