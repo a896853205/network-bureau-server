@@ -51,43 +51,6 @@ managerUser
     console.error(error);
   });
 
-// 管理权限表
-sysManagerRole
-  .sync({
-    force: true
-  })
-  .then(() => {
-    console.log('管理员权限表初始化成功');
-
-    sysManagerRole.bulkCreate([
-      {
-        name: '超级管理员',
-        code: '1'
-      },
-      {
-        name: '财务',
-        code: '5'
-      },
-      {
-        name: '项目管理人员',
-        code: '10'
-      },
-      {
-        name: '技术负责人',
-        code: '15'
-      },
-      {
-        name: '技术人员',
-        code: '20'
-      },
-      {
-        name: '批准人',
-        code: '25'
-      }
-    ]);
-    console.log('生成了权限内容');
-  });
-
 // 登记注册基本表
 registrationBasic
   .sync({
