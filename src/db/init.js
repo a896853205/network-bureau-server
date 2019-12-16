@@ -14,7 +14,9 @@ require('babel-register')({
 const enterpriseUser = require('./models/enterprise-user').default;
 const managerUser = require('./models/manager-user').default;
 const sysManagerRole = require('./models/sys-manager-role').default;
+const registrationBasic = require('./models/registration-basic').default;
 
+// 企业用户表
 enterpriseUser
   .sync({
     force: true
@@ -27,6 +29,7 @@ enterpriseUser
     console.error(error);
   });
 
+// 管理员用户表
 managerUser
   .sync({
     force: true
@@ -48,6 +51,7 @@ managerUser
     console.error(error);
   });
 
+// 管理权限表
 sysManagerRole
   .sync({
     force: true
@@ -82,4 +86,13 @@ sysManagerRole
       }
     ]);
     console.log('生成了权限内容');
+  });
+
+// 登记注册基本表
+registrationBasic
+  .sync({
+    force: true
+  })
+  .then(() => {
+    console.log('登记注册基本表初始化成功');
   });
