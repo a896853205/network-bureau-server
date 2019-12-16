@@ -22,8 +22,7 @@ export default {
 
     return {
       token: webToken.parseToken({
-        uuid: manager.uuid,
-        role: manager.role
+        uuid: manager.uuid
       }),
       manager
     };
