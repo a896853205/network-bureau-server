@@ -54,4 +54,51 @@ router.post('/createNewManager', async (ctx, next) => {
   }
 });
 
+/**
+ * 更新企业用户
+ */
+router.post('/updateManager', async (ctx,next) => {
+  let { uuid, phone, password, name } = ctx.state.param;
+
+  const status = await managerUserService.updateManager(
+    uuid, 
+    phone, 
+    password, 
+    name
+  );
+
+  if (status) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.noContent,
+      msg: '更改成功'
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error,
+      msg: '更改失败'
+    });
+  }
+});
+
+/**
+ * 删除企业用户
+ */
+router.post('/deleteManager', async (ctx,next) => {
+  let { uuid } = ctx.state.param;
+  
+  const status = await managerUserService.deleteManager(uuid);
+
+  if (status) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.noContent,
+      msg: '删除成功'
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error,
+      msg: '删除失败'
+    });
+  }
+});
+
 export default router;

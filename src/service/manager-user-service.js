@@ -45,5 +45,26 @@ export default {
     );
 
     return true;
+  },
+
+  /**
+   * 删除企业
+   */
+  deleteManager: async uuid =>{
+    if(await managerUserDao.deleteManager(uuid)) {
+      return true;
+    }
+    return false;
+  },
+
+  /**
+   * 更改企业
+   */
+  updateManager: async (uuid, phone, password, name ) => {
+    if(await managerUserDao.updeteManager( uuid, phone, password, name )) {
+     
+      return true;
+    }
+    return false;
   }
 };

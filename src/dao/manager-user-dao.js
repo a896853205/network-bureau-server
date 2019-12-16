@@ -25,5 +25,26 @@ export default {
       role,
       uuid: uuid.v1()
     });
+  },
+
+  /**
+   * 删除企业用户
+   */
+  deleteManager: async uuid => {
+    return await managerUser.destroy({
+      where: { uuid }
+    });
+  },
+
+  /**
+   * 更改企业用户
+   */
+  updeteManager: async ( uuid, phone, password, name ) => {
+    return await managerUser.update(
+      { phone, password, name },
+      {
+        where: { uuid }
+      }
+    );
   }
 };
