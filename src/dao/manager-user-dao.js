@@ -28,13 +28,14 @@ export default {
     });
   },
 
-   /**
+  /**
    * 查询企业用户
    */
-  queryEnterpriseUser: async () => {
+  queryEnterpriseUser: async page => {
     return await enterpriseUser.findAll({
       attributes: ['id', 'code', 'uuid', 'phone', 'password', 'name'],
-      limit: 10
+      limit: 10,
+      offset: (page - 1) * 10
     });
-  },
+  }
 };

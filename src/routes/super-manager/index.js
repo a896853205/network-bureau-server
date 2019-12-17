@@ -4,6 +4,6 @@ import { RESPONSE_CODE } from '../../constants/domain-constants';
 
 const router = new Router();
 
-router.prefix('superManager');
+router.prefix('/superManager');
 
 export default router;
