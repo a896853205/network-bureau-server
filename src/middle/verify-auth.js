@@ -1,6 +1,7 @@
 import { AUTHORITY } from '../constants/app-constants';
 import Res from '../util/response';
 import { RESPONSE_CODE } from '../constants/domain-constants';
+import verifyUnlessPath from '../util/verify-unless-path';
 
 // 配置
 import { UNLESS_PATH_ARR } from '../config/system-config';
@@ -15,7 +16,7 @@ export default auth => {
 
 const _verify = {
   [AUTHORITY.SUPER.name]: (ctx, next) => {
-    if (verifyUnlessPath(ctx.url)) {
+    if (verifyUnlessPath(ctx.url, UNLESS_PATH_ARR)) {
       next();
     } else {
       if (ctx.state.user.role === AUTHORITY.SUPER.code) {
@@ -29,7 +30,7 @@ const _verify = {
     }
   },
   [AUTHORITY.ACCOUNTANT.name]: (ctx, next) => {
-    if (verifyUnlessPath(ctx.url)) {
+    if (verifyUnlessPath(ctx.url, UNLESS_PATH_ARR)) {
       next();
     } else {
       if (ctx.state.user.role === AUTHORITY.ACCOUNTANT.code) {
@@ -43,7 +44,7 @@ const _verify = {
     }
   },
   [AUTHORITY.PROJECT_MANAGER.name]: (ctx, next) => {
-    if (verifyUnlessPath(ctx.url)) {
+    if (verifyUnlessPath(ctx.url, UNLESS_PATH_ARR)) {
       next();
     } else {
       if (ctx.state.user.role === AUTHORITY.PROJECT_MANAGER.code) {
@@ -57,7 +58,7 @@ const _verify = {
     }
   },
   [AUTHORITY.TECH_LEADER.name]: (ctx, next) => {
-    if (verifyUnlessPath(ctx.url)) {
+    if (verifyUnlessPath(ctx.url, UNLESS_PATH_ARR)) {
       next();
     } else {
       if (ctx.state.user.role === AUTHORITY.TECH_LEADER.code) {
@@ -71,7 +72,7 @@ const _verify = {
     }
   },
   [AUTHORITY.TECH.name]: (ctx, next) => {
-    if (verifyUnlessPath(ctx.url)) {
+    if (verifyUnlessPath(ctx.url, UNLESS_PATH_ARR)) {
       next();
     } else {
       if (ctx.state.user.role === AUTHORITY.TECH.code) {
@@ -85,7 +86,7 @@ const _verify = {
     }
   },
   [AUTHORITY.CERTIFIER.name]: (ctx, next) => {
-    if (verifyUnlessPath(ctx.url)) {
+    if (verifyUnlessPath(ctx.url, UNLESS_PATH_ARR)) {
       next();
     } else {
       if (ctx.state.user.role === AUTHORITY.CERTIFIER.code) {
@@ -98,18 +99,4 @@ const _verify = {
       }
     }
   }
-};
-
-/**
- * 判断路径是否被排除
- * @param {String} currentPath 当前url
- */
-const verifyUnlessPath = currentPath => {
-  for (let i = 0; i < UNLESS_PATH_ARR.length; i++) {
-    if (currentPath.match(UNLESS_PATH_ARR[i])) {
-      return true;
-    }
-  }
-
-  return false;
 };
