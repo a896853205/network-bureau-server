@@ -4,12 +4,23 @@ import uuid from 'uuid';
 
 export default {
   /**
+   * 通过uuid查询管理员
+   */
+  selectManagerByUuid: async uuid => {
+    return await managerUser.findOne({
+      where: { uuid },
+      attributes: ['uuid', 'phone', 'username', 'password', 'name', 'role'],
+      raw: true
+    });
+  },
+  /**
    * 通过用户名查询管理员
    */
   selectManagerUserByUsername: async username => {
     return await managerUser.findOne({
       where: { username },
-      attributes: ['uuid', 'phone', 'username', 'password', 'name', 'role']
+      attributes: ['uuid', 'phone', 'username', 'password', 'name', 'role'],
+      raw: true
     });
   },
 
@@ -39,11 +50,12 @@ export default {
   /**
    * 更改企业用户
    */
-  updeteManager: async ( uuid, phone, password, name ) => {
+  updeteManager: async (uuid, phone, password, name) => {
     return await managerUser.update(
       { phone, password, name },
       {
-        where: { uuid }
+        where: { uuid },
+        raw: true
       }
     );
   }

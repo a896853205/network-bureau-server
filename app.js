@@ -15,10 +15,6 @@ import superManager from './src/routes/super-manager';
 // 中间件
 import verifyToken from './src/middle/verify-token';
 import param from './src/middle/param';
-import verifyAuth from './src/middle/verify-auth';
-
-// 权限
-import { AUTHORITY } from './src/constants/app-constants';
 
 const app = new Koa();
 
@@ -51,11 +47,7 @@ app.use(async (ctx, next) => {
 app.use(enterpriseUsers.routes(), enterpriseUsers.allowedMethods());
 app.use(managerUsers.routes(), managerUsers.allowedMethods());
 // 超级管理员权限
-app.use(
-  verifyAuth(AUTHORITY.SUPER.name),
-  superManager.routes(),
-  superManager.allowedMethods()
-);
+app.use(superManager.routes(), superManager.allowedMethods());
 
 // error-handling
 app.on('error', (err, ctx) => {

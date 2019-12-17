@@ -4,6 +4,12 @@ import webToken from '../util/token';
 
 export default {
   /**
+   * 获取企业信息通过UUID
+   */
+  getEnterpriseByUuid: async uuid => {
+    return await enterpriseUserDao.selectEnterpriseByUuid(uuid);
+  },
+  /**
    * 根据企业的用户名和密码判断之后生成token
    */
   getEnterpriseToken: async (code, password) => {
@@ -17,7 +23,8 @@ export default {
 
     return {
       token: webToken.parseToken({
-        uuid: enterprise.uuid
+        uuid: enterprise.uuid,
+        auth: 'enterprise'
       }),
       enterprise
     };

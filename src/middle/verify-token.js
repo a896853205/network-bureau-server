@@ -8,6 +8,7 @@ import { UNLESS_PATH_ARR } from '../config/system-config';
 
 // service
 import enterpriseUserService from '../service/enterprise-user-service';
+import managerUserService from '../service/manager-user-service';
 
 /**
  * token验证中间件
@@ -20,14 +21,27 @@ export default async (ctx, next) => {
     const token = ctx.header.authorization;
 
     try {
-      let data = webToken.resolveToken(token);
+      let data = webToken.resolveToken(token),
+        user = null;
+      
+      if (data.auth === 'manager') {
+        user = await managerUserService.getManagerByUuid(data.uuid);
+        ctx.state.user = user;
 
-      let user = await enterpriseUserService.getUserInfo(data.uuid);
+        await next();
+      } else if (data.auth === 'enterprise') {
+        user = await enterpriseUserService.getEnterpriseByUuid(data.uuid);
+        ctx.state.user = user;
 
-      ctx.state.user = user;
-
-      await next();
+        await next();
+      } else {
+        ctx.body = new Result({
+          status: 3,
+          msg: '请重新登录'
+        });
+      }
     } catch (error) {
+      console.error(error);
       ctx.body = new Result({
         status: 3,
         msg: '请重新登录'

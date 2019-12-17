@@ -5,9 +5,15 @@ import { db } from '../db/db-connect';
 
 export default {
   /**
+   * 根据uuid查询用户
+   */
+  getManagerByUuid: async uuid => {
+    return await managerUserDao.selectManagerByUuid(uuid);
+  },
+  /**
    * 根据账号查找用户
    */
-  // selectManagerUserByUsername: async username => {
+  // getManagerUserByUsername: async username => {
   //   return await managerUserDao.selectManagerUserByUsername(username);
   // },
   /**
@@ -22,7 +28,8 @@ export default {
 
     return {
       token: webToken.parseToken({
-        uuid: manager.uuid
+        uuid: manager.uuid,
+        auth: 'manager'
       }),
       manager
     };

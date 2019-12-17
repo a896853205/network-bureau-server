@@ -4,12 +4,23 @@ import uuid from 'uuid';
 
 export default {
   /**
+   * 通过uuid查询企业账号
+   */
+  selectEnterpriseByUuid: async uuid => {
+    return await enterpriseUser.findOne({
+      where: { uuid },
+      attributes: ['uuid', 'phone', 'name', 'password'],
+      raw: true
+    });
+  },
+  /**
    * 通过用户名查询企业账号
    */
   selectEnterpriseUserByCode: async code => {
     return await enterpriseUser.findOne({
       where: { code },
-      attributes: ['id', 'uuid', 'phone', 'name', 'password']
+      attributes: ['uuid', 'phone', 'name', 'password'],
+      raw: true
     });
   },
 
@@ -18,7 +29,8 @@ export default {
    */
   selectEnterpriseByCode: async code => {
     return await enterpriseUser.findOne({
-      where: { code }
+      where: { code },
+      raw: true
     });
   },
 
