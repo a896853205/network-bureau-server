@@ -1,10 +1,15 @@
 import Router from 'koa-router';
-import managerUserService from '../service/manager-user-service';
+
+// response
 import Res from '../util/response';
 import { RESPONSE_CODE } from '../constants/domain-constants';
-const router = new Router();
 
-router.prefix('/managerUser');
+// service
+import managerUserService from '../service/manager-user-service';
+
+const router = new Router({
+  prefix: '/managerUser'
+});
 
 /**
  * 管理端登录

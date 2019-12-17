@@ -9,11 +9,12 @@ import managerUserService from '../../service/manager-user-service';
 import verifyAuth from '../../middle/verify-auth';
 import { AUTHORITY } from '../../constants/app-constants';
 
-const router = new Router();
+const PREFIX = '/superManager',
+  router = new Router({
+    prefix: PREFIX
+  });
 
-router.prefix('/superManager');
-
-router.use('/superManager', verifyAuth(AUTHORITY.SUPER.name));
+router.use(PREFIX, verifyAuth(AUTHORITY.SUPER.name));
 /**
  * 增加管理账号
  */

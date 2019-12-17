@@ -1,10 +1,15 @@
 import Router from 'koa-router';
-import enterpriseService from '../service/enterprise-user-service';
+
+// response
 import Res from '../util/response';
 import { RESPONSE_CODE } from '../constants/domain-constants';
-const router = new Router();
 
-router.prefix('/enterpriseUser');
+// service
+import enterpriseService from '../service/enterprise-user-service';
+
+const router = new Router({
+  prefix: '/enterpriseUser'
+});
 
 /**
  * 企业用户登录
