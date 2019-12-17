@@ -20,10 +20,10 @@ export default async (ctx, next) => {
   } else {
     // 获取jwt
     const token = ctx.header.authorization;
-
+    let user = null;
+    
     try {
-      let data = webToken.resolveToken(token),
-        user = null;
+      let data = webToken.resolveToken(token);
 
       switch (data.auth) {
         case 'manager':
@@ -36,17 +36,19 @@ export default async (ctx, next) => {
           break;
       }
 
-      if (user) {
-        ctx.state.user = user;
-
-        await next();
-      } else {
-        ctx.body = new Result({
-          status: 3,
-          msg: '请重新登录'
-        });
-      }
     } catch (error) {
+      console.log(error);
+      ctx.body = new Result({
+        status: 3,
+        msg: '请重新登录'
+      });
+    }
+
+    if (user) {
+      ctx.state.user = user;
+
+      await next();
+    } else {
       ctx.body = new Result({
         status: 3,
         msg: '请重新登录'

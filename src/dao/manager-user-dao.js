@@ -2,6 +2,8 @@ import managerUser from '../db/models/manager-user';
 
 import uuid from 'uuid';
 
+import { MANAGER_PAGE_SIZE } from '../config/system-config';
+
 export default {
   /**
    * 通过uuid查询管理员
@@ -58,5 +60,16 @@ export default {
         raw: true
       }
     );
+  },
+  /**
+   * 查询管理员用户
+   */
+  queryManagerUser: async page => {
+    return await managerUser.findAll({
+      attributes: ['uuid', 'username', 'phone', 'name', 'role'],
+      limit: MANAGER_PAGE_SIZE,
+      offset: (page - 1) * MANAGER_PAGE_SIZE,
+      raw: true
+    });
   }
 };

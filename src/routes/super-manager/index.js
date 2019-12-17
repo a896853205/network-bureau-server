@@ -43,7 +43,7 @@ router.post('/createNewManager', async (ctx, next) => {
 });
 
 /**
- * 更新企业用户
+ * 更新管理账号
  */
 router.put('/updateManager', async (ctx, next) => {
   let { uuid, phone, password, name } = ctx.state.param;
@@ -69,7 +69,7 @@ router.put('/updateManager', async (ctx, next) => {
 });
 
 /**
- * 删除企业用户
+ * 删除管理账号
  */
 router.del('/deleteManager', async (ctx, next) => {
   let { uuid } = ctx.state.param;
@@ -87,6 +87,27 @@ router.del('/deleteManager', async (ctx, next) => {
       msg: '删除管理员失败'
     });
   }
+});
+
+/**
+ * 查询管理账号
+ */
+router.get('/queryManager', async (ctx, next) => {
+  const { page } = ctx.state.param;
+
+  const data = await managerUserService.queryManager(page);
+
+  if (data) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error,
+      msg: '查询失败'
+    });
+  };
 });
 
 export default router;

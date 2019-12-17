@@ -9,3 +9,5 @@ export const UNLESS_PATH_ARR = [
    */
   '/managerUser/getManagerToken',
 ];
+
+export const MANAGER_PAGE_SIZE = 10;

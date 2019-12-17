@@ -1,7 +1,6 @@
 import managerUserDao from '../dao/manager-user-dao';
 
 import webToken from '../util/token';
-import { db } from '../db/db-connect';
 
 export default {
   /**
@@ -55,23 +54,29 @@ export default {
   },
 
   /**
-   * 删除企业
+   * 删除管理员账号
    */
-  deleteManager: async uuid =>{
-    if(await managerUserDao.deleteManager(uuid)) {
+  deleteManager: async uuid => {
+    if (await managerUserDao.deleteManager(uuid)) {
       return true;
     }
     return false;
   },
 
   /**
-   * 更改企业
+   * 更改管理员账号
    */
-  updateManager: async (uuid, phone, password, name ) => {
-    if(await managerUserDao.updeteManager( uuid, phone, password, name )) {
-     
+  updateManager: async (uuid, phone, password, name) => {
+    if (await managerUserDao.updeteManager(uuid, phone, password, name)) {
       return true;
     }
     return false;
+  },
+
+  /**
+   * 查询管理员账号
+   */
+  queryManager: async page => {
+    return await managerUserDao.queryManagerUser(page)
   }
 };
