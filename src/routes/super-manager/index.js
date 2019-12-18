@@ -7,7 +7,7 @@ import managerUserService from '../../service/manager-user-service';
 
 // 权限
 import verifyAuth from '../../middle/verify-auth';
-import { AUTHORITY } from '../../constants/app-constants';
+import { AUTHORITY } from '../../constants/role-constants';
 
 const PREFIX = '/superManager',
   router = new Router({

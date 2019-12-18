@@ -1,5 +1,6 @@
 import webToken from '../util/token';
 import verifyUnlessPath from '../util/verify-unless-path';
+import { RESPONSE_CODE } from '../constants/domain-constants';
 
 // 返回前台的对象
 import Result from '../util/response';
@@ -21,7 +22,7 @@ export default async (ctx, next) => {
     // 获取jwt
     const token = ctx.header.authorization;
     let user = null;
-    
+
     try {
       let data = webToken.resolveToken(token);
 
@@ -37,9 +38,8 @@ export default async (ctx, next) => {
       }
 
     } catch (error) {
-      console.log(error);
       ctx.body = new Result({
-        status: 3,
+        status: RESPONSE_CODE.unauthorized,
         msg: '请重新登录'
       });
     }
@@ -50,7 +50,7 @@ export default async (ctx, next) => {
       await next();
     } else {
       ctx.body = new Result({
-        status: 3,
+        status: RESPONSE_CODE.unauthorized,
         msg: '请重新登录'
       });
     }
