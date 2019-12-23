@@ -11,5 +11,5 @@ export default db.define('registration_basic', {
   },
   uuid: Sequelize.STRING(36),
   name: Sequelize.STRING(32),  // 登记测试产品名称
-  step: Sequelize.NUMBER(2)    // 步骤
+  step: Sequelize.INTEGER    // 步骤
 })
