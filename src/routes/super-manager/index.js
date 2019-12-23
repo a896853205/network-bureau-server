@@ -106,4 +106,14 @@ router.get('/queryManager', async (ctx, next) => {
   }
 });
 
+/**
+ * 获取权限列表
+ */
+router.get('/queryRole', ctx => {
+  ctx.body = new Res({
+    status: RESPONSE_CODE.success,
+    data: AUTHORITY
+  });
+});
+
 export default router;

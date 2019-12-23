@@ -20,6 +20,7 @@ router.get('/getManagerInfo', async (ctx, next) => {
     data: ctx.state.user
   });
 });
+
 /**
  * 管理端登录
  */
