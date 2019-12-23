@@ -15,56 +15,52 @@ const PREFIX = '/superManager',
   });
 
 router.use(PREFIX, verifyAuth(AUTHORITY.SUPER.name));
-/**
- * 增加管理账号
- */
-router.post('/createNewManager', async (ctx, next) => {
-  let { username, phone, password, name, role } = ctx.state.param;
-
-  const status = await managerUserService.createNewManager(
-    username,
-    phone,
-    password,
-    name,
-    role
-  );
-
-  if (status) {
-    ctx.body = new Res({
-      status: RESPONSE_CODE.created,
-      msg: '创建管理用户成功'
-    });
-  } else {
-    ctx.body = new Res({
-      status: RESPONSE_CODE.error,
-      msg: '用户已存在'
-    });
-  }
-});
 
 /**
- * 更新管理账号
+ * 增加/更新管理账号
  */
-router.put('/updateManager', async (ctx, next) => {
-  let { uuid, phone, password, name } = ctx.state.param;
+router.post('/saveManager', async (ctx, next) => {
+  let { uuid, username, phone, password, name, role } = ctx.state.param;
 
-  const status = await managerUserService.updateManager(
-    uuid,
-    phone,
-    password,
-    name
-  );
+  if (uuid) {
+    const status = await managerUserService.updateManager(
+      uuid,
+      phone,
+      password,
+      name
+    );
 
-  if (status) {
-    ctx.body = new Res({
-      status: RESPONSE_CODE.success,
-      msg: '更改管理员成功'
-    });
+    if (status) {
+      ctx.body = new Res({
+        status: RESPONSE_CODE.success,
+        msg: '更改管理员成功'
+      });
+    } else {
+      ctx.body = new Res({
+        status: RESPONSE_CODE.error,
+        msg: '更改管理员失败'
+      });
+    }
   } else {
-    ctx.body = new Res({
-      status: RESPONSE_CODE.error,
-      msg: '更改管理员失败'
-    });
+    const status = await managerUserService.createNewManager(
+      username,
+      phone,
+      password,
+      name,
+      role
+    );
+
+    if (status) {
+      ctx.body = new Res({
+        status: RESPONSE_CODE.created,
+        msg: '创建管理用户成功'
+      });
+    } else {
+      ctx.body = new Res({
+        status: RESPONSE_CODE.error,
+        msg: '用户已存在'
+      });
+    }
   }
 });
 
@@ -107,7 +103,7 @@ router.get('/queryManager', async (ctx, next) => {
       status: RESPONSE_CODE.error,
       msg: '查询失败'
     });
-  };
+  }
 });
 
 export default router;
