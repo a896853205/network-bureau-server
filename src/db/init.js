@@ -13,7 +13,6 @@ require('babel-register')({
 
 const enterpriseUser = require('./models/enterprise-user').default;
 const managerUser = require('./models/manager-user').default;
-const sysManagerRole = require('./models/sys-manager-role').default;
 const registrationBasic = require('./models/registration-basic').default;
 
 // 企业用户表
