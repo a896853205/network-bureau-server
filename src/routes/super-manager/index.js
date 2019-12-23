@@ -112,7 +112,7 @@ router.get('/queryManager', async (ctx, next) => {
 router.get('/queryRole', ctx => {
   ctx.body = new Res({
     status: RESPONSE_CODE.success,
-    data: AUTHORITY
+    data: Object.values(AUTHORITY)
   });
 });
 
