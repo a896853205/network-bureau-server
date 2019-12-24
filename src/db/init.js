@@ -14,6 +14,7 @@ require('babel-register')({
 const enterpriseUser = require('./models/enterprise-user').default;
 const managerUser = require('./models/manager-user').default;
 const registrationBasic = require('./models/registration-basic').default;
+const enterpriseRegistion = require('./models/enterprise_registion').default;
 
 // 企业用户表
 enterpriseUser
@@ -57,4 +58,13 @@ registrationBasic
   })
   .then(() => {
     console.log('登记注册基本表初始化成功');
+  });
+
+// 企业登记注册表
+enterpriseRegistion
+  .sync({
+    force: true
+  })
+  .then(() => {
+    console.log('企业登记注册表初始化成功');
   });
