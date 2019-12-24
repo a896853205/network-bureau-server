@@ -13,7 +13,4 @@ export default db.define('enterprise_registion', {
   currentStep: Sequelize.INTEGER,
   uuid: Sequelize.STRING(36),
   enterpriseUuid: Sequelize.STRING(36),
-  code: Sequelize.STRING(32),
-  contractUuid: Sequelize.STRING(36),
-  copyrightUuid: Sequelize.STRING(36)
 });

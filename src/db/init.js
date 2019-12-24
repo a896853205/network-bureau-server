@@ -16,12 +16,18 @@ const managerUser = require('./models/manager-user').default;
 const registrationBasic = require('./models/registration-basic').default;
 const enterpriseRegistion = require('./models/enterprise-registion').default;
 const sysRegistionStep = require('./models/sys-registion-step').default;
-const mergeEnterpriseRegistionRegistionStep = require('./models/merge-enterprise-registion-registion-step').default;
-const enterpriseRegistionCopyright = require('./models/enterprise-registion-copyright').default;
-const enterpriseRegistionProduct = require('./models/enterprise-registion-product').default;
-const enterpriseRegistionProductDescription = require('./models/enterprise-registion-product-description').default;
-const enterpriseRegistionDocument = require('./models/enterprise-registion-document').default;
-const enterpriseRegistionApply = require('./models/enterprise-registion-apply').default;
+const mergeEnterpriseRegistionRegistionStep = require('./models/merge-enterprise-registion-registion-step')
+  .default;
+const enterpriseRegistionCopyright = require('./models/enterprise-registion-copyright')
+  .default;
+const enterpriseRegistionProduct = require('./models/enterprise-registion-product')
+  .default;
+const enterpriseRegistionProductDescription = require('./models/enterprise-registion-product-description')
+  .default;
+const enterpriseRegistionDocument = require('./models/enterprise-registion-document')
+  .default;
+const enterpriseRegistionApply = require('./models/enterprise-registion-apply')
+  .default;
 
 // 企业用户表
 enterpriseUser
@@ -30,6 +36,13 @@ enterpriseUser
   })
   .then(() => {
     console.log('企业用户表初始化成功');
+    enterpriseUser.create({
+      uuid: 'guanliyuan',
+      code: '91440400794618063Y',
+      phone: '18507923354',
+      name: '管理员',
+      password: 'e10adc3949ba59abbe56e057f20f883e'
+    });
   })
   .catch(error => {
     console.error('企业用户表初始化失败');
@@ -97,12 +110,12 @@ mergeEnterpriseRegistionRegistionStep
 // 企业用户登记注册
 // 软件著作权证书表
 enterpriseRegistionCopyright
-.sync({
-  force: true
-})
-.then(() => {
-  console.log('软件著作权证书表初始化成功');
-});
+  .sync({
+    force: true
+  })
+  .then(() => {
+    console.log('软件著作权证书表初始化成功');
+  });
 
 // 企业用户登记注册
 // 产品介质表
