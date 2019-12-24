@@ -6,7 +6,7 @@ export const db = new Sequelize(
   SQL_CONFIG.user,
   SQL_CONFIG.password,
   {
-    host: SQL_CONFIG.host,
+    host: SQL_CONFIG.host, 
     dialect: 'mysql',
     pool: {
       max: 10,
