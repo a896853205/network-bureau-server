@@ -14,14 +14,14 @@ require('babel-register')({
 const enterpriseUser = require('./models/enterprise-user').default;
 const managerUser = require('./models/manager-user').default;
 const registrationBasic = require('./models/registration-basic').default;
-const enterpriseRegistion = require('./models/enterprise_registion').default;
-const sysRegistionStep = require('./models/sys_registion_step').default;
-const mergeEnterpriseRegistionRegistionStep = require('./models/merge_enterprise_registion_registion_step').default;
-const enterpriseRegistionCopyright = require('./models/enterprise_registion_copyright').default;
-const enterpriseRegistionProduct = require('./models/enterprise_registion_product').default;
-const enterpriseRegistionProductDescription = require('./models/enterprise_registion_product_description').default;
-const enterpriseRegistionDocument = require('./models/enterprise_registion_document').default;
-const enterpriseRegistionApply = require('./models/enterprise_registion_apply').default;
+const enterpriseRegistion = require('./models/enterprise-registion').default;
+const sysRegistionStep = require('./models/sys-registion-step').default;
+const mergeEnterpriseRegistionRegistionStep = require('./models/merge-enterprise-registion-registion-step').default;
+const enterpriseRegistionCopyright = require('./models/enterprise-registion-copyright').default;
+const enterpriseRegistionProduct = require('./models/enterprise-registion-product').default;
+const enterpriseRegistionProductDescription = require('./models/enterprise-registion-product-description').default;
+const enterpriseRegistionDocument = require('./models/enterprise-registion-document').default;
+const enterpriseRegistionApply = require('./models/enterprise-registion-apply').default;
 
 // 企业用户表
 enterpriseUser
@@ -85,7 +85,7 @@ sysRegistionStep
     console.log('登记注册步骤表初始化成功');
   });
 
-//企业用户登记注册的步骤表
+// 企业用户登记注册的步骤表
 mergeEnterpriseRegistionRegistionStep
   .sync({
     force: true
@@ -95,7 +95,7 @@ mergeEnterpriseRegistionRegistionStep
   });
 
 // 企业用户登记注册
-//软件著作权证书表
+// 软件著作权证书表
 enterpriseRegistionCopyright
 .sync({
   force: true
@@ -105,7 +105,7 @@ enterpriseRegistionCopyright
 });
 
 // 企业用户登记注册
-//产品介质表
+// 产品介质表
 enterpriseRegistionProduct
   .sync({
     force: true
@@ -115,7 +115,7 @@ enterpriseRegistionProduct
   });
 
 // 企业用户登记注册
-//产品说明表
+// 产品说明表
 enterpriseRegistionProductDescription
   .sync({
     force: true
@@ -125,7 +125,7 @@ enterpriseRegistionProductDescription
   });
 
 // 企业用户登记注册
-//用户文档表
+// 用户文档表
 enterpriseRegistionDocument
   .sync({
     force: true
@@ -135,7 +135,7 @@ enterpriseRegistionDocument
   });
 
 // 企业用户登记注册
-//现场测试申请表
+// 现场测试申请表
 enterpriseRegistionApply
   .sync({
     force: true
