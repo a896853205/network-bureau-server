@@ -71,5 +71,11 @@ export default {
       offset: (page - 1) * MANAGER_PAGE_SIZE,
       raw: true
     });
+  },
+
+  selectEnterpriseRegistionByName: async name => {
+    return await managerUser.findAll({
+      where: { name }
+    });
   }
 };

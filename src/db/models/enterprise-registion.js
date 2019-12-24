@@ -15,5 +15,10 @@ export default db.define('enterprise_registion', {
   enterpriseUuid: Sequelize.STRING(36),
   code: Sequelize.STRING(32),
   contractUuid: Sequelize.STRING(36),
-  copyrightUuid: Sequelize.STRING(36)
+  copyrightUuid: Sequelize.STRING(36),
+  sepcimenUuid: Sequelize.STRING(36),
+  productDescriptionUuid: Sequelize.STRING(36),
+  productUuid: Sequelize.STRING(36),
+  documentUuid: Sequelize.STRING(36),
+  applyUuid: Sequelize.STRING(36)
 });
