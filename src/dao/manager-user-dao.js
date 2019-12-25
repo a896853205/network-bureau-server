@@ -65,11 +65,17 @@ export default {
    * 查询管理员用户
    */
   queryManagerUser: async page => {
-    return await managerUser.findAll({
+    const result = await managerUser.findAndCountAll({
       attributes: ['uuid', 'username', 'phone', 'name', 'role'],
       limit: MANAGER_PAGE_SIZE,
       offset: (page - 1) * MANAGER_PAGE_SIZE,
       raw: true
     });
+
+    return {
+      manangerList: result.rows,
+      total: result.count,
+      pageSize: MANAGER_PAGE_SIZE
+    };
   }
 };
