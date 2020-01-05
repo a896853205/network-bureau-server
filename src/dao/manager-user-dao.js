@@ -73,7 +73,7 @@ export default {
     });
 
     return {
-      manangerList: result.rows,
+      managerList: result.rows,
       total: result.count,
       pageSize: MANAGER_PAGE_SIZE
     };
