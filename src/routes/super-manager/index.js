@@ -22,6 +22,7 @@ router.use(PREFIX, verifyAuth(AUTHORITY.SUPER.name));
 router.post('/saveManager', async (ctx, next) => {
   let { uuid, username, phone, password, name, role } = ctx.state.param;
 
+  console.log(uuid);
   if (uuid) {
     const status = await managerUserService.updateManager(
       uuid,
@@ -113,6 +114,20 @@ router.get('/queryRole', ctx => {
   ctx.body = new Res({
     status: RESPONSE_CODE.success,
     data: Object.values(AUTHORITY)
+  });
+});
+
+/**
+ * 通过uuid查询管理员数据
+ */
+router.get('/getManagerInfo', async ctx => {
+  const { uuid } = ctx.state.param;
+
+  const res = await managerUserService.getManagerByUuid(uuid);
+
+  ctx.body = new Res({
+    status: RESPONSE_CODE.success,
+    data: res
   });
 });
 
