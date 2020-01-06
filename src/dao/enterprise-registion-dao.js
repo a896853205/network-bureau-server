@@ -9,7 +9,7 @@ import enterpriseRegistion from '../db/models/enterprise-registion';
 import mergeEnterpriseRegistionRegistionStep from '../db/models/merge-enterprise-registion-registion-step';
 import sysRegistionStep from '../db/models/sys-registion-step';
 
-import { QUERY_REGISTION_PAGE_SIZE } from '../config/system-config';
+import { REGISTRATION_PAGE_SIZE } from '../config/system-config';
 
 import uuid from 'uuid';
 
@@ -84,19 +84,19 @@ export default {
   /**
    * 查询企业用户登记测试
    */
-  queryRegistionItems: async (enterpriseUuid, page) => {
+  queryRegistionByEnterpriseUuid: async (enterpriseUuid, page) => {
     const result = await enterpriseRegistion.findAndCountAll({
       where: { enterpriseUuid },
       attributes: ['uuid', 'enterpriseUuid', 'name', 'currentStep'],
-      limit: QUERY_REGISTION_PAGE_SIZE,
-      offset: (page - 1) * QUERY_REGISTION_PAGE_SIZE,
+      limit: REGISTRATION_PAGE_SIZE,
+      offset: (page - 1) * REGISTRATION_PAGE_SIZE,
       raw: true
     });
-    console.log(enterpriseUuid);
+
     return {
       enterpriseRegistionList: result.rows,
       total: result.count,
-      pageSize: QUERY_REGISTION_PAGE_SIZE
+      pageSize: REGISTRATION_PAGE_SIZE
     };
   }
 };

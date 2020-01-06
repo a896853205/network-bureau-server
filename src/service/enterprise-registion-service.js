@@ -27,11 +27,10 @@ export default {
   },
 
   /**
-   * 查询管理员账号
+   * 查询登记测试通过企业的uuid
    */
-  queryRegistionByUuid: async (enterpriseUuid, page) => {
-    console.log(enterpriseUuid);
-    return await enterpriseRegistionDao.queryRegistionItems(
+  queryRegistionByEnterpriseUuid: async (enterpriseUuid, page) => {
+    return await enterpriseRegistionDao.queryRegistionByEnterpriseUuid(
       enterpriseUuid,
       page
     );

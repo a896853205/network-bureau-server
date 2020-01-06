@@ -11,4 +11,4 @@ export const UNLESS_PATH_ARR = [
 ];
 
 export const MANAGER_PAGE_SIZE = 10;
-export const QUERY_REGISTRATION_PAGE_SIZE = 10;
+export const REGISTRATION_PAGE_SIZE = 10;
