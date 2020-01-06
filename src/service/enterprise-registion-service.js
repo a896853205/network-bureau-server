@@ -24,5 +24,16 @@ export default {
 
       return true;
     }
+  },
+
+  /**
+   * 查询管理员账号
+   */
+  queryRegistionByUuid: async (enterpriseUuid, page) => {
+    console.log(enterpriseUuid);
+    return await enterpriseRegistionDao.queryRegistionItems(
+      enterpriseUuid,
+      page
+    );
   }
 };

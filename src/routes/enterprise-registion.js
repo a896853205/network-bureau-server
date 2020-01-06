@@ -33,4 +33,30 @@ router.post('/createEnterpriseRegistion', async (ctx, next) => {
   }
 });
 
+/**
+ * 查询管理账号
+ */
+router.get('/queryRegistionByUuid', async (ctx, next) => {
+  const { uuid: enterpriseUuid } = ctx.state.user;
+  const { page } = ctx.state.param;
+  console.log(enterpriseUuid);
+
+  const data = await enterpriseRegistionService.queryRegistionByUuid(
+    enterpriseUuid,
+    page
+  );
+  console.log(enterpriseUuid);
+
+  if (data) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error,
+      msg: '查询失败'
+    });
+  }
+});
 export default router;
