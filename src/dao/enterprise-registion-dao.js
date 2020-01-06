@@ -1,3 +1,5 @@
+import { db } from '../db/db-connect';
+
 import enterpriseRegistionApply from '../db/models/enterprise-registion-apply';
 import enterpriseRegistionCopyright from '../db/models/enterprise-registion-copyright';
 import enterpriseRegistionDocument from '../db/models/enterprise-registion-document';
@@ -10,7 +12,7 @@ import sysRegistionStep from '../db/models/sys-registion-step';
 import uuid from 'uuid';
 
 export default {
-  /**
+  /**.
    * 通过name查询登记注册
    */
   selectEnterpriseRegistionByName: async name => {
@@ -25,53 +27,55 @@ export default {
   createEnterpriseRegistion: async (name, enterpriseUuid) => {
     const enterpriseRegistionUuid = uuid.v1();
 
-    return await Promise.all([
-      enterpriseRegistion.create({
-        name,
-        currentStep: 0,
-        uuid: enterpriseRegistionUuid,
-        enterpriseUuid: enterpriseUuid,
-      }),
-      // enterpriseRegistion.create({
-      //   uuid: contractUuid,
-      //   status: 0,
-      //   statusText: null
-      // }),
-      enterpriseRegistionCopyright.create({
-        uuid: enterpriseRegistionUuid,
-        status: 0,
-        statusText: null,
-        url: null
-      }),
-      // enterpriseRegistion.create({
-      //   uuid: specimenUuid,
-      //   status: 0,
-      //   statusText: null
-      // }),
-      enterpriseRegistionProduct.create({
-        uuid: enterpriseRegistionUuid,
-        status: 0,
-        statusText: null,
-        url: null
-      }),
-      enterpriseRegistionProductDescription.create({
-        uuid: enterpriseRegistionUuid,
-        status: 0,
-        statusText: null,
-        url: null
-      }),
-      enterpriseRegistionDocument.create({
-        uuid: enterpriseRegistionUuid,
-        status: 0,
-        statusText: null,
-        url: null
-      }),
-      enterpriseRegistionApply.create({
-        uuid: enterpriseRegistionUuid,
-        status: 0,
-        statusText: null,
-        step: 0
-      })
-    ]);
+    return db.transaction(() => {
+      return Promise.all([
+        enterpriseRegistion.create({
+          name,
+          currentStep: 0,
+          uuid: enterpriseRegistionUuid,
+          enterpriseUuid: enterpriseUuid
+        }),
+        // enterpriseRegistion.create({
+        //   uuid: contractUuid,
+        //   status: 0,
+        //   statusText: null
+        // }),
+        enterpriseRegistionCopyright.create({
+          uuid: enterpriseRegistionUuid,
+          status: 0,
+          statusText: null,
+          url: null
+        }),
+        // enterpriseRegistion.create({
+        //   uuid: specimenUuid,
+        //   status: 0,
+        //   statusText: null
+        // }),
+        enterpriseRegistionProduct.create({
+          uuid: enterpriseRegistionUuid,
+          status: 0,
+          statusText: null,
+          url: null
+        }),
+        enterpriseRegistionProductDescription.create({
+          uuid: enterpriseRegistionUuid,
+          status: 0,
+          statusText: null,
+          url: null
+        }),
+        enterpriseRegistionDocument.create({
+          uuid: enterpriseRegistionUuid,
+          status: 0,
+          statusText: null,
+          url: null
+        }),
+        enterpriseRegistionApply.create({
+          uuid: enterpriseRegistionUuid,
+          status: 0,
+          statusText: null,
+          step: 0
+        })
+      ]);
+    });
   }
 };

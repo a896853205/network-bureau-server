@@ -22,7 +22,6 @@ router.use(PREFIX, verifyAuth(AUTHORITY.SUPER.name));
 router.post('/saveManager', async (ctx, next) => {
   let { uuid, username, phone, password, name, role } = ctx.state.param;
 
-  console.log(uuid);
   if (uuid) {
     const status = await managerUserService.updateManager(
       uuid,
