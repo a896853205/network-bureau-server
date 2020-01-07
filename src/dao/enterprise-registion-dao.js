@@ -33,7 +33,7 @@ export default {
       return Promise.all([
         enterpriseRegistion.create({
           name,
-          currentStep: 0,
+          currentStep: 1,
           uuid: enterpriseRegistionUuid,
           enterpriseUuid: enterpriseUuid
         }),
