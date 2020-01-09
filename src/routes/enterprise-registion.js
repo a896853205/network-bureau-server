@@ -34,11 +34,11 @@ router.post('/createEnterpriseRegistion', async (ctx, next) => {
 });
 
 /**
- * 查询管理账号
+ * 查询企业的登记测试列表
  */
 router.get('/queryRegistionByEnterpriseUuid', async (ctx, next) => {
-  const { uuid: enterpriseUuid } = ctx.state.user;
-  const { page } = ctx.state.param;
+  const { uuid: enterpriseUuid } = ctx.state.user,
+    { page } = ctx.state.param;
 
   const data = await enterpriseRegistionService.queryRegistionByEnterpriseUuid(
     enterpriseUuid,
@@ -57,4 +57,28 @@ router.get('/queryRegistionByEnterpriseUuid', async (ctx, next) => {
     });
   }
 });
+
+/**
+ * 查询企业用户登记测试七个状态通过enterpriseUuid
+ */
+router.get('/selectRegistionByEnterpriseUuid', async (ctx, next) => {
+  const { uuid } = ctx.state.param;
+
+  const data = await enterpriseRegistionService.selectRegistionByEnterpriseUuid(
+    uuid
+  );
+
+  if (data) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error,
+      msg: '查询失败'
+    });
+  }
+});
+
 export default router;
