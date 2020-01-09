@@ -57,4 +57,27 @@ router.get('/queryRegistionByEnterpriseUuid', async (ctx, next) => {
     });
   }
 });
+
+/**
+ * 查询管理账号
+ */
+router.get('/queryRegistionByEnterpriseUuid', async (ctx, next) => {
+  const { uuid: uuid } = ctx.state.user;
+
+  const data = await enterpriseRegistionService.selectRegistionByEnterpriseUuid(
+    uuid
+  );
+
+  if (data) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error,
+      msg: '查询失败'
+    });
+  }
+});
 export default router;

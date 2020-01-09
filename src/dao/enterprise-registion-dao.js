@@ -1,10 +1,12 @@
 import { db } from '../db/db-connect';
 
 import enterpriseRegistionApply from '../db/models/enterprise-registion-apply';
+import enterpriseRegistionContract from '../db/models/enterprise-registion-contract';
 import enterpriseRegistionCopyright from '../db/models/enterprise-registion-copyright';
 import enterpriseRegistionDocument from '../db/models/enterprise-registion-document';
 import enterpriseRegistionProductDescription from '../db/models/enterprise-registion-product-description';
 import enterpriseRegistionProduct from '../db/models/enterprise-registion-product';
+import enterpriseRegistionSpecimen from '../db/models/enterprise-registion-specimen';
 import enterpriseRegistion from '../db/models/enterprise-registion';
 import mergeEnterpriseRegistionRegistionStep from '../db/models/merge-enterprise-registion-registion-step';
 import sysRegistionStep from '../db/models/sys-registion-step';
@@ -12,6 +14,7 @@ import sysRegistionStep from '../db/models/sys-registion-step';
 import { REGISTRATION_PAGE_SIZE } from '../config/system-config';
 
 import uuid from 'uuid';
+import { promises } from 'graceful-fs';
 
 export default {
   /**.
@@ -98,5 +101,32 @@ export default {
       total: result.count,
       pageSize: REGISTRATION_PAGE_SIZE
     };
+  },
+
+  /**
+     * 查询企业用户登记测试七个状态通过uuid
+     */
+  selectRegistionByEnterpriseUuid: async (uuid) => {
+      const result = await Promise.all([ 
+      //
+      enterpriseRegistion.findOne({
+        where: { uuid },
+        attributes: ['uuid', 'enterpriseUuid', 'name', 'currentStep'],
+        raw: true
+      }),
+
+     
+      
+    ]);
+
+    return {
+      result1:[result1.status,result1.statusText],
+      result2:[result2.status,result2.statusText],
+      result3:[result3.status,result3.statusText],
+      result4:[result4.status,result4.statusText],
+      result5:[result5.status,result5.statusText],
+      result6:[result6.status,result6.statusText],
+      result7:[result7.status,result7.statusText],
+    }
   }
 };
