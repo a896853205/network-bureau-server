@@ -13,7 +13,6 @@ require('babel-register')({
 
 const enterpriseUser = require('./models/enterprise-user').default;
 const managerUser = require('./models/manager-user').default;
-const registrationBasic = require('./models/registration-basic').default;
 const enterpriseRegistion = require('./models/enterprise-registion').default;
 const sysRegistionStep = require('./models/sys-registion-step').default;
 const mergeEnterpriseRegistionRegistionStep = require('./models/merge-enterprise-registion-registion-step')
@@ -69,15 +68,6 @@ managerUser
   .catch(error => {
     console.error('管理员用户表初始化失败');
     console.error(error);
-  });
-
-// 登记注册基本表
-registrationBasic
-  .sync({
-    force: true
-  })
-  .then(() => {
-    console.log('登记注册基本表初始化成功');
   });
 
 // 企业登记注册总表

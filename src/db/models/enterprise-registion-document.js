@@ -1,6 +1,9 @@
 const Sequelize = require('sequelize');
 const { db } = require('../db-connect');
 
+/**
+ * 用户文档集
+ */
 export default db.define('enterprise_registion_document', {
   id: {
     type: Sequelize.BIGINT(11),

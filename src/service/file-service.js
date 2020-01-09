@@ -18,7 +18,6 @@ export default {
     // 后缀名
     const extensionName = file.originalname.split('.')[1].toLowerCase();
 
-    console.log(extensionName);
     // 判断后缀名是否非法
     if (
       extensionName !== 'jpg' &&
@@ -37,7 +36,6 @@ export default {
     const fileUuid = uuid.v1();
     const res = await client.put(`${fileUuid}.${extensionName}`, file.buffer);
 
-    console.log(res);
-    return fileUuid;
+    return res;
   }
 };

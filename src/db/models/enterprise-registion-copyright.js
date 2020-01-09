@@ -1,6 +1,9 @@
 const Sequelize = require('sequelize');
 const { db } = require('../db-connect');
 
+/**
+ * 软件著作权证书
+ */
 export default db.define('enterprise_registion_copyright', {
   id: {
     type: Sequelize.BIGINT(11),

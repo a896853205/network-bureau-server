@@ -2,9 +2,9 @@ const Sequelize = require('sequelize');
 const { db } = require('../db-connect');
 
 /**
- * 产品介质
+ * 评测合同
  */
-export default db.define('enterprise_registion_product', {
+export default db.define('enterprise_registion_contract', {
   id: {
     type: Sequelize.BIGINT(11),
     primaryKey: true,
@@ -14,6 +14,5 @@ export default db.define('enterprise_registion_product', {
   },
   uuid: Sequelize.STRING(36), // 这个uuid要与enterprise-registion的uuid一致
   status: Sequelize.BIGINT(3),
-  statusText: Sequelize.STRING(32),
-  url: Sequelize.TEXT
+  statusText: Sequelize.STRING(32)
 });

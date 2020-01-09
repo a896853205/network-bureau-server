@@ -1,6 +1,9 @@
 const Sequelize = require('sequelize');
 const { db } = require('../db-connect');
 
+/**
+ * 现场测试申请表
+ */
 export default db.define('enterprise_registion_apply', {
   id: {
     type: Sequelize.BIGINT(11),
