@@ -51,6 +51,18 @@ export default {
           statusText: null,
           url: null
         }),
+        enterpriseRegistionContract.create({
+          uuid: enterpriseRegistionUuid,
+          status: 0,
+          statusText: null,
+          url: null
+        }),
+        enterpriseRegistionSpecimen.create({
+          uuid: enterpriseRegistionUuid,
+          status: 0,
+          statusText: null,
+          url: null
+        }),
         // enterpriseRegistion.create({
         //   uuid: specimenUuid,
         //   status: 0,
@@ -104,29 +116,71 @@ export default {
   },
 
   /**
-     * 查询企业用户登记测试七个状态通过uuid
-     */
-  selectRegistionByEnterpriseUuid: async (uuid) => {
-      const result = await Promise.all([ 
-      //
-      enterpriseRegistion.findOne({
+   * 查询企业用户登记测试七个状态通过uuid
+   */
+  selectRegistionByEnterpriseUuid: async uuid => {
+
+    const [
+      enterpriseRegistionContractObject,
+      enterpriseRegistionCopyrightObject,
+      enterpriseRegistionSpecimenObject,
+      enterpriseRegistionProductDescriptionObject,
+      enterpriseRegistionDocumentObject,
+      enterpriseRegistionProductObject,
+      enterpriseRegistionApplyObject
+    ] = await Promise.all([
+      // 评测合同
+      enterpriseRegistionContract.findOne({
         where: { uuid },
-        attributes: ['uuid', 'enterpriseUuid', 'name', 'currentStep'],
+        attributes: ['uuid', 'status', 'statusText'],
         raw: true
       }),
-
-     
-      
+      // 软件著作权证书表
+      enterpriseRegistionCopyright.findOne({
+        where: { uuid },
+        attributes: ['uuid', 'status', 'statusText'],
+        raw: true
+      }),
+      // 样品登记表
+      enterpriseRegistionSpecimen.findOne({
+        where: { uuid },
+        attributes: ['uuid', 'status', 'statusText'],
+        raw: true
+      }),
+      // 产品说明表
+      enterpriseRegistionProductDescription.findOne({
+        where: { uuid },
+        attributes: ['uuid', 'status', 'statusText'],
+        raw: true
+      }),
+      // 用户文档表
+      enterpriseRegistionDocument.findOne({
+        where: { uuid },
+        attributes: ['uuid', 'status', 'statusText'],
+        raw: true
+      }),
+      // 产品介质表
+      enterpriseRegistionProduct.findOne({
+        where: { uuid },
+        attributes: ['uuid', 'status', 'statusText'],
+        raw: true
+      }),
+      // 现场测试申请表
+      enterpriseRegistionApply.findOne({
+        where: { uuid },
+        attributes: ['uuid', 'status', 'statusText'],
+        raw: true
+      })
     ]);
 
     return {
-      result1:[result1.status,result1.statusText],
-      result2:[result2.status,result2.statusText],
-      result3:[result3.status,result3.statusText],
-      result4:[result4.status,result4.statusText],
-      result5:[result5.status,result5.statusText],
-      result6:[result6.status,result6.statusText],
-      result7:[result7.status,result7.statusText],
-    }
+      enterpriseRegistionContractObject,
+      enterpriseRegistionCopyrightObject,
+      enterpriseRegistionSpecimenObject,
+      enterpriseRegistionProductDescriptionObject,
+      enterpriseRegistionDocumentObject,
+      enterpriseRegistionProductObject,
+      enterpriseRegistionApplyObject
+    };
   }
 };

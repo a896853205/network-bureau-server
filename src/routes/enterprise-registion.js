@@ -59,10 +59,10 @@ router.get('/queryRegistionByEnterpriseUuid', async (ctx, next) => {
 });
 
 /**
- * 查询管理账号
+ * 查询企业用户登记测试七个状态通过uuid
  */
-router.get('/queryRegistionByEnterpriseUuid', async (ctx, next) => {
-  const { uuid: uuid } = ctx.state.user;
+router.get('/selectRegistionByEnterpriseUuid', async (ctx, next) => {
+  const { uuid } = ctx.state.param;
 
   const data = await enterpriseRegistionService.selectRegistionByEnterpriseUuid(
     uuid

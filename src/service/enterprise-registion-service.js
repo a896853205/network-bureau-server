@@ -39,9 +39,7 @@ export default {
   /**
    * 查询企业用户登记测试七个状态通过uuid
    */
-  selectRegistionByEnterpriseUuid: async (uuid) => {
-    return await enterpriseRegistionDao.selectRegistionByEnterpriseUuid(
-      uuid
-    );
+  selectRegistionByEnterpriseUuid: async uuid => {
+    return await enterpriseRegistionDao.selectRegistionByEnterpriseUuid(uuid);
   }
 };

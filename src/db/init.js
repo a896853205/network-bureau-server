@@ -28,6 +28,10 @@ const enterpriseRegistionDocument = require('./models/enterprise-registion-docum
   .default;
 const enterpriseRegistionApply = require('./models/enterprise-registion-apply')
   .default;
+const enterpriseRegistionSpecimen = require('./models/enterprise-registion-specimen')
+  .default;
+const enterpriseRegistionContract = require('./models/enterprise-registion-contract')
+  .default;
 
 // 企业用户表
 enterpriseUser
@@ -156,3 +160,23 @@ enterpriseRegistionApply
   .then(() => {
     console.log('现场测试申请表初始化成功');
   });
+
+// 企业用户登记注册
+// 样品登记表
+enterpriseRegistionSpecimen
+.sync({
+  force: true
+})
+.then(() => {
+  console.log('样品登记表初始化成功');
+});
+
+// 企业用户登记注册
+// 评测合同
+enterpriseRegistionContract
+.sync({
+  force: true
+})
+.then(() => {
+  console.log('评测合同初始化成功');
+});
