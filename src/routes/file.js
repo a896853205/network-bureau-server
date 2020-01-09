@@ -14,9 +14,10 @@ const router = new Router({
 });
 
 router.post('/uploadFile', upload.single('file'), async (ctx, next) => {
-  const param = ctx.request.file;
+  const param = ctx.request.file,
+    folderName = ctx.request.body.folderName;
 
-  const res = await fileService.uploadFile(param);
+  const res = await fileService.uploadFile(param, folderName);
 
   if (res === -1) {
     ctx.body = new Res({

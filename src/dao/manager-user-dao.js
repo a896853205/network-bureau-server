@@ -11,7 +11,7 @@ export default {
   selectManagerByUuid: async uuid => {
     return await managerUser.findOne({
       where: { uuid },
-      attributes: ['uuid', 'phone', 'username', 'password', 'name', 'role'],
+      attributes: ['uuid', 'phone', 'username', 'password', 'name', 'role', 'headPortraitUrl'],
       raw: true
     });
   },
@@ -29,14 +29,15 @@ export default {
   /**
    * 创建管理员
    */
-  createNewManagerUser: async (username, phone, password, name, role) => {
+  createNewManagerUser: async (username, phone, password, name, role, headPortraitUrl) => {
     return await managerUser.create({
       username,
       password,
       phone,
       name,
       role,
-      uuid: uuid.v1()
+      uuid: uuid.v1(),
+      headPortraitUrl
     });
   },
 

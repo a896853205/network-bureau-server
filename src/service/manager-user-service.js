@@ -37,7 +37,7 @@ export default {
   /**
    * 创建管理账号
    */
-  createNewManager: async (username, phone, password, name, role) => {
+  createNewManager: async (username, phone, password, name, role, headPortraitUrl) => {
     if (await managerUserDao.selectManagerUserByUsername(username)) {
       return false;
     }
@@ -47,7 +47,8 @@ export default {
       phone,
       password,
       name,
-      role
+      role,
+      headPortraitUrl
     );
 
     return true;

@@ -26,6 +26,7 @@ export default {
     ) {
       return -1;
     }
+
     // 判断大小是否符合
     if (file.size > 1024 * 1024 * 10) {
       // 10MB
@@ -33,9 +34,17 @@ export default {
     }
 
     // 上传到oss
-    const fileUuid = uuid.v1();
-    const res = await client.put(`${fileUuid}.${extensionName}`, file.buffer);
+    const fileUuid = uuid.v1(),
+      ossName = `${folderName}/${fileUuid}.${extensionName}`;
 
-    return res;
+    // 上传文件
+    await client.put(ossName, file.buffer);
+
+    const previewUrl = await client.signatureUrl(ossName);
+
+    return {
+      ossName,
+      previewUrl
+    };
   }
 };
