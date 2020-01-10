@@ -7,6 +7,9 @@ import { ACCESS_KEY_ID, ACCESS_KEY_SECRET } from '../keys/keys';
 import uuid from 'uuid';
 
 export default {
+  /**
+   * 上传文件
+   */
   uploadFile: async (file, folderName) => {
     const client = new OSS({
       region: OSS_OPTION.region,
@@ -35,16 +38,25 @@ export default {
 
     // 上传到oss
     const fileUuid = uuid.v1(),
-      ossName = `${folderName}/${fileUuid}.${extensionName}`;
+      fileUrl = `${folderName}/${fileUuid}.${extensionName}`;
 
     // 上传文件
-    await client.put(ossName, file.buffer);
+    await client.put(fileUrl, file.buffer);
 
-    const previewUrl = await client.signatureUrl(ossName);
+    return fileUrl;
+  },
 
-    return {
-      ossName,
-      previewUrl
-    };
+  /**
+   * 获取文件url
+   */
+  getFileUrl: async fileName => {
+    const client = new OSS({
+      region: OSS_OPTION.region,
+      bucket: OSS_OPTION.bucket,
+      accessKeyId: ACCESS_KEY_ID,
+      accessKeySecret: ACCESS_KEY_SECRET
+    });
+
+    return await client.signatureUrl(fileName);
   }
 };

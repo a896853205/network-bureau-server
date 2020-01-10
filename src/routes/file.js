@@ -17,25 +17,41 @@ router.post('/uploadFile', upload.single('file'), async (ctx, next) => {
   const param = ctx.request.file,
     folderName = ctx.request.body.folderName;
 
-  const res = await fileService.uploadFile(param, folderName);
+  const data = await fileService.uploadFile(param, folderName);
 
-  if (res === -1) {
+  if (data === -1) {
     ctx.body = new Res({
-      data: res,
+      data,
       status: RESPONSE_CODE.error,
       msg: '图片格式必须为jpg,jpeg,png'
     });
-  } else if (res === -2) {
+  } else if (data === -2) {
     ctx.body = new Res({
-      data: res,
       status: RESPONSE_CODE.error,
       msg: '文件大小必须小于10MB'
     });
   } else {
     ctx.body = new Res({
-      data: res,
       status: RESPONSE_CODE.success,
       msg: '文件上传成功'
+    });
+  }
+});
+
+router.get('/getFileUrl', async (ctx, next) => {
+  const { fileUrl } = ctx.state.param;
+
+  const url = await fileService.getFileUrl(fileUrl);
+
+  if (url) {
+    ctx.body = new Res({
+      data: url,
+      status: RESPONSE_CODE.success
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error,
+      msg: '获取文件错误'
     });
   }
 });

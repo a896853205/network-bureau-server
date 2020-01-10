@@ -53,9 +53,9 @@ export default {
   /**
    * 更改企业用户
    */
-  updeteManager: async (uuid, phone, password, name) => {
+  updeteManager: async (uuid, phone, password, name, headPortraitUrl) => {
     return await managerUser.update(
-      { phone, password, name },
+      { phone, password, name, headPortraitUrl },
       {
         where: { uuid },
         raw: true

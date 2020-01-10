@@ -67,8 +67,8 @@ export default {
   /**
    * 更改管理员账号
    */
-  updateManager: async (uuid, phone, password, name) => {
-    if (await managerUserDao.updeteManager(uuid, phone, password, name)) {
+  updateManager: async (uuid, phone, password, name, headPortraitUrl) => {
+    if (await managerUserDao.updeteManager(uuid, phone, password, name, headPortraitUrl)) {
       return true;
     }
     return false;

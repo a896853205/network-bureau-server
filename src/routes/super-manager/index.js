@@ -35,7 +35,8 @@ router.post('/saveManager', async (ctx, next) => {
       uuid,
       phone,
       password,
-      name
+      name,
+      headPortraitUrl
     );
 
     if (status) {
