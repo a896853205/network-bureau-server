@@ -21,7 +21,6 @@ router.post('/uploadFile', upload.single('file'), async (ctx, next) => {
 
   if (data === -1) {
     ctx.body = new Res({
-      data,
       status: RESPONSE_CODE.error,
       msg: '图片格式必须为jpg,jpeg,png'
     });
@@ -32,6 +31,7 @@ router.post('/uploadFile', upload.single('file'), async (ctx, next) => {
     });
   } else {
     ctx.body = new Res({
+      data,
       status: RESPONSE_CODE.success,
       msg: '文件上传成功'
     });

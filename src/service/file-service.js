@@ -1,7 +1,5 @@
 // oss
-import OSS from 'ali-oss';
-import { OSS_OPTION } from '../constants/oss-constants';
-import { ACCESS_KEY_ID, ACCESS_KEY_SECRET } from '../keys/keys';
+import client from '../util/oss';
 
 // 算法
 import uuid from 'uuid';
@@ -11,13 +9,6 @@ export default {
    * 上传文件
    */
   uploadFile: async (file, folderName) => {
-    const client = new OSS({
-      region: OSS_OPTION.region,
-      bucket: OSS_OPTION.bucket,
-      accessKeyId: ACCESS_KEY_ID,
-      accessKeySecret: ACCESS_KEY_SECRET
-    });
-
     // 后缀名
     const extensionName = file.originalname.split('.')[1].toLowerCase();
 
@@ -50,13 +41,6 @@ export default {
    * 获取文件url
    */
   getFileUrl: async fileName => {
-    const client = new OSS({
-      region: OSS_OPTION.region,
-      bucket: OSS_OPTION.bucket,
-      accessKeyId: ACCESS_KEY_ID,
-      accessKeySecret: ACCESS_KEY_SECRET
-    });
-
     return await client.signatureUrl(fileName);
   }
 };
