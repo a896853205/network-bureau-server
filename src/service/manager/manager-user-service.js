@@ -1,9 +1,9 @@
-import managerUserDao from '../dao/manager-user-dao';
+import managerUserDao from '../../dao/manager/manager-user-dao';
 
-import webToken from '../util/token';
+import webToken from '../../util/token';
 
 // oss
-import client from '../util/oss';
+import client from '../../util/oss';
 
 export default {
   /**

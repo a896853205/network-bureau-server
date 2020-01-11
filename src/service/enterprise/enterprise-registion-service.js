@@ -1,6 +1,4 @@
-import enterpriseRegistionDao from '../dao/enterprise-registion-dao.js';
-
-import webToken from '../util/token';
+import enterpriseRegistionDao from '../../dao/enterprise/enterprise-registion-dao';
 
 export default {
   /**

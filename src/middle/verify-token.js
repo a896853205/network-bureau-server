@@ -9,8 +9,8 @@ import Result from '../util/response';
 import { UNLESS_PATH_ARR } from '../config/system-config';
 
 // service
-import enterpriseUserService from '../service/enterprise-user-service';
-import managerUserService from '../service/manager-user-service';
+import enterpriseUserService from '../service/enterprise/enterprise-user-service';
+import managerUserService from '../service/manager/manager-user-service';
 
 /**
  * token验证中间件

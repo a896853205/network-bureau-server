@@ -1,11 +1,11 @@
 import Router from 'koa-router';
 import multer from '@koa/multer';
 // response
-import Res from '../util/response';
-import { RESPONSE_CODE } from '../constants/domain-constants';
+import Res from '../../util/response';
+import { RESPONSE_CODE } from '../../constants/domain-constants';
 
 // service
-import fileService from '../service/file-service';
+import fileService from '../../service/user/file-service';
 
 const upload = multer();
 

@@ -1,8 +1,8 @@
-import managerUser from '../db/models/manager-user';
+import managerUser from '../../db/models/manager-user';
 
 import uuid from 'uuid';
 
-import { MANAGER_PAGE_SIZE } from '../config/system-config';
+import { MANAGER_PAGE_SIZE } from '../../config/system-config';
 
 export default {
   /**

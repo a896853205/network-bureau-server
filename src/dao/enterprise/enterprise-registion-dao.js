@@ -1,16 +1,16 @@
-import { db } from '../db/db-connect';
+import { db } from '../../db/db-connect';
 
-import enterpriseRegistionApply from '../db/models/enterprise-registion-apply';
-import enterpriseRegistionContract from '../db/models/enterprise-registion-contract';
-import enterpriseRegistionCopyright from '../db/models/enterprise-registion-copyright';
-import enterpriseRegistionDocument from '../db/models/enterprise-registion-document';
-import enterpriseRegistionProductDescription from '../db/models/enterprise-registion-product-description';
-import enterpriseRegistionProduct from '../db/models/enterprise-registion-product';
-import enterpriseRegistionSpecimen from '../db/models/enterprise-registion-specimen';
-import enterpriseRegistion from '../db/models/enterprise-registion';
-import sysRegistionStep from '../db/models/sys-registion-step';
+import enterpriseRegistionApply from '../../db/models/enterprise-registion-apply';
+import enterpriseRegistionContract from '../../db/models/enterprise-registion-contract';
+import enterpriseRegistionCopyright from '../../db/models/enterprise-registion-copyright';
+import enterpriseRegistionDocument from '../../db/models/enterprise-registion-document';
+import enterpriseRegistionProductDescription from '../../db/models/enterprise-registion-product-description';
+import enterpriseRegistionProduct from '../../db/models/enterprise-registion-product';
+import enterpriseRegistionSpecimen from '../../db/models/enterprise-registion-specimen';
+import enterpriseRegistion from '../../db/models/enterprise-registion';
+import sysRegistionStep from '../../db/models/sys-registion-step';
 
-import { REGISTRATION_PAGE_SIZE } from '../config/system-config';
+import { REGISTRATION_PAGE_SIZE } from '../../config/system-config';
 
 import uuid from 'uuid';
 
