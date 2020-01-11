@@ -228,14 +228,7 @@ export default {
   queryEnterpriseRegistionStepByUuid: async enterpriseRegistionUuid => {
     return await enterpriseRegistionStep.findAll({
       where: { uuid: enterpriseRegistionUuid },
-      attributes: [
-        'id',
-        'step',
-        'status',
-        'statusText',
-        'createdAt',
-        'updatedAt'
-      ],
+      attributes: ['id', 'step', 'status', 'statusText'],
       raw: true
     });
   }
