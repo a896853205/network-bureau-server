@@ -8,13 +8,11 @@ import enterpriseRegistionProductDescription from '../db/models/enterprise-regis
 import enterpriseRegistionProduct from '../db/models/enterprise-registion-product';
 import enterpriseRegistionSpecimen from '../db/models/enterprise-registion-specimen';
 import enterpriseRegistion from '../db/models/enterprise-registion';
-import mergeEnterpriseRegistionRegistionStep from '../db/models/merge-enterprise-registion-registion-step';
 import sysRegistionStep from '../db/models/sys-registion-step';
 
 import { REGISTRATION_PAGE_SIZE } from '../config/system-config';
 
 import uuid from 'uuid';
-import { promises } from 'graceful-fs';
 
 export default {
   /**.
