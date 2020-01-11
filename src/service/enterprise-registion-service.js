@@ -41,5 +41,12 @@ export default {
    */
   selectRegistionByEnterpriseUuid: async uuid => {
     return await enterpriseRegistionDao.selectRegistionByEnterpriseUuid(uuid);
+  },
+
+  /**
+   *  无参数查询sys_registion_step表
+   */
+  querySysRegistionStep: async () => {
+    return await enterpriseRegistionDao.querySysRegistionStep();
   }
 };

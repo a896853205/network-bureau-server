@@ -179,5 +179,16 @@ export default {
       enterpriseRegistionProductStatus,
       enterpriseRegistionApplyStatus
     };
+  },
+
+  /**
+   *  无参数查询sys_registion_step表
+   */
+  querySysRegistionStep: async () => {
+    console.log(1);
+    const result = await sysRegistionStep.findAndCountAll();
+    return {
+      sysRegistionStepList: result.rows,
+    };
   }
 };

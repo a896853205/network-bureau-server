@@ -15,8 +15,8 @@ const enterpriseUser = require('./models/enterprise-user').default;
 const managerUser = require('./models/manager-user').default;
 const enterpriseRegistion = require('./models/enterprise-registion').default;
 const sysRegistionStep = require('./models/sys-registion-step').default;
-const mergeEnterpriseRegistionRegistionStep = require('./models/merge-enterprise-registion-registion-step')
-  .default;
+//const mergeEnterpriseRegistionRegistionStep = require('./models/merge-enterprise-registion-registion-step')
+  //.default;
 const enterpriseRegistionCopyright = require('./models/enterprise-registion-copyright')
   .default;
 const enterpriseRegistionProduct = require('./models/enterprise-registion-product')
@@ -31,6 +31,15 @@ const enterpriseRegistionSpecimen = require('./models/enterprise-registion-speci
   .default;
 const enterpriseRegistionContract = require('./models/enterprise-registion-contract')
   .default;
+
+const sysRegistionStepArray = [
+  {name: '提交上传7种材料', step: 1},
+  {name: '电子签合同', step: 2},
+  {name: '交付汇款', step: 3},
+  {name: '现场测试', step: 4},
+  {name: '接受原始记录和测试报告', step: 5},
+  {name: '给予打分', step: 6}
+]
 
 // 企业用户表
 enterpriseUser
@@ -81,6 +90,10 @@ enterpriseRegistion
   })
   .then(() => {
     console.log('企业登记注册总表初始化成功');
+  })
+  .catch(error => {
+    console.error('企业登记注册总表初始化失败');
+    console.error(error);
   });
 
 // 登记注册步骤表
@@ -90,16 +103,21 @@ sysRegistionStep
   })
   .then(() => {
     console.log('登记注册步骤表初始化成功');
+    sysRegistionStep.bulkCreate(sysRegistionStepArray);
+  })
+  .catch(error => {
+    console.error('登记注册步骤表初始化失败');
+    console.error(error);
   });
 
 // 企业用户登记注册的步骤表
-mergeEnterpriseRegistionRegistionStep
+/*mergeEnterpriseRegistionRegistionStep
   .sync({
     force: true
   })
   .then(() => {
     console.log('企业用户登记注册的步骤表初始化成功');
-  });
+  });*/
 
 // 企业用户登记注册
 // 软件著作权证书表
@@ -109,6 +127,10 @@ enterpriseRegistionCopyright
   })
   .then(() => {
     console.log('软件著作权证书表初始化成功');
+  })
+  .catch(error => {
+    console.error('软件著作权证书表初始化失败');
+    console.error(error);
   });
 
 // 企业用户登记注册
@@ -119,6 +141,10 @@ enterpriseRegistionProduct
   })
   .then(() => {
     console.log('产品介质表初始化成功');
+  })
+  .catch(error => {
+    console.error('产品介质表初始化失败');
+    console.error(error);
   });
 
 // 企业用户登记注册
@@ -129,6 +155,10 @@ enterpriseRegistionProductDescription
   })
   .then(() => {
     console.log('产品说明表初始化成功');
+  })
+  .catch(error => {
+    console.error('产品说明表初始化失败');
+    console.error(error);
   });
 
 // 企业用户登记注册
@@ -139,6 +169,10 @@ enterpriseRegistionDocument
   })
   .then(() => {
     console.log('用户文档表初始化成功');
+  })
+  .catch(error => {
+    console.error('用户文档表初始化失败');
+    console.error(error);
   });
 
 // 企业用户登记注册
@@ -149,6 +183,10 @@ enterpriseRegistionApply
   })
   .then(() => {
     console.log('现场测试申请表初始化成功');
+  })
+  .catch(error => {
+    console.error('现场测试申请表初始化失败');
+    console.error(error);
   });
 
 // 企业用户登记注册
@@ -159,6 +197,10 @@ enterpriseRegistionSpecimen
 })
 .then(() => {
   console.log('样品登记表初始化成功');
+})
+.catch(error => {
+  console.error('样品登记表初始化失败');
+  console.error(error);
 });
 
 // 企业用户登记注册
@@ -169,4 +211,8 @@ enterpriseRegistionContract
 })
 .then(() => {
   console.log('评测合同初始化成功');
+})
+.catch(error => {
+  console.error('评测合同初始化失败');
+  console.error(error);
 });

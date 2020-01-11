@@ -20,15 +20,6 @@ router.use(PREFIX, verifyAuth(AUTHORITY.SUPER.name));
  * 增加/更新管理账号
  */
 router.post('/saveManager', async (ctx, next) => {
-<<<<<<< HEAD
-  let { uuid, username, phone, password, name, role } = ctx.state.param;
-  console.log('uuid: '+uuid);
-  console.log('username: '+username);
-  console.log('phone: '+phone);
-  console.log('password: '+password);
-  console.log('name: '+name);
-  console.log('role: '+role);
-=======
   let {
     uuid,
     username,
@@ -38,7 +29,6 @@ router.post('/saveManager', async (ctx, next) => {
     role,
     headPortraitUrl
   } = ctx.state.param;
->>>>>>> b70a1268d8c3b90e01ae70566b9e4594ca8fd5b7
 
   if (uuid) {
     const status = await managerUserService.updateManager(

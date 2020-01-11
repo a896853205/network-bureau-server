@@ -81,4 +81,23 @@ router.get('/selectRegistionByEnterpriseUuid', async (ctx, next) => {
   }
 });
 
+/**
+ * 无参数查询sys_registion_step表
+ */
+router.get('querySysRegistionStep', async (ctx, next) => {
+  const data = await enterpriseRegistionService.querySysRegistionStep();
+  console.log(1);
+  if (data) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    }) 
+  }else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error,
+      msg: '查询失败'
+    });
+  }
+});
+
 export default router;
