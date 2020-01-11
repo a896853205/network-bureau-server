@@ -24,5 +24,22 @@ export default {
 
       return true;
     }
+  },
+
+  /**
+   * 查询登记测试通过企业的uuid
+   */
+  queryRegistionByEnterpriseUuid: async (enterpriseUuid, page) => {
+    return await enterpriseRegistionDao.queryRegistionByEnterpriseUuid(
+      enterpriseUuid,
+      page
+    );
+  },
+
+  /**
+   * 查询企业用户登记测试七个状态通过uuid
+   */
+  selectRegistionByEnterpriseUuid: async uuid => {
+    return await enterpriseRegistionDao.selectRegistionByEnterpriseUuid(uuid);
   }
 };

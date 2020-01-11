@@ -11,7 +11,15 @@ export default {
   selectManagerByUuid: async uuid => {
     return await managerUser.findOne({
       where: { uuid },
-      attributes: ['uuid', 'phone', 'username', 'password', 'name', 'role'],
+      attributes: [
+        'uuid',
+        'phone',
+        'username',
+        'password',
+        'name',
+        'role',
+        'headPortraitUrl'
+      ],
       raw: true
     });
   },
@@ -29,14 +37,22 @@ export default {
   /**
    * 创建管理员
    */
-  createNewManagerUser: async (username, phone, password, name, role) => {
+  createNewManagerUser: async (
+    username,
+    phone,
+    password,
+    name,
+    role,
+    headPortraitUrl
+  ) => {
     return await managerUser.create({
       username,
       password,
       phone,
       name,
       role,
-      uuid: uuid.v1()
+      uuid: uuid.v1(),
+      headPortraitUrl
     });
   },
 
@@ -52,9 +68,9 @@ export default {
   /**
    * 更改企业用户
    */
-  updeteManager: async (uuid, phone, password, name) => {
+  updeteManager: async (uuid, phone, password, name, headPortraitUrl) => {
     return await managerUser.update(
-      { phone, password, name },
+      { phone, password, name, headPortraitUrl },
       {
         where: { uuid },
         raw: true
@@ -72,8 +88,10 @@ export default {
       raw: true
     });
 
+    
+
     return {
-      manangerList: result.rows,
+      managerList: result.rows,
       total: result.count,
       pageSize: MANAGER_PAGE_SIZE
     };

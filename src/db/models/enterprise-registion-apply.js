@@ -1,6 +1,9 @@
 const Sequelize = require('sequelize');
 const { db } = require('../db-connect');
 
+/**
+ * 现场测试申请表
+ */
 export default db.define('enterprise_registion_apply', {
   id: {
     type: Sequelize.BIGINT(11),
@@ -9,7 +12,7 @@ export default db.define('enterprise_registion_apply', {
     unique: true,
     autoIncrement: true
   },
-  uuid: Sequelize.STRING(36),
+  uuid: Sequelize.STRING(36), // 这个uuid要与enterprise-registion的uuid一致
   status: Sequelize.BIGINT(3),
   statusText: Sequelize.STRING(32),
   step: Sequelize.INTEGER,

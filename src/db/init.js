@@ -13,7 +13,6 @@ require('babel-register')({
 
 const enterpriseUser = require('./models/enterprise-user').default;
 const managerUser = require('./models/manager-user').default;
-const registrationBasic = require('./models/registration-basic').default;
 const enterpriseRegistion = require('./models/enterprise-registion').default;
 const sysRegistionStep = require('./models/sys-registion-step').default;
 const mergeEnterpriseRegistionRegistionStep = require('./models/merge-enterprise-registion-registion-step')
@@ -27,6 +26,10 @@ const enterpriseRegistionProductDescription = require('./models/enterprise-regis
 const enterpriseRegistionDocument = require('./models/enterprise-registion-document')
   .default;
 const enterpriseRegistionApply = require('./models/enterprise-registion-apply')
+  .default;
+const enterpriseRegistionSpecimen = require('./models/enterprise-registion-specimen')
+  .default;
+const enterpriseRegistionContract = require('./models/enterprise-registion-contract')
   .default;
 
 // 企业用户表
@@ -69,15 +72,6 @@ managerUser
   .catch(error => {
     console.error('管理员用户表初始化失败');
     console.error(error);
-  });
-
-// 登记注册基本表
-registrationBasic
-  .sync({
-    force: true
-  })
-  .then(() => {
-    console.log('登记注册基本表初始化成功');
   });
 
 // 企业登记注册总表
@@ -156,3 +150,23 @@ enterpriseRegistionApply
   .then(() => {
     console.log('现场测试申请表初始化成功');
   });
+
+// 企业用户登记注册
+// 样品登记表
+enterpriseRegistionSpecimen
+.sync({
+  force: true
+})
+.then(() => {
+  console.log('样品登记表初始化成功');
+});
+
+// 企业用户登记注册
+// 评测合同
+enterpriseRegistionContract
+.sync({
+  force: true
+})
+.then(() => {
+  console.log('评测合同初始化成功');
+});
