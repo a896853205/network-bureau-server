@@ -16,8 +16,6 @@ const managerUser = require('./models/manager-user').default;
 const enterpriseRegistion = require('./models/enterprise-registion').default;
 const enterpriseRegistionStep = require('./models/enterprise-registion-step').default;
 const sysRegistionStep = require('./models/sys-registion-step').default;
-const mergeEnterpriseRegistionRegistionStep = require('./models/merge-enterprise-registion-registion-step')
-  .default;
 const enterpriseRegistionCopyright = require('./models/enterprise-registion-copyright')
   .default;
 const enterpriseRegistionProduct = require('./models/enterprise-registion-product')
@@ -102,14 +100,6 @@ sysRegistionStep
     console.log('登记注册步骤表初始化成功');
   });
 
-// 企业用户登记注册的步骤表
-mergeEnterpriseRegistionRegistionStep
-  .sync({
-    force: true
-  })
-  .then(() => {
-    console.log('企业用户登记注册的步骤表初始化成功');
-  });
 
 // 企业用户登记注册
 // 软件著作权证书表
