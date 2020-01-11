@@ -7,6 +7,7 @@ import enterpriseRegistionDocument from '../db/models/enterprise-registion-docum
 import enterpriseRegistionProductDescription from '../db/models/enterprise-registion-product-description';
 import enterpriseRegistionProduct from '../db/models/enterprise-registion-product';
 import enterpriseRegistionSpecimen from '../db/models/enterprise-registion-specimen';
+import enterpriseRegistionStep from '../db/models/enterprise-registion-step';
 import enterpriseRegistion from '../db/models/enterprise-registion';
 import mergeEnterpriseRegistionRegistionStep from '../db/models/merge-enterprise-registion-registion-step';
 import sysRegistionStep from '../db/models/sys-registion-step';
@@ -45,6 +46,48 @@ export default {
         //   status: 0,
         //   statusText: null
         // }),
+        enterpriseRegistionStep.create({
+          uuid: enterpriseRegistionUuid,
+          step:1,
+          status: 2,
+          statusText: '正在进行',
+          url: null
+        }),
+        enterpriseRegistionStep.create({
+          uuid: enterpriseRegistionUuid,
+          step:2,
+          status: 1,
+          statusText: '未开始',
+          url: null
+        }),
+        enterpriseRegistionStep.create({
+          uuid: enterpriseRegistionUuid,
+          step:3,
+          status: 1,
+          statusText: '未开始',
+          url: null
+        }),
+        enterpriseRegistionStep.create({
+          uuid: enterpriseRegistionUuid,
+          step:4,
+          status: 1,
+          statusText: '未开始',
+          url: null
+        }),
+        enterpriseRegistionStep.create({
+          uuid: enterpriseRegistionUuid,
+          step:5,
+          status: 1,
+          statusText: '未开始',
+          url: null
+        }),
+        enterpriseRegistionStep.create({
+          uuid: enterpriseRegistionUuid,
+          step:6,
+          status: 1,
+          statusText: '未开始',
+          url: null
+        }),
         enterpriseRegistionCopyright.create({
           uuid: enterpriseRegistionUuid,
           status: 0,
@@ -181,5 +224,7 @@ export default {
       enterpriseRegistionProductStatus,
       enterpriseRegistionApplyStatus
     };
-  }
+  },
+
+  
 };
