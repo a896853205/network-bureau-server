@@ -17,4 +17,5 @@ export default db.define('enterprise_registion_step', {
   // 成功       3 绿色
   // 错误       4 红色
   statusText: Sequelize.STRING(32),
+  managerUuid: Sequelize.STRING(36) // 负责的管理员的uuid,普通的步骤在创建的时候就将(查询)项目负责人的uuid给,后面的是项目负责人派发的时候将这个字段改变
 });
