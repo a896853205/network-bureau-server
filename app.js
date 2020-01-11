@@ -8,12 +8,12 @@ import logger from 'koa-logger';
 import cors from 'koa2-cors';
 
 // 路由
-import enterpriseUsers from './src/routes/enterprise-user';
-import managerUsers from './src/routes/manager-user';
-import superManager from './src/routes/super-manager';
-import enterpriseRegistion from './src/routes/enterprise-registion';
+import enterpriseUsers from './src/routes/enterprise/enterprise-user';
+import managerUsers from './src/routes/manager/manager-user';
+import superManager from './src/routes/manager/super-manager';
+import enterpriseRegistion from './src/routes/enterprise/enterprise-registion';
 
-import file from './src/routes/file';
+import file from './src/routes/user/file';
 
 // 中间件
 import verifyToken from './src/middle/verify-token';

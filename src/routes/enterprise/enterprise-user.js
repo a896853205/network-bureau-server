@@ -1,11 +1,11 @@
 import Router from 'koa-router';
 
 // response
-import Res from '../util/response';
-import { RESPONSE_CODE } from '../constants/domain-constants';
+import Res from '../../util/response';
+import { RESPONSE_CODE } from '../../constants/domain-constants';
 
 // service
-import enterpriseService from '../service/enterprise-user-service';
+import enterpriseService from '../../service/enterprise/enterprise-user-service';
 
 const router = new Router({
   prefix: '/enterpriseUser'

@@ -1,4 +1,4 @@
-import enterpriseUser from '../db/models/enterprise-user';
+import enterpriseUser from '../../db/models/enterprise-user';
 
 import uuid from 'uuid';
 

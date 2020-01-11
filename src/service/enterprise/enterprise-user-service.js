@@ -1,6 +1,6 @@
-import enterpriseUserDao from '../dao/enterprise-user-dao';
+import enterpriseUserDao from '../../dao/enterprise/enterprise-user-dao';
 
-import webToken from '../util/token';
+import webToken from '../../util/token';
 
 export default {
   /**

@@ -14,6 +14,7 @@ require('babel-register')({
 const enterpriseUser = require('./models/enterprise-user').default;
 const managerUser = require('./models/manager-user').default;
 const enterpriseRegistion = require('./models/enterprise-registion').default;
+const enterpriseRegistionStep = require('./models/enterprise-registion-step').default;
 const sysRegistionStep = require('./models/sys-registion-step').default;
 //const mergeEnterpriseRegistionRegistionStep = require('./models/merge-enterprise-registion-registion-step')
   //.default;
@@ -95,6 +96,15 @@ enterpriseRegistion
     console.error('企业登记注册总表初始化失败');
     console.error(error);
   });
+
+// 企业用户测试项目注册步骤表
+enterpriseRegistionStep
+.sync({
+  force: true
+})
+.then(() => {
+  console.log('企业用户测试项目注册步骤表初始化成功');
+});
 
 // 登记注册步骤表
 sysRegistionStep

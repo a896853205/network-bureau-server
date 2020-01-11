@@ -1,5 +1,5 @@
 // oss
-import client from '../util/oss';
+import client from '../../util/oss';
 
 // 算法
 import uuid from 'uuid';
