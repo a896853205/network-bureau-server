@@ -222,5 +222,21 @@ export default {
       enterpriseRegistionProductStatus,
       enterpriseRegistionApplyStatus
     };
+  },
+
+  // 根据enterpriseRegistionUuid查询步骤
+  queryEnterpriseRegistionStepByUuid: async enterpriseRegistionUuid => {
+    return await enterpriseRegistionStep.findAll({
+      where: { uuid: enterpriseRegistionUuid },
+      attributes: [
+        'id',
+        'step',
+        'status',
+        'statusText',
+        'createdAt',
+        'updatedAt'
+      ],
+      raw: true
+    });
   }
 };

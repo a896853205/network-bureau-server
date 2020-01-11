@@ -81,4 +81,25 @@ router.get('/selectRegistionByEnterpriseUuid', async (ctx, next) => {
   }
 });
 
+// 根据enterpriseRegistionUuid查询步骤
+router.get('/queryEnterpriseRegistionStep', async (ctx, next) => {
+  const { enterpriseRegistionUuid } = ctx.state.param;
+
+  const data = await enterpriseRegistionService.queryEnterpriseRegistionStepByUuid(
+    enterpriseRegistionUuid
+  );
+
+  if (data) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error,
+      msg: '查询失败'
+    });
+  }
+});
+
 export default router;

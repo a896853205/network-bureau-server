@@ -39,5 +39,11 @@ export default {
    */
   selectRegistionByEnterpriseUuid: async uuid => {
     return await enterpriseRegistionDao.selectRegistionByEnterpriseUuid(uuid);
+  },
+
+  queryEnterpriseRegistionStepByUuid: async enterpriseRegistionUuid => {
+    return await enterpriseRegistionDao.queryEnterpriseRegistionStepByUuid(
+      enterpriseRegistionUuid
+    );
   }
 };
