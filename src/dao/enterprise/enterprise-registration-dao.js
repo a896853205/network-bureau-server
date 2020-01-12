@@ -30,39 +30,39 @@ export default {
    */
   createEnterpriseRegistration: async (name, enterpriseUuid) => {
     const enterpriseRegistrationUuid = uuid.v1();
-    const enterpriseRegistionStepArr = [
+    const enterpriseRegistrationStepArr = [
       {
-        uuid: enterpriseRegistionUuid,
+        uuid: enterpriseRegistrationUuid,
         step: 1,
         status: 2,
         statusText: '正在进行'
       },
       {
-        uuid: enterpriseRegistionUuid,
+        uuid: enterpriseRegistrationUuid,
         step: 2,
         status: 1,
         statusText: '未开始'
       },
       {
-        uuid: enterpriseRegistionUuid,
+        uuid: enterpriseRegistrationUuid,
         step: 3,
         status: 1,
         statusText: '未开始'
       },
       {
-        uuid: enterpriseRegistionUuid,
+        uuid: enterpriseRegistrationUuid,
         step: 4,
         status: 1,
         statusText: '未开始'
       },
       {
-        uuid: enterpriseRegistionUuid,
+        uuid: enterpriseRegistrationUuid,
         step: 5,
         status: 1,
         statusText: '未开始'
       },
       {
-        uuid: enterpriseRegistionUuid,
+        uuid: enterpriseRegistrationUuid,
         step: 6,
         status: 1,
         statusText: '未开始'
@@ -82,7 +82,7 @@ export default {
         //   status: 0,
         //   statusText: null
         // }),
-        enterpriseRegistionStep.bulkCreate(enterpriseRegistionStepArr),
+        enterpriseRegistrationStep.bulkCreate(enterpriseRegistrationStepArr),
         enterpriseRegistrationStep.create({
           uuid: enterpriseRegistrationUuid,
           step: 1,
@@ -272,5 +272,12 @@ export default {
       attributes: ['step', 'status', 'statusText'],
       raw: true
     });
+  },
+
+  /**
+   *  无参数查询sys_registration_step表
+   */
+  querySysRegistrationStep: async () => {
+    return await sysRegistrationStep.findAll();
   }
 };

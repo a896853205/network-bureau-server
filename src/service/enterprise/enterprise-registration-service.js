@@ -5,14 +5,18 @@ export default {
    * 根据名字查询
    */
   selectEnterpriseRegistrationByName: async name => {
-    return await enterpriseRegistrationDao.selectEnterpriseRegistrationByName(name);
+    return await enterpriseRegistrationDao.selectEnterpriseRegistrationByName(
+      name
+    );
   },
 
   /**
    * 创建登记测试
    */
   createEnterpriseRegistration: async (name, enterpriseUuid) => {
-    if (await enterpriseRegistrationDao.selectEnterpriseRegistrationByName(name)) {
+    if (
+      await enterpriseRegistrationDao.selectEnterpriseRegistrationByName(name)
+    ) {
       return false;
     } else {
       await enterpriseRegistrationDao.createEnterpriseRegistration(
@@ -38,7 +42,9 @@ export default {
    * 查询企业用户登记测试七个状态通过uuid
    */
   selectRegistrationStatusByEnterpriseUuid: async uuid => {
-    return await enterpriseRegistrationDao.selectRegistrationStatusByEnterpriseUuid(uuid);
+    return await enterpriseRegistrationDao.selectRegistrationStatusByEnterpriseUuid(
+      uuid
+    );
   },
 
   /**
@@ -48,5 +54,12 @@ export default {
     return await enterpriseRegistrationDao.queryEnterpriseRegistrationStepByUuid(
       enterpriseRegistrationUuid
     );
+  },
+
+  /**
+   *  无参数查询sys_registration_step表
+   */
+  querySysRegistrationStep: async () => {
+    return await enterpriseRegistrationDao.querySysRegistrationStep();
   }
 };

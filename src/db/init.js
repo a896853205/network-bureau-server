@@ -31,6 +31,15 @@ const enterpriseRegistrationSpecimen = require('./models/enterprise-registration
 const enterpriseRegistrationContract = require('./models/enterprise-registration-contract')
   .default;
 
+const sysRegistrationStepArray = [
+  {name: '提交上传7种材料', step: 1},
+  {name: '电子签合同', step: 2},
+  {name: '交付汇款', step: 3},
+  {name: '现场测试', step: 4},
+  {name: '接受原始记录和测试报告', step: 5},
+  {name: '给予打分', step: 6}
+]
+
 // 企业用户表
 enterpriseUser
   .sync({
@@ -80,6 +89,10 @@ enterpriseRegistration
   })
   .then(() => {
     console.log('企业登记注册总表初始化成功');
+  })
+  .catch(error => {
+    console.error('企业登记注册总表初始化失败');
+    console.error(error);
   });
 
 // 企业用户测试项目注册步骤表
@@ -98,6 +111,11 @@ sysRegistrationStep
   })
   .then(() => {
     console.log('登记注册步骤表初始化成功');
+    sysRegistrationStep.bulkCreate(sysRegistrationStepArray);
+  })
+  .catch(error => {
+    console.error('登记注册步骤表初始化失败');
+    console.error(error);
   });
 
 // 企业用户登记注册
@@ -108,6 +126,10 @@ enterpriseRegistrationCopyright
   })
   .then(() => {
     console.log('软件著作权证书表初始化成功');
+  })
+  .catch(error => {
+    console.error('软件著作权证书表初始化失败');
+    console.error(error);
   });
 
 // 企业用户登记注册
@@ -118,6 +140,10 @@ enterpriseRegistrationProduct
   })
   .then(() => {
     console.log('产品介质表初始化成功');
+  })
+  .catch(error => {
+    console.error('产品介质表初始化失败');
+    console.error(error);
   });
 
 // 企业用户登记注册
@@ -128,6 +154,10 @@ enterpriseRegistrationProductDescription
   })
   .then(() => {
     console.log('产品说明表初始化成功');
+  })
+  .catch(error => {
+    console.error('产品说明表初始化失败');
+    console.error(error);
   });
 
 // 企业用户登记注册
@@ -138,6 +168,10 @@ enterpriseRegistrationDocument
   })
   .then(() => {
     console.log('用户文档表初始化成功');
+  })
+  .catch(error => {
+    console.error('用户文档表初始化失败');
+    console.error(error);
   });
 
 // 企业用户登记注册
@@ -148,6 +182,10 @@ enterpriseRegistrationApply
   })
   .then(() => {
     console.log('现场测试申请表初始化成功');
+  })
+  .catch(error => {
+    console.error('现场测试申请表初始化失败');
+    console.error(error);
   });
 
 // 企业用户登记注册
@@ -158,6 +196,10 @@ enterpriseRegistrationSpecimen
 })
 .then(() => {
   console.log('样品登记表初始化成功');
+})
+.catch(error => {
+  console.error('样品登记表初始化失败');
+  console.error(error);
 });
 
 // 企业用户登记注册
@@ -168,4 +210,8 @@ enterpriseRegistrationContract
 })
 .then(() => {
   console.log('评测合同初始化成功');
+})
+.catch(error => {
+  console.error('评测合同初始化失败');
+  console.error(error);
 });
