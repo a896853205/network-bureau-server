@@ -30,6 +30,44 @@ export default {
    */
   createEnterpriseRegistration: async (name, enterpriseUuid) => {
     const enterpriseRegistrationUuid = uuid.v1();
+    const enterpriseRegistionStepArr = [
+      {
+        uuid: enterpriseRegistionUuid,
+        step: 1,
+        status: 2,
+        statusText: '正在进行'
+      },
+      {
+        uuid: enterpriseRegistionUuid,
+        step: 2,
+        status: 1,
+        statusText: '未开始'
+      },
+      {
+        uuid: enterpriseRegistionUuid,
+        step: 3,
+        status: 1,
+        statusText: '未开始'
+      },
+      {
+        uuid: enterpriseRegistionUuid,
+        step: 4,
+        status: 1,
+        statusText: '未开始'
+      },
+      {
+        uuid: enterpriseRegistionUuid,
+        step: 5,
+        status: 1,
+        statusText: '未开始'
+      },
+      {
+        uuid: enterpriseRegistionUuid,
+        step: 6,
+        status: 1,
+        statusText: '未开始'
+      }
+    ];
 
     return db.transaction(() => {
       return Promise.all([
@@ -44,6 +82,7 @@ export default {
         //   status: 0,
         //   statusText: null
         // }),
+        enterpriseRegistionStep.bulkCreate(enterpriseRegistionStepArr),
         enterpriseRegistrationStep.create({
           uuid: enterpriseRegistrationUuid,
           step: 1,
@@ -159,7 +198,7 @@ export default {
   /**
    * 查询企业用户登记测试七个状态通过uuid
    */
-  selectRegistrationByEnterpriseUuid: async uuid => {
+  selectRegistrationStatusByEnterpriseUuid: async uuid => {
     const [
       enterpriseRegistrationContractStatus,
       enterpriseRegistrationCopyrightStatus,
