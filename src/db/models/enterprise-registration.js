@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const { db } = require('../db-connect');
 
-export default db.define('enterprise_registion', {
+export default db.define('enterprise_registration', {
   id: {
     type: Sequelize.BIGINT(11),
     primaryKey: true,

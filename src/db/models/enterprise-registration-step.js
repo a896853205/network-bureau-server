@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const { db } = require('../db-connect');
 
-export default db.define('enterprise_registion_step', {
+export default db.define('enterprise_registration_step', {
   id: {
     type: Sequelize.BIGINT(11),
     primaryKey: true,
@@ -9,7 +9,7 @@ export default db.define('enterprise_registion_step', {
     unique: true,
     autoIncrement: true
   },
-  uuid: Sequelize.STRING(36), // 这个uuid要与enterprise-registion的uuid一致
+  uuid: Sequelize.STRING(36), // 这个uuid要与enterprise-registration的uuid一致
   step: Sequelize.BIGINT(3),  // 步骤数
   status: Sequelize.BIGINT(3),
   // 未开始     1 灰色

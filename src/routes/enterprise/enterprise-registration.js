@@ -5,17 +5,17 @@ import Res from '../../util/response';
 import { RESPONSE_CODE } from '../../constants/domain-constants';
 
 // service
-import enterpriseRegistionService from '../../service/enterprise/enterprise-registion-service';
+import enterpriseRegistrationService from '../../service/enterprise/enterprise-registration-service';
 
 const router = new Router({
-  prefix: '/enterpriseRegistion'
+  prefix: '/enterpriseRegistration'
 });
 
-router.post('/createEnterpriseRegistion', async (ctx, next) => {
+router.post('/createEnterpriseRegistration', async (ctx, next) => {
   const { uuid: enterpriseUuid } = ctx.state.user,
     { name } = ctx.state.param;
 
-  const status = await enterpriseRegistionService.createEnterpriseRegistion(
+  const status = await enterpriseRegistrationService.createEnterpriseRegistration(
     name,
     enterpriseUuid
   );
@@ -36,11 +36,11 @@ router.post('/createEnterpriseRegistion', async (ctx, next) => {
 /**
  * 查询企业的登记测试列表
  */
-router.get('/queryRegistionByEnterpriseUuid', async (ctx, next) => {
+router.get('/queryRegistrationByEnterpriseUuid', async (ctx, next) => {
   const { uuid: enterpriseUuid } = ctx.state.user,
     { page } = ctx.state.param;
 
-  const data = await enterpriseRegistionService.queryRegistionByEnterpriseUuid(
+  const data = await enterpriseRegistrationService.queryRegistrationByEnterpriseUuid(
     enterpriseUuid,
     page
   );
@@ -61,10 +61,10 @@ router.get('/queryRegistionByEnterpriseUuid', async (ctx, next) => {
 /**
  * 查询企业用户登记测试七个状态通过enterpriseUuid
  */
-router.get('/selectRegistionByEnterpriseUuid', async (ctx, next) => {
+router.get('/selectRegistrationByEnterpriseUuid', async (ctx, next) => {
   const { uuid } = ctx.state.param;
 
-  const data = await enterpriseRegistionService.selectRegistionByEnterpriseUuid(
+  const data = await enterpriseRegistrationService.selectRegistrationByEnterpriseUuid(
     uuid
   );
 
@@ -81,12 +81,12 @@ router.get('/selectRegistionByEnterpriseUuid', async (ctx, next) => {
   }
 });
 
-// 根据enterpriseRegistionUuid查询步骤
-router.get('/queryEnterpriseRegistionStep', async (ctx, next) => {
-  const { enterpriseRegistionUuid } = ctx.state.param;
+// 根据enterpriseRegistrationUuid查询步骤
+router.get('/queryEnterpriseRegistrationStep', async (ctx, next) => {
+  const { enterpriseRegistrationUuid } = ctx.state.param;
 
-  const data = await enterpriseRegistionService.queryEnterpriseRegistionStepByUuid(
-    enterpriseRegistionUuid
+  const data = await enterpriseRegistrationService.queryEnterpriseRegistrationStepByUuid(
+    enterpriseRegistrationUuid
   );
 
   if (data) {

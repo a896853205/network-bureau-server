@@ -13,22 +13,22 @@ require('babel-register')({
 
 const enterpriseUser = require('./models/enterprise-user').default;
 const managerUser = require('./models/manager-user').default;
-const enterpriseRegistion = require('./models/enterprise-registion').default;
-const enterpriseRegistionStep = require('./models/enterprise-registion-step').default;
-const sysRegistionStep = require('./models/sys-registion-step').default;
-const enterpriseRegistionCopyright = require('./models/enterprise-registion-copyright')
+const enterpriseRegistration = require('./models/enterprise-registration').default;
+const enterpriseRegistrationStep = require('./models/enterprise-registration-step').default;
+const sysRegistrationStep = require('./models/sys-registration-step').default;
+const enterpriseRegistrationCopyright = require('./models/enterprise-registration-copyright')
   .default;
-const enterpriseRegistionProduct = require('./models/enterprise-registion-product')
+const enterpriseRegistrationProduct = require('./models/enterprise-registration-product')
   .default;
-const enterpriseRegistionProductDescription = require('./models/enterprise-registion-product-description')
+const enterpriseRegistrationProductDescription = require('./models/enterprise-registration-product-description')
   .default;
-const enterpriseRegistionDocument = require('./models/enterprise-registion-document')
+const enterpriseRegistrationDocument = require('./models/enterprise-registration-document')
   .default;
-const enterpriseRegistionApply = require('./models/enterprise-registion-apply')
+const enterpriseRegistrationApply = require('./models/enterprise-registration-apply')
   .default;
-const enterpriseRegistionSpecimen = require('./models/enterprise-registion-specimen')
+const enterpriseRegistrationSpecimen = require('./models/enterprise-registration-specimen')
   .default;
-const enterpriseRegistionContract = require('./models/enterprise-registion-contract')
+const enterpriseRegistrationContract = require('./models/enterprise-registration-contract')
   .default;
 
 // 企业用户表
@@ -74,7 +74,7 @@ managerUser
   });
 
 // 企业登记注册总表
-enterpriseRegistion
+enterpriseRegistration
   .sync({
     force: true
   })
@@ -83,7 +83,7 @@ enterpriseRegistion
   });
 
 // 企业用户测试项目注册步骤表
-enterpriseRegistionStep
+enterpriseRegistrationStep
 .sync({
   force: true
 })
@@ -92,7 +92,7 @@ enterpriseRegistionStep
 });
 
 // 登记注册步骤表
-sysRegistionStep
+sysRegistrationStep
   .sync({
     force: true
   })
@@ -102,7 +102,7 @@ sysRegistionStep
 
 // 企业用户登记注册
 // 软件著作权证书表
-enterpriseRegistionCopyright
+enterpriseRegistrationCopyright
   .sync({
     force: true
   })
@@ -112,7 +112,7 @@ enterpriseRegistionCopyright
 
 // 企业用户登记注册
 // 产品介质表
-enterpriseRegistionProduct
+enterpriseRegistrationProduct
   .sync({
     force: true
   })
@@ -122,7 +122,7 @@ enterpriseRegistionProduct
 
 // 企业用户登记注册
 // 产品说明表
-enterpriseRegistionProductDescription
+enterpriseRegistrationProductDescription
   .sync({
     force: true
   })
@@ -132,7 +132,7 @@ enterpriseRegistionProductDescription
 
 // 企业用户登记注册
 // 用户文档表
-enterpriseRegistionDocument
+enterpriseRegistrationDocument
   .sync({
     force: true
   })
@@ -142,7 +142,7 @@ enterpriseRegistionDocument
 
 // 企业用户登记注册
 // 现场测试申请表
-enterpriseRegistionApply
+enterpriseRegistrationApply
   .sync({
     force: true
   })
@@ -152,7 +152,7 @@ enterpriseRegistionApply
 
 // 企业用户登记注册
 // 样品登记表
-enterpriseRegistionSpecimen
+enterpriseRegistrationSpecimen
 .sync({
   force: true
 })
@@ -162,7 +162,7 @@ enterpriseRegistionSpecimen
 
 // 企业用户登记注册
 // 评测合同
-enterpriseRegistionContract
+enterpriseRegistrationContract
 .sync({
   force: true
 })
