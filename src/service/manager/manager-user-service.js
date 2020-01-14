@@ -11,8 +11,9 @@ export default {
    */
   getManagerByUuid: async uuid => {
     // 数据库中查询出头像的路径之后去oss获取当前url
-    let managerUser = null,
+    let managerUser = {},
       headPreviewUrl = null;
+
     try {
       managerUser = await managerUserDao.selectManagerByUuid(uuid);
       headPreviewUrl = await client.signatureUrl(managerUser.headPortraitUrl);

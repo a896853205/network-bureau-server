@@ -160,8 +160,7 @@ router.get('/getManagerInfo', async (ctx, next) => {
     });
   } else {
     ctx.body = new Res({
-      status: RESPONSE_CODE.error,
-      data
+      status: RESPONSE_CODE.error
     });
   }
 });
