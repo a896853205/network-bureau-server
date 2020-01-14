@@ -16,7 +16,7 @@ import { REGISTRATION_PAGE_SIZE } from '../../config/system-config';
 import uuid from 'uuid';
 
 export default {
-  /**.
+  /**
    * 通过name查询登记注册
    */
   selectEnterpriseRegistrationByName: async name => {
@@ -26,50 +26,64 @@ export default {
   },
 
   /**
+   * 通过RegistrationUuid查询
+   */
+  selectRegistrationByRegistrationUuid: async registrationUuid => {
+    return await enterpriseRegistration.findOne({
+      where: { uuid: registrationUuid }
+    });
+  },
+
+  /**
    * 创建一个登记注册
    */
-  createEnterpriseRegistration: async (name, enterpriseUuid) => {
-    const enterpriseRegistrationUuid = uuid.v1();
-    const enterpriseRegistrationStepArr = [
-      {
-        uuid: enterpriseRegistrationUuid,
-        step: 1,
-        status: 2,
-        statusText: '正在进行'
-      },
-      {
-        uuid: enterpriseRegistrationUuid,
-        step: 2,
-        status: 1,
-        statusText: '未开始'
-      },
-      {
-        uuid: enterpriseRegistrationUuid,
-        step: 3,
-        status: 1,
-        statusText: '未开始'
-      },
-      {
-        uuid: enterpriseRegistrationUuid,
-        step: 4,
-        status: 1,
-        statusText: '未开始'
-      },
-      {
-        uuid: enterpriseRegistrationUuid,
-        step: 5,
-        status: 1,
-        statusText: '未开始'
-      },
-      {
-        uuid: enterpriseRegistrationUuid,
-        step: 6,
-        status: 1,
-        statusText: '未开始'
-      }
-    ];
+  createEnterpriseRegistration: async (
+    name,
+    enterpriseUuid,
+    managerProjectUuid
+  ) => {
+    const enterpriseRegistrationUuid = uuid.v1(),
+      enterpriseRegistrationStepArr = [
+        {
+          uuid: enterpriseRegistrationUuid,
+          step: 1,
+          status: 2,
+          statusText: '正在进行',
+          managerUuid: managerProjectUuid
+        },
+        {
+          uuid: enterpriseRegistrationUuid,
+          step: 2,
+          status: 1,
+          statusText: '未开始'
+        },
+        {
+          uuid: enterpriseRegistrationUuid,
+          step: 3,
+          status: 1,
+          statusText: '未开始'
+        },
+        {
+          uuid: enterpriseRegistrationUuid,
+          step: 4,
+          status: 1,
+          statusText: '未开始'
+        },
+        {
+          uuid: enterpriseRegistrationUuid,
+          step: 5,
+          status: 1,
+          statusText: '未开始'
+        },
+        {
+          uuid: enterpriseRegistrationUuid,
+          step: 6,
+          status: 1,
+          statusText: '未开始'
+        }
+      ];
 
-    return db.transaction(() => {
+    db.transaction(() => {
       return Promise.all([
         enterpriseRegistration.create({
           name,
@@ -77,54 +91,7 @@ export default {
           uuid: enterpriseRegistrationUuid,
           enterpriseUuid: enterpriseUuid
         }),
-        // enterpriseRegistration.create({
-        //   uuid: contractUuid,
-        //   status: 0,
-        //   statusText: null
-        // }),
         enterpriseRegistrationStep.bulkCreate(enterpriseRegistrationStepArr),
-        enterpriseRegistrationStep.create({
-          uuid: enterpriseRegistrationUuid,
-          step: 1,
-          status: 2,
-          statusText: '正在进行',
-          url: null
-        }),
-        enterpriseRegistrationStep.create({
-          uuid: enterpriseRegistrationUuid,
-          step: 2,
-          status: 1,
-          statusText: '未开始',
-          url: null
-        }),
-        enterpriseRegistrationStep.create({
-          uuid: enterpriseRegistrationUuid,
-          step: 3,
-          status: 1,
-          statusText: '未开始',
-          url: null
-        }),
-        enterpriseRegistrationStep.create({
-          uuid: enterpriseRegistrationUuid,
-          step: 4,
-          status: 1,
-          statusText: '未开始',
-          url: null
-        }),
-        enterpriseRegistrationStep.create({
-          uuid: enterpriseRegistrationUuid,
-          step: 5,
-          status: 1,
-          statusText: '未开始',
-          url: null
-        }),
-        enterpriseRegistrationStep.create({
-          uuid: enterpriseRegistrationUuid,
-          step: 6,
-          status: 1,
-          statusText: '未开始',
-          url: null
-        }),
         enterpriseRegistrationCopyright.create({
           uuid: enterpriseRegistrationUuid,
           status: 0,
@@ -174,6 +141,8 @@ export default {
         })
       ]);
     });
+
+    return enterpriseRegistrationUuid;
   },
 
   /**
@@ -269,7 +238,7 @@ export default {
   queryEnterpriseRegistrationStepByUuid: async enterpriseRegistrationUuid => {
     return await enterpriseRegistrationStep.findAll({
       where: { uuid: enterpriseRegistrationUuid },
-      attributes: ['step', 'status', 'statusText'],
+      attributes: ['step', 'status', 'statusText', 'managerUuid'],
       raw: true
     });
   },

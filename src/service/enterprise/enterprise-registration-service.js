@@ -1,4 +1,5 @@
 import enterpriseRegistrationDao from '../../dao/enterprise/enterprise-registration-dao';
+import managerUserDao from '../../dao/manager/manager-user-dao';
 
 export default {
   /**
@@ -11,6 +12,15 @@ export default {
   },
 
   /**
+   * 根据RegistrationUuid查询
+   */
+  selectRegistrationByRegistrationUuid: async registrationUuid => {
+    return await enterpriseRegistrationDao.selectRegistrationByRegistrationUuid(
+      registrationUuid
+    );
+  },
+
+  /**
    * 创建登记测试
    */
   createEnterpriseRegistration: async (name, enterpriseUuid) => {
@@ -19,12 +29,19 @@ export default {
     ) {
       return false;
     } else {
-      await enterpriseRegistrationDao.createEnterpriseRegistration(
-        name,
-        enterpriseUuid
-      );
+      // 查询一个项目管理员
+      const projectManager = await managerUserDao.selectManagerUserByRole(10);
+      let projectManagerUuid = '';
 
-      return true;
+      if (projectManager && projectManager.uuid) {
+        projectManagerUuid = projectManager.uuid;
+      }
+
+      return await enterpriseRegistrationDao.createEnterpriseRegistration(
+        name,
+        enterpriseUuid,
+        projectManagerUuid
+      );
     }
   },
 

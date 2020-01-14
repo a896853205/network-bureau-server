@@ -75,7 +75,15 @@ managerUser
       name: '超级管理员',
       phone: '15998133472'
     });
-    console.log('生成了一个管理员');
+    managerUser.create({
+      username: 'xiangmuguanli',
+      uuid: 'woshiyigexiangmuguanliyuan',
+      password: 'e10adc3949ba59abbe56e057f20f883e',
+      role: 10,
+      name: '项目管理员',
+      phone: '15998133472'
+    });
+    console.log('生成了两个个管理员');
   })
   .catch(error => {
     console.error('管理员用户表初始化失败');

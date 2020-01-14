@@ -33,7 +33,16 @@ export default {
       raw: true
     });
   },
-
+  /**
+   * 通过权限查一个管理员
+   */
+  selectManagerUserByRole: async role => {
+    return await managerUser.findOne({
+      where: { role },
+      attributes: ['uuid', 'phone', 'username', 'password', 'name', 'role'],
+      raw: true
+    });
+  },
   /**
    * 创建管理员
    */
@@ -87,8 +96,6 @@ export default {
       offset: (page - 1) * MANAGER_PAGE_SIZE,
       raw: true
     });
-
-    
 
     return {
       managerList: result.rows,

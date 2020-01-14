@@ -110,5 +110,5 @@ export default {
    */
   queryManager: async page => {
     return await managerUserDao.queryManagerUser(page);
-  }
+  },
 };

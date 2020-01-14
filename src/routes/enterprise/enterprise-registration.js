@@ -15,13 +15,14 @@ router.post('/createEnterpriseRegistration', async (ctx, next) => {
   const { uuid: enterpriseUuid } = ctx.state.user,
     { name } = ctx.state.param;
 
-  const status = await enterpriseRegistrationService.createEnterpriseRegistration(
+  const data = await enterpriseRegistrationService.createEnterpriseRegistration(
     name,
     enterpriseUuid
   );
 
-  if (status) {
+  if (data) {
     ctx.body = new Res({
+      data,
       status: RESPONSE_CODE.success,
       msg: '登录测试创建成功'
     });
@@ -43,6 +44,29 @@ router.get('/queryRegistrationByEnterpriseUuid', async (ctx, next) => {
   const data = await enterpriseRegistrationService.queryRegistrationByEnterpriseUuid(
     enterpriseUuid,
     page
+  );
+
+  if (data) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error,
+      msg: '查询失败'
+    });
+  }
+});
+
+/**
+ * 查询登记测试信息(单独)
+ */
+router.get('/selectRegistrationByRegistrationUuid', async (ctx, next) => {
+  const { uuid } = ctx.state.param;
+
+  const data = await enterpriseRegistrationService.selectRegistrationByRegistrationUuid(
+    uuid
   );
 
   if (data) {
