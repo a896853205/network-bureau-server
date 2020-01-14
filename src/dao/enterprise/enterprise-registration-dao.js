@@ -14,6 +14,7 @@ import enterpriseRegistrationStep from '../../db/models/enterprise-registration-
 import { REGISTRATION_PAGE_SIZE } from '../../config/system-config';
 
 import uuid from 'uuid';
+import managerUser from '../../db/models/manager-user';
 
 export default {
   /**
@@ -250,6 +251,16 @@ export default {
   querySysRegistrationStep: async () => {
     return await sysRegistrationStep.findAll({
       attributes: ['name', 'step']
+    });
+  },
+  /**
+   * 根据manageruuid查询用户
+   */
+
+  selectManagerInfoByManagerUuid: async managerUuid => {
+    return await managerUser.findOne({
+      where: { uuid: managerUuid },
+      attributes: ['username', 'phone', 'password', 'name', 'role']
     });
   }
 };

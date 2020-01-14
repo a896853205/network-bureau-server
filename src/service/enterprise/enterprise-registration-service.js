@@ -1,5 +1,6 @@
 import enterpriseRegistrationDao from '../../dao/enterprise/enterprise-registration-dao';
 import managerUserDao from '../../dao/manager/manager-user-dao';
+import managerUser from '../../db/models/manager-user';
 
 export default {
   /**
@@ -78,5 +79,15 @@ export default {
    */
   querySysRegistrationStep: async () => {
     return await enterpriseRegistrationDao.querySysRegistrationStep();
+  },
+
+  /**
+   * 根据manageruuid查询用户
+   */
+
+  selectManagerInfoByManagerUuid: async managerUuid => {
+    return await enterpriseRegistrationDao.selectManagerInfoByManagerUuid(
+      managerUuid
+    );
   }
 };

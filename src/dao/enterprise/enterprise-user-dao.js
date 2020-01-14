@@ -47,4 +47,14 @@ export default {
     });
   },
 
+  /**
+   * 根据manageruuid查询用户
+   */
+
+  selectManagerInfoByManagerUuid: async managerUuid => {
+    return await managerUser.findOne({
+      where: { uuid: managerUUid },
+      attributes: ['username', 'phone', '[password]', '[name]', 'role']
+    });
+  }
 };
