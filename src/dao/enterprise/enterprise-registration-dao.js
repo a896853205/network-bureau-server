@@ -30,7 +30,8 @@ export default {
    */
   selectRegistrationByRegistrationUuid: async registrationUuid => {
     return await enterpriseRegistration.findOne({
-      where: { uuid: registrationUuid }
+      where: { uuid: registrationUuid },
+      attributes: ['uuid', 'currentStep', 'name']
     });
   },
 
@@ -247,6 +248,8 @@ export default {
    *  无参数查询sys_registration_step表
    */
   querySysRegistrationStep: async () => {
-    return await sysRegistrationStep.findAll();
+    return await sysRegistrationStep.findAll({
+      attributes: ['name', 'step']
+    });
   }
 };

@@ -73,7 +73,7 @@ router.get('/selectRegistration', async (ctx, next) => {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data
-    });``
+    });
   } else {
     ctx.body = new Res({
       status: RESPONSE_CODE.error,
