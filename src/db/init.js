@@ -76,7 +76,7 @@ managerUser
       phone: '15998133472'
     });
     managerUser.create({
-      username: 'xiangmuguanli',
+      username: 'xiangmu',
       uuid: 'woshiyigexiangmuguanliyuan',
       password: 'e10adc3949ba59abbe56e057f20f883e',
       role: 10,

@@ -79,15 +79,5 @@ export default {
    */
   querySysRegistrationStep: async () => {
     return await enterpriseRegistrationDao.querySysRegistrationStep();
-  },
-
-  /**
-   * 根据manageruuid查询用户
-   */
-
-  selectManagerInfoByManagerUuid: async managerUuid => {
-    return await enterpriseRegistrationDao.selectManagerInfoByManagerUuid(
-      managerUuid
-    );
   }
 };

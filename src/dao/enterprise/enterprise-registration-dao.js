@@ -252,15 +252,5 @@ export default {
     return await sysRegistrationStep.findAll({
       attributes: ['name', 'step']
     });
-  },
-  /**
-   * 根据manageruuid查询用户
-   */
-
-  selectManagerInfoByManagerUuid: async managerUuid => {
-    return await managerUser.findOne({
-      where: { uuid: managerUuid },
-      attributes: ['username', 'phone', 'password', 'name', 'role']
-    });
   }
 };

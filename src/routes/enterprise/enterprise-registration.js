@@ -6,6 +6,7 @@ import { RESPONSE_CODE } from '../../constants/domain-constants';
 
 // service
 import enterpriseRegistrationService from '../../service/enterprise/enterprise-registration-service';
+import managerUserService from '../../service/manager/manager-user-service';
 
 const router = new Router({
   prefix: '/enterpriseRegistration'
@@ -150,9 +151,7 @@ router.get('/querySysRegistrationStep', async (ctx, next) => {
 router.get('/getManagerInfo', async (ctx, next) => {
   let { managerUuid } = ctx.state.param;
 
-  const data = await enterpriseRegistrationService.selectManagerInfoByManagerUuid(
-    managerUuid
-  );
+  const data = await managerUserService.getManagerByUuid(managerUuid);
 
   if (data) {
     ctx.body = new Res({
