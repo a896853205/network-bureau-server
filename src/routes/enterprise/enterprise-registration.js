@@ -37,7 +37,7 @@ router.post('/createEnterpriseRegistration', async (ctx, next) => {
 /**
  * 查询企业的登记测试列表
  */
-router.get('/queryRegistrationByEnterpriseUuid', async (ctx, next) => {
+router.get('/queryRegistration', async (ctx, next) => {
   const { uuid: enterpriseUuid } = ctx.state.user,
     { page } = ctx.state.param;
 
@@ -62,18 +62,18 @@ router.get('/queryRegistrationByEnterpriseUuid', async (ctx, next) => {
 /**
  * 查询登记测试信息(单独)
  */
-router.get('/selectRegistrationByRegistrationUuid', async (ctx, next) => {
-  const { uuid } = ctx.state.param;
+router.get('/selectRegistration', async (ctx, next) => {
+  const { registrationUuid } = ctx.state.param;
 
   const data = await enterpriseRegistrationService.selectRegistrationByRegistrationUuid(
-    uuid
+    registrationUuid
   );
 
   if (data) {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data
-    });
+    });``
   } else {
     ctx.body = new Res({
       status: RESPONSE_CODE.error,
@@ -83,13 +83,13 @@ router.get('/selectRegistrationByRegistrationUuid', async (ctx, next) => {
 });
 
 /**
- * 查询企业用户登记测试七个状态通过enterpriseUuid
+ * 查询企业用户登记测试七个状态通过registrationUuid
  */
-router.get('/selectRegistrationStatusByEnterpriseUuid', async (ctx, next) => {
-  const { uuid } = ctx.state.param;
+router.get('/selectRegistrationStatus', async (ctx, next) => {
+  const { registrationUuid } = ctx.state.param;
 
-  const data = await enterpriseRegistrationService.selectRegistrationStatusByEnterpriseUuid(
-    uuid
+  const data = await enterpriseRegistrationService.selectRegistrationStatusByRegistrationUuid(
+    registrationUuid
   );
 
   if (data) {
@@ -106,13 +106,13 @@ router.get('/selectRegistrationStatusByEnterpriseUuid', async (ctx, next) => {
 });
 
 /**
- * 根据enterpriseRegistrationUuid查询具体步骤
+ * 根据registrationUuid查询具体步骤
  */
 router.get('/queryEnterpriseRegistrationStep', async (ctx, next) => {
-  const { enterpriseRegistrationUuid } = ctx.state.param;
+  const { registrationUuid } = ctx.state.param;
 
-  const data = await enterpriseRegistrationService.queryEnterpriseRegistrationStepByUuid(
-    enterpriseRegistrationUuid
+  const data = await enterpriseRegistrationService.queryEnterpriseRegistrationStepByRegistrationUuid(
+    registrationUuid
   );
 
   if (data) {

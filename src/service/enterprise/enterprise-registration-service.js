@@ -58,18 +58,18 @@ export default {
   /**
    * 查询企业用户登记测试七个状态通过uuid
    */
-  selectRegistrationStatusByEnterpriseUuid: async uuid => {
-    return await enterpriseRegistrationDao.selectRegistrationStatusByEnterpriseUuid(
-      uuid
+  selectRegistrationStatusByRegistrationUuid: async registrationUuid => {
+    return await enterpriseRegistrationDao.selectRegistrationStatusByRegistrationUuid(
+      registrationUuid
     );
   },
 
   /**
    * 查询企业用户登记测试具体的步骤状态
    */
-  queryEnterpriseRegistrationStepByUuid: async enterpriseRegistrationUuid => {
-    return await enterpriseRegistrationDao.queryEnterpriseRegistrationStepByUuid(
-      enterpriseRegistrationUuid
+  queryEnterpriseRegistrationStepByRegistrationUuid: async registrationUuid => {
+    return await enterpriseRegistrationDao.queryEnterpriseRegistrationStepByRegistrationUuid(
+      registrationUuid
     );
   },
 

@@ -79,7 +79,7 @@ router.post('/saveManager', async (ctx, next) => {
  * 删除管理账号
  */
 router.del('/deleteManager', async (ctx, next) => {
-  let { uuid } = ctx.state.param;
+  const { uuid } = ctx.state.param;
 
   const status = await managerUserService.deleteManager(uuid);
 

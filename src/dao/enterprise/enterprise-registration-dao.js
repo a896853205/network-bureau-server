@@ -167,7 +167,7 @@ export default {
   /**
    * 查询企业用户登记测试七个状态通过uuid
    */
-  selectRegistrationStatusByEnterpriseUuid: async uuid => {
+  selectRegistrationStatusByRegistrationUuid: async uuid => {
     const [
       enterpriseRegistrationContractStatus,
       enterpriseRegistrationCopyrightStatus,
@@ -235,9 +235,9 @@ export default {
   /**
    * 根据enterpriseRegistrationUuid查询具体步骤状态
    */
-  queryEnterpriseRegistrationStepByUuid: async enterpriseRegistrationUuid => {
+  queryEnterpriseRegistrationStepByRegistrationUuid: async registrationUuid => {
     return await enterpriseRegistrationStep.findAll({
-      where: { uuid: enterpriseRegistrationUuid },
+      where: { uuid: registrationUuid },
       attributes: ['step', 'status', 'statusText', 'managerUuid'],
       raw: true
     });
