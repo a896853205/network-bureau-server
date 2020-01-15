@@ -13,7 +13,7 @@ export default db.define('enterprise_registration_step', {
   step: Sequelize.BIGINT(3),  // 步骤数
   status: Sequelize.BIGINT(3),
   // 未开始     1 灰色
-  // 正在进行   2 黄色
+  // 正在进行   2 蓝色
   // 成功       3 绿色
   // 错误       4 红色
   statusText: Sequelize.STRING(32),
