@@ -7,15 +7,15 @@ import client from '../../util/oss';
 
 export default {
   /**
-   * 根据uuid查询用户
+   * 根据managerUuid查询用户
    */
-  getManagerByUuid: async uuid => {
+  getManagerByManagerUuid: async managerUuid => {
     // 数据库中查询出头像的路径之后去oss获取当前url
     let managerUser = {},
       headPreviewUrl = null;
 
     try {
-      managerUser = await managerUserDao.selectManagerByUuid(uuid);
+      managerUser = await managerUserDao.selectManagerByManagerUuid(managerUuid);
       headPreviewUrl = await client.signatureUrl(managerUser.headPortraitUrl);
     } catch (error) {
       headPreviewUrl = '';
@@ -81,8 +81,8 @@ export default {
   /**
    * 删除管理员账号
    */
-  deleteManager: async uuid => {
-    if (await managerUserDao.deleteManager(uuid)) {
+  deleteManager: async managerUuid => {
+    if (await managerUserDao.deleteManager(managerUuid)) {
       return true;
     }
     return false;
@@ -91,10 +91,10 @@ export default {
   /**
    * 更改管理员账号
    */
-  updateManager: async (uuid, phone, password, name, headPortraitUrl) => {
+  updateManager: async (managerUuid, phone, password, name, headPortraitUrl) => {
     if (
       await managerUserDao.updeteManager(
-        uuid,
+        managerUuid,
         phone,
         password,
         name,

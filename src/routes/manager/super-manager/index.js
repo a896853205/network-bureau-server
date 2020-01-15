@@ -22,7 +22,7 @@ router.use(PREFIX, verifyAuth(AUTHORITY.SUPER.name));
  */
 router.post('/saveManager', async (ctx, next) => {
   let {
-    uuid,
+    managerUuid,
     username,
     phone,
     password,
@@ -31,9 +31,9 @@ router.post('/saveManager', async (ctx, next) => {
     headPortraitUrl
   } = ctx.state.param;
 
-  if (uuid) {
+  if (managerUuid) {
     const status = await managerUserService.updateManager(
-      uuid,
+      managerUuid,
       phone,
       password,
       name,
@@ -79,9 +79,9 @@ router.post('/saveManager', async (ctx, next) => {
  * 删除管理账号
  */
 router.del('/deleteManager', async (ctx, next) => {
-  const { uuid } = ctx.state.param;
+  const { managerUuid } = ctx.state.param;
 
-  const status = await managerUserService.deleteManager(uuid);
+  const status = await managerUserService.deleteManager(managerUuid);
 
   if (status) {
     ctx.body = new Res({
@@ -128,12 +128,12 @@ router.get('/queryRole', ctx => {
 });
 
 /**
- * 通过uuid查询管理员数据
+ * 通过managerUuid查询管理员数据
  */
 router.get('/getManagerInfo', async ctx => {
-  const { uuid } = ctx.state.param;
+  const { managerUuid } = ctx.state.param;
 
-  const res = await managerUserService.getManagerByUuid(uuid);
+  const res = await managerUserService.getManagerByManagerUuid(managerUuid);
 
   ctx.body = new Res({
     status: RESPONSE_CODE.success,

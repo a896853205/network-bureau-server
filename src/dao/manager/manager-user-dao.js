@@ -6,11 +6,11 @@ import { MANAGER_PAGE_SIZE } from '../../config/system-config';
 
 export default {
   /**
-   * 通过uuid查询管理员
+   * 通过managerUuid查询管理员
    */
-  selectManagerByUuid: async uuid => {
+  selectManagerByManagerUuid: async managerUuid => {
     return await managerUser.findOne({
-      where: { uuid },
+      where: { uuid: managerUuid },
       attributes: [
         'uuid',
         'phone',
@@ -68,20 +68,20 @@ export default {
   /**
    * 删除企业用户
    */
-  deleteManager: async uuid => {
+  deleteManager: async managerUuid => {
     return await managerUser.destroy({
-      where: { uuid }
+      where: { uuid: managerUuid }
     });
   },
 
   /**
    * 更改企业用户
    */
-  updeteManager: async (uuid, phone, password, name, headPortraitUrl) => {
+  updeteManager: async (managerUuid, phone, password, name, headPortraitUrl) => {
     return await managerUser.update(
       { phone, password, name, headPortraitUrl },
       {
-        where: { uuid },
+        where: { uuid: managerUuid },
         raw: true
       }
     );
