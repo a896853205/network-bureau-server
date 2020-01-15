@@ -150,8 +150,8 @@ router.get('/querySysRegistrationStep', async (ctx, next) => {
 
 router.get('/getManagerInfo', async (ctx, next) => {
   let { managerUuid } = ctx.state.param;
-
-  const data = await managerUserService.getManagerByUuid(managerUuid);
+  
+  const data = await managerUserService.getManagerByManagerUuid(managerUuid);
 
   if (data) {
     ctx.body = new Res({
