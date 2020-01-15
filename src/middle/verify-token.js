@@ -28,7 +28,7 @@ export default async (ctx, next) => {
 
       switch (data.auth) {
         case 'manager':
-          user = await managerUserService.getManagerByUuid(data.uuid);
+          user = await managerUserService.getManagerByManagerUuid(data.uuid);
 
           break;
         case 'enterprise':
