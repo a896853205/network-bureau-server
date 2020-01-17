@@ -97,49 +97,37 @@ export default {
         enterpriseRegistrationCopyright.create({
           uuid: enterpriseRegistrationUuid,
           status: 0,
-          statusText: null,
-          url: null
+          statusText: '未上传'
         }),
         enterpriseRegistrationContract.create({
           uuid: enterpriseRegistrationUuid,
           status: 0,
-          statusText: null,
-          url: null
+          statusText: '未填写'
         }),
         enterpriseRegistrationSpecimen.create({
           uuid: enterpriseRegistrationUuid,
           status: 0,
-          statusText: null,
-          url: null
+          statusText: '未填写'
         }),
-        // enterpriseRegistration.create({
-        //   uuid: specimenUuid,
-        //   status: 0,
-        //   statusText: null
-        // }),
         enterpriseRegistrationProduct.create({
           uuid: enterpriseRegistrationUuid,
           status: 0,
-          statusText: null,
-          url: null
+          statusText: '未上传'
         }),
         enterpriseRegistrationProductDescription.create({
           uuid: enterpriseRegistrationUuid,
           status: 0,
-          statusText: null,
-          url: null
+          statusText: '未上传'
         }),
         enterpriseRegistrationDocument.create({
           uuid: enterpriseRegistrationUuid,
           status: 0,
-          statusText: null,
-          url: null
+          statusText: '未上传'
         }),
         enterpriseRegistrationApply.create({
           uuid: enterpriseRegistrationUuid,
           status: 0,
-          statusText: null,
-          step: 0
+          statusText: '未填写'
         })
       ]);
     });
