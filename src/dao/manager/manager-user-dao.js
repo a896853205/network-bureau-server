@@ -18,7 +18,8 @@ export default {
         'password',
         'name',
         'role',
-        'headPortraitUrl'
+        'headPortraitUrl',
+        'star'
       ],
       raw: true
     });
@@ -61,7 +62,8 @@ export default {
       name,
       role,
       uuid: uuid.v1(),
-      headPortraitUrl
+      headPortraitUrl,
+      star: 5
     });
   },
 
@@ -77,7 +79,13 @@ export default {
   /**
    * 更改企业用户
    */
-  updeteManager: async (managerUuid, phone, password, name, headPortraitUrl) => {
+  updeteManager: async (
+    managerUuid,
+    phone,
+    password,
+    name,
+    headPortraitUrl
+  ) => {
     return await managerUser.update(
       { phone, password, name, headPortraitUrl },
       {
@@ -91,7 +99,7 @@ export default {
    */
   queryManagerUser: async page => {
     const result = await managerUser.findAndCountAll({
-      attributes: ['uuid', 'username', 'phone', 'name', 'role'],
+      attributes: ['uuid', 'username', 'phone', 'name', 'role', 'star'],
       limit: MANAGER_PAGE_SIZE,
       offset: (page - 1) * MANAGER_PAGE_SIZE,
       raw: true

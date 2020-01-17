@@ -52,7 +52,7 @@ enterpriseUser
       code: '91440400794618063Y',
       phone: '18507923354',
       name: '管理员',
-      password: 'e10adc3949ba59abbe56e057f20f883e'
+      password: 'e10adc3949ba59abbe56e057f20f883e',
     });
   })
   .catch(error => {
@@ -73,7 +73,8 @@ managerUser
       password: 'e10adc3949ba59abbe56e057f20f883e',
       role: 1,
       name: '超级管理员',
-      phone: '15998133472'
+      phone: '15998133472',
+      star: 5
     });
     managerUser.create({
       username: 'xiangmu',
@@ -81,7 +82,8 @@ managerUser
       password: 'e10adc3949ba59abbe56e057f20f883e',
       role: 10,
       name: '项目管理员',
-      phone: '15998133472'
+      phone: '15998133472',
+      star: 5
     });
     console.log('生成了两个个管理员');
   })
