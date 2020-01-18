@@ -14,5 +14,8 @@ export default db.define('enterprise_registration_specimen', {
   },
   uuid: Sequelize.STRING(36), // 这个uuid要与enterprise-registration的uuid一致
   status: Sequelize.BIGINT(3),
+  // 0 未填写
+  // 1 已填写 待审核
+  // 2 已审核
   statusText: Sequelize.STRING(32)
 });
