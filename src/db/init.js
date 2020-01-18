@@ -13,8 +13,10 @@ require('babel-register')({
 
 const enterpriseUser = require('./models/enterprise-user').default;
 const managerUser = require('./models/manager-user').default;
-const enterpriseRegistration = require('./models/enterprise-registration').default;
-const enterpriseRegistrationStep = require('./models/enterprise-registration-step').default;
+const enterpriseRegistration = require('./models/enterprise-registration')
+  .default;
+const enterpriseRegistrationStep = require('./models/enterprise-registration-step')
+  .default;
 const sysRegistrationStep = require('./models/sys-registration-step').default;
 const enterpriseRegistrationCopyright = require('./models/enterprise-registration-copyright')
   .default;
@@ -30,15 +32,17 @@ const enterpriseRegistrationSpecimen = require('./models/enterprise-registration
   .default;
 const enterpriseRegistrationContract = require('./models/enterprise-registration-contract')
   .default;
+const enterpriseRegistrationBasic = require('./models/enterprise-registration-basic')
+  .default;
 
 const sysRegistrationStepArray = [
-  {name: '提交上传7种材料', step: 1},
-  {name: '电子签合同', step: 2},
-  {name: '交付汇款', step: 3},
-  {name: '现场测试', step: 4},
-  {name: '接受原始记录和测试报告', step: 5},
-  {name: '给予打分', step: 6}
-]
+  { name: '提交上传8种材料', step: 1 },
+  { name: '电子签合同', step: 2 },
+  { name: '交付汇款', step: 3 },
+  { name: '现场测试', step: 4 },
+  { name: '接受原始记录和测试报告', step: 5 },
+  { name: '给予打分', step: 6 }
+];
 
 // 企业用户表
 enterpriseUser
@@ -52,7 +56,7 @@ enterpriseUser
       code: '91440400794618063Y',
       phone: '18507923354',
       name: '管理员',
-      password: 'e10adc3949ba59abbe56e057f20f883e',
+      password: 'e10adc3949ba59abbe56e057f20f883e'
     });
   })
   .catch(error => {
@@ -107,12 +111,12 @@ enterpriseRegistration
 
 // 企业用户测试项目注册步骤表
 enterpriseRegistrationStep
-.sync({
-  force: true
-})
-.then(() => {
-  console.log('企业用户测试项目注册步骤表初始化成功');
-});
+  .sync({
+    force: true
+  })
+  .then(() => {
+    console.log('企业用户测试项目注册步骤表初始化成功');
+  });
 
 // 登记注册步骤表
 sysRegistrationStep
@@ -201,27 +205,39 @@ enterpriseRegistrationApply
 // 企业用户登记注册
 // 样品登记表
 enterpriseRegistrationSpecimen
-.sync({
-  force: true
-})
-.then(() => {
-  console.log('样品登记表初始化成功');
-})
-.catch(error => {
-  console.error('样品登记表初始化失败');
-  console.error(error);
-});
+  .sync({
+    force: true
+  })
+  .then(() => {
+    console.log('样品登记表初始化成功');
+  })
+  .catch(error => {
+    console.error('样品登记表初始化失败');
+    console.error(error);
+  });
 
 // 企业用户登记注册
 // 评测合同
 enterpriseRegistrationContract
-.sync({
-  force: true
-})
-.then(() => {
-  console.log('评测合同初始化成功');
-})
-.catch(error => {
-  console.error('评测合同初始化失败');
-  console.error(error);
-});
+  .sync({
+    force: true
+  })
+  .then(() => {
+    console.log('评测合同初始化成功');
+  })
+  .catch(error => {
+    console.error('评测合同初始化失败');
+    console.error(error);
+  });
+
+enterpriseRegistrationBasic
+  .sync({
+    force: true
+  })
+  .then(() => {
+    console.log('登记测试基本表初始化成功');
+  })
+  .catch(error => {
+    console.error('登记测试基本表初始化失败');
+    console.error(error);
+  });

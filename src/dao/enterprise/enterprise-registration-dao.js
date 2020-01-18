@@ -10,11 +10,11 @@ import enterpriseRegistrationSpecimen from '../../db/models/enterprise-registrat
 import enterpriseRegistration from '../../db/models/enterprise-registration';
 import sysRegistrationStep from '../../db/models/sys-registration-step';
 import enterpriseRegistrationStep from '../../db/models/enterprise-registration-step';
+import enterpriseRegistrationBasic from '../../db/models/enterprise-registration-basic';
 
 import { REGISTRATION_PAGE_SIZE } from '../../config/system-config';
 
 import uuid from 'uuid';
-import managerUser from '../../db/models/manager-user';
 
 export default {
   /**
@@ -128,6 +128,11 @@ export default {
           uuid: enterpriseRegistrationUuid,
           status: 0,
           statusText: '未填写'
+        }),
+        enterpriseRegistrationBasic.create({
+          uuid: enterpriseRegistrationUuid,
+          status: 0,
+          statusText: '未填写'
         })
       ]);
     });
@@ -159,6 +164,7 @@ export default {
    */
   selectRegistrationStatusByRegistrationUuid: async uuid => {
     const [
+      enterpriseRegistrationBasicStatus,
       enterpriseRegistrationContractStatus,
       enterpriseRegistrationCopyrightStatus,
       enterpriseRegistrationSpecimenStatus,
@@ -167,6 +173,12 @@ export default {
       enterpriseRegistrationProductStatus,
       enterpriseRegistrationApplyStatus
     ] = await Promise.all([
+      // 登记测试基本信息
+      enterpriseRegistrationBasic.findOne({
+        where: { uuid },
+        attributes: ['uuid', 'status', 'statusText'],
+        raw: true
+      }),
       // 评测合同
       enterpriseRegistrationContract.findOne({
         where: { uuid },
@@ -212,6 +224,7 @@ export default {
     ]);
 
     return {
+      enterpriseRegistrationBasicStatus,
       enterpriseRegistrationContractStatus,
       enterpriseRegistrationCopyrightStatus,
       enterpriseRegistrationSpecimenStatus,
