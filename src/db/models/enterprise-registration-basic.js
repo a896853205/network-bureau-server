@@ -13,7 +13,7 @@ export default db.define('enterprise_registration_basic', {
   status: Sequelize.BIGINT(3),
   statusText: Sequelize.STRING(32),
   // 以下需要企业填写
-  version: Sequelize.STRING(36), // 版本
+  version: Sequelize.STRING(32), // 版本
   linkman: Sequelize.STRING(32), // 联系人
   client: Sequelize.STRING(32), // 委托单位(人)
   phone: Sequelize.STRING(32), // 电话(手机)
