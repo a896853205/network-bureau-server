@@ -253,5 +253,59 @@ export default {
     return await sysRegistrationStep.findAll({
       attributes: ['name', 'step']
     });
+  },
+
+  /**
+   * 查询的登记测试的基本信息
+   */
+  selectRegistrationBasicByRegistrationUuid: async registrationUuid => {
+    return await enterpriseRegistrationBasic.findOne({
+      attributes: [
+        'version',
+        'linkman',
+        'client',
+        'phone',
+        'address',
+        'enterpriseName',
+        'devStartTime'
+      ],
+      raw: true,
+      where: { uuid: registrationUuid }
+    });
+  },
+
+  /**
+   * 保存登记测试的基本信息
+   */
+  saveRegistrationBasic: async ({
+    registrationUuid,
+    version,
+    linkman,
+    client,
+    phone,
+    address,
+    devStartTime,
+    enterpriseName,
+    status,
+    statusText
+  }) => {
+    // 这里还得更新状态信息为2待审核
+    return await enterpriseRegistrationBasic.update(
+      {
+        version,
+        linkman,
+        client,
+        phone,
+        address,
+        devStartTime,
+        enterpriseName,
+        status,
+        statusText
+      },
+      {
+        where: { uuid: registrationUuid },
+        raw: true
+      }
+    );
   }
 };

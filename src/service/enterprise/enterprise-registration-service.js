@@ -79,5 +79,41 @@ export default {
    */
   querySysRegistrationStep: async () => {
     return await enterpriseRegistrationDao.querySysRegistrationStep();
+  },
+
+  /**
+   * 查询登记测试的基本信息
+   */
+  selectRegistrationBasicByRegistrationUuid: async registrationUuid => {
+    return await enterpriseRegistrationDao.selectRegistrationBasicByRegistrationUuid(
+      registrationUuid
+    );
+  },
+
+  /**
+   * 保存登记测试的基本信息
+   */
+  saveRegistrationBasic: async ({
+    registrationUuid,
+    version,
+    linkman,
+    client,
+    phone,
+    address,
+    devStartTime,
+    enterpriseName
+  }) => {
+    return await enterpriseRegistrationDao.saveRegistrationBasic({
+      registrationUuid,
+      version,
+      linkman,
+      client,
+      phone,
+      address,
+      devStartTime,
+      enterpriseName,
+      status: 1,
+      statusText: '待审核'
+    });
   }
 };

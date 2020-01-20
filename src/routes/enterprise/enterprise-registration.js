@@ -148,10 +148,73 @@ router.get('/querySysRegistrationStep', async (ctx, next) => {
   }
 });
 
+/**
+ * 获取管理员信息
+ */
 router.get('/getManagerInfo', async (ctx, next) => {
-  let { managerUuid } = ctx.state.param;
-  
+  const { managerUuid } = ctx.state.param;
+
   const data = await managerUserService.getManagerByManagerUuid(managerUuid);
+
+  if (data) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error
+    });
+  }
+});
+
+/**
+ * 查询登记测试的基本信息
+ */
+router.get('/getRegistrationBasic', async (ctx, next) => {
+  const { registrationUuid } = ctx.state.param;
+
+  const data = await enterpriseRegistrationService.selectRegistrationBasicByRegistrationUuid(
+    registrationUuid
+  );
+
+  if (data) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error
+    });
+  }
+});
+
+/**
+ * 保存登记测试的基本信息
+ */
+router.post('/saveRegistrationBasic', async (ctx, next) => {
+  const {
+    registrationUuid,
+    version,
+    linkman,
+    client,
+    phone,
+    address,
+    devStartTime,
+    enterpriseName
+  } = ctx.state.param;
+
+  const data = await enterpriseRegistrationService.saveRegistrationBasic({
+    registrationUuid,
+    version,
+    linkman,
+    client,
+    phone,
+    address,
+    devStartTime,
+    enterpriseName
+  });
 
   if (data) {
     ctx.body = new Res({
