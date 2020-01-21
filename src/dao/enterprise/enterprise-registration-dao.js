@@ -289,7 +289,6 @@ export default {
     status,
     statusText
   }) => {
-    // 这里还得更新状态信息为2待审核
     return await enterpriseRegistrationBasic.update(
       {
         version,
@@ -333,7 +332,6 @@ export default {
     status,
     statusText
   }) => {
-    // 这里还得更新状态信息为2待审核
     return await enterpriseRegistrationContract.update(
       {
         amount,
@@ -381,7 +379,6 @@ export default {
     status,
     statusText
   }) => {
-    // 这里还得更新状态信息为2待审核
     return await enterpriseRegistrationSpecimen.update(
       {
         trademark,
@@ -404,9 +401,7 @@ export default {
    */
   selectRegistrationApplyByRegistrationUuid: async registrationUuid => {
     return await enterpriseRegistrationApply.findOne({
-      attributes: [
-        'content'
-      ],
+      attributes: ['content'],
       raw: true,
       where: { uuid: registrationUuid }
     });
@@ -425,6 +420,74 @@ export default {
     return await enterpriseRegistrationApply.update(
       {
         content,
+        status,
+        statusText
+      },
+      {
+        where: { uuid: registrationUuid },
+        raw: true
+      }
+    );
+  },
+
+  /**
+   * 查询的现场测试申请表信息
+   */
+  selectRegistrationApplyByRegistrationUuid: async registrationUuid => {
+    return await enterpriseRegistrationApply.findOne({
+      attributes: ['content'],
+      raw: true,
+      where: { uuid: registrationUuid }
+    });
+  },
+
+  /**
+   * 保存现场测试申请表信息
+   */
+  saveRegistrationApply: async ({
+    registrationUuid,
+    content,
+    status,
+    statusText
+  }) => {
+    // 这里还得更新状态信息为2待审核
+    return await enterpriseRegistrationApply.update(
+      {
+        content,
+        status,
+        statusText
+      },
+      {
+        where: { uuid: registrationUuid },
+        raw: true
+      }
+    );
+  },
+
+  /**
+   * 查询的现场测试软件著作权信息
+   */
+  selectRegistrationCopyrightByRegistrationUuid: async registrationUuid => {
+    return await enterpriseRegistrationCopyright.findOne({
+      attributes: ['url'],
+      raw: true,
+      where: { uuid: registrationUuid }
+    });
+  },
+
+  /**
+   * 保存现场测试软件著作权信息
+   */
+  saveRegistrationCopyright: async ({
+    registrationUuid,
+    copyrightUrl,
+    status,
+    statusText
+  }) => {
+    // 这里还得更新状态信息为2待审核
+    return await enterpriseRegistrationCopyright.update(
+      {
+        url: copyrightUrl,
         status,
         statusText
       },

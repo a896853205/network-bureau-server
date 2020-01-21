@@ -366,10 +366,7 @@ router.get('/getRegistrationApply', async (ctx, next) => {
  * 保存现场测试申请表的基本信息
  */
 router.post('/saveRegistrationApply', async (ctx, next) => {
-  const {
-    registrationUuid,
-    content
-  } = ctx.state.param;
+  const { registrationUuid, content } = ctx.state.param;
 
   const data = await enterpriseRegistrationService.saveRegistrationApply({
     registrationUuid,
@@ -388,4 +385,48 @@ router.post('/saveRegistrationApply', async (ctx, next) => {
   }
 });
 
+/**
+ * 获取软件著作权的信息
+ */
+router.get('/getRegistrationCopyright', async (ctx, next) => {
+  const { registrationUuid } = ctx.state.param;
+
+  const data = await enterpriseRegistrationService.getRegistrationCopyright({
+    registrationUuid
+  });
+
+  if (data) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error
+    });
+  }
+});
+
+/**
+ * 保存软件著作权的信息
+ */
+router.post('/saveRegistrationCopyright', async (ctx, next) => {
+  const { registrationUuid, copyrightUrl } = ctx.state.param;
+
+  const data = await enterpriseRegistrationService.saveRegistrationCopyright({
+    registrationUuid,
+    copyrightUrl
+  });
+
+  if (data) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error
+    });
+  }
+});
 export default router;

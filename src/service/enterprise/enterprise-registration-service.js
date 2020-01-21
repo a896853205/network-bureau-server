@@ -181,7 +181,7 @@ export default {
     });
   },
 
-   /**
+  /**
    * 查询现场测试申请表的基本信息
    */
   selectRegistrationApplyByRegistrationUuid: async registrationUuid => {
@@ -193,13 +193,31 @@ export default {
   /**
    * 保存现场测试申请表的基本信息
    */
-  saveRegistrationApply: async ({
-    registrationUuid,
-    content
-  }) => {
+  saveRegistrationApply: async ({ registrationUuid, content }) => {
     return await enterpriseRegistrationDao.saveRegistrationApply({
       registrationUuid,
       content,
+      status: 1,
+      statusText: '待审核'
+    });
+  },
+
+  /**
+   * 获取软件著作权的信息
+   */
+  getRegistrationCopyright: async ({ registrationUuid }) => {
+    return await enterpriseRegistrationDao.selectRegistrationCopyrightByRegistrationUuid(
+      registrationUuid
+    );
+  },
+
+  /**
+   * 保存软件著作权的信息
+   */
+  saveRegistrationCopyright: async ({ registrationUuid, copyrightUrl }) => {
+    return await enterpriseRegistrationDao.saveRegistrationCopyright({
+      registrationUuid,
+      copyrightUrl,
       status: 1,
       statusText: '待审核'
     });
