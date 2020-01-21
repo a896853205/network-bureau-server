@@ -115,5 +115,93 @@ export default {
       status: 1,
       statusText: '待审核'
     });
+  },
+
+  /**
+   * 查询评测合同的基本信息
+   */
+  selectRegistrationContractByRegistrationUuid: async registrationUuid => {
+    return await enterpriseRegistrationDao.selectRegistrationContractByRegistrationUuid(
+      registrationUuid
+    );
+  },
+
+  /**
+   * 保存评测合同的基本信息
+   */
+  saveRegistrationContract: async ({
+    registrationUuid,
+    amount,
+    fax,
+    postalCode,
+    mainFunction,
+    techIndex
+  }) => {
+    return await enterpriseRegistrationDao.saveRegistrationContract({
+      registrationUuid,
+      amount,
+      fax,
+      postalCode,
+      mainFunction,
+      techIndex,
+      status: 1,
+      statusText: '待审核'
+    });
+  },
+
+  /**
+   * 查询样品登记表的基本信息
+   */
+  selectRegistrationSpecimenByRegistrationUuid: async registrationUuid => {
+    return await enterpriseRegistrationDao.selectRegistrationSpecimenByRegistrationUuid(
+      registrationUuid
+    );
+  },
+
+  /**
+   * 保存样品登记表的基本信息
+   */
+  saveRegistrationSpecimen: async ({
+    registrationUuid,
+    trademark,
+    developmentTool,
+    securityClassification,
+    email,
+    unit
+  }) => {
+    return await enterpriseRegistrationDao.saveRegistrationSpecimen({
+      registrationUuid,
+      trademark,
+      developmentTool,
+      securityClassification,
+      email,
+      unit,
+      status: 1,
+      statusText: '待审核'
+    });
+  },
+
+   /**
+   * 查询现场测试申请表的基本信息
+   */
+  selectRegistrationApplyByRegistrationUuid: async registrationUuid => {
+    return await enterpriseRegistrationDao.selectRegistrationApplyByRegistrationUuid(
+      registrationUuid
+    );
+  },
+
+  /**
+   * 保存现场测试申请表的基本信息
+   */
+  saveRegistrationApply: async ({
+    registrationUuid,
+    content
+  }) => {
+    return await enterpriseRegistrationDao.saveRegistrationApply({
+      registrationUuid,
+      content,
+      status: 1,
+      statusText: '待审核'
+    });
   }
 };

@@ -307,5 +307,131 @@ export default {
         raw: true
       }
     );
+  },
+
+  /**
+   * 查询的评测合同的基本信息
+   */
+  selectRegistrationContractByRegistrationUuid: async registrationUuid => {
+    return await enterpriseRegistrationContract.findOne({
+      attributes: ['amount', 'fax', 'postalCode', 'mainFunction', 'techIndex'],
+      raw: true,
+      where: { uuid: registrationUuid }
+    });
+  },
+
+  /**
+   * 保存评测合同的基本信息
+   */
+  saveRegistrationContract: async ({
+    registrationUuid,
+    amount,
+    fax,
+    postalCode,
+    mainFunction,
+    techIndex,
+    status,
+    statusText
+  }) => {
+    // 这里还得更新状态信息为2待审核
+    return await enterpriseRegistrationContract.update(
+      {
+        amount,
+        fax,
+        postalCode,
+        mainFunction,
+        techIndex,
+        status,
+        statusText
+      },
+      {
+        where: { uuid: registrationUuid },
+        raw: true
+      }
+    );
+  },
+
+  /**
+   * 查询的样品登记表的基本信息
+   */
+  selectRegistrationSpecimenByRegistrationUuid: async registrationUuid => {
+    return await enterpriseRegistrationSpecimen.findOne({
+      attributes: [
+        'trademark',
+        'developmentTool',
+        'securityClassification',
+        'email',
+        'unit'
+      ],
+      raw: true,
+      where: { uuid: registrationUuid }
+    });
+  },
+
+  /**
+   * 保存样品登记表的基本信息
+   */
+  saveRegistrationSpecimen: async ({
+    registrationUuid,
+    trademark,
+    developmentTool,
+    securityClassification,
+    email,
+    unit,
+    status,
+    statusText
+  }) => {
+    // 这里还得更新状态信息为2待审核
+    return await enterpriseRegistrationSpecimen.update(
+      {
+        trademark,
+        developmentTool,
+        securityClassification,
+        email,
+        unit,
+        status,
+        statusText
+      },
+      {
+        where: { uuid: registrationUuid },
+        raw: true
+      }
+    );
+  },
+
+  /**
+   * 查询的现场测试申请表的基本信息
+   */
+  selectRegistrationApplyByRegistrationUuid: async registrationUuid => {
+    return await enterpriseRegistrationApply.findOne({
+      attributes: [
+        'content'
+      ],
+      raw: true,
+      where: { uuid: registrationUuid }
+    });
+  },
+
+  /**
+   * 保存现场测试申请表的基本信息
+   */
+  saveRegistrationApply: async ({
+    registrationUuid,
+    content,
+    status,
+    statusText
+  }) => {
+    // 这里还得更新状态信息为2待审核
+    return await enterpriseRegistrationApply.update(
+      {
+        content,
+        status,
+        statusText
+      },
+      {
+        where: { uuid: registrationUuid },
+        raw: true
+      }
+    );
   }
 };
