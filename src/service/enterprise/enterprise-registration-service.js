@@ -221,5 +221,68 @@ export default {
       status: 1,
       statusText: '待审核'
     });
+  },
+
+  /**
+   * 获取用户文档集的信息
+   */
+  getRegistrationDocument: async ({ registrationUuid }) => {
+    return await enterpriseRegistrationDao.selectRegistrationDocumentByRegistrationUuid(
+      registrationUuid
+    );
+  },
+
+  /**
+   * 保存用户文档集的信息
+   */
+  saveRegistrationDocument: async ({ registrationUuid, documentUrl }) => {
+    return await enterpriseRegistrationDao.saveRegistrationDocument({
+      registrationUuid,
+      documentUrl,
+      status: 1,
+      statusText: '待审核'
+    });
+  },
+
+   /**
+   * 获取产品说明的信息
+   */
+  getRegistrationProductDescription: async ({ registrationUuid }) => {
+    return await enterpriseRegistrationDao.selectRegistrationProductDescriptionByRegistrationUuid(
+      registrationUuid
+    );
+  },
+
+  /**
+   * 保存产品说明的信息
+   */
+  saveRegistrationProductDescription: async ({ registrationUuid, productDescriptionUrl }) => {
+    return await enterpriseRegistrationDao.saveRegistrationProductDescription({
+      registrationUuid,
+      productDescriptionUrl,
+      status: 1,
+      statusText: '待审核'
+    });
+  },
+
+  /**
+   * 获取产品介质的信息
+   */
+  getRegistrationProduct: async ({ registrationUuid }) => {
+    return await enterpriseRegistrationDao.selectRegistrationProductByRegistrationUuid(
+      registrationUuid
+    );
+  },
+
+  /**
+   * 保存产品介质的信息
+   */
+  saveRegistrationProduct: async ({ registrationUuid, productUrl }) => {
+    return await enterpriseRegistrationDao.saveRegistrationProduct({
+      registrationUuid,
+      productUrl,
+      status: 1,
+      statusText: '待审核'
+    });
   }
 };

@@ -496,5 +496,107 @@ export default {
         raw: true
       }
     );
+  },
+
+   /**
+   * 查询的用户文档集信息
+   */
+  selectRegistrationDocumentByRegistrationUuid: async registrationUuid => {
+    return await enterpriseRegistrationDocument.findOne({
+      attributes: ['url'],
+      raw: true,
+      where: { uuid: registrationUuid }
+    });
+  },
+
+  /**
+   * 保存用户文档集信息
+   */
+  saveRegistrationDocument: async ({
+    registrationUuid,
+    documentUrl,
+    status,
+    statusText
+  }) => {
+    // 这里还得更新状态信息为2待审核
+    return await enterpriseRegistrationDocument.update(
+      {
+        url: documentUrl,
+        status,
+        statusText
+      },
+      {
+        where: { uuid: registrationUuid },
+        raw: true
+      }
+    );
+  },
+
+   /**
+   * 查询的产品说明信息
+   */
+  selectRegistrationProductDescriptionByRegistrationUuid: async registrationUuid => {
+    return await enterpriseRegistrationProductDescription.findOne({
+      attributes: ['url'],
+      raw: true,
+      where: { uuid: registrationUuid }
+    });
+  },
+
+  /**
+   * 保存产品说明信息
+   */
+  saveRegistrationProductDescription: async ({
+    registrationUuid,
+    productDescriptionUrl,
+    status,
+    statusText
+  }) => {
+    // 这里还得更新状态信息为2待审核
+    return await enterpriseRegistrationProductDescription.update(
+      {
+        url: productDescriptionUrl,
+        status,
+        statusText
+      },
+      {
+        where: { uuid: registrationUuid },
+        raw: true
+      }
+    );
+  },
+
+  /**
+   * 查询的产品介质信息
+   */
+  selectRegistrationProductByRegistrationUuid: async registrationUuid => {
+    return await enterpriseRegistrationProduct.findOne({
+      attributes: ['url'],
+      raw: true,
+      where: { uuid: registrationUuid }
+    });
+  },
+
+  /**
+   * 保存产品介质信息
+   */
+  saveRegistrationProduct: async ({
+    registrationUuid,
+    productUrl,
+    status,
+    statusText
+  }) => {
+    // 这里还得更新状态信息为2待审核
+    return await enterpriseRegistrationProduct.update(
+      {
+        url: productUrl,
+        status,
+        statusText
+      },
+      {
+        where: { uuid: registrationUuid },
+        raw: true
+      }
+    );
   }
 };

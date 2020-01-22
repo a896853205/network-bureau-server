@@ -429,4 +429,139 @@ router.post('/saveRegistrationCopyright', async (ctx, next) => {
     });
   }
 });
+
+/**
+ * 获取用户文档集的信息
+ */
+router.get('/getRegistrationDocument', async (ctx, next) => {
+  const { registrationUuid } = ctx.state.param;
+
+  const data = await enterpriseRegistrationService.getRegistrationDocument({
+    registrationUuid
+  });
+
+  if (data) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error
+    });
+  }
+});
+
+/**
+ * 保存用户文档集的信息
+ */
+router.post('/saveRegistrationDocument', async (ctx, next) => {
+  const { registrationUuid, documentUrl } = ctx.state.param;
+
+  const data = await enterpriseRegistrationService.saveRegistrationDocument({
+    registrationUuid,
+    documentUrl
+  });
+
+  if (data) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error
+    });
+  }
+});
+
+/**
+ * 获取产品说明的信息
+ */
+router.get('/getRegistrationProductDescription', async (ctx, next) => {
+  const { registrationUuid } = ctx.state.param;
+
+  const data = await enterpriseRegistrationService.getRegistrationProductDescription({
+    registrationUuid
+  });
+
+  if (data) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error
+    });
+  }
+});
+
+/**
+ * 保存产品说明的信息
+ */
+router.post('/saveRegistrationProductDescription', async (ctx, next) => {
+  const { registrationUuid, productDescriptionUrl } = ctx.state.param;
+
+  const data = await enterpriseRegistrationService.saveRegistrationProductDescription({
+    registrationUuid,
+    productDescriptionUrl
+  });
+
+  if (data) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error
+    });
+  }
+});
+
+/**
+ * 获取产品介质的信息
+ */
+router.get('/getRegistrationProduct', async (ctx, next) => {
+  const { registrationUuid } = ctx.state.param;
+
+  const data = await enterpriseRegistrationService.getRegistrationProduct({
+    registrationUuid
+  });
+
+  if (data) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error
+    });
+  }
+});
+
+/**
+ * 保存产品介质的信息
+ */
+router.post('/saveRegistrationProduct', async (ctx, next) => {
+  const { registrationUuid, productUrl } = ctx.state.param;
+
+  const data = await enterpriseRegistrationService.saveRegistrationProduct({
+    registrationUuid,
+    productUrl
+  });
+
+  if (data) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error
+    });
+  }
+});
 export default router;
