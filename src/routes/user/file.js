@@ -77,7 +77,7 @@ router.post('/uploadZipFile', upload.single('file'), async (ctx, next) => {
   } else if (data === -2) {
     ctx.body = new Res({
       status: RESPONSE_CODE.error,
-      msg: '文件大小必须小于10MB'
+      msg: '文件大小必须小于10GB'
     });
   } else {
     ctx.body = new Res({

@@ -37,7 +37,7 @@ export default {
     return fileUrl;
   },
 
-   /**
+  /**
    * 上传word/pdf文件
    */
   uploadWordFile: async (file, folderName) => {
@@ -77,16 +77,13 @@ export default {
     const extensionName = file.originalname.split('.')[1].toLowerCase();
 
     // 判断后缀名是否非法
-    if (
-      extensionName !== 'zip' &&
-      extensionName !== 'rar' 
-    ) {
+    if (extensionName !== 'zip' && extensionName !== 'rar') {
       return -1;
     }
 
     // 判断大小是否符合
-    if (file.size > 1024 * 1024 * 10) {
-      // 10MB
+    if (file.size > 1024 * 1024 * 1024 * 10) {
+      // 10GB
       return -2;
     }
 
