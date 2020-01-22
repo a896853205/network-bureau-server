@@ -15,6 +15,6 @@ export default db.define('manager_user', {
   password: Sequelize.STRING(32),
   name: Sequelize.STRING(32),
   role: Sequelize.BIGINT(3), // 权限
-  headPortraitUrl: Sequelize.STRING(50), // 头像ossUrl
+  headPortraitUrl: Sequelize.STRING(100), // 头像ossUrl
   star: Sequelize.BIGINT(2), // 星级
 });

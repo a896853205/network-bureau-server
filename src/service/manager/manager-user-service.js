@@ -15,7 +15,9 @@ export default {
       headPreviewUrl = null;
 
     try {
-      managerUser = await managerUserDao.selectManagerByManagerUuid(managerUuid);
+      managerUser = await managerUserDao.selectManagerByManagerUuid(
+        managerUuid
+      );
       headPreviewUrl = await client.signatureUrl(managerUser.headPortraitUrl);
     } catch (error) {
       headPreviewUrl = '';
@@ -66,13 +68,24 @@ export default {
       return false;
     }
 
+    // 将temp的文件copy到production中
+    const tempUrl = headPortraitUrl,
+      productionUrl = headPortraitUrl.replace('temp', 'production');
+
+    try {
+      await client.copy(productionUrl, tempUrl);
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+
     await managerUserDao.createNewManagerUser(
       username,
       phone,
       password,
       name,
       role,
-      headPortraitUrl
+      productionUrl
     );
 
     return true;
@@ -91,18 +104,36 @@ export default {
   /**
    * 更改管理员账号
    */
-  updateManager: async (managerUuid, phone, password, name, headPortraitUrl) => {
+  updateManager: async (
+    managerUuid,
+    phone,
+    password,
+    name,
+    headPortraitUrl
+  ) => {
+    // 将temp的文件copy到production中
+    const tempUrl = headPortraitUrl,
+      productionUrl = headPortraitUrl.replace('temp', 'production');
+
+    try {
+      await client.copy(productionUrl, tempUrl);
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+
     if (
       await managerUserDao.updeteManager(
         managerUuid,
         phone,
         password,
         name,
-        headPortraitUrl
+        productionUrl
       )
     ) {
       return true;
     }
+
     return false;
   },
 
