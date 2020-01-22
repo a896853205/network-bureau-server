@@ -116,6 +116,15 @@ export default {
       productionUrl = headPortraitUrl.replace('temp', 'production');
 
     try {
+      // 从temp中copy出来而且删除数据库中的url的文件
+      const managerUser = await managerUserDao.selectManagerByManagerUuid(
+        managerUuid
+      );
+
+      if (managerUser.headPortraitUrl) {
+        await client.delete(managerUser.headPortraitUrl);
+      }
+
       await client.copy(productionUrl, tempUrl);
     } catch (error) {
       console.log(error);

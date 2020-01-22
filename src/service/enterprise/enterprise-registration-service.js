@@ -222,6 +222,14 @@ export default {
       productionUrl = copyrightUrl.replace('temp', 'production');
 
     try {
+      const copyright = await enterpriseRegistrationDao.selectRegistrationCopyrightByRegistrationUuid(
+        registrationUuid
+      );
+
+      if (copyright && copyright.url) {
+        await client.delete(copyright.url);
+      }
+
       await client.copy(productionUrl, tempUrl);
     } catch (error) {
       console.log(error);
@@ -254,6 +262,14 @@ export default {
       productionUrl = documentUrl.replace('temp', 'production');
 
     try {
+      const document = await enterpriseRegistrationDao.selectRegistrationDocumentByRegistrationUuid(
+        registrationUuid
+      );
+
+      if (document && document.url) {
+        await client.delete(document.url);
+      }
+
       await client.copy(productionUrl, tempUrl);
     } catch (error) {
       console.log(error);
@@ -289,6 +305,14 @@ export default {
       productionUrl = productDescriptionUrl.replace('temp', 'production');
 
     try {
+      const productDescription = await enterpriseRegistrationDao.selectRegistrationProductDescriptionByRegistrationUuid(
+        registrationUuid
+      );
+
+      if (productDescription.url) {
+        await client.delete(productDescription.url);
+      }
+
       await client.copy(productionUrl, tempUrl);
     } catch (error) {
       console.log(error);
@@ -321,6 +345,14 @@ export default {
       productionUrl = productUrl.replace('temp', 'production');
 
     try {
+      const product = await enterpriseRegistrationDao.selectRegistrationProductByRegistrationUuid(
+        registrationUuid
+      );
+
+      if (product && product.url) {
+        await client.delete(product.url);
+      }
+
       await client.copy(productionUrl, tempUrl);
     } catch (error) {
       console.log(error);
