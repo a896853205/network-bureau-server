@@ -1,6 +1,8 @@
 import enterpriseRegistrationDao from '../../dao/enterprise/enterprise-registration-dao';
 import managerUserDao from '../../dao/manager/manager-user-dao';
-import managerUser from '../../db/models/manager-user';
+
+// oss
+import client from '../../util/oss';
 
 export default {
   /**
@@ -215,9 +217,20 @@ export default {
    * 保存软件著作权的信息
    */
   saveRegistrationCopyright: async ({ registrationUuid, copyrightUrl }) => {
+    // 将temp的文件copy到production中
+    const tempUrl = copyrightUrl,
+      productionUrl = copyrightUrl.replace('temp', 'production');
+
+    try {
+      await client.copy(productionUrl, tempUrl);
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+
     return await enterpriseRegistrationDao.saveRegistrationCopyright({
       registrationUuid,
-      copyrightUrl,
+      copyrightUrl: productionUrl,
       status: 1,
       statusText: '待审核'
     });
@@ -236,15 +249,26 @@ export default {
    * 保存用户文档集的信息
    */
   saveRegistrationDocument: async ({ registrationUuid, documentUrl }) => {
+    // 将temp的文件copy到production中
+    const tempUrl = documentUrl,
+      productionUrl = documentUrl.replace('temp', 'production');
+
+    try {
+      await client.copy(productionUrl, tempUrl);
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+
     return await enterpriseRegistrationDao.saveRegistrationDocument({
       registrationUuid,
-      documentUrl,
+      documentUrl: productionUrl,
       status: 1,
       statusText: '待审核'
     });
   },
 
-   /**
+  /**
    * 获取产品说明的信息
    */
   getRegistrationProductDescription: async ({ registrationUuid }) => {
@@ -256,10 +280,24 @@ export default {
   /**
    * 保存产品说明的信息
    */
-  saveRegistrationProductDescription: async ({ registrationUuid, productDescriptionUrl }) => {
+  saveRegistrationProductDescription: async ({
+    registrationUuid,
+    productDescriptionUrl
+  }) => {
+    // 将temp的文件copy到production中
+    const tempUrl = productDescriptionUrl,
+      productionUrl = productDescriptionUrl.replace('temp', 'production');
+
+    try {
+      await client.copy(productionUrl, tempUrl);
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+
     return await enterpriseRegistrationDao.saveRegistrationProductDescription({
       registrationUuid,
-      productDescriptionUrl,
+      productDescriptionUrl: productionUrl,
       status: 1,
       statusText: '待审核'
     });
@@ -278,9 +316,19 @@ export default {
    * 保存产品介质的信息
    */
   saveRegistrationProduct: async ({ registrationUuid, productUrl }) => {
+    // 将temp的文件copy到production中
+    const tempUrl = productUrl,
+      productionUrl = productUrl.replace('temp', 'production');
+
+    try {
+      await client.copy(productionUrl, tempUrl);
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
     return await enterpriseRegistrationDao.saveRegistrationProduct({
       registrationUuid,
-      productUrl,
+      productUrl: productionUrl,
       status: 1,
       statusText: '待审核'
     });
