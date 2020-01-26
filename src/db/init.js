@@ -107,6 +107,12 @@ enterpriseRegistration
   .catch(error => {
     console.error('企业登记注册总表初始化失败');
     console.error(error);
+    
+    // 企业表和企业登记测试表关联
+    enterpriseUser.hasOne(enterpriseRegistration, {
+      foreignKey: 'enterpriseUuid',
+      targetKey: 'uuid'
+    });
   });
 
 // 企业用户测试项目注册步骤表

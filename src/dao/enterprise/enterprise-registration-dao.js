@@ -498,7 +498,7 @@ export default {
     );
   },
 
-   /**
+  /**
    * 查询的用户文档集信息
    */
   selectRegistrationDocumentByRegistrationUuid: async registrationUuid => {
@@ -532,7 +532,7 @@ export default {
     );
   },
 
-   /**
+  /**
    * 查询的产品说明信息
    */
   selectRegistrationProductDescriptionByRegistrationUuid: async registrationUuid => {
@@ -598,5 +598,25 @@ export default {
         raw: true
       }
     );
+  },
+
+  /**
+   * 查询企业用户登记测试
+   */
+  queryRegistration: async page => {
+    const result = await enterpriseRegistration.findAndCountAll({
+      attributes: ['uuid', 'enterpriseUuid', 'name', 'currentStep'],
+      limit: REGISTRATION_PAGE_SIZE,
+      offset: (page - 1) * REGISTRATION_PAGE_SIZE,
+      raw: true
+    });
+    console.log(result);
+
+    return {
+      enterpriseRegistrationList: result.rows,
+      total: result.count,
+      pageSize: REGISTRATION_PAGE_SIZE
+    };
   }
 };
+

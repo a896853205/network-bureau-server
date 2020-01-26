@@ -364,5 +364,12 @@ export default {
       status: 1,
       statusText: '待审核'
     });
+  },
+
+  /**
+   * 查询登记测试
+   */
+  queryRegistration: async page => {
+    return await enterpriseRegistrationDao.queryRegistration(page);
   }
 };
