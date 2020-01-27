@@ -19,7 +19,7 @@ router.use(PREFIX, verifyAuth(AUTHORITY.PROJECT_MANAGER.name));
  * 无参数查询sys_registration_step表
  */
 router.get('/querySysRegistrationStep', async (ctx, next) => {
-  const data = await superManagerUserService.querySysRegistrationStep();
+  const data = await enterpriseRegistrationService.querySysRegistrationStep();
 
   if (data) {
     ctx.body = new Res({
