@@ -12,6 +12,6 @@ export default db.define('enterprise_registration', {
   name: Sequelize.STRING(32),
   currentStep: Sequelize.INTEGER,
   uuid: Sequelize.STRING(36),
-  enterpriseUuid: Sequelize.STRING(36),
+  // enterpriseUuid: Sequelize.STRING(36),
   code: Sequelize.STRING(36), // 编号
 });

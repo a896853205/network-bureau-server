@@ -1,5 +1,7 @@
 import { db } from '../../db/db-connect';
+import sequelize from 'sequelize';
 
+import enterpriseUser from '../../db/models/enterprise-user';
 import enterpriseRegistrationApply from '../../db/models/enterprise-registration-apply';
 import enterpriseRegistrationContract from '../../db/models/enterprise-registration-contract';
 import enterpriseRegistrationCopyright from '../../db/models/enterprise-registration-copyright';
@@ -604,11 +606,21 @@ export default {
    * 查询企业用户登记测试
    */
   queryRegistration: async page => {
-    const result = await enterpriseRegistration.findAndCountAll({
-      attributes: ['uuid', 'enterpriseUuid', 'name', 'currentStep'],
+    const result = await enterpriseUser.findAll({
+      attributes: ['name', 'phone'],
       limit: REGISTRATION_PAGE_SIZE,
       offset: (page - 1) * REGISTRATION_PAGE_SIZE,
-      raw: true
+      raw: true,
+      include: {
+        model: enterpriseRegistration,
+        attributes: [
+          'uuid',
+          'enterpriseUuid',
+          'name',
+          'currentStep',
+          sequelize.fn('COUNT', sequelize.col('uuid'))
+        ]
+      }
     });
     console.log(result);
 
@@ -619,4 +631,3 @@ export default {
     };
   }
 };
-
