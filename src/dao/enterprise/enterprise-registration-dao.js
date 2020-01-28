@@ -606,23 +606,19 @@ export default {
    * 查询企业用户登记测试
    */
   queryRegistration: async page => {
-    const result = await enterpriseUser.findAll({
-      attributes: ['name', 'phone'],
+    const result = await enterpriseRegistration.findAndCountAll({
+      attributes: ['uuid', 'enterpriseUuid', 'name', 'currentStep'],
       limit: REGISTRATION_PAGE_SIZE,
       offset: (page - 1) * REGISTRATION_PAGE_SIZE,
       raw: true,
-      include: {
-        model: enterpriseRegistration,
-        attributes: [
-          'uuid',
-          'enterpriseUuid',
-          'name',
-          'currentStep',
-          sequelize.fn('COUNT', sequelize.col('uuid'))
-        ]
-      }
+      include: [
+        {
+          model: enterpriseUser,
+          attributes: ['name', 'phone'],
+          as: 'enterpriseUser'
+        }
+      ]
     });
-    console.log(result);
 
     return {
       enterpriseRegistrationList: result.rows,

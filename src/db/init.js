@@ -13,27 +13,16 @@ require('babel-register')({
 
 const enterpriseUser = require('./models/enterprise-user').default;
 const managerUser = require('./models/manager-user').default;
-const enterpriseRegistration = require('./models/enterprise-registration')
-  .default;
-const enterpriseRegistrationStep = require('./models/enterprise-registration-step')
-  .default;
 const sysRegistrationStep = require('./models/sys-registration-step').default;
-const enterpriseRegistrationCopyright = require('./models/enterprise-registration-copyright')
-  .default;
-const enterpriseRegistrationProduct = require('./models/enterprise-registration-product')
-  .default;
-const enterpriseRegistrationProductDescription = require('./models/enterprise-registration-product-description')
-  .default;
-const enterpriseRegistrationDocument = require('./models/enterprise-registration-document')
-  .default;
-const enterpriseRegistrationApply = require('./models/enterprise-registration-apply')
-  .default;
-const enterpriseRegistrationSpecimen = require('./models/enterprise-registration-specimen')
-  .default;
-const enterpriseRegistrationContract = require('./models/enterprise-registration-contract')
-  .default;
-const enterpriseRegistrationBasic = require('./models/enterprise-registration-basic')
-  .default;
+require('./models/enterprise-registration-step').default;
+require('./models/enterprise-registration-copyright').default;
+require('./models/enterprise-registration-product').default;
+require('./models/enterprise-registration-product-description').default;
+require('./models/enterprise-registration-document').default;
+require('./models/enterprise-registration-apply').default;
+require('./models/enterprise-registration-specimen').default;
+require('./models/enterprise-registration-contract').default;
+require('./models/enterprise-registration-basic').default;
 const sequelize = require('./db-connect');
 
 const sysRegistrationStepArray = [
@@ -47,58 +36,10 @@ const sysRegistrationStepArray = [
 
 Promise.all([
   // 先创建所有数据表
-  enterpriseUser.hasMany(enterpriseRegistration, {
-    foreignKey: 'enterpriseUuid',
-    targetKey: 'uuid'
-  }),
   sequelize.db.sync({
     force: true
   })
-  // enterpriseRegistration.sync({
-  //   force: true
-  // }),
-  // enterpriseUser.sync({
-  //   force: true
-  // }),
-  // managerUser.sync({
-  //   force: true
-  // }),
-  // enterpriseRegistrationStep.sync({
-  //   force: true
-  // }),
-  // sysRegistrationStep.sync({
-  //   force: true
-  // }),
-  // enterpriseRegistrationCopyright.sync({
-  //   force: true
-  // }),
-  // enterpriseRegistrationProduct.sync({
-  //   force: true
-  // }),
-  // enterpriseRegistrationProductDescription.sync({
-  //   force: true
-  // }),
-  // enterpriseRegistrationDocument.sync({
-  //   force: true
-  // }),
-  // enterpriseRegistrationApply.sync({
-  //   force: true
-  // }),
-  // enterpriseRegistrationSpecimen.sync({
-  //   force: true
-  // }),
-  // enterpriseRegistrationContract.sync({
-  //   force: true
-  // }),
-  // enterpriseRegistrationBasic.sync({
-  //   force: true
-  // })
 ])
-  // .then(() =>
-  //   // 创建数据关联
-  //   // 企业表和企业登记测试表关联
-
-  // )
   .then(() =>
     // 开始创建数据
     Promise.all([
