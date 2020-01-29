@@ -3,6 +3,7 @@ import Res from '../../../util/response';
 import { RESPONSE_CODE } from '../../../constants/domain-constants';
 
 import enterpriseRegistrationService from '../../../service/enterprise/enterprise-registration-service';
+import enterpriseUserService from '../../../service/enterprise/enterprise-user-service';
 
 // 权限
 import verifyAuth from '../../../middle/verify-auth';
@@ -41,6 +42,28 @@ router.get('/queryRegistration', async (ctx, next) => {
   const { page } = ctx.state.param;
 
   const data = await enterpriseRegistrationService.queryRegistration(page);
+
+  if (data) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error,
+      msg: '查询失败'
+    });
+  }
+});
+
+/** 
+ * 通过uuid查询企业基本信息
+ */
+router.get('/selectEnterpriseInfo', async (ctx, next) => {
+  const { uuid } = ctx.state.param;
+  const data = await enterpriseUserService.getEnterpriseByUuid(
+    uuid
+  );
 
   if (data) {
     ctx.body = new Res({
