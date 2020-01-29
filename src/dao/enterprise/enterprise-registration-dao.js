@@ -1,5 +1,7 @@
 import { db } from '../../db/db-connect';
+import sequelize from 'sequelize';
 
+import enterpriseUser from '../../db/models/enterprise-user';
 import enterpriseRegistrationApply from '../../db/models/enterprise-registration-apply';
 import enterpriseRegistrationContract from '../../db/models/enterprise-registration-contract';
 import enterpriseRegistrationCopyright from '../../db/models/enterprise-registration-copyright';
@@ -608,9 +610,15 @@ export default {
       attributes: ['uuid', 'enterpriseUuid', 'name', 'currentStep'],
       limit: REGISTRATION_PAGE_SIZE,
       offset: (page - 1) * REGISTRATION_PAGE_SIZE,
-      raw: true
+      raw: true,
+      include: [
+        {
+          model: enterpriseUser,
+          attributes: ['name', 'phone'],
+          as: 'enterpriseUser'
+        }
+      ]
     });
-    console.log(result);
 
     return {
       enterpriseRegistrationList: result.rows,
@@ -619,4 +627,3 @@ export default {
     };
   }
 };
-
