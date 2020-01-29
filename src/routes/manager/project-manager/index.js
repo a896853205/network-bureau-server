@@ -79,4 +79,50 @@ router.get('/selectEnterpriseInfo', async (ctx, next) => {
   }
 });
 
+/**
+ * 查询登记测试信息(单独)
+ */
+router.get('/selectRegistration', async (ctx, next) => {
+  const { registrationUuid } = ctx.state.param;
+
+  const data = await enterpriseRegistrationService.selectRegistrationByRegistrationUuid(
+    registrationUuid
+  );
+
+  if (data) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error,
+      msg: '查询失败'
+    });
+  }
+});
+
+/**
+ * 根据registrationUuid查询具体步骤
+ */
+router.get('/queryEnterpriseRegistrationStep', async (ctx, next) => {
+  const { registrationUuid } = ctx.state.param;
+
+  const data = await enterpriseRegistrationService.queryEnterpriseRegistrationStepByRegistrationUuid(
+    registrationUuid
+  );
+
+  if (data) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error,
+      msg: '查询失败'
+    });
+  }
+});
+
 export default router;

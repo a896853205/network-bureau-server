@@ -9,7 +9,7 @@ export default {
   selectEnterpriseByUuid: async uuid => {
     return await enterpriseUser.findOne({
       where: { uuid },
-      attributes: ['uuid', 'phone', 'name', 'password'],
+      attributes: ['code','uuid', 'phone', 'name', 'password'],
       raw: true
     });
   },
