@@ -61,6 +61,7 @@ router.get('/queryRegistration', async (ctx, next) => {
  */
 router.get('/selectEnterpriseInfo', async (ctx, next) => {
   const { uuid } = ctx.state.param;
+  
   const data = await enterpriseUserService.getEnterpriseByUuid(
     uuid
   );
