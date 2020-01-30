@@ -125,4 +125,27 @@ router.get('/queryEnterpriseRegistrationStep', async (ctx, next) => {
   }
 });
 
+/**
+ * 查询企业用户登记测试8个文件
+ */
+router.get('/selectRegistrationStatus', async (ctx, next) => {
+  const { registrationUuid } = ctx.state.param;
+
+  const data = await enterpriseRegistrationService.selectRegistrationStatusByRegistrationUuid(
+    registrationUuid
+  );
+
+  if (data) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error,
+      msg: '查询失败'
+    });
+  }
+});
+
 export default router;
