@@ -371,5 +371,39 @@ export default {
    */
   queryRegistration: async page => {
     return await enterpriseRegistrationDao.queryRegistration(page);
+  },
+
+  /**
+   * 设置登记测试第一步8个信息的状态
+   */
+  setRegistrationDetailStatus: async ({
+    registrationUuid,
+    type,
+    status,
+    failText
+  }) => {
+    const statusDao = {
+      basic: enterpriseRegistrationDao.setBasicStatus,
+      contract: null,
+      product: null,
+      productDescription: null,
+      apply: null,
+      copyright: null,
+      document: null,
+      specimen: null
+    };
+
+    const getStatusDao = type => {
+      if (!statusDao[type]) throw new Error('错误类型');
+
+      return statusDao[type];
+    };
+
+    return await getStatusDao(type)({
+      registrationUuid,
+      status,
+      failText,
+      statusText: status === 3 ? '填写错误' : '已审核'
+    });
   }
 };

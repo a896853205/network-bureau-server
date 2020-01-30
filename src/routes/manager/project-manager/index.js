@@ -56,15 +56,13 @@ router.get('/queryRegistration', async (ctx, next) => {
   }
 });
 
-/** 
+/**
  * 通过uuid查询企业基本信息
  */
 router.get('/selectEnterpriseInfo', async (ctx, next) => {
   const { uuid } = ctx.state.param;
-  
-  const data = await enterpriseUserService.getEnterpriseByUuid(
-    uuid
-  );
+
+  const data = await enterpriseUserService.getEnterpriseByUuid(uuid);
 
   if (data) {
     ctx.body = new Res({
@@ -139,6 +137,51 @@ router.get('/selectRegistrationStatus', async (ctx, next) => {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error,
+      msg: '查询失败'
+    });
+  }
+});
+
+/**
+ * 查询登记测试的基本信息
+ */
+router.get('/selectRegistrationBasic', async (ctx, next) => {
+  const { registrationUuid } = ctx.state.param;
+
+  const data = await enterpriseRegistrationService.selectRegistrationBasicByRegistrationUuid(
+    registrationUuid
+  );
+
+  if (data) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error
+    });
+  }
+});
+
+router.post('/setRegistrationDetailStatus', async (ctx, next) => {
+  const { registrationUuid, type, status, failText } = ctx.state.param;
+
+  const res = await enterpriseRegistrationService.setRegistrationDetailStatus({
+    registrationUuid,
+    type,
+    status,
+    failText
+  });
+
+  if (res) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data: res
     });
   } else {
     ctx.body = new Res({

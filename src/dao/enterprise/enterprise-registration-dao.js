@@ -1,5 +1,4 @@
 import { db } from '../../db/db-connect';
-import sequelize from 'sequelize';
 
 import enterpriseUser from '../../db/models/enterprise-user';
 import enterpriseRegistrationApply from '../../db/models/enterprise-registration-apply';
@@ -625,5 +624,22 @@ export default {
       total: result.count,
       pageSize: REGISTRATION_PAGE_SIZE
     };
+  },
+
+  /**
+   * 设置基本信息的状态
+   */
+  setBasicStatus: async ({
+    registrationUuid,
+    status,
+    failText,
+    statusText
+  }) => {
+    return await enterpriseRegistrationBasic.update(
+      { status, failText, statusText },
+      {
+        where: { uuid: registrationUuid }
+      }
+    );
   }
 };
