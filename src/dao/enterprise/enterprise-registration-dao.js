@@ -633,7 +633,7 @@ export default {
    */
   queryRegistration: async page => {
     const result = await enterpriseRegistration.findAndCountAll({
-      attributes: ['uuid', 'enterpriseUuid', 'name', 'currentStep', 'failText'],
+      attributes: ['uuid', 'enterpriseUuid', 'name', 'currentStep'],
       limit: REGISTRATION_PAGE_SIZE,
       offset: (page - 1) * REGISTRATION_PAGE_SIZE,
       raw: true,
