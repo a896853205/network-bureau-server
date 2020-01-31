@@ -785,5 +785,44 @@ export default {
         where: { uuid: registrationUuid }
       }
     );
+  },
+
+  /**
+   * 更新登记测试的步骤
+   */
+  updateRegistrationCurrentStep: async ({ registrationUuid, currentStep }) => {
+    return await enterpriseRegistration.update(
+      {
+        currentStep
+      },
+      {
+        where: {
+          uuid: registrationUuid
+        }
+      }
+    );
+  },
+
+  /**
+   * 更新登记测试的步骤
+   */
+  updateRegistrationStep: async ({
+    registrationUuid,
+    status,
+    statusText,
+    step
+  }) => {
+    return await enterpriseRegistrationStep.update(
+      {
+        status,
+        statusText
+      },
+      {
+        where: {
+          uuid: registrationUuid,
+          step
+        }
+      }
+    );
   }
 };

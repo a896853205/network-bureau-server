@@ -287,11 +287,9 @@ router.get('/selectRegistrationProductDescription', async (ctx, next) => {
 router.get('/selectRegistrationProduct', async (ctx, next) => {
   const { registrationUuid } = ctx.state.param;
 
-  const data = await enterpriseRegistrationService.getRegistrationProduct(
-    {
-      registrationUuid
-    }
-  );
+  const data = await enterpriseRegistrationService.getRegistrationProduct({
+    registrationUuid
+  });
 
   if (data) {
     ctx.body = new Res({
@@ -311,11 +309,9 @@ router.get('/selectRegistrationProduct', async (ctx, next) => {
 router.get('/selectRegistrationDocument', async (ctx, next) => {
   const { registrationUuid } = ctx.state.param;
 
-  const data = await enterpriseRegistrationService.getRegistrationDocument(
-    {
-      registrationUuid
-    }
-  );
+  const data = await enterpriseRegistrationService.getRegistrationDocument({
+    registrationUuid
+  });
 
   if (data) {
     ctx.body = new Res({
@@ -335,11 +331,9 @@ router.get('/selectRegistrationDocument', async (ctx, next) => {
 router.get('/selectRegistrationCopyright', async (ctx, next) => {
   const { registrationUuid } = ctx.state.param;
 
-  const data = await enterpriseRegistrationService.getRegistrationCopyright(
-    {
-      registrationUuid
-    }
-  );
+  const data = await enterpriseRegistrationService.getRegistrationCopyright({
+    registrationUuid
+  });
 
   if (data) {
     ctx.body = new Res({
@@ -349,6 +343,29 @@ router.get('/selectRegistrationCopyright', async (ctx, next) => {
   } else {
     ctx.body = new Res({
       status: RESPONSE_CODE.error
+    });
+  }
+});
+
+/**
+ * 修改登记测试主流程进程修改
+ */
+router.post('/pushRegistrationProcess', async (ctx, next) => {
+  const { registrationUuid } = ctx.state.param;
+
+  const data = await enterpriseRegistrationService.pushRegistrationProcess(
+    registrationUuid
+  );
+
+  if (data) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      msg: '成功推进登记测试进度'
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error,
+      msg: '审核进度下一步失败,请检查各种信息是否全部审核通过'
     });
   }
 });

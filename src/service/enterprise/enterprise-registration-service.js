@@ -411,7 +411,72 @@ export default {
       registrationUuid,
       status,
       failText,
-      statusText: status === 3 ? '内容错误' : '已审核'
+      statusText: status === 4 ? '内容错误' : '已审核'
     });
+  },
+
+  /**
+   * 推进登记测试的进程
+   */
+  pushRegistrationProcess: async registrationUuid => {
+    // 先查询现在的进度,
+    // 然后如果是进度1,就判断8种状态是不是都是2
+    // 最后如果ok就进度改称,而且进度1的text改成已完成
+    const registration = await enterpriseRegistrationDao.selectRegistrationByRegistrationUuid(
+      registrationUuid
+    );
+
+    if (registration) {
+      if (registration.currentStep === 1) {
+        // 第一步
+        const {
+          enterpriseRegistrationBasicStatus,
+          enterpriseRegistrationContractStatus,
+          enterpriseRegistrationCopyrightStatus,
+          enterpriseRegistrationSpecimenStatus,
+          enterpriseRegistrationProductDescriptionStatus,
+          enterpriseRegistrationDocumentStatus,
+          enterpriseRegistrationProductStatus,
+          enterpriseRegistrationApplyStatus
+        } = await enterpriseRegistrationDao.selectRegistrationStatusByRegistrationUuid(
+          registrationUuid
+        );
+
+        if (
+          enterpriseRegistrationBasicStatus.status === 3 &&
+          enterpriseRegistrationContractStatus.status === 3 &&
+          enterpriseRegistrationCopyrightStatus.status === 3 &&
+          enterpriseRegistrationSpecimenStatus.status === 3 &&
+          enterpriseRegistrationProductDescriptionStatus.status === 3 &&
+          enterpriseRegistrationDocumentStatus.status === 3 &&
+          enterpriseRegistrationProductStatus.status === 3 &&
+          enterpriseRegistrationApplyStatus.status === 3
+        ) {
+          // 改进度和steps表
+          await Promise.all([
+            enterpriseRegistrationDao.updateRegistrationCurrentStep({
+              registrationUuid,
+              currentStep: 2
+            }),
+            enterpriseRegistrationDao.updateRegistrationStep({
+              registrationUuid,
+              status: 3,
+              statusText: '已完成',
+              step: 1
+            }),
+            enterpriseRegistrationDao.updateRegistrationStep({
+              registrationUuid,
+              status: 2,
+              statusText: '正在进行',
+              step: 2
+            })
+          ]);
+
+          return true;
+        }
+      }
+    }
+
+    return false;
   }
 };
