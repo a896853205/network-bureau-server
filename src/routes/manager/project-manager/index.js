@@ -281,4 +281,76 @@ router.get('/selectRegistrationProductDescription', async (ctx, next) => {
   }
 });
 
+/**
+ * 获取产品介质的信息
+ */
+router.get('/selectRegistrationProduct', async (ctx, next) => {
+  const { registrationUuid } = ctx.state.param;
+
+  const data = await enterpriseRegistrationService.getRegistrationProduct(
+    {
+      registrationUuid
+    }
+  );
+
+  if (data) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error
+    });
+  }
+});
+
+/**
+ * 获取用户文档集的信息
+ */
+router.get('/selectRegistrationDocument', async (ctx, next) => {
+  const { registrationUuid } = ctx.state.param;
+
+  const data = await enterpriseRegistrationService.getRegistrationDocument(
+    {
+      registrationUuid
+    }
+  );
+
+  if (data) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error
+    });
+  }
+});
+
+/**
+ * 获取软件著作权证书的信息
+ */
+router.get('/selectRegistrationCopyright', async (ctx, next) => {
+  const { registrationUuid } = ctx.state.param;
+
+  const data = await enterpriseRegistrationService.getRegistrationCopyright(
+    {
+      registrationUuid
+    }
+  );
+
+  if (data) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error
+    });
+  }
+});
+
 export default router;

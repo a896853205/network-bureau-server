@@ -703,6 +703,74 @@ export default {
   },
 
   /**
+   * 设置产品描述的状态
+   */
+  setProductDescriptionStatus: async ({
+    registrationUuid,
+    status,
+    failText,
+    statusText
+  }) => {
+    return await enterpriseRegistrationProductDescription.update(
+      { status, failText, statusText },
+      {
+        where: { uuid: registrationUuid }
+      }
+    );
+  },
+
+  /**
+   * 设置产品介质的状态
+   */
+  setProductStatus: async ({
+    registrationUuid,
+    status,
+    failText,
+    statusText
+  }) => {
+    return await enterpriseRegistrationProduct.update(
+      { status, failText, statusText },
+      {
+        where: { uuid: registrationUuid }
+      }
+    );
+  },
+
+  /**
+   * 设置用户文档集的状态
+   */
+  setDocumentStatus: async ({
+    registrationUuid,
+    status,
+    failText,
+    statusText
+  }) => {
+    return await enterpriseRegistrationDocument.update(
+      { status, failText, statusText },
+      {
+        where: { uuid: registrationUuid }
+      }
+    );
+  },
+
+  /**
+   * 设置软件著作权证书的状态
+   */
+  setCopyrightStatus: async ({
+    registrationUuid,
+    status,
+    failText,
+    statusText
+  }) => {
+    return await enterpriseRegistrationCopyright.update(
+      { status, failText, statusText },
+      {
+        where: { uuid: registrationUuid }
+      }
+    );
+  },
+
+  /**
    * 设置现场测试申请表的状态
    */
   setApplyStatus: async ({

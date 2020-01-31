@@ -393,11 +393,11 @@ export default {
     const statusDao = {
       basic: enterpriseRegistrationDao.setBasicStatus,
       contract: enterpriseRegistrationDao.setContractStatus,
-      product: null,
-      productDescription: null,
+      product: enterpriseRegistrationDao.setProductStatus,
+      productDescription: enterpriseRegistrationDao.setProductDescriptionStatus,
       apply: enterpriseRegistrationDao.setApplyStatus,
-      copyright: null,
-      document: null,
+      copyright: enterpriseRegistrationDao.setCopyrightStatus,
+      document: enterpriseRegistrationDao.setDocumentStatus,
       specimen: enterpriseRegistrationDao.setSpecimenStatus
     };
 
@@ -411,7 +411,7 @@ export default {
       registrationUuid,
       status,
       failText,
-      statusText: status === 3 ? '填写错误' : '已审核'
+      statusText: status === 3 ? '内容错误' : '已审核'
     });
   }
 };
