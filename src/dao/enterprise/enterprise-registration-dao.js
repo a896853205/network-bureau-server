@@ -314,7 +314,14 @@ export default {
    */
   selectRegistrationContractByRegistrationUuid: async registrationUuid => {
     return await enterpriseRegistrationContract.findOne({
-      attributes: ['amount', 'fax', 'postalCode', 'mainFunction', 'techIndex'],
+      attributes: [
+        'amount',
+        'fax',
+        'postalCode',
+        'mainFunction',
+        'techIndex',
+        'failText'
+      ],
       raw: true,
       where: { uuid: registrationUuid }
     });
@@ -331,7 +338,8 @@ export default {
     mainFunction,
     techIndex,
     status,
-    statusText
+    statusText,
+    failText
   }) => {
     return await enterpriseRegistrationContract.update(
       {
@@ -341,7 +349,8 @@ export default {
         mainFunction,
         techIndex,
         status,
-        statusText
+        statusText,
+        failText
       },
       {
         where: { uuid: registrationUuid },
@@ -642,7 +651,7 @@ export default {
       }
     );
   },
-   /**
+  /**
    * 设置评测合同的状态
    */
   setContractStatus: async ({
@@ -658,7 +667,7 @@ export default {
       }
     );
   },
-   /**
+  /**
    * 设置样品文档集的状态
    */
   setSpecimenStatus: async ({
@@ -674,7 +683,8 @@ export default {
       }
     );
   },
-   /**
+
+  /**
    * 设置现场测试申请表的状态
    */
   setApplyStatus: async ({

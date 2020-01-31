@@ -14,7 +14,7 @@ require('babel-register')({
 const enterpriseUser = require('./models/enterprise-user').default;
 const managerUser = require('./models/manager-user').default;
 const sysRegistrationStep = require('./models/sys-registration-step').default;
-
+require('./models/enterprise-registration').default;
 require('./models/enterprise-registration-step').default;
 require('./models/enterprise-registration-copyright').default;
 require('./models/enterprise-registration-product').default;

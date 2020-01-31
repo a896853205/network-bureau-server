@@ -147,7 +147,8 @@ export default {
       mainFunction,
       techIndex,
       status: 1,
-      statusText: '待审核'
+      statusText: '待审核',
+      failText: ''
     });
   },
 
