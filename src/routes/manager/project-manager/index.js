@@ -257,4 +257,28 @@ router.post('/setRegistrationDetailStatus', async (ctx, next) => {
   }
 });
 
+/**
+ * 获取产品说明的信息
+ */
+router.get('/selectRegistrationProductDescription', async (ctx, next) => {
+  const { registrationUuid } = ctx.state.param;
+
+  const data = await enterpriseRegistrationService.getRegistrationProductDescription(
+    {
+      registrationUuid
+    }
+  );
+
+  if (data) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error
+    });
+  }
+});
+
 export default router;
