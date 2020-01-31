@@ -168,6 +168,72 @@ router.get('/selectRegistrationBasic', async (ctx, next) => {
   }
 });
 
+/**
+ * 查询评测合同的基本信息
+ */
+router.get('/selectRegistrationContract', async (ctx, next) => {
+  const { registrationUuid } = ctx.state.param;
+
+  const data = await enterpriseRegistrationService.selectRegistrationContractByRegistrationUuid(
+    registrationUuid
+  );
+
+  if (data) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error
+    });
+  }
+});
+
+/**
+ * 查询样品文档集的基本信息
+ */
+router.get('/selectRegistrationSpecimen', async (ctx, next) => {
+  const { registrationUuid } = ctx.state.param;
+
+  const data = await enterpriseRegistrationService.selectRegistrationSpecimenByRegistrationUuid(
+    registrationUuid
+  );
+
+  if (data) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error
+    });
+  }
+});
+
+/**
+ * 查询现场测试申请表的基本信息
+ */
+router.get('/selectRegistrationApply', async (ctx, next) => {
+  const { registrationUuid } = ctx.state.param;
+
+  const data = await enterpriseRegistrationService.selectRegistrationApplyByRegistrationUuid(
+    registrationUuid
+  );
+
+  if (data) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error
+    });
+  }
+});
+
 router.post('/setRegistrationDetailStatus', async (ctx, next) => {
   const { registrationUuid, type, status, failText } = ctx.state.param;
 

@@ -384,13 +384,13 @@ export default {
   }) => {
     const statusDao = {
       basic: enterpriseRegistrationDao.setBasicStatus,
-      contract: null,
+      contract: enterpriseRegistrationDao.setContractStatus,
       product: null,
       productDescription: null,
-      apply: null,
+      apply: enterpriseRegistrationDao.setApplyStatus,
       copyright: null,
       document: null,
-      specimen: null
+      specimen: enterpriseRegistrationDao.setSpecimenStatus
     };
 
     const getStatusDao = type => {

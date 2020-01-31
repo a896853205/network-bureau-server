@@ -641,5 +641,53 @@ export default {
         where: { uuid: registrationUuid }
       }
     );
+  },
+   /**
+   * 设置评测合同的状态
+   */
+  setContractStatus: async ({
+    registrationUuid,
+    status,
+    failText,
+    statusText
+  }) => {
+    return await enterpriseRegistrationContract.update(
+      { status, failText, statusText },
+      {
+        where: { uuid: registrationUuid }
+      }
+    );
+  },
+   /**
+   * 设置样品文档集的状态
+   */
+  setSpecimenStatus: async ({
+    registrationUuid,
+    status,
+    failText,
+    statusText
+  }) => {
+    return await enterpriseRegistrationSpecimen.update(
+      { status, failText, statusText },
+      {
+        where: { uuid: registrationUuid }
+      }
+    );
+  },
+   /**
+   * 设置现场测试申请表的状态
+   */
+  setApplyStatus: async ({
+    registrationUuid,
+    status,
+    failText,
+    statusText
+  }) => {
+    return await enterpriseRegistrationApply.update(
+      { status, failText, statusText },
+      {
+        where: { uuid: registrationUuid }
+      }
+    );
   }
 };
