@@ -115,7 +115,8 @@ export default {
       devStartTime,
       enterpriseName,
       status: 1,
-      statusText: '待审核'
+      statusText: '待审核',
+      failText: ''
     });
   },
 
@@ -180,7 +181,8 @@ export default {
       email,
       unit,
       status: 1,
-      statusText: '待审核'
+      statusText: '待审核',
+      failText: ''
     });
   },
 
@@ -201,7 +203,8 @@ export default {
       registrationUuid,
       content,
       status: 1,
-      statusText: '待审核'
+      statusText: '待审核',
+      failText: ''
     });
   },
 
@@ -241,7 +244,8 @@ export default {
       registrationUuid,
       copyrightUrl: productionUrl,
       status: 1,
-      statusText: '待审核'
+      statusText: '待审核',
+      failText: ''
     });
   },
 
@@ -281,7 +285,8 @@ export default {
       registrationUuid,
       documentUrl: productionUrl,
       status: 1,
-      statusText: '待审核'
+      statusText: '待审核',
+      failText: ''
     });
   },
 
@@ -324,7 +329,8 @@ export default {
       registrationUuid,
       productDescriptionUrl: productionUrl,
       status: 1,
-      statusText: '待审核'
+      statusText: '待审核',
+      failText: ''
     });
   },
 
@@ -363,7 +369,8 @@ export default {
       registrationUuid,
       productUrl: productionUrl,
       status: 1,
-      statusText: '待审核'
+      statusText: '待审核',
+      failText: ''
     });
   },
 

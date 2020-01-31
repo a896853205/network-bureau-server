@@ -25,5 +25,5 @@ export default db.define('enterprise_registration_contract', {
   postalCode: Sequelize.STRING(32), // 邮政编码
   mainFunction: Sequelize.STRING(32), // 主要功能
   techIndex: Sequelize.STRING(32), // 技术指标
-  failText: Sequelize.STRING(100), // 错误提示
+  failText: Sequelize.STRING(100) // 错误提示
 });

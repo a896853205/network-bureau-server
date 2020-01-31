@@ -268,7 +268,8 @@ export default {
         'phone',
         'address',
         'enterpriseName',
-        'devStartTime'
+        'devStartTime',
+        'failText'
       ],
       raw: true,
       where: { uuid: registrationUuid }
@@ -288,7 +289,8 @@ export default {
     devStartTime,
     enterpriseName,
     status,
-    statusText
+    statusText,
+    failText
   }) => {
     return await enterpriseRegistrationBasic.update(
       {
@@ -300,7 +302,8 @@ export default {
         devStartTime,
         enterpriseName,
         status,
-        statusText
+        statusText,
+        failText
       },
       {
         where: { uuid: registrationUuid },
@@ -369,7 +372,8 @@ export default {
         'developmentTool',
         'securityClassification',
         'email',
-        'unit'
+        'unit',
+        'failText'
       ],
       raw: true,
       where: { uuid: registrationUuid }
@@ -387,7 +391,8 @@ export default {
     email,
     unit,
     status,
-    statusText
+    statusText,
+    failText
   }) => {
     return await enterpriseRegistrationSpecimen.update(
       {
@@ -397,7 +402,8 @@ export default {
         email,
         unit,
         status,
-        statusText
+        statusText,
+        failText
       },
       {
         where: { uuid: registrationUuid },
@@ -411,7 +417,7 @@ export default {
    */
   selectRegistrationApplyByRegistrationUuid: async registrationUuid => {
     return await enterpriseRegistrationApply.findOne({
-      attributes: ['content'],
+      attributes: ['content', 'failText'],
       raw: true,
       where: { uuid: registrationUuid }
     });
@@ -424,14 +430,16 @@ export default {
     registrationUuid,
     content,
     status,
-    statusText
+    statusText,
+    failText
   }) => {
     // 这里还得更新状态信息为2待审核
     return await enterpriseRegistrationApply.update(
       {
         content,
         status,
-        statusText
+        statusText,
+        failText
       },
       {
         where: { uuid: registrationUuid },
@@ -445,7 +453,7 @@ export default {
    */
   selectRegistrationApplyByRegistrationUuid: async registrationUuid => {
     return await enterpriseRegistrationApply.findOne({
-      attributes: ['content'],
+      attributes: ['content', 'failText'],
       raw: true,
       where: { uuid: registrationUuid }
     });
@@ -458,14 +466,16 @@ export default {
     registrationUuid,
     content,
     status,
-    statusText
+    statusText,
+    failText
   }) => {
     // 这里还得更新状态信息为2待审核
     return await enterpriseRegistrationApply.update(
       {
         content,
         status,
-        statusText
+        statusText,
+        failText
       },
       {
         where: { uuid: registrationUuid },
@@ -479,7 +489,7 @@ export default {
    */
   selectRegistrationCopyrightByRegistrationUuid: async registrationUuid => {
     return await enterpriseRegistrationCopyright.findOne({
-      attributes: ['url'],
+      attributes: ['url', 'failText'],
       raw: true,
       where: { uuid: registrationUuid }
     });
@@ -492,14 +502,16 @@ export default {
     registrationUuid,
     copyrightUrl,
     status,
-    statusText
+    statusText,
+    failText
   }) => {
     // 这里还得更新状态信息为2待审核
     return await enterpriseRegistrationCopyright.update(
       {
         url: copyrightUrl,
         status,
-        statusText
+        statusText,
+        failText
       },
       {
         where: { uuid: registrationUuid },
@@ -513,7 +525,7 @@ export default {
    */
   selectRegistrationDocumentByRegistrationUuid: async registrationUuid => {
     return await enterpriseRegistrationDocument.findOne({
-      attributes: ['url'],
+      attributes: ['url', 'failText'],
       raw: true,
       where: { uuid: registrationUuid }
     });
@@ -526,14 +538,16 @@ export default {
     registrationUuid,
     documentUrl,
     status,
-    statusText
+    statusText,
+    failText
   }) => {
     // 这里还得更新状态信息为2待审核
     return await enterpriseRegistrationDocument.update(
       {
         url: documentUrl,
         status,
-        statusText
+        statusText,
+        failText
       },
       {
         where: { uuid: registrationUuid },
@@ -547,7 +561,7 @@ export default {
    */
   selectRegistrationProductDescriptionByRegistrationUuid: async registrationUuid => {
     return await enterpriseRegistrationProductDescription.findOne({
-      attributes: ['url'],
+      attributes: ['url', 'failText'],
       raw: true,
       where: { uuid: registrationUuid }
     });
@@ -560,14 +574,16 @@ export default {
     registrationUuid,
     productDescriptionUrl,
     status,
-    statusText
+    statusText,
+    failText
   }) => {
     // 这里还得更新状态信息为2待审核
     return await enterpriseRegistrationProductDescription.update(
       {
         url: productDescriptionUrl,
         status,
-        statusText
+        statusText,
+        failText
       },
       {
         where: { uuid: registrationUuid },
@@ -581,7 +597,7 @@ export default {
    */
   selectRegistrationProductByRegistrationUuid: async registrationUuid => {
     return await enterpriseRegistrationProduct.findOne({
-      attributes: ['url'],
+      attributes: ['url', 'failText'],
       raw: true,
       where: { uuid: registrationUuid }
     });
@@ -594,14 +610,16 @@ export default {
     registrationUuid,
     productUrl,
     status,
-    statusText
+    statusText,
+    failText
   }) => {
     // 这里还得更新状态信息为2待审核
     return await enterpriseRegistrationProduct.update(
       {
         url: productUrl,
         status,
-        statusText
+        statusText,
+        failText
       },
       {
         where: { uuid: registrationUuid },
@@ -615,7 +633,7 @@ export default {
    */
   queryRegistration: async page => {
     const result = await enterpriseRegistration.findAndCountAll({
-      attributes: ['uuid', 'enterpriseUuid', 'name', 'currentStep'],
+      attributes: ['uuid', 'enterpriseUuid', 'name', 'currentStep', 'failText'],
       limit: REGISTRATION_PAGE_SIZE,
       offset: (page - 1) * REGISTRATION_PAGE_SIZE,
       raw: true,

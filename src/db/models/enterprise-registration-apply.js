@@ -16,6 +16,7 @@ export default db.define('enterprise_registration_apply', {
   status: Sequelize.BIGINT(3),
   statusText: Sequelize.STRING(32),
   step: Sequelize.INTEGER,
+  failText: Sequelize.STRING(100), // 错误提示
   content: Sequelize.TEXT, // 内容
   techManagerUuid: Sequelize.STRING(36),
   techManagerDate: Sequelize.DATE,
