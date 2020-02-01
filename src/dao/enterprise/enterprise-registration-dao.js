@@ -97,42 +97,42 @@ export default {
         enterpriseRegistrationStep.bulkCreate(enterpriseRegistrationStepArr),
         enterpriseRegistrationCopyright.create({
           uuid: enterpriseRegistrationUuid,
-          status: 0,
+          status: 1,
           statusText: '未上传'
         }),
         enterpriseRegistrationContract.create({
           uuid: enterpriseRegistrationUuid,
-          status: 0,
+          status: 1,
           statusText: '未填写'
         }),
         enterpriseRegistrationSpecimen.create({
           uuid: enterpriseRegistrationUuid,
-          status: 0,
+          status: 1,
           statusText: '未填写'
         }),
         enterpriseRegistrationProduct.create({
           uuid: enterpriseRegistrationUuid,
-          status: 0,
+          status: 1,
           statusText: '未上传'
         }),
         enterpriseRegistrationProductDescription.create({
           uuid: enterpriseRegistrationUuid,
-          status: 0,
+          status: 1,
           statusText: '未上传'
         }),
         enterpriseRegistrationDocument.create({
           uuid: enterpriseRegistrationUuid,
-          status: 0,
+          status: 1,
           statusText: '未上传'
         }),
         enterpriseRegistrationApply.create({
           uuid: enterpriseRegistrationUuid,
-          status: 0,
+          status: 1,
           statusText: '未填写'
         }),
         enterpriseRegistrationBasic.create({
           uuid: enterpriseRegistrationUuid,
-          status: 0,
+          status: 1,
           statusText: '未填写'
         })
       ]);
@@ -269,7 +269,9 @@ export default {
         'address',
         'enterpriseName',
         'devStartTime',
-        'failText'
+        'failText',
+        'status',
+        'statusText'
       ],
       raw: true,
       where: { uuid: registrationUuid }
@@ -323,7 +325,9 @@ export default {
         'postalCode',
         'mainFunction',
         'techIndex',
-        'failText'
+        'failText',
+        'status',
+        'statusText'
       ],
       raw: true,
       where: { uuid: registrationUuid }
@@ -373,7 +377,9 @@ export default {
         'securityClassification',
         'email',
         'unit',
-        'failText'
+        'failText',
+        'status',
+        'statusText'
       ],
       raw: true,
       where: { uuid: registrationUuid }
@@ -417,7 +423,7 @@ export default {
    */
   selectRegistrationApplyByRegistrationUuid: async registrationUuid => {
     return await enterpriseRegistrationApply.findOne({
-      attributes: ['content', 'failText'],
+      attributes: ['content', 'failText', 'status', 'statusText'],
       raw: true,
       where: { uuid: registrationUuid }
     });
@@ -453,7 +459,7 @@ export default {
    */
   selectRegistrationApplyByRegistrationUuid: async registrationUuid => {
     return await enterpriseRegistrationApply.findOne({
-      attributes: ['content', 'failText'],
+      attributes: ['content', 'failText', 'status', 'statusText'],
       raw: true,
       where: { uuid: registrationUuid }
     });
@@ -489,7 +495,7 @@ export default {
    */
   selectRegistrationCopyrightByRegistrationUuid: async registrationUuid => {
     return await enterpriseRegistrationCopyright.findOne({
-      attributes: ['url', 'failText'],
+      attributes: ['url', 'failText', 'status', 'statusText'],
       raw: true,
       where: { uuid: registrationUuid }
     });
@@ -525,7 +531,7 @@ export default {
    */
   selectRegistrationDocumentByRegistrationUuid: async registrationUuid => {
     return await enterpriseRegistrationDocument.findOne({
-      attributes: ['url', 'failText'],
+      attributes: ['url', 'failText', 'status', 'statusText'],
       raw: true,
       where: { uuid: registrationUuid }
     });
@@ -561,7 +567,7 @@ export default {
    */
   selectRegistrationProductDescriptionByRegistrationUuid: async registrationUuid => {
     return await enterpriseRegistrationProductDescription.findOne({
-      attributes: ['url', 'failText'],
+      attributes: ['url', 'failText', 'status', 'statusText'],
       raw: true,
       where: { uuid: registrationUuid }
     });
@@ -597,7 +603,7 @@ export default {
    */
   selectRegistrationProductByRegistrationUuid: async registrationUuid => {
     return await enterpriseRegistrationProduct.findOne({
-      attributes: ['url', 'failText'],
+      attributes: ['url', 'failText', 'status', 'statusText'],
       raw: true,
       where: { uuid: registrationUuid }
     });
