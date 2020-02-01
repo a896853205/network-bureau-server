@@ -58,7 +58,8 @@ export default {
           uuid: enterpriseRegistrationUuid,
           step: 2,
           status: 1,
-          statusText: '未开始'
+          statusText: '未开始',
+          managerUuid: managerProjectUuid
         },
         {
           uuid: enterpriseRegistrationUuid,
