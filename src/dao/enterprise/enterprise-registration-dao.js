@@ -269,7 +269,9 @@ export default {
         'address',
         'enterpriseName',
         'devStartTime',
-        'failText'
+        'failText',
+        'status',
+        'statusText'
       ],
       raw: true,
       where: { uuid: registrationUuid }
