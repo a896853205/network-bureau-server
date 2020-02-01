@@ -114,7 +114,7 @@ export default {
       address,
       devStartTime,
       enterpriseName,
-      status: 1,
+      status: 2,
       statusText: '待审核',
       failText: ''
     });
@@ -147,7 +147,7 @@ export default {
       postalCode,
       mainFunction,
       techIndex,
-      status: 1,
+      status: 2,
       statusText: '待审核',
       failText: ''
     });
@@ -180,7 +180,7 @@ export default {
       securityClassification,
       email,
       unit,
-      status: 1,
+      status: 2,
       statusText: '待审核',
       failText: ''
     });
@@ -202,7 +202,7 @@ export default {
     return await enterpriseRegistrationDao.saveRegistrationApply({
       registrationUuid,
       content,
-      status: 1,
+      status: 2,
       statusText: '待审核',
       failText: ''
     });
@@ -243,7 +243,7 @@ export default {
     return await enterpriseRegistrationDao.saveRegistrationCopyright({
       registrationUuid,
       copyrightUrl: productionUrl,
-      status: 1,
+      status: 2,
       statusText: '待审核',
       failText: ''
     });
@@ -284,7 +284,7 @@ export default {
     return await enterpriseRegistrationDao.saveRegistrationDocument({
       registrationUuid,
       documentUrl: productionUrl,
-      status: 1,
+      status: 2,
       statusText: '待审核',
       failText: ''
     });
@@ -328,7 +328,7 @@ export default {
     return await enterpriseRegistrationDao.saveRegistrationProductDescription({
       registrationUuid,
       productDescriptionUrl: productionUrl,
-      status: 1,
+      status: 2,
       statusText: '待审核',
       failText: ''
     });
@@ -368,7 +368,7 @@ export default {
     return await enterpriseRegistrationDao.saveRegistrationProduct({
       registrationUuid,
       productUrl: productionUrl,
-      status: 1,
+      status: 2,
       statusText: '待审核',
       failText: ''
     });
