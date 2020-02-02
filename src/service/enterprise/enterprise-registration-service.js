@@ -478,5 +478,11 @@ export default {
     }
 
     return false;
+  },
+
+  downloadContract: async registrationUuid => {
+    // 先判断statusManager是不是1
+    // 再用数据库中的数据通过模板生成word
+    // 等到上传盖章pdf上传完成后删除word
   }
 };
