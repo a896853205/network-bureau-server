@@ -478,5 +478,37 @@ export default {
     }
 
     return false;
-  }
+  },
+
+  /**
+   * 查询评测合同的基本信息
+   */
+  selectRegistrationContractManager: async registrationUuid => {
+    return await enterpriseRegistrationDao.selectRegistrationContractManager(
+      registrationUuid
+    );
+  },
+
+  /**
+   * 保存评测合同的基本信息
+   */
+  saveRegistrationContractManager: async ({
+    registrationUuid,
+    contractCode,
+    specimenHaveTime,
+    payment,
+    paymentTime,
+    contractTime
+  }) => {
+    return await enterpriseRegistrationDao.saveRegistrationContractManager({
+      registrationUuid,
+      contractCode,
+      specimenHaveTime,
+      payment,
+      paymentTime,
+      contractTime,
+      managerStatus : 1 
+    });
+  },
+
 };

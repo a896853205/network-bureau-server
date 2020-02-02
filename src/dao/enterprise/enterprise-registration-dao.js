@@ -831,5 +831,51 @@ export default {
         }
       }
     );
+  },
+
+  /**
+   * 查询的评测合同的基本信息
+   */
+  selectRegistrationContractManager: async registrationUuid => {
+    return await enterpriseRegistrationContract.findOne({
+      attributes: [
+        'contractCode',
+        'specimenHaveTime',
+        'payment',
+        'paymentTime',
+        'contractTime',
+        'managerStatus'
+      ],
+      raw: true,
+      where: { uuid: registrationUuid }
+    });
+  },
+
+  /**
+   * 保存评测合同的基本信息
+   */
+  saveRegistrationContractManager: async ({
+    registrationUuid,
+    contractCode,
+    specimenHaveTime,
+    payment,
+    paymentTime,
+    contractTime,
+    managerStatus
+  }) => {
+    return await enterpriseRegistrationContract.update(
+      {
+        contractCode,
+        specimenHaveTime,
+        payment,
+        paymentTime,
+        contractTime,
+        managerStatus
+      },
+      {
+        where: { uuid: registrationUuid },
+        raw: true
+      }
+    );
   }
 };
