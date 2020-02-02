@@ -469,6 +469,10 @@ export default {
               status: 2,
               statusText: '正在进行',
               step: 2
+            }),
+            enterpriseRegistrationDao.saveRegistrationContractManager({
+              registrationUuid,
+              managerStatus: 1
             })
           ]);
 
@@ -484,5 +488,36 @@ export default {
     // 先判断statusManager是不是1
     // 再用数据库中的数据通过模板生成word
     // 等到上传盖章pdf上传完成后删除word
+  },
+
+  /**
+   * 查询评测合同的基本信息
+   */
+  selectRegistrationContractManager: async registrationUuid => {
+    return await enterpriseRegistrationDao.selectRegistrationContractManager(
+      registrationUuid
+    );
+  },
+
+  /**
+   * 保存评测合同的基本信息
+   */
+  saveRegistrationContractManager: async ({
+    registrationUuid,
+    contractCode,
+    specimenHaveTime,
+    payment,
+    paymentTime,
+    contractTime
+  }) => {
+    return await enterpriseRegistrationDao.saveRegistrationContractManager({
+      registrationUuid,
+      contractCode,
+      specimenHaveTime,
+      payment,
+      paymentTime,
+      contractTime,
+      managerStatus: 2
+    });
   }
 };

@@ -370,4 +370,60 @@ router.post('/pushRegistrationProcess', async (ctx, next) => {
   }
 });
 
+/**
+ * 查询经管部门填写评测合同的基本信息
+ */
+router.get('/selectRegistrationContractManager', async (ctx, next) => {
+  const { registrationUuid } = ctx.state.param;
+
+  const data = await enterpriseRegistrationService.selectRegistrationContractManager(
+    registrationUuid
+  );
+
+  if (data) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error
+    });
+  }
+});
+
+/**
+ * 保存经管部门填写评测合同的基本信息
+ */
+router.post('/saveRegistrationContractManager', async (ctx, next) => {
+  const {
+    registrationUuid,
+    contractCode,
+    specimenHaveTime,
+    payment,
+    paymentTime,
+    contractTime
+  } = ctx.state.param;
+
+  const data = await enterpriseRegistrationService.saveRegistrationContractManager({
+    registrationUuid,
+    contractCode,
+    specimenHaveTime,
+    payment,
+    paymentTime,
+    contractTime
+  });
+
+  if (data) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error
+    });
+  }
+});
+
 export default router;
