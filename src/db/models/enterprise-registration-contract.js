@@ -36,8 +36,8 @@ export default db.define('enterprise_registration_contract', {
   managerUrl:Sequelize.TEXT, // 管理员上传文件地址
   managerStatus: Sequelize.BIGINT(3)
   // 1 开始进行
-  // 2 企业填写完成
-  // 3 企业盖章上传完成
+  // 2 管理者填写完成
+  // 3 管理者盖章上传完成
   // 4 企业盖章上传完成
   // 5 审查合格
 });
