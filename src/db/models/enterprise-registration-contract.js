@@ -26,12 +26,14 @@ export default db.define('enterprise_registration_contract', {
   mainFunction: Sequelize.STRING(32), // 主要功能
   techIndex: Sequelize.STRING(32), // 技术指标
   failText: Sequelize.STRING(100), // 错误提示
+  enterpriseUrl:Sequelize.TEXT, // 企业上传文件地址
   // 经营管理部门填写
   contractCode: Sequelize.STRING(32), // 合同编号
   specimenHaveTime: Sequelize.STRING(36), // 样品接受日期
   payment: Sequelize.BIGINT(8), // 评测费金额
   paymentTime: Sequelize.STRING(36), // 交钱时间
   contractTime: Sequelize.STRING(36), // 合同日期
+  managerUrl:Sequelize.TEXT, // 管理员上传文件地址
   managerStatus: Sequelize.BIGINT(3)
   // 1 开始进行
   // 2 企业填写完成
