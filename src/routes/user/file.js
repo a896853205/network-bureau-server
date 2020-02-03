@@ -63,6 +63,31 @@ router.post('/uploadWordFile', upload.single('file'), async (ctx, next) => {
   }
 });
 
+router.post('/uploadPdfFile', upload.single('file'), async (ctx, next) => {
+  const param = ctx.request.file,
+    folderName = ctx.request.body.folderName;
+
+  const data = await fileService.uploadPdfFile(param, folderName);
+
+  if (data === -1) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error,
+      msg: '文件格式必须为pdf'
+    });
+  } else if (data === -2) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error,
+      msg: '文件大小必须小于10MB'
+    });
+  } else {
+    ctx.body = new Res({
+      data,
+      status: RESPONSE_CODE.success,
+      msg: '文件上传成功'
+    });
+  }
+});
+
 router.post('/uploadZipFile', upload.single('file'), async (ctx, next) => {
   const param = ctx.request.file,
     folderName = ctx.request.body.folderName;

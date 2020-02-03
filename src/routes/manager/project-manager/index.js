@@ -426,4 +426,49 @@ router.post('/saveRegistrationContractManager', async (ctx, next) => {
   }
 });
 
+/**
+ * 查询评测合同甲方上传pdf合同的信息
+ */
+router.get('/getManagerContractUrl', async (ctx, next) => {
+  const { registrationUuid } = ctx.state.param;
+
+  const data = await enterpriseRegistrationService.selectManagerContractUrl(
+    registrationUuid
+  );
+
+  if (data) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error
+    });
+  }
+});
+
+/**
+ * 保存评测合同甲方上传pdf合同的信息
+ */
+router.post('/saveManagerContractUrl', async (ctx, next) => {
+  const { registrationUuid, managerUrl } = ctx.state.param;
+
+  const data = await enterpriseRegistrationService.saveManagerContractUrl({
+    registrationUuid,
+    managerUrl
+  });
+
+  if (data) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error
+    });
+  }
+});
+
 export default router;

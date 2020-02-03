@@ -877,5 +877,37 @@ export default {
         raw: true
       }
     );
+  },
+
+   /**
+   * 查询的评测合同的基本信息
+   */
+  selectManagerContractUrl: async registrationUuid => {
+    return await enterpriseRegistrationContract.findOne({
+      attributes: [
+        'managerUrl'
+      ],
+      raw: true,
+      where: { uuid: registrationUuid }
+    });
+  },
+
+  /**
+   * 保存评测合同的基本信息
+   */
+  saveManagerContractUrl: async ({
+    registrationUuid,
+    managerUrl
+  }) => {
+    return await enterpriseRegistrationContract.update(
+      {
+        managerUrl
+      },
+      {
+        where: { uuid: registrationUuid },
+        raw: true
+      }
+    );
   }
+
 };

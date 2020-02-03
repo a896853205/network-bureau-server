@@ -519,5 +519,43 @@ export default {
       contractTime,
       managerStatus: 2
     });
+  },
+
+  /**
+   * 获取产品介质的信息
+   */
+  selectManagerContractUrl: async registrationUuid => {
+    return await enterpriseRegistrationDao.selectManagerContractUrl(
+      registrationUuid
+    );
+  },
+
+  /**
+   * 保存评测合同甲方上传pdf合同的信息
+   */
+  saveManagerContractUrl: async ({ registrationUuid, managerUrl }) => {
+    // 将temp的文件copy到production中
+    const tempUrl = managerUrl,
+      productionUrl = managerUrl.replace('temp', 'production');
+
+    try {
+      const contract = await enterpriseRegistrationDao.selectManagerContractUrl(
+        registrationUuid
+      );
+
+      if (contract && contract.url) {
+        await client.delete(contract.url);
+      }
+
+      await client.copy(productionUrl, tempUrl);
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+
+    return await enterpriseRegistrationDao.saveRegistrationContractManager({
+      registrationUuid,
+      managerStatus: 3
+    })
   }
 };
