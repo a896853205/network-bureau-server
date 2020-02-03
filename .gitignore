@@ -33,4 +33,7 @@ npm-debug.log
 .DS_Store
 
 # 密码
-src/keys
+src/keys/*
+
+# 合同文件
+src/contract/*

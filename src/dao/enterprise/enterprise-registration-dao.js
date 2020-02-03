@@ -33,7 +33,8 @@ export default {
   selectRegistrationByRegistrationUuid: async registrationUuid => {
     return await enterpriseRegistration.findOne({
       where: { uuid: registrationUuid },
-      attributes: ['uuid', 'currentStep', 'name']
+      attributes: ['uuid', 'currentStep', 'name'],
+      raw: true
     });
   },
 

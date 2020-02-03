@@ -13,6 +13,7 @@
     "@koa/multer": "F:\\laboratory\\network-bureau\\network-bureau-server>\"C:\\Program Files\\nodejs\\\\node.exe\"  \"C:\\Program Files\\nodejs\\\\node_modules\\npm\\bin\\npm-cli.js\" config get save-prefix \r\n^2.0.2",
     "ali-oss": "F:\\laboratory\\network-bureau\\network-bureau-server>\"C:\\Program Files\\nodejs\\\\node.exe\"  \"C:\\Program Files\\nodejs\\\\node_modules\\npm\\bin\\npm-cli.js\" config get save-prefix \r\n^6.4.0",
     "debug": "^4.1.1",
+    "docxtemplater": "F:\\laboratory\\network-bureau\\network-bureau-server>\"C:\\Program Files\\nodejs\\\\node.exe\"  \"C:\\Program Files\\nodejs\\\\node_modules\\npm\\bin\\npm-cli.js\" config get save-prefix \r\n^3.16.8",
     "jsonwebtoken": "^8.5.1",
     "koa": "^2.7.0",
     "koa-bodyparser": "^4.2.1",
@@ -25,6 +26,7 @@
     "koa2-cors": "^2.0.6",
     "multer": "F:\\laboratory\\network-bureau\\network-bureau-server>\"C:\\Program Files\\nodejs\\\\node.exe\"  \"C:\\Program Files\\nodejs\\\\node_modules\\npm\\bin\\npm-cli.js\" config get save-prefix \r\n^1.4.2",
     "mysql2": "^2.0.1",
+    "pizzip": "F:\\laboratory\\network-bureau\\network-bureau-server>\"C:\\Program Files\\nodejs\\\\node.exe\"  \"C:\\Program Files\\nodejs\\\\node_modules\\npm\\bin\\npm-cli.js\" config get save-prefix \r\n^3.0.6",
     "sequelize": "^5.21.2",
     "uuid": "^3.3.3"
   },
