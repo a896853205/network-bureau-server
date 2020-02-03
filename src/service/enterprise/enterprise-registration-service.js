@@ -485,9 +485,22 @@ export default {
   },
 
   downloadContract: async registrationUuid => {
-    // 先判断statusManager是不是1
+    // 先判断statusManager是不是2
     // 再用数据库中的数据通过模板生成word
     // 等到上传盖章pdf上传完成后删除word
+    const statusManager = await enterpriseRegistrationDao.selectRegistrationContractManager(
+      registrationUuid
+    );
+
+    if (statusManager && statusManager.managerStatus === 2) {
+      // 查询contract内容
+      await enterpriseRegistrationDao.selectRegistrationContractByRegistrationUuid(
+        registrationUuid
+      );
+
+      return true;
+    }
+    return false;
   },
 
   /**
