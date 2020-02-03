@@ -557,5 +557,5 @@ export default {
       registrationUuid,
       managerStatus: 3
     })
-  }
+  },
 };
