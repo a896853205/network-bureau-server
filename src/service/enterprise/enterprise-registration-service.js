@@ -540,7 +540,7 @@ export default {
 
     try {
       const contract = await enterpriseRegistrationDao.selectManagerContractUrl(
-        registrationUuid
+        registrationUuid,
       );
 
       if (contract && contract.url) {
@@ -553,8 +553,9 @@ export default {
       return false;
     }
 
-    return await enterpriseRegistrationDao.saveRegistrationContractManager({
+    return await enterpriseRegistrationDao.saveManagerContractUrl({
       registrationUuid,
+      managerUrl: productionUrl,
       managerStatus: 3
     })
   },

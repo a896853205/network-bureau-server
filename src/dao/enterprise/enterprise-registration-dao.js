@@ -897,11 +897,13 @@ export default {
    */
   saveManagerContractUrl: async ({
     registrationUuid,
-    managerUrl
+    managerUrl,
+    managerStatus
   }) => {
     return await enterpriseRegistrationContract.update(
       {
-        managerUrl
+        managerUrl,
+        managerStatus
       },
       {
         where: { uuid: registrationUuid },
