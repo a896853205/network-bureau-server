@@ -636,8 +636,8 @@ export default {
         registrationUuid,
       );
 
-      if (contract && contract.url) {
-        await client.delete(contract.url);
+      if (contract && contract.managerUrl) {
+        await client.delete(contract.managerUrl);
       }
 
       await client.copy(productionUrl, tempUrl);
