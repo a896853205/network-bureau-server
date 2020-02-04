@@ -10,6 +10,9 @@ import Docxtemplater from 'docxtemplater';
 import fs from 'fs';
 import path from 'path';
 
+// service
+import fileService from '../../service/user/file-service';
+
 export default {
   /**
    * 根据名字查询
@@ -540,17 +543,6 @@ export default {
       // 设置模板数据
       doc.setData(data);
 
-      // doc.setData({
-      //   amount: contract.amount,
-      //   fax: contract.fax,
-      //   postalCode: contract.postalCode,
-      //   mainFunction: contract.mainFunction,
-      //   techIndex: contract.techIndex,
-      //   ...basic,
-      //   ...registration,
-      //   ...contractManager
-      // });
-
       try {
         // render the document (replace all occurences of {first_name} by John, {last_name} by Doe, ...)
         doc.render();
@@ -586,13 +578,7 @@ export default {
 
       let buf = doc.getZip().generate({ type: 'nodebuffer' });
 
-      // buf is a nodejs buffer, you can either write it to a file or do anything else with it.
-      fs.writeFileSync(
-        path.resolve(__dirname, `../../contract/${registrationUuid}.docx`),
-        buf
-      );
-
-      return true;
+      return await fileService.uploadDownloadBufFile(buf, 'registration');
     }
     return false;
   },

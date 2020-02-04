@@ -9,6 +9,13 @@ import enterpriseUserService from '../../../service/enterprise/enterprise-user-s
 import verifyAuth from '../../../middle/verify-auth';
 import { AUTHORITY } from '../../../constants/role-constants';
 
+// 路径
+import path from 'path';
+import fs from 'fs';
+
+// 文件发送
+import send from 'koa-send';
+
 const PREFIX = '/projectManager',
   router = new Router({
     prefix: PREFIX

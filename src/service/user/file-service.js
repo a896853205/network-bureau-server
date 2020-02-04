@@ -125,6 +125,17 @@ export default {
     return fileUrl;
   },
 
+  uploadDownloadBufFile: async (fileBuf, folderName) => {
+    // 上传到oss
+    const fileUuid = uuid.v1(),
+      fileUrl = `temp/${folderName}/${fileUuid}.docx`;
+
+    // 上传文件
+    await client.put(fileUrl, fileBuf);
+
+    return await client.signatureUrl(fileUrl);
+  },
+
   /**
    * 获取文件url
    */
