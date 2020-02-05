@@ -151,7 +151,7 @@ router.get('/querySysRegistrationStep', async (ctx, next) => {
 /**
  * 获取管理员信息
  */
-router.get('/getManagerInfo', async (ctx, next) => {
+router.get('/selectManagerInfo', async (ctx, next) => {
   const { managerUuid } = ctx.state.param;
 
   const data = await managerUserService.getManagerByManagerUuid(managerUuid);
@@ -171,7 +171,7 @@ router.get('/getManagerInfo', async (ctx, next) => {
 /**
  * 查询登记测试的基本信息
  */
-router.get('/getRegistrationBasic', async (ctx, next) => {
+router.get('/selectRegistrationBasic', async (ctx, next) => {
   const { registrationUuid } = ctx.state.param;
 
   const data = await enterpriseRegistrationService.selectRegistrationBasicByRegistrationUuid(
@@ -231,7 +231,7 @@ router.post('/saveRegistrationBasic', async (ctx, next) => {
 /**
  * 查询评测合同的基本信息
  */
-router.get('/getRegistrationContract', async (ctx, next) => {
+router.get('/selectRegistrationContract', async (ctx, next) => {
   const { registrationUuid } = ctx.state.param;
 
   const data = await enterpriseRegistrationService.selectRegistrationContractByRegistrationUuid(
@@ -287,7 +287,7 @@ router.post('/saveRegistrationContract', async (ctx, next) => {
 /**
  * 查询样品登记表的基本信息
  */
-router.get('/getRegistrationSpecimen', async (ctx, next) => {
+router.get('/selectRegistrationSpecimen', async (ctx, next) => {
   const { registrationUuid } = ctx.state.param;
 
   const data = await enterpriseRegistrationService.selectRegistrationSpecimenByRegistrationUuid(
@@ -343,7 +343,7 @@ router.post('/saveRegistrationSpecimen', async (ctx, next) => {
 /**
  * 查询现场测试申请表的基本信息
  */
-router.get('/getRegistrationApply', async (ctx, next) => {
+router.get('/selectRegistrationApply', async (ctx, next) => {
   const { registrationUuid } = ctx.state.param;
 
   const data = await enterpriseRegistrationService.selectRegistrationApplyByRegistrationUuid(
@@ -388,10 +388,10 @@ router.post('/saveRegistrationApply', async (ctx, next) => {
 /**
  * 获取软件著作权的信息
  */
-router.get('/getRegistrationCopyright', async (ctx, next) => {
+router.get('/selectRegistrationCopyright', async (ctx, next) => {
   const { registrationUuid } = ctx.state.param;
 
-  const data = await enterpriseRegistrationService.getRegistrationCopyright({
+  const data = await enterpriseRegistrationService.selectRegistrationCopyright({
     registrationUuid
   });
 
@@ -433,10 +433,10 @@ router.post('/saveRegistrationCopyright', async (ctx, next) => {
 /**
  * 获取用户文档集的信息
  */
-router.get('/getRegistrationDocument', async (ctx, next) => {
+router.get('/selectRegistrationDocument', async (ctx, next) => {
   const { registrationUuid } = ctx.state.param;
 
-  const data = await enterpriseRegistrationService.getRegistrationDocument({
+  const data = await enterpriseRegistrationService.selectRegistrationDocument({
     registrationUuid
   });
 
@@ -478,10 +478,10 @@ router.post('/saveRegistrationDocument', async (ctx, next) => {
 /**
  * 获取产品说明的信息
  */
-router.get('/getRegistrationProductDescription', async (ctx, next) => {
+router.get('/selectRegistrationProductDescription', async (ctx, next) => {
   const { registrationUuid } = ctx.state.param;
 
-  const data = await enterpriseRegistrationService.getRegistrationProductDescription({
+  const data = await enterpriseRegistrationService.selectRegistrationProductDescription({
     registrationUuid
   });
 
@@ -523,10 +523,10 @@ router.post('/saveRegistrationProductDescription', async (ctx, next) => {
 /**
  * 获取产品介质的信息
  */
-router.get('/getRegistrationProduct', async (ctx, next) => {
+router.get('/selectRegistrationProduct', async (ctx, next) => {
   const { registrationUuid } = ctx.state.param;
 
-  const data = await enterpriseRegistrationService.getRegistrationProduct({
+  const data = await enterpriseRegistrationService.selectRegistrationProduct({
     registrationUuid
   });
 
@@ -568,7 +568,7 @@ router.post('/saveRegistrationProduct', async (ctx, next) => {
 /**
  * 查询经管部门填写评测合同的基本信息
  */
-router.get('/getContractManager', async (ctx, next) => {
+router.get('/selectContractManager', async (ctx, next) => {
   const { registrationUuid } = ctx.state.param;
 
   const data = await enterpriseRegistrationService.selectRegistrationContractManager(

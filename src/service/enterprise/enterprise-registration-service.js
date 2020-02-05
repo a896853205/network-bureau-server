@@ -220,7 +220,7 @@ export default {
   /**
    * 获取软件著作权的信息
    */
-  getRegistrationCopyright: async ({ registrationUuid }) => {
+  selectRegistrationCopyright: async ({ registrationUuid }) => {
     return await enterpriseRegistrationDao.selectRegistrationCopyrightByRegistrationUuid(
       registrationUuid
     );
@@ -261,7 +261,7 @@ export default {
   /**
    * 获取用户文档集的信息
    */
-  getRegistrationDocument: async ({ registrationUuid }) => {
+  selectRegistrationDocument: async ({ registrationUuid }) => {
     return await enterpriseRegistrationDao.selectRegistrationDocumentByRegistrationUuid(
       registrationUuid
     );
@@ -302,7 +302,7 @@ export default {
   /**
    * 获取产品说明的信息
    */
-  getRegistrationProductDescription: async ({ registrationUuid }) => {
+  selectRegistrationProductDescription: async ({ registrationUuid }) => {
     return await enterpriseRegistrationDao.selectRegistrationProductDescriptionByRegistrationUuid(
       registrationUuid
     );
@@ -346,7 +346,7 @@ export default {
   /**
    * 获取产品介质的信息
    */
-  getRegistrationProduct: async ({ registrationUuid }) => {
+  selectRegistrationProduct: async ({ registrationUuid }) => {
     return await enterpriseRegistrationDao.selectRegistrationProductByRegistrationUuid(
       registrationUuid
     );
