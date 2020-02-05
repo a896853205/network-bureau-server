@@ -25,6 +25,7 @@
     "koa-send": "F:\\laboratory\\network-bureau\\network-bureau-server>\"C:\\Program Files\\nodejs\\\\node.exe\"  \"C:\\Program Files\\nodejs\\\\node_modules\\npm\\bin\\npm-cli.js\" config get save-prefix \r\n^5.0.0",
     "koa-static": "^5.0.0",
     "koa2-cors": "^2.0.6",
+    "moment": "F:\\laboratory\\network-bureau\\network-bureau-server>\"C:\\Program Files\\nodejs\\\\node.exe\"  \"C:\\Program Files\\nodejs\\\\node_modules\\npm\\bin\\npm-cli.js\" config get save-prefix \r\n^2.24.0",
     "multer": "F:\\laboratory\\network-bureau\\network-bureau-server>\"C:\\Program Files\\nodejs\\\\node.exe\"  \"C:\\Program Files\\nodejs\\\\node_modules\\npm\\bin\\npm-cli.js\" config get save-prefix \r\n^1.4.2",
     "mysql2": "^2.0.1",
     "pizzip": "F:\\laboratory\\network-bureau\\network-bureau-server>\"C:\\Program Files\\nodejs\\\\node.exe\"  \"C:\\Program Files\\nodejs\\\\node_modules\\npm\\bin\\npm-cli.js\" config get save-prefix \r\n^3.0.6",

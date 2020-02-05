@@ -10,6 +10,9 @@ import Docxtemplater from 'docxtemplater';
 import fs from 'fs';
 import path from 'path';
 
+// 时间
+import moment from 'moment';
+
 // service
 import fileService from '../../service/user/file-service';
 
@@ -523,9 +526,7 @@ export default {
         )
       ]);
 
-      console.log(contract, basic, registration, contractManager);
-
-      //Load the docx file as a binary
+      // Load the docx file as a binary
       let content = fs.readFileSync(
         path.resolve(__dirname, '../../template/contract.docx'),
         'binary'
@@ -540,6 +541,27 @@ export default {
 
       Object.assign(data, contract, basic, registration, contractManager);
 
+      // 数据整理
+      if (!data.fax) {
+        data.fax = '';
+      }
+
+      moment.locale('zh-cn');
+      if (data.devStartTime) {
+        data.devStartTime = moment(data.devStartTime).format('YYYY/MM/DD');
+      }
+
+      if (data.specimenHaveTime) {
+        data.specimenHaveTime = moment(data.specimenHaveTime).format('LL');
+      }
+
+      if (data.paymentTime) {
+        data.paymentTime = moment(data.paymentTime).format('LL');
+      }
+
+      if (data.contractTime) {
+        data.contractTime = moment(data.contractTime).format('LL');
+      }
       // 设置模板数据
       doc.setData(data);
 
@@ -633,7 +655,7 @@ export default {
 
     try {
       const contract = await enterpriseRegistrationDao.selectManagerContractUrl(
-        registrationUuid,
+        registrationUuid
       );
 
       if (contract && contract.managerUrl) {
