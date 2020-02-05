@@ -881,7 +881,7 @@ export default {
   },
 
    /**
-   * 查询的评测合同的基本信息
+   * 查询的评测合同的甲方基本信息
    */
   selectManagerContractUrl: async registrationUuid => {
     return await enterpriseRegistrationContract.findOne({
@@ -894,7 +894,7 @@ export default {
   },
 
   /**
-   * 保存评测合同的基本信息
+   * 保存评测合同的甲方基本信息
    */
   saveManagerContractUrl: async ({
     registrationUuid,
@@ -904,6 +904,39 @@ export default {
     return await enterpriseRegistrationContract.update(
       {
         managerUrl,
+        managerStatus
+      },
+      {
+        where: { uuid: registrationUuid },
+        raw: true
+      }
+    );
+  },
+
+/**
+   * 查询的评测合同的乙方基本信息
+   */
+  selectEnterpriseContractUrl: async registrationUuid => {
+    return await enterpriseRegistrationContract.findOne({
+      attributes: [
+        'enterpriseUrl'
+      ],
+      raw: true,
+      where: { uuid: registrationUuid }
+    });
+  },
+
+  /**
+   * 保存评测合同的乙方基本信息
+   */
+  saveEnterpriseContractUrl: async ({
+    registrationUuid,
+    enterpriseUrl,
+    managerStatus
+  }) => {
+    return await enterpriseRegistrationContract.update(
+      {
+        enterpriseUrl,
         managerStatus
       },
       {

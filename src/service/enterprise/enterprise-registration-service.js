@@ -615,7 +615,7 @@ export default {
   },
 
   /**
-   * 获取产品介质的信息
+   * 获取甲方上传的合同url的信息
    */
   selectManagerContractUrl: async registrationUuid => {
     return await enterpriseRegistrationDao.selectManagerContractUrl(
@@ -650,6 +650,45 @@ export default {
       registrationUuid,
       managerUrl: productionUrl,
       managerStatus: 3
+    });
+  },
+
+  /**
+   * 获取乙方上传的合同url的信息
+   */
+  selectEnterpriseContractUrl: async registrationUuid => {
+    return await enterpriseRegistrationDao.selectEnterpriseContractUrl(
+      registrationUuid
+    );
+  },
+
+/**
+   * 保存评测合同乙方上传pdf合同的信息
+   */
+  saveEnterpriseContractUrl: async ({ registrationUuid, enterpriseUrl }) => {
+    // 将temp的文件copy到production中
+    const tempUrl = enterpriseUrl,
+      productionUrl = enterpriseUrl.replace('temp', 'production');
+
+    try {
+      const contract = await enterpriseRegistrationDao.selectEnterpriseContractUrl(
+        registrationUuid,
+      );
+
+      if (contract && contract.enterpriseUrl) {
+        await client.delete(contract.enterpriseUrl);
+      }
+
+      await client.copy(productionUrl, tempUrl);
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+
+    return await enterpriseRegistrationDao.saveEnterpriseContractUrl({
+      registrationUuid,
+      enterpriseUrl: productionUrl,
+      managerStatus: 4
     });
   }
 };
