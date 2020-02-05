@@ -491,7 +491,36 @@ export default {
           return true;
         }
       } else if (registration.currentStep === 2) {
+        const contract = enterpriseRegistrationDao.selectRegistrationContractManager(
+          registrationUuid
+        );
         // 第二步电子签合同
+        if (contract.managerStatus === 5) {
+          // 到了最后一步就可以
+          // 下一步的人员先把自己配置上,
+          // 等第三步的第一步配置上人了,企业那边才显示具体交钱信息
+          // 改进度和steps表
+          await Promise.all([
+            enterpriseRegistrationDao.updateRegistrationCurrentStep({
+              registrationUuid,
+              currentStep: 3
+            }),
+            enterpriseRegistrationDao.updateRegistrationStep({
+              registrationUuid,
+              status: 3,
+              statusText: '已完成',
+              step: 2
+            }),
+            enterpriseRegistrationDao.updateRegistrationStep({
+              registrationUuid,
+              status: 2,
+              statusText: '正在进行',
+              step: 3
+            })
+          ]);
+
+          return true;
+        }
       }
     }
 
@@ -686,7 +715,7 @@ export default {
     );
   },
 
-/**
+  /**
    * 保存评测合同乙方上传pdf合同的信息
    */
   saveEnterpriseContractUrl: async ({ registrationUuid, enterpriseUrl }) => {
@@ -696,7 +725,7 @@ export default {
 
     try {
       const contract = await enterpriseRegistrationDao.selectEnterpriseContractUrl(
-        registrationUuid,
+        registrationUuid
       );
 
       if (contract && contract.enterpriseUrl) {
