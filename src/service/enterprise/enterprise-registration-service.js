@@ -490,6 +490,8 @@ export default {
 
           return true;
         }
+      } else if (registration.currentStep === 2) {
+        // 第二步电子签合同
       }
     }
 
