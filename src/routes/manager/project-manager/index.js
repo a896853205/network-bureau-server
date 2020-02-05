@@ -270,7 +270,7 @@ router.post('/setRegistrationDetailStatus', async (ctx, next) => {
 router.get('/selectRegistrationProductDescription', async (ctx, next) => {
   const { registrationUuid } = ctx.state.param;
 
-  const data = await enterpriseRegistrationService.getRegistrationProductDescription(
+  const data = await enterpriseRegistrationService.selectRegistrationProductDescription(
     {
       registrationUuid
     }
@@ -294,7 +294,7 @@ router.get('/selectRegistrationProductDescription', async (ctx, next) => {
 router.get('/selectRegistrationProduct', async (ctx, next) => {
   const { registrationUuid } = ctx.state.param;
 
-  const data = await enterpriseRegistrationService.getRegistrationProduct({
+  const data = await enterpriseRegistrationService.selectRegistrationProduct({
     registrationUuid
   });
 
@@ -316,7 +316,7 @@ router.get('/selectRegistrationProduct', async (ctx, next) => {
 router.get('/selectRegistrationDocument', async (ctx, next) => {
   const { registrationUuid } = ctx.state.param;
 
-  const data = await enterpriseRegistrationService.getRegistrationDocument({
+  const data = await enterpriseRegistrationService.selectRegistrationDocument({
     registrationUuid
   });
 
@@ -338,7 +338,7 @@ router.get('/selectRegistrationDocument', async (ctx, next) => {
 router.get('/selectRegistrationCopyright', async (ctx, next) => {
   const { registrationUuid } = ctx.state.param;
 
-  const data = await enterpriseRegistrationService.getRegistrationCopyright({
+  const data = await enterpriseRegistrationService.selectRegistrationCopyright({
     registrationUuid
   });
 
@@ -460,7 +460,7 @@ router.get('/downloadContractWord', async ctx => {
 /**
  * 查询评测合同甲方上传pdf合同的信息
  */
-router.get('/getManagerContractUrl', async (ctx, next) => {
+router.get('/selectManagerContractUrl', async (ctx, next) => {
   const { registrationUuid } = ctx.state.param;
 
   const data = await enterpriseRegistrationService.selectManagerContractUrl(
