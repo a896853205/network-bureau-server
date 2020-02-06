@@ -743,5 +743,22 @@ export default {
       enterpriseUrl: productionUrl,
       managerStatus: 4
     });
+  },
+
+  /**
+   * 设置第二步合同签署步骤
+   */
+  setContractManagerStatus: async ({
+    registrationUuid,
+    managerStatus,
+    failText
+  }) => {
+    
+    return await enterpriseRegistrationDao.setContractManagerStatus({
+      registrationUuid,
+      managerStatus,
+      failText,
+    });
   }
+
 };

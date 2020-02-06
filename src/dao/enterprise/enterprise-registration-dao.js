@@ -849,7 +849,8 @@ export default {
         'payment',
         'paymentTime',
         'contractTime',
-        'managerStatus'
+        'managerStatus',
+        'failText'
       ],
       raw: true,
       where: { uuid: registrationUuid }
@@ -884,14 +885,12 @@ export default {
     );
   },
 
-   /**
+  /**
    * 查询的评测合同的甲方基本信息
    */
   selectManagerContractUrl: async registrationUuid => {
     return await enterpriseRegistrationContract.findOne({
-      attributes: [
-        'managerUrl'
-      ],
+      attributes: ['managerUrl'],
       raw: true,
       where: { uuid: registrationUuid }
     });
@@ -917,14 +916,12 @@ export default {
     );
   },
 
-/**
+  /**
    * 查询的评测合同的乙方基本信息
    */
   selectEnterpriseContractUrl: async registrationUuid => {
     return await enterpriseRegistrationContract.findOne({
-      attributes: [
-        'enterpriseUrl'
-      ],
+      attributes: ['enterpriseUrl'],
       raw: true,
       where: { uuid: registrationUuid }
     });
@@ -948,6 +945,21 @@ export default {
         raw: true
       }
     );
-  }
+  },
 
+  /**
+   * 设置第二步合同签署步骤
+   */
+  setContractManagerStatus: async ({
+    registrationUuid,
+    managerStatus,
+    failText
+  }) => {
+    return await enterpriseRegistrationContract.update(
+      { managerStatus, failText },
+      {
+        where: { uuid: registrationUuid }
+      }
+    );
+  }
 };

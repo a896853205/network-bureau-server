@@ -502,4 +502,73 @@ router.post('/saveManagerContractUrl', async (ctx, next) => {
   }
 });
 
+/**
+ * 查询评测合同乙方上传pdf合同的信息
+ */
+router.get('/selectEnterpriseContractUrl', async (ctx, next) => {
+  const { registrationUuid } = ctx.state.param;
+
+  const data = await enterpriseRegistrationService.selectEnterpriseContractUrl(
+    registrationUuid
+  );
+
+  if (data) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error
+    });
+  }
+});
+
+/**
+ * 查询第二步合同签署步骤
+ */
+router.get('/selectContractManagerStatus', async (ctx, next) => {
+  const { registrationUuid } = ctx.state.param;
+
+  const data = await enterpriseRegistrationService.selectContractManagerStatus(
+    registrationUuid
+  );
+
+  if (data) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error
+    });
+  }
+});
+
+/**
+ * 设置第二步合同签署步骤
+ */
+router.post('/setContractManagerStatus', async (ctx, next) => {
+  const { registrationUuid, failText, managerStatus } = ctx.state.param;
+
+  const res = await enterpriseRegistrationService.setContractManagerStatus({
+    registrationUuid,
+    failText,
+    managerStatus
+  });
+
+  if (res) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data: res
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error,
+      msg: '查询失败'
+    });
+  }
+});
+
 export default router;
