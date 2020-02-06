@@ -933,12 +933,14 @@ export default {
   saveEnterpriseContractUrl: async ({
     registrationUuid,
     enterpriseUrl,
-    managerStatus
+    managerStatus,
+    failText
   }) => {
     return await enterpriseRegistrationContract.update(
       {
         enterpriseUrl,
-        managerStatus
+        managerStatus,
+        failText
       },
       {
         where: { uuid: registrationUuid },

@@ -491,7 +491,7 @@ export default {
           return true;
         }
       } else if (registration.currentStep === 2) {
-        const contract = enterpriseRegistrationDao.selectRegistrationContractManager(
+        const contract = await enterpriseRegistrationDao.selectRegistrationContractManager(
           registrationUuid
         );
         // 第二步电子签合同
@@ -741,7 +741,8 @@ export default {
     return await enterpriseRegistrationDao.saveEnterpriseContractUrl({
       registrationUuid,
       enterpriseUrl: productionUrl,
-      managerStatus: 4
+      managerStatus: 4,
+      failText: ''
     });
   },
 
