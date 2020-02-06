@@ -1,4 +1,6 @@
+// dao
 import enterpriseRegistrationDao from '../../dao/enterprise/enterprise-registration-dao';
+import enterpriseRegistrationApplyDao from '../../dao/enterprise/enterprise-registration-apply-dao';
 import managerUserDao from '../../dao/manager/manager-user-dao';
 
 // oss
@@ -202,7 +204,7 @@ export default {
    * 查询现场测试申请表的基本信息
    */
   selectRegistrationApplyByRegistrationUuid: async registrationUuid => {
-    return await enterpriseRegistrationDao.selectRegistrationApplyByRegistrationUuid(
+    return await enterpriseRegistrationApplyDao.selectRegistrationApplyByRegistrationUuid(
       registrationUuid
     );
   },
@@ -211,7 +213,7 @@ export default {
    * 保存现场测试申请表的基本信息
    */
   saveRegistrationApply: async ({ registrationUuid, content }) => {
-    return await enterpriseRegistrationDao.saveRegistrationApply({
+    return await enterpriseRegistrationApplyDao.saveRegistrationApply({
       registrationUuid,
       content,
       status: 2,
@@ -407,7 +409,7 @@ export default {
       contract: enterpriseRegistrationDao.setContractStatus,
       product: enterpriseRegistrationDao.setProductStatus,
       productDescription: enterpriseRegistrationDao.setProductDescriptionStatus,
-      apply: enterpriseRegistrationDao.setApplyStatus,
+      apply: enterpriseRegistrationApplyDao.setApplyStatus,
       copyright: enterpriseRegistrationDao.setCopyrightStatus,
       document: enterpriseRegistrationDao.setDocumentStatus,
       specimen: enterpriseRegistrationDao.setSpecimenStatus
@@ -754,12 +756,10 @@ export default {
     managerStatus,
     failText
   }) => {
-    
     return await enterpriseRegistrationDao.setContractManagerStatus({
       registrationUuid,
       managerStatus,
-      failText,
+      failText
     });
   }
-
 };
