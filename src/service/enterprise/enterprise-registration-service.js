@@ -752,12 +752,12 @@ export default {
   setContractManagerStatus: async ({
     registrationUuid,
     managerStatus,
-    failText
+    managerFailText
   }) => {
     return await enterpriseRegistrationContractDao.setContractManagerStatus({
       registrationUuid,
       managerStatus,
-      failText
+      managerFailText
     });
   },
 
