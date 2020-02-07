@@ -687,7 +687,9 @@ export default {
         'paymentTime',
         'contractTime',
         'managerStatus',
-        'failText'
+        'failText',
+        'managerUrl',
+        'enterpriseUrl'
       ],
       raw: true,
       where: { uuid: registrationUuid }
