@@ -483,13 +483,13 @@ export default {
               registrationUuid,
               currentStep: 2
             }),
-            enterpriseRegistrationDao.updateRegistrationStep({
+            enterpriseRegistrationStepDao.updateRegistrationStep({
               registrationUuid,
               status: 3,
               statusText: '已完成',
               step: 1
             }),
-            enterpriseRegistrationDao.updateRegistrationStep({
+            enterpriseRegistrationStepDao.updateRegistrationStep({
               registrationUuid,
               status: 2,
               statusText: '正在进行',
@@ -518,13 +518,13 @@ export default {
               registrationUuid,
               currentStep: 3
             }),
-            enterpriseRegistrationDao.updateRegistrationStep({
+            enterpriseRegistrationStepDao.updateRegistrationStep({
               registrationUuid,
               status: 3,
               statusText: '已完成',
               step: 2
             }),
-            enterpriseRegistrationDao.updateRegistrationStep({
+            enterpriseRegistrationStepDao.updateRegistrationStep({
               registrationUuid,
               status: 2,
               statusText: '正在进行',

@@ -10,5 +10,28 @@ export default {
       attributes: ['step', 'status', 'statusText', 'managerUuid'],
       raw: true
     });
+  },
+
+  /**
+   * 更新登记测试的步骤
+   */
+  updateRegistrationStep: async ({
+    registrationUuid,
+    status,
+    statusText,
+    step
+  }) => {
+    return await enterpriseRegistrationStep.update(
+      {
+        status,
+        statusText
+      },
+      {
+        where: {
+          uuid: registrationUuid,
+          step
+        }
+      }
+    );
   }
 };
