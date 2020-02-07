@@ -41,4 +41,5 @@ export default db.define('enterprise_registration_contract', {
   // 3 管理者盖章上传完成
   // 4 企业盖章上传完成
   // 5 审查合格
+  // 6 审查不合格
 });

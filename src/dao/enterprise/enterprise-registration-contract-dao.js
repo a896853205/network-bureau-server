@@ -120,11 +120,11 @@ export default {
   },
 
   /**
-   * 查询的评测合同的甲方基本信息
+   * 查询的评测合同的两个url
    */
-  selectManagerContractUrl: async registrationUuid => {
+  selectContractUrl: async registrationUuid => {
     return await enterpriseRegistrationContract.findOne({
-      attributes: ['managerUrl'],
+      attributes: ['managerUrl', 'enterpriseUrl'],
       raw: true,
       where: { uuid: registrationUuid }
     });
@@ -148,17 +148,6 @@ export default {
         raw: true
       }
     );
-  },
-
-  /**
-   * 查询的评测合同的乙方基本信息
-   */
-  selectEnterpriseContractUrl: async registrationUuid => {
-    return await enterpriseRegistrationContract.findOne({
-      attributes: ['enterpriseUrl'],
-      raw: true,
-      where: { uuid: registrationUuid }
-    });
   },
 
   /**
@@ -197,5 +186,16 @@ export default {
         where: { uuid: registrationUuid }
       }
     );
+  },
+
+  /**
+   * 查询合同的状态值和错误文字
+   */
+  selectContractManagerStatus: async ({ registrationUuid }) => {
+    return await enterpriseRegistrationContract.findOne({
+      attributes: ['managerStatus', 'managerFailText'],
+      raw: true,
+      where: { uuid: registrationUuid }
+    });
   }
 };

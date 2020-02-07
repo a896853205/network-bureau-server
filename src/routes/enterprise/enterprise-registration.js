@@ -481,9 +481,11 @@ router.post('/saveRegistrationDocument', async (ctx, next) => {
 router.get('/selectRegistrationProductDescription', async (ctx, next) => {
   const { registrationUuid } = ctx.state.param;
 
-  const data = await enterpriseRegistrationService.selectRegistrationProductDescription({
-    registrationUuid
-  });
+  const data = await enterpriseRegistrationService.selectRegistrationProductDescription(
+    {
+      registrationUuid
+    }
+  );
 
   if (data) {
     ctx.body = new Res({
@@ -503,10 +505,12 @@ router.get('/selectRegistrationProductDescription', async (ctx, next) => {
 router.post('/saveRegistrationProductDescription', async (ctx, next) => {
   const { registrationUuid, productDescriptionUrl } = ctx.state.param;
 
-  const data = await enterpriseRegistrationService.saveRegistrationProductDescription({
-    registrationUuid,
-    productDescriptionUrl
-  });
+  const data = await enterpriseRegistrationService.saveRegistrationProductDescription(
+    {
+      registrationUuid,
+      productDescriptionUrl
+    }
+  );
 
   if (data) {
     ctx.body = new Res({
@@ -566,12 +570,13 @@ router.post('/saveRegistrationProduct', async (ctx, next) => {
 });
 
 /**
- * 查询经管部门填写评测合同的基本信息
+ * 查询经管部门填写评测合同的状态
  */
-router.get('/selectContractManager', async (ctx, next) => {
+router.get('/selectContractManagerStatus', async (ctx, next) => {
   const { registrationUuid } = ctx.state.param;
 
-  const data = await enterpriseRegistrationService.selectRegistrationContractManager(
+  // 只查询状态和failText
+  const data = await enterpriseRegistrationService.selectContractManagerStatus(
     registrationUuid
   );
 

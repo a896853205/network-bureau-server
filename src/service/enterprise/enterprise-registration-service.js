@@ -496,7 +496,7 @@ export default {
           return true;
         }
       } else if (registration.currentStep === 2) {
-        const contract = await enterpriseRegistratioContractDao.selectRegistrationContractManager(
+        const contract = await enterpriseRegistrationContractDao.selectRegistrationContractManager(
           registrationUuid
         );
         // 第二步电子签合同
@@ -536,7 +536,7 @@ export default {
     // 先判断statusManager是不是2
     // 再用数据库中的数据通过模板生成word
     // 等到上传盖章pdf上传完成后删除word
-    const statusManager = await enterpriseRegistratioContractDao.selectRegistrationContractManager(
+    const statusManager = await enterpriseRegistrationContractDao.selectRegistrationContractManager(
       registrationUuid
     );
 
@@ -557,7 +557,7 @@ export default {
         enterpriseRegistrationDao.selectRegistrationByRegistrationUuid(
           registrationUuid
         ),
-        enterpriseRegistratioContractDao.selectRegistrationContractManager(
+        enterpriseRegistrationContractDao.selectRegistrationContractManager(
           registrationUuid
         )
       ]);
@@ -756,6 +756,12 @@ export default {
       registrationUuid,
       managerStatus,
       failText
+    });
+  },
+
+  selectContractManagerStatus: async registrationUuid => {
+    return await enterpriseRegistrationContractDao.selectContractManagerStatus({
+      registrationUuid
     });
   }
 };
