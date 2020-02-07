@@ -487,7 +487,7 @@ export default {
               statusText: '正在进行',
               step: 2
             }),
-            enterpriseRegistrationDao.saveRegistrationContractManager({
+            enterpriseRegistrationContractDao.saveRegistrationContractManager({
               registrationUuid,
               managerStatus: 1
             })
@@ -496,7 +496,7 @@ export default {
           return true;
         }
       } else if (registration.currentStep === 2) {
-        const contract = await enterpriseRegistrationDao.selectRegistrationContractManager(
+        const contract = await enterpriseRegistratioContractDao.selectRegistrationContractManager(
           registrationUuid
         );
         // 第二步电子签合同
@@ -536,7 +536,7 @@ export default {
     // 先判断statusManager是不是2
     // 再用数据库中的数据通过模板生成word
     // 等到上传盖章pdf上传完成后删除word
-    const statusManager = await enterpriseRegistrationDao.selectRegistrationContractManager(
+    const statusManager = await enterpriseRegistratioContractDao.selectRegistrationContractManager(
       registrationUuid
     );
 
@@ -557,7 +557,7 @@ export default {
         enterpriseRegistrationDao.selectRegistrationByRegistrationUuid(
           registrationUuid
         ),
-        enterpriseRegistrationDao.selectRegistrationContractManager(
+        enterpriseRegistratioContractDao.selectRegistrationContractManager(
           registrationUuid
         )
       ]);
@@ -670,15 +670,17 @@ export default {
     paymentTime,
     contractTime
   }) => {
-    return await enterpriseRegistrationDao.saveRegistrationContractManager({
-      registrationUuid,
-      contractCode,
-      specimenHaveTime,
-      payment,
-      paymentTime,
-      contractTime,
-      managerStatus: 2
-    });
+    return await enterpriseRegistrationContractDao.saveRegistrationContractManager(
+      {
+        registrationUuid,
+        contractCode,
+        specimenHaveTime,
+        payment,
+        paymentTime,
+        contractTime,
+        managerStatus: 2
+      }
+    );
   },
 
   /**
@@ -704,7 +706,7 @@ export default {
       return false;
     }
 
-    return await enterpriseRegistrationDao.saveManagerContractUrl({
+    return await enterpriseRegistrationContractDao.saveManagerContractUrl({
       registrationUuid,
       managerUrl: productionUrl,
       managerStatus: 3
@@ -734,7 +736,7 @@ export default {
       return false;
     }
 
-    return await enterpriseRegistrationDao.saveEnterpriseContractUrl({
+    return await enterpriseRegistrationContractDao.saveEnterpriseContractUrl({
       registrationUuid,
       enterpriseUrl: productionUrl,
       managerStatus: 4,
@@ -750,7 +752,7 @@ export default {
     managerStatus,
     failText
   }) => {
-    return await enterpriseRegistrationDao.setContractManagerStatus({
+    return await enterpriseRegistrationContractDao.setContractManagerStatus({
       registrationUuid,
       managerStatus,
       failText
