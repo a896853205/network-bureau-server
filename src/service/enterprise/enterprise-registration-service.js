@@ -6,6 +6,7 @@ import enterpriseRegistrationContractDao from '../../dao/enterprise/enterprise-r
 import enterpriseRegistrationCopyrightDao from '../../dao/enterprise/enterprise-registration-copyright-dao';
 import enterpriseRegistrationDocumentDao from '../../dao/enterprise/enterprise-registration-document-dao';
 import enterpriseRegistrationProductDao from '../../dao/enterprise/enterprise-registration-product-dao';
+import enterpriseRegistrationProductDescriptionDao from '../../dao/enterprise/enterprise-registration-product-description-dao';
 import managerUserDao from '../../dao/manager/manager-user-dao';
 
 // oss
@@ -313,7 +314,7 @@ export default {
    * 获取产品说明的信息
    */
   selectRegistrationProductDescription: async ({ registrationUuid }) => {
-    return await enterpriseRegistrationDao.selectRegistrationProductDescriptionByRegistrationUuid(
+    return await enterpriseRegistrationProductDescriptionDao.selectRegistrationProductDescriptionByRegistrationUuid(
       registrationUuid
     );
   },
@@ -330,7 +331,7 @@ export default {
       productionUrl = productDescriptionUrl.replace('temp', 'production');
 
     try {
-      const productDescription = await enterpriseRegistrationDao.selectRegistrationProductDescriptionByRegistrationUuid(
+      const productDescription = await enterpriseRegistrationProductDescriptionDao.selectRegistrationProductDescriptionByRegistrationUuid(
         registrationUuid
       );
 
@@ -344,7 +345,7 @@ export default {
       return false;
     }
 
-    return await enterpriseRegistrationDao.saveRegistrationProductDescription({
+    return await enterpriseRegistrationProductDescriptionDao.saveRegistrationProductDescription({
       registrationUuid,
       productDescriptionUrl: productionUrl,
       status: 2,
@@ -413,7 +414,7 @@ export default {
       basic: enterpriseRegistrationBasicDao.setBasicStatus,
       contract: enterpriseRegistrationDao.setContractStatus,
       product: enterpriseRegistrationProductDao.setProductStatus,
-      productDescription: enterpriseRegistrationDao.setProductDescriptionStatus,
+      productDescription: enterpriseRegistrationProductDescriptionDao.setProductDescriptionStatus,
       apply: enterpriseRegistrationApplyDao.setApplyStatus,
       copyright: enterpriseRegistrationCopyrightDao.setCopyrightStatus,
       document: enterpriseRegistrationDocumentDao.setDocumentStatus,

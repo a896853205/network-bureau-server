@@ -367,42 +367,6 @@ export default {
   },
 
   /**
-   * 查询的产品说明信息
-   */
-  selectRegistrationProductDescriptionByRegistrationUuid: async registrationUuid => {
-    return await enterpriseRegistrationProductDescription.findOne({
-      attributes: ['url', 'failText', 'status', 'statusText'],
-      raw: true,
-      where: { uuid: registrationUuid }
-    });
-  },
-
-  /**
-   * 保存产品说明信息
-   */
-  saveRegistrationProductDescription: async ({
-    registrationUuid,
-    productDescriptionUrl,
-    status,
-    statusText,
-    failText
-  }) => {
-    // 这里还得更新状态信息为2待审核
-    return await enterpriseRegistrationProductDescription.update(
-      {
-        url: productDescriptionUrl,
-        status,
-        statusText,
-        failText
-      },
-      {
-        where: { uuid: registrationUuid },
-        raw: true
-      }
-    );
-  },
-
-  /**
    * 查询企业用户登记测试
    */
   queryRegistration: async page => {
@@ -453,23 +417,6 @@ export default {
     statusText
   }) => {
     return await enterpriseRegistrationSpecimen.update(
-      { status, failText, statusText },
-      {
-        where: { uuid: registrationUuid }
-      }
-    );
-  },
-
-  /**
-   * 设置产品描述的状态
-   */
-  setProductDescriptionStatus: async ({
-    registrationUuid,
-    status,
-    failText,
-    statusText
-  }) => {
-    return await enterpriseRegistrationProductDescription.update(
       { status, failText, statusText },
       {
         where: { uuid: registrationUuid }
