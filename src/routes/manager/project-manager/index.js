@@ -528,11 +528,11 @@ router.get('/selectContractManagerStatus', async (ctx, next) => {
  * 设置第二步合同签署步骤
  */
 router.post('/setContractManagerStatus', async (ctx, next) => {
-  const { registrationUuid, failText, managerStatus } = ctx.state.param;
+  const { registrationUuid, managerFailText, managerStatus } = ctx.state.param;
 
   const res = await enterpriseRegistrationService.setContractManagerStatus({
     registrationUuid,
-    failText,
+    managerFailText,
     managerStatus
   });
 

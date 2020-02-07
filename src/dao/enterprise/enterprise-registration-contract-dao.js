@@ -178,10 +178,10 @@ export default {
   setContractManagerStatus: async ({
     registrationUuid,
     managerStatus,
-    failText
+    managerFailText
   }) => {
     return await enterpriseRegistrationContract.update(
-      { managerStatus, failText },
+      { managerStatus, managerFailText },
       {
         where: { uuid: registrationUuid }
       }
