@@ -3,6 +3,7 @@ import enterpriseRegistrationDao from '../../dao/enterprise/enterprise-registrat
 import enterpriseRegistrationApplyDao from '../../dao/enterprise/enterprise-registration-apply-dao';
 import enterpriseRegistrationBasicDao from '../../dao/enterprise/enterprise-registration-basic-dao';
 import enterpriseRegistrationContractDao from '../../dao/enterprise/enterprise-registration-contract-dao';
+import enterpriseRegistrationCopyrightDao from '../../dao/enterprise/enterprise-registration-copyright-dao';
 import managerUserDao from '../../dao/manager/manager-user-dao';
 
 // oss
@@ -228,7 +229,7 @@ export default {
    * 获取软件著作权的信息
    */
   selectRegistrationCopyright: async ({ registrationUuid }) => {
-    return await enterpriseRegistrationDao.selectRegistrationCopyrightByRegistrationUuid(
+    return await enterpriseRegistrationCopyrightDao.selectRegistrationCopyrightByRegistrationUuid(
       registrationUuid
     );
   },
@@ -242,7 +243,7 @@ export default {
       productionUrl = copyrightUrl.replace('temp', 'production');
 
     try {
-      const copyright = await enterpriseRegistrationDao.selectRegistrationCopyrightByRegistrationUuid(
+      const copyright = await enterpriseRegistrationCopyrightDao.selectRegistrationCopyrightByRegistrationUuid(
         registrationUuid
       );
 
@@ -256,7 +257,7 @@ export default {
       return false;
     }
 
-    return await enterpriseRegistrationDao.saveRegistrationCopyright({
+    return await enterpriseRegistrationCopyrightDao.saveRegistrationCopyright({
       registrationUuid,
       copyrightUrl: productionUrl,
       status: 2,
@@ -412,7 +413,7 @@ export default {
       product: enterpriseRegistrationDao.setProductStatus,
       productDescription: enterpriseRegistrationDao.setProductDescriptionStatus,
       apply: enterpriseRegistrationApplyDao.setApplyStatus,
-      copyright: enterpriseRegistrationDao.setCopyrightStatus,
+      copyright: enterpriseRegistrationCopyrightDao.setCopyrightStatus,
       document: enterpriseRegistrationDao.setDocumentStatus,
       specimen: enterpriseRegistrationDao.setSpecimenStatus
     };
