@@ -644,7 +644,7 @@ export default {
    * 查询评测合同的基本信息
    */
   selectRegistrationContractManager: async registrationUuid => {
-    return await enterpriseRegistrationDao.selectRegistrationContractManager(
+    return await enterpriseRegistrationContractDao.selectRegistrationContractManager(
       registrationUuid
     );
   },
@@ -669,15 +669,6 @@ export default {
       contractTime,
       managerStatus: 2
     });
-  },
-
-  /**
-   * 获取甲方上传的合同url的信息
-   */
-  selectManagerContractUrl: async registrationUuid => {
-    return await enterpriseRegistrationDao.selectManagerContractUrl(
-      registrationUuid
-    );
   },
 
   /**
@@ -708,15 +699,6 @@ export default {
       managerUrl: productionUrl,
       managerStatus: 3
     });
-  },
-
-  /**
-   * 获取乙方上传的合同url的信息
-   */
-  selectEnterpriseContractUrl: async registrationUuid => {
-    return await enterpriseRegistrationDao.selectEnterpriseContractUrl(
-      registrationUuid
-    );
   },
 
   /**
