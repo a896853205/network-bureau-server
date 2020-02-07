@@ -541,7 +541,7 @@ export default {
       registrationUuid
     );
 
-    if (statusManager && statusManager.managerStatus >== 2) {
+    if (statusManager && statusManager.managerStatus >= 2) {
       // 查询contract内容
       const [
         contract,
