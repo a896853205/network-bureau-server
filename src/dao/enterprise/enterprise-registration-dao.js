@@ -634,9 +634,7 @@ export default {
         'paymentTime',
         'contractTime',
         'managerStatus',
-        'failText',
-        'managerUrl',
-        'enterpriseUrl'
+        'failText'
       ],
       raw: true,
       where: { uuid: registrationUuid }
@@ -672,17 +670,6 @@ export default {
   },
 
   /**
-   * 查询的评测合同的甲方基本信息
-   */
-  selectManagerContractUrl: async registrationUuid => {
-    return await enterpriseRegistrationContract.findOne({
-      attributes: ['managerUrl'],
-      raw: true,
-      where: { uuid: registrationUuid }
-    });
-  },
-
-  /**
    * 保存评测合同的甲方基本信息
    */
   saveManagerContractUrl: async ({
@@ -703,11 +690,11 @@ export default {
   },
 
   /**
-   * 查询的评测合同的乙方基本信息
+   * 查询的评测合同的url
    */
-  selectEnterpriseContractUrl: async registrationUuid => {
+  selectContractUrl: async registrationUuid => {
     return await enterpriseRegistrationContract.findOne({
-      attributes: ['enterpriseUrl'],
+      attributes: ['enterpriseUrl', 'managerUrl'],
       raw: true,
       where: { uuid: registrationUuid }
     });
