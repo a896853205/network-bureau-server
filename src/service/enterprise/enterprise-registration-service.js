@@ -1,6 +1,7 @@
 // dao
 import enterpriseRegistrationDao from '../../dao/enterprise/enterprise-registration-dao';
 import enterpriseRegistrationApplyDao from '../../dao/enterprise/enterprise-registration-apply-dao';
+import enterpriseRegistrationBasicDao from '../../dao/enterprise/enterprise-registration-basic-dao';
 import managerUserDao from '../../dao/manager/manager-user-dao';
 
 // oss
@@ -101,7 +102,7 @@ export default {
    * 查询登记测试的基本信息
    */
   selectRegistrationBasicByRegistrationUuid: async registrationUuid => {
-    return await enterpriseRegistrationDao.selectRegistrationBasicByRegistrationUuid(
+    return await enterpriseRegistrationBasicDao.selectRegistrationBasicByRegistrationUuid(
       registrationUuid
     );
   },
@@ -119,7 +120,7 @@ export default {
     devStartTime,
     enterpriseName
   }) => {
-    return await enterpriseRegistrationDao.saveRegistrationBasic({
+    return await enterpriseRegistrationBasicDao.saveRegistrationBasic({
       registrationUuid,
       version,
       linkman,
@@ -405,7 +406,7 @@ export default {
     failText
   }) => {
     const statusDao = {
-      basic: enterpriseRegistrationDao.setBasicStatus,
+      basic: enterpriseRegistrationBasicDao.setBasicStatus,
       contract: enterpriseRegistrationDao.setContractStatus,
       product: enterpriseRegistrationDao.setProductStatus,
       productDescription: enterpriseRegistrationDao.setProductDescriptionStatus,
@@ -548,7 +549,7 @@ export default {
         enterpriseRegistrationDao.selectRegistrationContractByRegistrationUuid(
           registrationUuid
         ),
-        enterpriseRegistrationDao.selectRegistrationBasicByRegistrationUuid(
+        enterpriseRegistrationBasicDao.selectRegistrationBasicByRegistrationUuid(
           registrationUuid
         ),
         enterpriseRegistrationDao.selectRegistrationByRegistrationUuid(
