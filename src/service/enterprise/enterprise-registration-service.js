@@ -8,6 +8,7 @@ import enterpriseRegistrationDocumentDao from '../../dao/enterprise/enterprise-r
 import enterpriseRegistrationProductDao from '../../dao/enterprise/enterprise-registration-product-dao';
 import enterpriseRegistrationProductDescriptionDao from '../../dao/enterprise/enterprise-registration-product-description-dao';
 import enterpriseRegistrationSpecimenDao from '../../dao/enterprise/enterprise-registration-specimen-dao';
+import enterpriseRegistrationStepDao from '../../dao/enterprise/enterprise-registration-step-dao';
 import managerUserDao from '../../dao/manager/manager-user-dao';
 
 // oss
@@ -92,7 +93,7 @@ export default {
    * 查询企业用户登记测试具体的步骤状态
    */
   queryEnterpriseRegistrationStepByRegistrationUuid: async registrationUuid => {
-    return await enterpriseRegistrationDao.queryEnterpriseRegistrationStepByRegistrationUuid(
+    return await enterpriseRegistrationStepDao.queryEnterpriseRegistrationStepByRegistrationUuid(
       registrationUuid
     );
   },
