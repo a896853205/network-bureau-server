@@ -650,6 +650,15 @@ export default {
   },
 
   /**
+   * 查询评测合同的路由
+   */
+  selectContractUrl: async registrationUuid => {
+    return await enterpriseRegistrationContractDao.selectContractUrl(
+      registrationUuid
+    );
+  },
+
+  /**
    * 保存评测合同的基本信息
    */
   saveRegistrationContractManager: async ({
@@ -680,7 +689,7 @@ export default {
       productionUrl = managerUrl.replace('temp', 'production');
 
     try {
-      const contract = await enterpriseRegistrationDao.selectManagerContractUrl(
+      const contract = await enterpriseRegistrationContractDao.selectContractUrl(
         registrationUuid
       );
 
@@ -710,7 +719,7 @@ export default {
       productionUrl = enterpriseUrl.replace('temp', 'production');
 
     try {
-      const contract = await enterpriseRegistrationDao.selectEnterpriseContractUrl(
+      const contract = await enterpriseRegistrationContractDao.selectContractUrl(
         registrationUuid
       );
 
