@@ -5,6 +5,7 @@ import enterpriseRegistrationBasicDao from '../../dao/enterprise/enterprise-regi
 import enterpriseRegistrationContractDao from '../../dao/enterprise/enterprise-registration-contract-dao';
 import enterpriseRegistrationCopyrightDao from '../../dao/enterprise/enterprise-registration-copyright-dao';
 import enterpriseRegistrationDocumentDao from '../../dao/enterprise/enterprise-registration-document-dao';
+import enterpriseRegistrationProductDao from '../../dao/enterprise/enterprise-registration-product-dao';
 import managerUserDao from '../../dao/manager/manager-user-dao';
 
 // oss
@@ -356,7 +357,7 @@ export default {
    * 获取产品介质的信息
    */
   selectRegistrationProduct: async ({ registrationUuid }) => {
-    return await enterpriseRegistrationDao.selectRegistrationProductByRegistrationUuid(
+    return await enterpriseRegistrationProductDao.selectRegistrationProductByRegistrationUuid(
       registrationUuid
     );
   },
@@ -383,7 +384,7 @@ export default {
       console.log(error);
       return false;
     }
-    return await enterpriseRegistrationDao.saveRegistrationProduct({
+    return await enterpriseRegistrationProductDao.saveRegistrationProduct({
       registrationUuid,
       productUrl: productionUrl,
       status: 2,
@@ -411,7 +412,7 @@ export default {
     const statusDao = {
       basic: enterpriseRegistrationBasicDao.setBasicStatus,
       contract: enterpriseRegistrationDao.setContractStatus,
-      product: enterpriseRegistrationDao.setProductStatus,
+      product: enterpriseRegistrationProductDao.setProductStatus,
       productDescription: enterpriseRegistrationDao.setProductDescriptionStatus,
       apply: enterpriseRegistrationApplyDao.setApplyStatus,
       copyright: enterpriseRegistrationCopyrightDao.setCopyrightStatus,
