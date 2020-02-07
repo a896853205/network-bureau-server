@@ -7,6 +7,7 @@ import enterpriseRegistrationCopyrightDao from '../../dao/enterprise/enterprise-
 import enterpriseRegistrationDocumentDao from '../../dao/enterprise/enterprise-registration-document-dao';
 import enterpriseRegistrationProductDao from '../../dao/enterprise/enterprise-registration-product-dao';
 import enterpriseRegistrationProductDescriptionDao from '../../dao/enterprise/enterprise-registration-product-description-dao';
+import enterpriseRegistrationSpecimenDao from '../../dao/enterprise/enterprise-registration-specimen-dao';
 import managerUserDao from '../../dao/manager/manager-user-dao';
 
 // oss
@@ -144,7 +145,7 @@ export default {
    * 查询评测合同的基本信息
    */
   selectRegistrationContractByRegistrationUuid: async registrationUuid => {
-    return await enterpriseRegistrationDao.selectRegistrationContractByRegistrationUuid(
+    return await enterpriseRegistrationContractDao.selectRegistrationContractByRegistrationUuid(
       registrationUuid
     );
   },
@@ -160,7 +161,7 @@ export default {
     mainFunction,
     techIndex
   }) => {
-    return await enterpriseRegistrationDao.saveRegistrationContract({
+    return await enterpriseRegistrationContractDao.saveRegistrationContract({
       registrationUuid,
       amount,
       fax,
@@ -177,7 +178,7 @@ export default {
    * 查询样品登记表的基本信息
    */
   selectRegistrationSpecimenByRegistrationUuid: async registrationUuid => {
-    return await enterpriseRegistrationDao.selectRegistrationSpecimenByRegistrationUuid(
+    return await enterpriseRegistrationSpecimenDao.selectRegistrationSpecimenByRegistrationUuid(
       registrationUuid
     );
   },
@@ -193,7 +194,7 @@ export default {
     email,
     unit
   }) => {
-    return await enterpriseRegistrationDao.saveRegistrationSpecimen({
+    return await enterpriseRegistrationSpecimenDao.saveRegistrationSpecimen({
       registrationUuid,
       trademark,
       developmentTool,
@@ -345,13 +346,15 @@ export default {
       return false;
     }
 
-    return await enterpriseRegistrationProductDescriptionDao.saveRegistrationProductDescription({
-      registrationUuid,
-      productDescriptionUrl: productionUrl,
-      status: 2,
-      statusText: '待审核',
-      failText: ''
-    });
+    return await enterpriseRegistrationProductDescriptionDao.saveRegistrationProductDescription(
+      {
+        registrationUuid,
+        productDescriptionUrl: productionUrl,
+        status: 2,
+        statusText: '待审核',
+        failText: ''
+      }
+    );
   },
 
   /**
@@ -412,13 +415,14 @@ export default {
   }) => {
     const statusDao = {
       basic: enterpriseRegistrationBasicDao.setBasicStatus,
-      contract: enterpriseRegistrationDao.setContractStatus,
+      contract: enterpriseRegistrationContractDao.setContractStatus,
       product: enterpriseRegistrationProductDao.setProductStatus,
-      productDescription: enterpriseRegistrationProductDescriptionDao.setProductDescriptionStatus,
+      productDescription:
+        enterpriseRegistrationProductDescriptionDao.setProductDescriptionStatus,
       apply: enterpriseRegistrationApplyDao.setApplyStatus,
       copyright: enterpriseRegistrationCopyrightDao.setCopyrightStatus,
       document: enterpriseRegistrationDocumentDao.setDocumentStatus,
-      specimen: enterpriseRegistrationDao.setSpecimenStatus
+      specimen: enterpriseRegistrationSpecimenDao.setSpecimenStatus
     };
 
     const getStatusDao = type => {
@@ -551,7 +555,7 @@ export default {
         registration,
         contractManager
       ] = await Promise.all([
-        enterpriseRegistrationDao.selectRegistrationContractByRegistrationUuid(
+        enterpriseRegistrationContractDao.selectRegistrationContractByRegistrationUuid(
           registrationUuid
         ),
         enterpriseRegistrationBasicDao.selectRegistrationBasicByRegistrationUuid(
