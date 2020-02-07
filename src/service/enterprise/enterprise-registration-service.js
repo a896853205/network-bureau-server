@@ -4,6 +4,7 @@ import enterpriseRegistrationApplyDao from '../../dao/enterprise/enterprise-regi
 import enterpriseRegistrationBasicDao from '../../dao/enterprise/enterprise-registration-basic-dao';
 import enterpriseRegistrationContractDao from '../../dao/enterprise/enterprise-registration-contract-dao';
 import enterpriseRegistrationCopyrightDao from '../../dao/enterprise/enterprise-registration-copyright-dao';
+import enterpriseRegistrationDocumentDao from '../../dao/enterprise/enterprise-registration-document-dao';
 import managerUserDao from '../../dao/manager/manager-user-dao';
 
 // oss
@@ -270,7 +271,7 @@ export default {
    * 获取用户文档集的信息
    */
   selectRegistrationDocument: async ({ registrationUuid }) => {
-    return await enterpriseRegistrationDao.selectRegistrationDocumentByRegistrationUuid(
+    return await enterpriseRegistrationDocumentDao.selectRegistrationDocumentByRegistrationUuid(
       registrationUuid
     );
   },
@@ -284,7 +285,7 @@ export default {
       productionUrl = documentUrl.replace('temp', 'production');
 
     try {
-      const document = await enterpriseRegistrationDao.selectRegistrationDocumentByRegistrationUuid(
+      const document = await enterpriseRegistrationDocumentDao.selectRegistrationDocumentByRegistrationUuid(
         registrationUuid
       );
 
@@ -298,7 +299,7 @@ export default {
       return false;
     }
 
-    return await enterpriseRegistrationDao.saveRegistrationDocument({
+    return await enterpriseRegistrationDocumentDao.saveRegistrationDocument({
       registrationUuid,
       documentUrl: productionUrl,
       status: 2,
@@ -414,7 +415,7 @@ export default {
       productDescription: enterpriseRegistrationDao.setProductDescriptionStatus,
       apply: enterpriseRegistrationApplyDao.setApplyStatus,
       copyright: enterpriseRegistrationCopyrightDao.setCopyrightStatus,
-      document: enterpriseRegistrationDao.setDocumentStatus,
+      document: enterpriseRegistrationDocumentDao.setDocumentStatus,
       specimen: enterpriseRegistrationDao.setSpecimenStatus
     };
 

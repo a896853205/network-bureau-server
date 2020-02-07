@@ -367,42 +367,6 @@ export default {
   },
 
   /**
-   * 查询的用户文档集信息
-   */
-  selectRegistrationDocumentByRegistrationUuid: async registrationUuid => {
-    return await enterpriseRegistrationDocument.findOne({
-      attributes: ['url', 'failText', 'status', 'statusText'],
-      raw: true,
-      where: { uuid: registrationUuid }
-    });
-  },
-
-  /**
-   * 保存用户文档集信息
-   */
-  saveRegistrationDocument: async ({
-    registrationUuid,
-    documentUrl,
-    status,
-    statusText,
-    failText
-  }) => {
-    // 这里还得更新状态信息为2待审核
-    return await enterpriseRegistrationDocument.update(
-      {
-        url: documentUrl,
-        status,
-        statusText,
-        failText
-      },
-      {
-        where: { uuid: registrationUuid },
-        raw: true
-      }
-    );
-  },
-
-  /**
    * 查询的产品说明信息
    */
   selectRegistrationProductDescriptionByRegistrationUuid: async registrationUuid => {
@@ -566,22 +530,7 @@ export default {
     );
   },
 
-  /**
-   * 设置用户文档集的状态
-   */
-  setDocumentStatus: async ({
-    registrationUuid,
-    status,
-    failText,
-    statusText
-  }) => {
-    return await enterpriseRegistrationDocument.update(
-      { status, failText, statusText },
-      {
-        where: { uuid: registrationUuid }
-      }
-    );
-  },
+
 
   /**
    * 更新登记测试的步骤
