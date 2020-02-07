@@ -2,6 +2,7 @@
 import enterpriseRegistrationDao from '../../dao/enterprise/enterprise-registration-dao';
 import enterpriseRegistrationApplyDao from '../../dao/enterprise/enterprise-registration-apply-dao';
 import enterpriseRegistrationBasicDao from '../../dao/enterprise/enterprise-registration-basic-dao';
+import enterpriseRegistrationContractDao from '../../dao/enterprise/enterprise-registration-contract-dao';
 import managerUserDao from '../../dao/manager/manager-user-dao';
 
 // oss
