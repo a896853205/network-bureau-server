@@ -670,15 +670,6 @@ export default {
   },
 
   /**
-   * 获取甲方上传的合同url的信息
-   */
-  selectManagerContractUrl: async registrationUuid => {
-    return await enterpriseRegistrationDao.selectManagerContractUrl(
-      registrationUuid
-    );
-  },
-
-  /**
    * 保存评测合同甲方上传pdf合同的信息
    */
   saveManagerContractUrl: async ({ registrationUuid, managerUrl }) => {
@@ -706,15 +697,6 @@ export default {
       managerUrl: productionUrl,
       managerStatus: 3
     });
-  },
-
-  /**
-   * 获取乙方上传的合同url的信息
-   */
-  selectEnterpriseContractUrl: async registrationUuid => {
-    return await enterpriseRegistrationDao.selectEnterpriseContractUrl(
-      registrationUuid
-    );
   },
 
   /**
