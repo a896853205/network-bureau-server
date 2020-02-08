@@ -10,6 +10,7 @@ import enterpriseRegistrationProductDescriptionDao from '../../dao/enterprise/en
 import enterpriseRegistrationSpecimenDao from '../../dao/enterprise/enterprise-registration-specimen-dao';
 import enterpriseRegistrationPaymentDao from '../../dao/enterprise/enterprise-registration-payment-dao';
 import enterpriseRegistrationStepDao from '../../dao/enterprise/enterprise-registration-step-dao';
+import sysRegistrationStepDao from '../../dao/sys/sys-registration-step-dao';
 import managerUserDao from '../../dao/manager/manager-user-dao';
 
 // oss
@@ -103,7 +104,7 @@ export default {
    *  无参数查询sys_registration_step表
    */
   querySysRegistrationStep: async () => {
-    return await enterpriseRegistrationDao.querySysRegistrationStep();
+    return await sysRegistrationStepDao.querySysRegistrationStep();
   },
 
   /**
@@ -793,13 +794,10 @@ export default {
   /**
    * 更新交付汇款的状态
    */
-  updatePaymentStatus: async ({
-    registrationUuid,
-    status
-  }) => {
+  updatePaymentStatus: async ({ registrationUuid, status }) => {
     return await enterpriseRegistrationPaymentDao.updatePaymentStatus({
       registrationUuid,
       status
     });
-  },
+  }
 };

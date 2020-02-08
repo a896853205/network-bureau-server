@@ -9,7 +9,6 @@ import enterpriseRegistrationProductDescription from '../../db/models/enterprise
 import enterpriseRegistrationProduct from '../../db/models/enterprise-registration-product';
 import enterpriseRegistrationSpecimen from '../../db/models/enterprise-registration-specimen';
 import enterpriseRegistration from '../../db/models/enterprise-registration';
-import sysRegistrationStep from '../../db/models/sys-registration-step';
 import enterpriseRegistrationStep from '../../db/models/enterprise-registration-step';
 import enterpriseRegistrationBasic from '../../db/models/enterprise-registration-basic';
 import enterpriseRegistrationPayment from '../../db/models/enterprise-registration-payment';
@@ -244,15 +243,6 @@ export default {
       enterpriseRegistrationProductStatus,
       enterpriseRegistrationApplyStatus
     };
-  },
-
-  /**
-   *  无参数查询sys_registration_step表
-   */
-  querySysRegistrationStep: async () => {
-    return await sysRegistrationStep.findAll({
-      attributes: ['name', 'step']
-    });
   },
 
   /**
