@@ -8,6 +8,7 @@ import enterpriseRegistrationDocumentDao from '../../dao/enterprise/enterprise-r
 import enterpriseRegistrationProductDao from '../../dao/enterprise/enterprise-registration-product-dao';
 import enterpriseRegistrationProductDescriptionDao from '../../dao/enterprise/enterprise-registration-product-description-dao';
 import enterpriseRegistrationSpecimenDao from '../../dao/enterprise/enterprise-registration-specimen-dao';
+import enterpriseRegistrationPaymentDao from '../../dao/enterprise/enterprise-registration-payment-dao';
 import enterpriseRegistrationStepDao from '../../dao/enterprise/enterprise-registration-step-dao';
 import managerUserDao from '../../dao/manager/manager-user-dao';
 
@@ -376,7 +377,7 @@ export default {
       productionUrl = productUrl.replace('temp', 'production');
 
     try {
-      const product = await enterpriseRegistrationDao.selectRegistrationProductByRegistrationUuid(
+      const product = await enterpriseRegistrationProductDao.selectRegistrationProductByRegistrationUuid(
         registrationUuid
       );
 
@@ -529,6 +530,10 @@ export default {
               status: 2,
               statusText: '正在进行',
               step: 3
+            }),
+            enterpriseRegistrationPaymentDao.updatePaymentStatus({
+              registrationUuid,
+              status: 1
             })
           ]);
 
@@ -767,8 +772,20 @@ export default {
     });
   },
 
+  /**
+   * 设置第二步合同签署状态
+   */
   selectContractManagerStatus: async registrationUuid => {
     return await enterpriseRegistrationContractDao.selectContractManagerStatus({
+      registrationUuid
+    });
+  },
+
+  /**
+   * 设置第三步交付汇款状态
+   */
+  selectPaymentStatus: async registrationUuid => {
+    return await enterpriseRegistrationPaymentDao.selectPaymentStatus({
       registrationUuid
     });
   }

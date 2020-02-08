@@ -1,4 +1,5 @@
 import enterpriseRegistrationStep from '../../db/models/enterprise-registration-step';
+import enterpriseRegistrationSpecimen from '../../db/models/enterprise-registration-specimen';
 
 export default {
   /**
