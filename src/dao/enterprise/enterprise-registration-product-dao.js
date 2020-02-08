@@ -15,7 +15,7 @@ export default {
   /**
    * 保存产品介质信息
    */
-  saveRegistrationProduct: async ({
+  updateRegistrationProduct: async ({
     registrationUuid,
     productUrl,
     status,
@@ -40,7 +40,7 @@ export default {
   /**
    * 设置产品介质的状态
    */
-  setProductStatus: async ({
+  updateProductStatus: async ({
     registrationUuid,
     status,
     failText,

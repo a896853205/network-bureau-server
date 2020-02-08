@@ -4,7 +4,7 @@ export default {
   /**
    * 保存现场测试申请表的基本信息
    */
-  saveRegistrationApply: async ({
+  updateRegistrationApply: async ({
     registrationUuid,
     content,
     status,
@@ -40,7 +40,7 @@ export default {
   /**
    * 设置现场测试申请表的状态
    */
-  setApplyStatus: async ({
+  updateApplyStatus: async ({
     registrationUuid,
     status,
     failText,

@@ -15,7 +15,7 @@ export default {
   /**
    * 保存用户文档集信息
    */
-  saveRegistrationDocument: async ({
+  updateRegistrationDocument: async ({
     registrationUuid,
     documentUrl,
     status,
@@ -40,7 +40,7 @@ export default {
   /**
    * 设置用户文档集的状态
    */
-  setDocumentStatus: async ({
+  updateDocumentStatus: async ({
     registrationUuid,
     status,
     failText,

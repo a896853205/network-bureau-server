@@ -15,7 +15,7 @@ export default {
   /**
    * 保存产品说明信息
    */
-  saveRegistrationProductDescription: async ({
+  updateRegistrationProductDescription: async ({
     registrationUuid,
     productDescriptionUrl,
     status,
@@ -40,7 +40,7 @@ export default {
   /**
    * 设置产品描述的状态
    */
-  setProductDescriptionStatus: async ({
+  updateProductDescriptionStatus: async ({
     registrationUuid,
     status,
     failText,

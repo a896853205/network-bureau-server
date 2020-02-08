@@ -25,7 +25,7 @@ export default {
   /**
    * 保存样品登记表的基本信息
    */
-  saveRegistrationSpecimen: async ({
+  updateRegistrationSpecimen: async ({
     registrationUuid,
     trademark,
     developmentTool,
@@ -57,7 +57,7 @@ export default {
   /**
    * 设置样品文档集的状态
    */
-  setSpecimenStatus: async ({
+  updateSpecimenStatus: async ({
     registrationUuid,
     status,
     failText,

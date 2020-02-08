@@ -15,7 +15,7 @@ export default {
   /**
    * 保存现场测试软件著作权信息
    */
-  saveRegistrationCopyright: async ({
+  updateRegistrationCopyright: async ({
     registrationUuid,
     copyrightUrl,
     status,
@@ -40,7 +40,7 @@ export default {
   /**
    * 设置软件著作权证书的状态
    */
-  setCopyrightStatus: async ({
+  updateCopyrightStatus: async ({
     registrationUuid,
     status,
     failText,

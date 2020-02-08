@@ -129,7 +129,7 @@ export default {
     devStartTime,
     enterpriseName
   }) => {
-    return await enterpriseRegistrationBasicDao.saveRegistrationBasic({
+    return await enterpriseRegistrationBasicDao.updateRegistrationBasic({
       registrationUuid,
       version,
       linkman,
@@ -164,7 +164,7 @@ export default {
     mainFunction,
     techIndex
   }) => {
-    return await enterpriseRegistrationContractDao.saveRegistrationContract({
+    return await enterpriseRegistrationContractDao.updateRegistrationContract({
       registrationUuid,
       amount,
       fax,
@@ -197,7 +197,7 @@ export default {
     email,
     unit
   }) => {
-    return await enterpriseRegistrationSpecimenDao.saveRegistrationSpecimen({
+    return await enterpriseRegistrationSpecimenDao.updateRegistrationSpecimen({
       registrationUuid,
       trademark,
       developmentTool,
@@ -223,7 +223,7 @@ export default {
    * 保存现场测试申请表的基本信息
    */
   saveRegistrationApply: async ({ registrationUuid, content }) => {
-    return await enterpriseRegistrationApplyDao.saveRegistrationApply({
+    return await enterpriseRegistrationApplyDao.updateRegistrationApply({
       registrationUuid,
       content,
       status: 2,
@@ -264,7 +264,7 @@ export default {
       return false;
     }
 
-    return await enterpriseRegistrationCopyrightDao.saveRegistrationCopyright({
+    return await enterpriseRegistrationCopyrightDao.updateRegistrationCopyright({
       registrationUuid,
       copyrightUrl: productionUrl,
       status: 2,
@@ -305,7 +305,7 @@ export default {
       return false;
     }
 
-    return await enterpriseRegistrationDocumentDao.saveRegistrationDocument({
+    return await enterpriseRegistrationDocumentDao.updateRegistrationDocument({
       registrationUuid,
       documentUrl: productionUrl,
       status: 2,
@@ -349,7 +349,7 @@ export default {
       return false;
     }
 
-    return await enterpriseRegistrationProductDescriptionDao.saveRegistrationProductDescription(
+    return await enterpriseRegistrationProductDescriptionDao.updateRegistrationProductDescription(
       {
         registrationUuid,
         productDescriptionUrl: productionUrl,
@@ -391,7 +391,7 @@ export default {
       console.log(error);
       return false;
     }
-    return await enterpriseRegistrationProductDao.saveRegistrationProduct({
+    return await enterpriseRegistrationProductDao.updateRegistrationProduct({
       registrationUuid,
       productUrl: productionUrl,
       status: 2,
@@ -417,15 +417,15 @@ export default {
     failText
   }) => {
     const statusDao = {
-      basic: enterpriseRegistrationBasicDao.setBasicStatus,
-      contract: enterpriseRegistrationContractDao.setContractStatus,
-      product: enterpriseRegistrationProductDao.setProductStatus,
+      basic: enterpriseRegistrationBasicDao.updateBasicStatus,
+      contract: enterpriseRegistrationContractDao.updateContractStatus,
+      product: enterpriseRegistrationProductDao.updateProductStatus,
       productDescription:
-        enterpriseRegistrationProductDescriptionDao.setProductDescriptionStatus,
-      apply: enterpriseRegistrationApplyDao.setApplyStatus,
-      copyright: enterpriseRegistrationCopyrightDao.setCopyrightStatus,
-      document: enterpriseRegistrationDocumentDao.setDocumentStatus,
-      specimen: enterpriseRegistrationSpecimenDao.setSpecimenStatus
+        enterpriseRegistrationProductDescriptionDao.updateProductDescriptionStatus,
+      apply: enterpriseRegistrationApplyDao.updateApplyStatus,
+      copyright: enterpriseRegistrationCopyrightDao.updateCopyrightStatus,
+      document: enterpriseRegistrationDocumentDao.updateDocumentStatus,
+      specimen: enterpriseRegistrationSpecimenDao.updateSpecimenStatus
     };
 
     const getStatusDao = type => {
@@ -497,7 +497,7 @@ export default {
               statusText: '正在进行',
               step: 2
             }),
-            enterpriseRegistrationContractDao.saveRegistrationContractManager({
+            enterpriseRegistrationContractDao.updateRegistrationContractManager({
               registrationUuid,
               managerStatus: 1
             })
@@ -684,7 +684,7 @@ export default {
     paymentTime,
     contractTime
   }) => {
-    return await enterpriseRegistrationContractDao.saveRegistrationContractManager(
+    return await enterpriseRegistrationContractDao.updateRegistrationContractManager(
       {
         registrationUuid,
         contractCode,
@@ -720,7 +720,7 @@ export default {
       return false;
     }
 
-    return await enterpriseRegistrationContractDao.saveManagerContractUrl({
+    return await enterpriseRegistrationContractDao.updateManagerContractUrl({
       registrationUuid,
       managerUrl: productionUrl,
       managerStatus: 3
@@ -750,7 +750,7 @@ export default {
       return false;
     }
 
-    return await enterpriseRegistrationContractDao.saveEnterpriseContractUrl({
+    return await enterpriseRegistrationContractDao.updateEnterpriseContractUrl({
       registrationUuid,
       enterpriseUrl: productionUrl,
       managerStatus: 4,
@@ -766,7 +766,7 @@ export default {
     managerStatus,
     managerFailText
   }) => {
-    return await enterpriseRegistrationContractDao.setContractManagerStatus({
+    return await enterpriseRegistrationContractDao.updateContractManagerStatus({
       registrationUuid,
       managerStatus,
       managerFailText

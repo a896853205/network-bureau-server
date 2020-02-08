@@ -24,7 +24,7 @@ export default {
   /**
    * 保存评测合同的基本信息
    */
-  saveRegistrationContract: async ({
+  updateRegistrationContract: async ({
     registrationUuid,
     amount,
     fax,
@@ -56,7 +56,7 @@ export default {
   /**
    * 设置评测合同的状态
    */
-  setContractStatus: async ({
+  updateContractStatus: async ({
     registrationUuid,
     status,
     failText,
@@ -94,7 +94,7 @@ export default {
   /**
    * 保存评测合同的基本信息
    */
-  saveRegistrationContractManager: async ({
+  updateRegistrationContractManager: async ({
     registrationUuid,
     contractCode,
     specimenHaveTime,
@@ -133,7 +133,7 @@ export default {
   /**
    * 保存评测合同的甲方基本信息
    */
-  saveManagerContractUrl: async ({
+  updateManagerContractUrl: async ({
     registrationUuid,
     managerUrl,
     managerStatus
@@ -153,7 +153,7 @@ export default {
   /**
    * 保存评测合同的乙方基本信息
    */
-  saveEnterpriseContractUrl: async ({
+  updateEnterpriseContractUrl: async ({
     registrationUuid,
     enterpriseUrl,
     managerStatus,
@@ -175,7 +175,7 @@ export default {
   /**
    * 设置第二步合同签署步骤
    */
-  setContractManagerStatus: async ({
+  updateContractManagerStatus: async ({
     registrationUuid,
     managerStatus,
     managerFailText

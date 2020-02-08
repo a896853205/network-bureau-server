@@ -26,7 +26,7 @@ export default {
   /**
    * 保存登记测试的基本信息
    */
-  saveRegistrationBasic: async ({
+  updateRegistrationBasic: async ({
     registrationUuid,
     version,
     linkman,
@@ -62,7 +62,7 @@ export default {
   /**
    * 设置基本信息的状态
    */
-  setBasicStatus: async ({
+  updateBasicStatus: async ({
     registrationUuid,
     status,
     failText,
