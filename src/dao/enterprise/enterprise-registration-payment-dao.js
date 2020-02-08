@@ -19,9 +19,9 @@ export default {
 
   selectPaymentStatus: async registrationUuid => {
     return await enterpriseRegistrationPayment.findOne({
+      where: { uuid: registrationUuid },
       attributes: ['status'],
       raw: true,
-      where: { uuid: registrationUuid }
     });
   }
 };

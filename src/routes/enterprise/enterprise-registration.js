@@ -659,4 +659,27 @@ router.get('/selectPaymentStatus', async (ctx, next) => {
   }
 });
 
+/**
+ * 更新交付汇款的状态
+ */
+router.post('/updatePaymentStatus', async (ctx, next) => {
+  const { registrationUuid, status } = ctx.state.param;
+
+  const data = await enterpriseRegistrationService.updatePaymentStatus({
+    registrationUuid,
+    status
+  });
+
+  if (data) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error
+    });
+  }
+});
+
 export default router;

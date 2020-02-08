@@ -773,7 +773,7 @@ export default {
   },
 
   /**
-   * 设置第二步合同签署状态
+   * 查询第二步合同签署状态
    */
   selectContractManagerStatus: async registrationUuid => {
     return await enterpriseRegistrationContractDao.selectContractManagerStatus({
@@ -782,11 +782,24 @@ export default {
   },
 
   /**
-   * 设置第三步交付汇款状态
+   * 查询第三步交付汇款状态
    */
   selectPaymentStatus: async registrationUuid => {
-    return await enterpriseRegistrationPaymentDao.selectPaymentStatus({
+    return await enterpriseRegistrationPaymentDao.selectPaymentStatus(
       registrationUuid
+    );
+  },
+
+  /**
+   * 更新交付汇款的状态
+   */
+  updatePaymentStatus: async ({
+    registrationUuid,
+    status
+  }) => {
+    return await enterpriseRegistrationPaymentDao.updatePaymentStatus({
+      registrationUuid,
+      status
     });
-  }
+  },
 };
