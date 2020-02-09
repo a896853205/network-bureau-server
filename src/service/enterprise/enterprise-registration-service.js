@@ -788,17 +788,14 @@ export default {
   /**
    * 更新交付汇款的状态
    */
-  updatePaymentStatus: async ({
+  updateFinanceManager: async ({
     registrationUuid,
-    status,
-    statusText,
-    step
   }) => {
     return await enterpriseRegistrationStepDao.updateRegistrationStep({
       registrationUuid,
-      status,
-      statusText,
-      step
+      status: 2,
+      statusText:'已选择财务人员',
+      step:3
     });
   }
 };
