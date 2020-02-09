@@ -4,6 +4,7 @@ import { RESPONSE_CODE } from '../../../constants/domain-constants';
 
 import enterpriseRegistrationService from '../../../service/enterprise/enterprise-registration-service';
 import enterpriseUserService from '../../../service/enterprise/enterprise-user-service';
+import managerUserService from '../../../service/manager/manager-user-service';
 
 // 权限
 import verifyAuth from '../../../middle/verify-auth';
@@ -540,6 +541,27 @@ router.post('/setContractManagerStatus', async (ctx, next) => {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data: res
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error,
+      msg: '查询失败'
+    });
+  }
+});
+
+/**
+ * 查询财务管理员
+ */
+router.get('/queryFinanceManager', async (ctx, next) => {
+  const { page } = ctx.state.param;
+
+  const data = await managerUserService.queryFinanceManager(page);
+
+  if (data) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
     });
   } else {
     ctx.body = new Res({

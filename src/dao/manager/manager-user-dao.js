@@ -110,5 +110,24 @@ export default {
       total: result.count,
       pageSize: MANAGER_PAGE_SIZE
     };
+  },
+
+  /**
+   * 查询财务管理员用户
+   */
+  queryFinanceManagerUser: async page => {
+    const result = await managerUser.findAndCountAll({
+      attributes: ['uuid', 'username', 'phone', 'name', 'role', 'star'],
+      limit: MANAGER_PAGE_SIZE,
+      where: { role: 5 },
+      offset: (page - 1) * MANAGER_PAGE_SIZE,
+      raw: true
+    });
+
+    return {
+      financeManagerList: result.rows,
+      total: result.count,
+      pageSize: MANAGER_PAGE_SIZE
+    };
   }
 };

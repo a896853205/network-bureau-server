@@ -151,5 +151,12 @@ export default {
    */
   queryManager: async page => {
     return await managerUserDao.queryManagerUser(page);
+  },
+
+   /**
+   * 查询财务管理员账号
+   */
+  queryFinanceManager: async page => {
+    return await managerUserDao.queryFinanceManagerUser(page);
   }
 };
