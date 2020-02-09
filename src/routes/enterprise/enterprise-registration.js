@@ -638,36 +638,16 @@ router.post('/saveEnterpriseContractUrl', async (ctx, next) => {
 });
 
 /**
- * 查询交付汇款的状态
- */
-router.get('/selectPaymentStatus', async (ctx, next) => {
-  const { registrationUuid } = ctx.state.param;
-
-  const data = await enterpriseRegistrationService.selectPaymentStatus(
-    registrationUuid
-  );
-
-  if (data) {
-    ctx.body = new Res({
-      status: RESPONSE_CODE.success,
-      data
-    });
-  } else {
-    ctx.body = new Res({
-      status: RESPONSE_CODE.error
-    });
-  }
-});
-
-/**
  * 更新交付汇款的状态
  */
 router.post('/updatePaymentStatus', async (ctx, next) => {
-  const { registrationUuid, status } = ctx.state.param;
+  const { registrationUuid, status, statusText, step } = ctx.state.param;
 
   const data = await enterpriseRegistrationService.updatePaymentStatus({
     registrationUuid,
-    status
+    status,
+    statusText,
+    step
   });
 
   if (data) {

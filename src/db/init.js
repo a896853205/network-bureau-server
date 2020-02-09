@@ -24,7 +24,6 @@ require('./models/enterprise-registration-apply').default;
 require('./models/enterprise-registration-specimen').default;
 require('./models/enterprise-registration-contract').default;
 require('./models/enterprise-registration-basic').default;
-require('./models/enterprise-registration-payment').default;
 const sequelize = require('./db-connect');
 
 const sysRegistrationStepArray = [

@@ -11,7 +11,6 @@ import enterpriseRegistrationSpecimen from '../../db/models/enterprise-registrat
 import enterpriseRegistration from '../../db/models/enterprise-registration';
 import enterpriseRegistrationStep from '../../db/models/enterprise-registration-step';
 import enterpriseRegistrationBasic from '../../db/models/enterprise-registration-basic';
-import enterpriseRegistrationPayment from '../../db/models/enterprise-registration-payment';
 
 import { REGISTRATION_PAGE_SIZE } from '../../config/system-config';
 
@@ -140,9 +139,6 @@ export default {
           uuid: enterpriseRegistrationUuid,
           status: 1,
           statusText: '未填写'
-        }),
-        enterpriseRegistrationPayment.create({
-          uuid: enterpriseRegistrationUuid
         })
       ]);
     });

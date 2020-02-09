@@ -8,7 +8,6 @@ import enterpriseRegistrationDocumentDao from '../../dao/enterprise/enterprise-r
 import enterpriseRegistrationProductDao from '../../dao/enterprise/enterprise-registration-product-dao';
 import enterpriseRegistrationProductDescriptionDao from '../../dao/enterprise/enterprise-registration-product-description-dao';
 import enterpriseRegistrationSpecimenDao from '../../dao/enterprise/enterprise-registration-specimen-dao';
-import enterpriseRegistrationPaymentDao from '../../dao/enterprise/enterprise-registration-payment-dao';
 import enterpriseRegistrationStepDao from '../../dao/enterprise/enterprise-registration-step-dao';
 import sysRegistrationStepDao from '../../dao/sys/sys-registration-step-dao';
 import managerUserDao from '../../dao/manager/manager-user-dao';
@@ -264,13 +263,15 @@ export default {
       return false;
     }
 
-    return await enterpriseRegistrationCopyrightDao.updateRegistrationCopyright({
-      registrationUuid,
-      copyrightUrl: productionUrl,
-      status: 2,
-      statusText: '待审核',
-      failText: ''
-    });
+    return await enterpriseRegistrationCopyrightDao.updateRegistrationCopyright(
+      {
+        registrationUuid,
+        copyrightUrl: productionUrl,
+        status: 2,
+        statusText: '待审核',
+        failText: ''
+      }
+    );
   },
 
   /**
@@ -497,10 +498,12 @@ export default {
               statusText: '正在进行',
               step: 2
             }),
-            enterpriseRegistrationContractDao.updateRegistrationContractManager({
-              registrationUuid,
-              managerStatus: 1
-            })
+            enterpriseRegistrationContractDao.updateRegistrationContractManager(
+              {
+                registrationUuid,
+                managerStatus: 1
+              }
+            )
           ]);
 
           return true;
@@ -514,6 +517,10 @@ export default {
           // 到了最后一步就可以
           // 下一步的人员先把自己配置上,
           // 等第三步的第一步配置上人了,企业那边才显示具体交钱信息
+          // 1 是未选择财务人员
+          // 2 已选择财务人员
+          // 3 企业点击已交款按钮
+          // 4 财务点击了确认按钮, 结束
           // 改进度和steps表
           await Promise.all([
             enterpriseRegistrationDao.updateRegistrationCurrentStep({
@@ -528,13 +535,9 @@ export default {
             }),
             enterpriseRegistrationStepDao.updateRegistrationStep({
               registrationUuid,
-              status: 2,
-              statusText: '正在进行',
+              status: 1,
+              statusText: '未选择财务人员',
               step: 3
-            }),
-            enterpriseRegistrationPaymentDao.updatePaymentStatus({
-              registrationUuid,
-              status: 1
             })
           ]);
 
@@ -783,21 +786,19 @@ export default {
   },
 
   /**
-   * 查询第三步交付汇款状态
-   */
-  selectPaymentStatus: async registrationUuid => {
-    return await enterpriseRegistrationPaymentDao.selectPaymentStatus(
-      registrationUuid
-    );
-  },
-
-  /**
    * 更新交付汇款的状态
    */
-  updatePaymentStatus: async ({ registrationUuid, status }) => {
-    return await enterpriseRegistrationPaymentDao.updatePaymentStatus({
+  updatePaymentStatus: async ({
+    registrationUuid,
+    status,
+    statusText,
+    step
+  }) => {
+    return await enterpriseRegistrationStepDao.updateRegistrationStep({
       registrationUuid,
-      status
+      status,
+      statusText,
+      step
     });
   }
 };
