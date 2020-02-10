@@ -9,7 +9,7 @@ import enterpriseRegistrationService from '../../service/enterprise/enterprise-r
 import managerUserService from '../../service/manager/manager-user-service';
 
 const router = new Router({
-  prefix: '/enterpriseRegistration'
+  prefix: '/enterprise'
 });
 
 router.post('/createEnterpriseRegistration', async (ctx, next) => {

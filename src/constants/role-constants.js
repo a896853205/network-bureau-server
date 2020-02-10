@@ -29,5 +29,10 @@ export const AUTHORITY = {
     name: '批准人',
     code: 25,
     router: '/certifierManager'
+  },
+  ENTERPRISE: {
+    name: '企业',
+    code: 100,
+    router: '/enterprise'
   }
 };

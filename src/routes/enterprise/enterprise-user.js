@@ -8,7 +8,7 @@ import { RESPONSE_CODE } from '../../constants/domain-constants';
 import enterpriseService from '../../service/enterprise/enterprise-user-service';
 
 const router = new Router({
-  prefix: '/enterpriseUser'
+  prefix: '/enterprise'
 });
 
 /**

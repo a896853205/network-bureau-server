@@ -27,6 +27,9 @@ export default async (ctx, next) => {
 
     if (ctx.state.user.role === findRole(roleRouter)) {
       await next();
+    } else if (roleRouter === 'file') {
+      // file不控制权限获取
+      await next();
     } else {
       ctx.body = new Res({
         status: RESPONSE_CODE.unauthorized,

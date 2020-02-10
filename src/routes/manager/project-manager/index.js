@@ -38,8 +38,6 @@ router.get('/querySysRegistrationStep', async (ctx, next) => {
 router.get('/queryRegistration', async (ctx, next) => {
   const { page } = ctx.state.param;
 
-  console.log(ctx.state.user.role);
-
   const data = await enterpriseRegistrationService.queryRegistration(page);
 
   if (data) {

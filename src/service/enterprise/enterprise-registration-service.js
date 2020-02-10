@@ -255,7 +255,7 @@ export default {
         registrationUuid
       );
 
-      if (copyright && copyright.url) {
+      if (copyright?.url) {
         await client.delete(copyright.url);
       }
 

@@ -34,9 +34,10 @@ export default async (ctx, next) => {
         case 'enterprise':
           user = await enterpriseUserService.getEnterpriseByUuid(data.uuid);
 
+          // 设置上权限号
+          user.role = 100;
           break;
       }
-
     } catch (error) {
       ctx.body = new Result({
         status: RESPONSE_CODE.unauthorized,
