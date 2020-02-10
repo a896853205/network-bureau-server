@@ -507,10 +507,11 @@ router.post('/saveManagerContractUrl', async (ctx, next) => {
  * 更新交付汇款的状态
  */
 router.post('/updateFinanceManager', async (ctx, next) => {
-  const { registrationUuid } = ctx.state.param;
+  const { registrationUuid, financeManagerUuid } = ctx.state.param;
 
   const data = await enterpriseRegistrationService.updateFinanceManager({
     registrationUuid,
+    financeManagerUuid
   });
 
   if (data) {

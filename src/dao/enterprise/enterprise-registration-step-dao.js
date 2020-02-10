@@ -1,4 +1,5 @@
 import enterpriseRegistrationStep from '../../db/models/enterprise-registration-step';
+import enterpriseRegistration from '../../db/models/enterprise-registration';
 
 export default {
   /**
@@ -26,6 +27,25 @@ export default {
         status,
         statusText
       },
+      {
+        where: {
+          uuid: registrationUuid,
+          step
+        }
+      }
+    );
+  },
+
+  /**
+   * 更新步骤的管理员
+   */
+  updateRegistrationStepManagerUuid: async ({
+    registrationUuid,
+    step,
+    managerUuid
+  }) => {
+    return await enterpriseRegistrationStep.update(
+      { managerUuid },
       {
         where: {
           uuid: registrationUuid,

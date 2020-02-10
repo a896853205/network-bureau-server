@@ -1,3 +1,5 @@
+import { db } from '../../db/db-connect';
+
 // dao
 import enterpriseRegistrationDao from '../../dao/enterprise/enterprise-registration-dao';
 import enterpriseRegistrationApplyDao from '../../dao/enterprise/enterprise-registration-apply-dao';
@@ -786,16 +788,24 @@ export default {
   },
 
   /**
-   * 更新交付汇款的状态
+   * 更新财务人员信息
    */
-  updateFinanceManager: async ({
-    registrationUuid,
-  }) => {
-    return await enterpriseRegistrationStepDao.updateRegistrationStep({
-      registrationUuid,
-      status: 2,
-      statusText:'已选择财务人员',
-      step:3
+  updateFinanceManager: async ({ registrationUuid, financeManagerUuid }) => {
+    return db.transaction(() => {
+      return Promise.all([
+        enterpriseRegistrationStepDao.updateRegistrationStep({
+          registrationUuid,
+          financeManagerUuid,
+          status: 2,
+          statusText: '已选择财务人员',
+          step: 3
+        }),
+        enterpriseRegistrationStepDao.updateRegistrationStepManagerUuid({
+          registrationUuid,
+          step: 3,
+          managerUuid: financeManagerUuid
+        })
+      ]);
     });
   }
 };
