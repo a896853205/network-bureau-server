@@ -6,15 +6,11 @@ import { RESPONSE_CODE } from '../../../constants/domain-constants';
 import managerUserService from '../../../service/manager/manager-user-service';
 
 // 权限
-import verifyAuth from '../../../middle/verify-auth';
 import { AUTHORITY } from '../../../constants/role-constants';
 
-const PREFIX = '/superManager',
-  router = new Router({
-    prefix: PREFIX
-  });
-
-router.use(PREFIX, verifyAuth(AUTHORITY.SUPER.name));
+const router = new Router({
+  prefix: AUTHORITY.SUPER.router
+});
 
 /**
  * 增加/更新管理账号

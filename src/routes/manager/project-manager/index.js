@@ -2,27 +2,16 @@ import Router from 'koa-router';
 import Res from '../../../util/response';
 import { RESPONSE_CODE } from '../../../constants/domain-constants';
 
+// 权限
+import { AUTHORITY } from '../../../constants/role-constants';
+
 import enterpriseRegistrationService from '../../../service/enterprise/enterprise-registration-service';
 import enterpriseUserService from '../../../service/enterprise/enterprise-user-service';
 import managerUserService from '../../../service/manager/manager-user-service';
 
-// 权限
-import verifyAuth from '../../../middle/verify-auth';
-import { AUTHORITY } from '../../../constants/role-constants';
-
-// 路径
-import path from 'path';
-import fs from 'fs';
-
-// 文件发送
-import send from 'koa-send';
-
-const PREFIX = '/projectManager',
-  router = new Router({
-    prefix: PREFIX
-  });
-
-router.use(PREFIX, verifyAuth(AUTHORITY.PROJECT_MANAGER.name));
+const router = new Router({
+  prefix: AUTHORITY.PROJECT_MANAGER.router
+});
 
 /**
  * 无参数查询sys_registration_step表
@@ -48,6 +37,8 @@ router.get('/querySysRegistrationStep', async (ctx, next) => {
  */
 router.get('/queryRegistration', async (ctx, next) => {
   const { page } = ctx.state.param;
+
+  console.log(ctx.state.user.role);
 
   const data = await enterpriseRegistrationService.queryRegistration(page);
 

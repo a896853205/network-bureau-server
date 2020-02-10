@@ -6,97 +6,32 @@ import verifyUnlessPath from '../util/verify-unless-path';
 // 配置
 import { UNLESS_PATH_ARR } from '../config/system-config';
 
+const spliceRoleRouterString = url => url.split('/')[1];
+const findRole = roleRouter => {
+  for (let item in AUTHORITY) {
+    if (AUTHORITY[item].router === `/${roleRouter}`) {
+      return AUTHORITY[item].code;
+    }
+  }
 
+  return 0;
+};
 /**
  * 判断管理员权限是否匹配后面的路由
  */
-export default auth => {
-  return _verify[auth];
-};
+export default async (ctx, next) => {
+  if (verifyUnlessPath(ctx.url, UNLESS_PATH_ARR)) {
+    await next();
+  } else {
+    const roleRouter = spliceRoleRouterString(ctx.url);
 
-const _verify = {
-  [AUTHORITY.SUPER.name]: (ctx, next) => {
-    if (verifyUnlessPath(ctx.url, UNLESS_PATH_ARR)) {
-      next();
+    if (ctx.state.user.role === findRole(roleRouter)) {
+      await next();
     } else {
-      if (ctx.state.user.role === AUTHORITY.SUPER.code) {
-        next();
-      } else {
-        ctx.body = new Res({
-          status: RESPONSE_CODE.unauthorized,
-          msg: '您没有此权限'
-        });
-      }
-    }
-  },
-  [AUTHORITY.ACCOUNTANT.name]: (ctx, next) => {
-    if (verifyUnlessPath(ctx.url, UNLESS_PATH_ARR)) {
-      next();
-    } else {
-      if (ctx.state.user.role === AUTHORITY.ACCOUNTANT.code) {
-        next();
-      } else {
-        ctx.body = new Res({
-          status: RESPONSE_CODE.unauthorized,
-          msg: '您没有此权限'
-        });
-      }
-    }
-  },
-  [AUTHORITY.PROJECT_MANAGER.name]: (ctx, next) => {
-    if (verifyUnlessPath(ctx.url, UNLESS_PATH_ARR)) {
-      next();
-    } else {
-      if (ctx.state.user.role === AUTHORITY.PROJECT_MANAGER.code) {
-        next();
-      } else {
-        ctx.body = new Res({
-          status: RESPONSE_CODE.unauthorized,
-          msg: '您没有此权限'
-        });
-      }
-    }
-  },
-  [AUTHORITY.TECH_LEADER.name]: (ctx, next) => {
-    if (verifyUnlessPath(ctx.url, UNLESS_PATH_ARR)) {
-      next();
-    } else {
-      if (ctx.state.user.role === AUTHORITY.TECH_LEADER.code) {
-        next();
-      } else {
-        ctx.body = new Res({
-          status: RESPONSE_CODE.unauthorized,
-          msg: '您没有此权限'
-        });
-      }
-    }
-  },
-  [AUTHORITY.TECH.name]: (ctx, next) => {
-    if (verifyUnlessPath(ctx.url, UNLESS_PATH_ARR)) {
-      next();
-    } else {
-      if (ctx.state.user.role === AUTHORITY.TECH.code) {
-        next();
-      } else {
-        ctx.body = new Res({
-          status: RESPONSE_CODE.unauthorized,
-          msg: '您没有此权限'
-        });
-      }
-    }
-  },
-  [AUTHORITY.CERTIFIER.name]: (ctx, next) => {
-    if (verifyUnlessPath(ctx.url, UNLESS_PATH_ARR)) {
-      next();
-    } else {
-      if (ctx.state.user.role === AUTHORITY.CERTIFIER.code) {
-        next();
-      } else {
-        ctx.body = new Res({
-          status: RESPONSE_CODE.unauthorized,
-          msg: '您没有此权限'
-        });
-      }
+      ctx.body = new Res({
+        status: RESPONSE_CODE.unauthorized,
+        msg: '您没有此权限'
+      });
     }
   }
 };
