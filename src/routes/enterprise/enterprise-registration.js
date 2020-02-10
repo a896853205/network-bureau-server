@@ -640,15 +640,12 @@ router.post('/saveEnterpriseContractUrl', async (ctx, next) => {
 /**
  * 更新交付汇款的状态
  */
-router.post('/updatePaymentStatus', async (ctx, next) => {
-  const { registrationUuid, status, statusText, step } = ctx.state.param;
+router.put('/noticeAccountPayment', async (ctx, next) => {
+  const { registrationUuid } = ctx.state.param;
 
-  const data = await enterpriseRegistrationService.updatePaymentStatus({
+  const data = await enterpriseRegistrationService.noticeAccountPayment(
     registrationUuid,
-    status,
-    statusText,
-    step
-  });
+  );
 
   if (data) {
     ctx.body = new Res({

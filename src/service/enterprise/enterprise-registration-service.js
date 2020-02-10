@@ -807,5 +807,17 @@ export default {
         })
       ]);
     });
+  },
+
+  /**
+   * 更新支付汇款状态
+   */
+  noticeAccountPayment: async registrationUuid => {
+    return await enterpriseRegistrationStepDao.updateRegistrationStep({
+      registrationUuid,
+      status: 3,
+      statusText: '企业点击已交款按钮',
+      step: 3
+    });
   }
 };
