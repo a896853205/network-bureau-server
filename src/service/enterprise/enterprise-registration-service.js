@@ -561,6 +561,28 @@ export default {
 
           return true;
         }
+      } else if (registration.currentStep === 3) {
+        const steps = await enterpriseRegistrationStepDao.queryEnterpriseRegistrationStepByRegistrationUuid(
+          registrationUuid
+        );
+
+        // 财务通过之后
+        if (steps[2].status === 4) {
+          await Promise.all([
+            enterpriseRegistrationDao.updateRegistrationCurrentStep({
+              registrationUuid,
+              currentStep: 4
+            }),
+            enterpriseRegistrationStepDao.updateRegistrationStep({
+              registrationUuid,
+              status: 1,
+              statusText: '未选择测试管理员',
+              step: 4
+            })
+          ]);
+
+          return true;
+        }
       }
     }
 
