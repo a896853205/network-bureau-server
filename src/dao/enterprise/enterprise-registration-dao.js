@@ -280,5 +280,42 @@ export default {
         }
       }
     );
+  },
+
+  /**
+   * 查询企业的缴费信息
+   */
+  queryRegistrationPayment: async ({ page, uuidList }) => {
+    const result = await enterpriseRegistration.findAndCountAll({
+      attributes: ['uuid'],
+      limit: REGISTRATION_PAGE_SIZE,
+      offset: (page - 1) * REGISTRATION_PAGE_SIZE,
+      raw: true,
+      where: { uuid: uuidList },
+      include: [
+        {
+          model: enterpriseRegistrationBasic,
+          attributes: ['enterpriseName', 'phone'],
+          as: 'enterpriseRegistrationBasic'
+        },
+        {
+          model: enterpriseRegistrationContract,
+          attributes: ['contractCode'],
+          as: 'enterpriseRegistrationContract'
+        },
+        {
+          model: enterpriseRegistrationStep,
+          attributes: ['statusText', 'status'],
+          where: { step: 3 },
+          as: 'enterpriseRegistrationStep'
+        }
+      ]
+    });
+
+    return {
+      paymentList: result.rows,
+      total: result.count,
+      pageSize: REGISTRATION_PAGE_SIZE
+    };
   }
 };

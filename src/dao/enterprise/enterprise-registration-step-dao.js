@@ -1,6 +1,4 @@
 import enterpriseRegistrationStep from '../../db/models/enterprise-registration-step';
-import enterpriseRegistrationBasic from '../../db/models/enterprise-registration-basic';
-import enterpriseRegistrationContract from '../../db/models/enterprise-registration-contract';
 
 import { REGISTRATION_PAGE_SIZE } from '../../config/system-config';
 
@@ -58,35 +56,14 @@ export default {
     );
   },
 
-   /**
+  /**
    * 查询企业的缴费信息
    */
-  queryRegistrationPayment: async ({ page, managerUuid }) => {
-    const result = await enterpriseRegistrationStep.findAndCountAll({
-      attributes: ['uuid', 'managerUuid','statusText'],
-      limit: REGISTRATION_PAGE_SIZE,
-      offset: (page - 1) * REGISTRATION_PAGE_SIZE,
+  queryRegistrationByManagerUuid: async managerUuid => {
+    return await enterpriseRegistrationStep.findAll({
+      attributes: ['uuid'],
       raw: true,
-      where: { managerUuid, step: 3 },
-      include: [
-        {
-          model: enterpriseRegistrationBasic,
-          attributes: ['enterpriseName', 'phone'],
-          as: 'enterpriseRegistrationBasic'
-        },
-        {
-          model: enterpriseRegistrationContract,
-          attributes: ['contractCode'],
-          as: 'enterpriseRegistrationContract'
-        }
-      ]
+      where: { managerUuid }
     });
-
-    return {
-      paymentList: result.rows,
-      total: result.count,
-      pageSize: REGISTRATION_PAGE_SIZE
-    };
   }
-
 };
