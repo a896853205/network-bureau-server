@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const { db } = require('../db-connect');
 
-export default db.define('enterprise_registration_basic', {
+const enterpriseRegistrationBasic = db.define('enterprise_registration_basic', {
   id: {
     type: Sequelize.BIGINT(11),
     allowNull: false,
@@ -24,3 +24,5 @@ export default db.define('enterprise_registration_basic', {
   enterpriseName: Sequelize.STRING(32), // 开发单位全称
   devStartTime: Sequelize.STRING(32) // 开发研发日期
 });
+
+export default enterpriseRegistrationBasic;

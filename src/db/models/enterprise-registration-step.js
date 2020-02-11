@@ -1,19 +1,18 @@
 const Sequelize = require('sequelize');
 const { db } = require('../db-connect');
 
-const enterpriseRegistrationBasic = require('./enterprise-registration-basic').default;
-const enterpriseRegistrationContract = require('./enterprise-registration-contract').default;
-
-const enterpriseRegistrationStep =  db.define('enterprise_registration_step', {
+export default db.define('enterprise_registration_step', {
   id: {
     type: Sequelize.BIGINT(11),
-    primaryKey: true,
     allowNull: false,
     unique: true,
     autoIncrement: true
   },
-  uuid: Sequelize.STRING(36), // 这个uuid要与enterprise-registration的uuid一致
-  step: Sequelize.BIGINT(3),  // 步骤数
+  uuid: {
+    primaryKey: true,
+    type: Sequelize.STRING(36)
+  }, // 这个uuid要与enterprise-registration的uuid一致
+  step: Sequelize.BIGINT(3), // 步骤数
   status: Sequelize.BIGINT(3),
   // 未开始     1 灰色
   // 正在进行   2 蓝色
@@ -22,17 +21,3 @@ const enterpriseRegistrationStep =  db.define('enterprise_registration_step', {
   statusText: Sequelize.STRING(32),
   managerUuid: Sequelize.STRING(36) // 负责的管理员的uuid,普通的步骤在创建的时候就将(查询)项目负责人的uuid给,后面的是项目负责人派发的时候将这个字段改变
 });
-
-enterpriseRegistrationStep.belongsTo(enterpriseRegistrationBasic, {
-  foreignKey: 'uuid',
-  sourceKey: 'uuid',
-  as: 'enterpriseRegistrationBasic'
-});
-
-enterpriseRegistrationStep.belongsTo(enterpriseRegistrationContract, {
-  foreignKey: 'uuid',
-  sourceKey: 'uuid',
-  as: 'enterpriseRegistrationContract'
-});
-
-export default enterpriseRegistrationStep;

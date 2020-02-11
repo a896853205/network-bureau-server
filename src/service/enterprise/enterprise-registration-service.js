@@ -414,9 +414,15 @@ export default {
    * 查询企业的缴费信息
    */
   queryRegistrationPayment: async ({ page, managerUuid }) => {
-    return await enterpriseRegistrationStepDao.queryRegistrationPayment({
-      page,
+    const uuidList = await enterpriseRegistrationStepDao.queryRegistrationByManagerUuid(
       managerUuid
+    );
+    for (let item = 0; item < uuidList.length; item++) {
+      uuidList[item] = uuidList[item].uuid;
+    }
+    return await enterpriseRegistrationDao.queryRegistrationPayment({
+      page,
+      uuidList
     });
   },
 
