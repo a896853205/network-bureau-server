@@ -7,12 +7,14 @@ const { db } = require('../db-connect');
 export default db.define('enterprise_registration_contract', {
   id: {
     type: Sequelize.BIGINT(11),
-    primaryKey: true,
     allowNull: false,
     unique: true,
     autoIncrement: true
   },
-  uuid: Sequelize.STRING(36), // 这个uuid要与enterprise-registration的uuid一致
+  uuid: {
+    primaryKey: true,
+    type: Sequelize.STRING(36)
+  }, // 这个uuid要与enterprise-registration的uuid一致
   status: Sequelize.BIGINT(3),
   // 0 未填写
   // 1 已填写 待审核
