@@ -411,6 +411,16 @@ export default {
   },
 
   /**
+   * 查询企业的缴费信息
+   */
+  queryRegistrationPayment: async ({ page, managerUuid }) => {
+    return await enterpriseRegistrationStepDao.queryRegistrationPayment({
+      page,
+      managerUuid
+    });
+  },
+
+  /**
    * 设置登记测试第一步8个信息的状态
    */
   setRegistrationDetailStatus: async ({
@@ -817,6 +827,18 @@ export default {
       registrationUuid,
       status: 3,
       statusText: '企业点击已交款按钮',
+      step: 3
+    });
+  },
+
+  /**
+   * 财务确认已付款
+   */
+  accountantConfirmPayment: async registrationUuid => {
+    return await enterpriseRegistrationStepDao.updateRegistrationStep({
+      registrationUuid,
+      status: 4,
+      statusText: '财务已确认收款',
       step: 3
     });
   }
