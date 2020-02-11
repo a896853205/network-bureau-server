@@ -6,7 +6,7 @@ import { RESPONSE_CODE } from '../../../constants/domain-constants';
 import { AUTHORITY } from '../../../constants/role-constants';
 
 const router = new Router({
-  prefix: AUTHORITY.PROJECT_MANAGER.router
+  prefix: AUTHORITY.ACCOUNTANT.router
 });
 
 export default router;
