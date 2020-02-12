@@ -217,7 +217,7 @@ export default {
       address,
       devStartTime,
       enterpriseName,
-      status: 2,
+      status: 1,
       statusText: '待审核',
       failText: ''
     });
@@ -250,7 +250,7 @@ export default {
       postalCode,
       mainFunction,
       techIndex,
-      status: 2,
+      status: 1,
       statusText: '待审核',
       failText: ''
     });
@@ -283,7 +283,7 @@ export default {
       securityClassification,
       email,
       unit,
-      status: 2,
+      status: 1,
       statusText: '待审核',
       failText: ''
     });
@@ -305,7 +305,7 @@ export default {
     return await enterpriseRegistrationApplyDao.updateRegistrationApply({
       registrationUuid,
       content,
-      status: 2,
+      status: 1,
       statusText: '待审核',
       failText: ''
     });
@@ -347,7 +347,7 @@ export default {
       {
         registrationUuid,
         copyrightUrl: productionUrl,
-        status: 2,
+        status: 1,
         statusText: '待审核',
         failText: ''
       }
@@ -389,7 +389,7 @@ export default {
     return await enterpriseRegistrationDocumentDao.updateRegistrationDocument({
       registrationUuid,
       documentUrl: productionUrl,
-      status: 2,
+      status: 1,
       statusText: '待审核',
       failText: ''
     });
@@ -434,7 +434,7 @@ export default {
       {
         registrationUuid,
         productDescriptionUrl: productionUrl,
-        status: 2,
+        status: 1,
         statusText: '待审核',
         failText: ''
       }
@@ -535,7 +535,7 @@ export default {
       registrationUuid,
       status,
       failText,
-      statusText: status === 4 ? '内容错误' : '已审核'
+      statusText: status === -1 ? '内容错误' : '已审核'
     });
   },
 
@@ -584,13 +584,13 @@ export default {
             }),
             enterpriseRegistrationStepDao.updateRegistrationStep({
               registrationUuid,
-              status: 3,
+              status: 100,
               statusText: '已完成',
               step: 1
             }),
             enterpriseRegistrationStepDao.updateRegistrationStep({
               registrationUuid,
-              status: 2,
+              status: 1,
               statusText: '正在进行',
               step: 2
             }),
@@ -625,7 +625,7 @@ export default {
             }),
             enterpriseRegistrationStepDao.updateRegistrationStep({
               registrationUuid,
-              status: 3,
+              status: 100,
               statusText: '已完成',
               step: 2
             }),

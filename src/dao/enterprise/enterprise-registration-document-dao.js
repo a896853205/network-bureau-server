@@ -11,6 +11,7 @@ export default {
       statusText: '未上传'
     });
   },
+
   /**
    * 查询的用户文档集信息
    */
