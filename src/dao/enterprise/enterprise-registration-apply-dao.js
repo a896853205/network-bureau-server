@@ -4,7 +4,7 @@ export default {
   /**
    * 新增现场申请表信息
    */
-  insertRegistrationApply: ({ uuid, transaction }) => {
+  insertRegistrationApply: ({ uuid, transaction = null }) => {
     return enterpriseRegistrationApply.create(
       {
         uuid,

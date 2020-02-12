@@ -4,7 +4,7 @@ export default {
   /**
    * 新增基本信息
    */
-  insertRegistrationBasic: ({ uuid, transaction }) => {
+  insertRegistrationBasic: ({ uuid, transaction = null }) => {
     return enterpriseRegistrationBasic.create(
       {
         uuid,

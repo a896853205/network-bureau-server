@@ -3,7 +3,7 @@ import enterpriseRegistrationStep from '../../db/models/enterprise-registration-
 export default {
   bulkInsertRegistrationStep: ({
     enterpriseRegistrationSteps,
-    transaction
+    transaction = null
   }) => {
     return enterpriseRegistrationStep.bulkCreate(enterpriseRegistrationSteps, {
       transaction

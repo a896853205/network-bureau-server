@@ -4,7 +4,7 @@ export default {
   /**
    * 增加样品登记表信息
    */
-  insertRegistrationSpecimen: ({ uuid, transaction }) => {
+  insertRegistrationSpecimen: ({ uuid, transaction = null }) => {
     return enterpriseRegistrationSpecimen.create(
       {
         uuid,

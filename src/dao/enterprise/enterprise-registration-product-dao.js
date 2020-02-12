@@ -4,7 +4,7 @@ export default {
   /**
    * 新增产品介质信息
    */
-  insertRegistrationProduct: ({ uuid, transaction }) => {
+  insertRegistrationProduct: ({ uuid, transaction = null }) => {
     return enterpriseRegistrationProduct.create(
       {
         uuid,

@@ -4,7 +4,7 @@ export default {
   /**
    * 新增用户文档集信息
    */
-  insertRegistrationDocument: ({ uuid, transaction }) => {
+  insertRegistrationDocument: ({ uuid, transaction = null }) => {
     return enterpriseRegistrationDocument.create(
       {
         uuid,

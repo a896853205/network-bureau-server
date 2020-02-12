@@ -110,67 +110,64 @@ export default {
           }
         ];
 
-      let transaction = await db.transaction();
-
       try {
-        await Promise.all([
-          enterpriseRegistrationDao.insertEnterpriseRegistration({
-            uuid: enterpriseRegistrationUuid,
-            name,
-            enterpriseUuid,
-            transaction
-          }),
-          enterpriseRegistrationCopyrightDao.insertRegistrationCopyright({
-            uuid: enterpriseRegistrationUuid,
-            transaction
-          }),
-          enterpriseRegistrationContractDao.insertRegistrationContract({
-            uuid: enterpriseRegistrationUuid,
-            transaction
-          }),
-          enterpriseRegistrationSpecimenDao.insertRegistrationSpecimen({
-            uuid: enterpriseRegistrationUuid,
-            transaction
-          }),
-          enterpriseRegistrationProductDao.insertRegistrationProduct({
-            uuid: enterpriseRegistrationUuid,
-            transaction
-          }),
-          enterpriseRegistrationProductDescriptionDao.insertRegistrationProductDescription(
-            {
+        await db.transaction(async transaction => {
+          await Promise.all([
+            enterpriseRegistrationDao.insertEnterpriseRegistration({
+              uuid: enterpriseRegistrationUuid,
+              name,
+              enterpriseUuid,
+              transaction
+            }),
+            enterpriseRegistrationCopyrightDao.insertRegistrationCopyright({
               uuid: enterpriseRegistrationUuid,
               transaction
+            }),
+            enterpriseRegistrationContractDao.insertRegistrationContract({
+              uuid: enterpriseRegistrationUuid,
+              transaction
+            }),
+            enterpriseRegistrationSpecimenDao.insertRegistrationSpecimen({
+              uuid: enterpriseRegistrationUuid,
+              transaction
+            }),
+            enterpriseRegistrationProductDao.insertRegistrationProduct({
+              uuid: enterpriseRegistrationUuid,
+              transaction
+            }),
+            enterpriseRegistrationProductDescriptionDao.insertRegistrationProductDescription(
+              {
+                uuid: enterpriseRegistrationUuid,
+                transaction
+              }
+            ),
+            enterpriseRegistrationDocumentDao.insertRegistrationDocument({
+              uuid: enterpriseRegistrationUuid,
+              transaction
+            }),
+            enterpriseRegistrationApplyDao.insertRegistrationApply({
+              uuid: enterpriseRegistrationUuid,
+              transaction
+            }),
+            enterpriseRegistrationBasicDao.insertRegistrationBasic({
+              uuid: enterpriseRegistrationUuid,
+              transaction
+            })
+          ]);
+
+          return await enterpriseRegistrationStepDao.bulkInsertRegistrationStep(
+            {
+              enterpriseRegistrationSteps,
+              transaction
             }
-          ),
-          enterpriseRegistrationDocumentDao.insertRegistrationDocument({
-            uuid: enterpriseRegistrationUuid,
-            transaction
-          }),
-          enterpriseRegistrationApplyDao.insertRegistrationApply({
-            uuid: enterpriseRegistrationUuid,
-            transaction
-          }),
-          enterpriseRegistrationBasicDao.insertRegistrationBasic({
-            uuid: enterpriseRegistrationUuid,
-            transaction
-          })
-        ]);
-
-        await enterpriseRegistrationStepDao.bulkInsertRegistrationStep({
-          enterpriseRegistrationSteps,
-          transaction
+          );
         });
-
-        await transaction.commit();
 
         return enterpriseRegistrationUuid;
       } catch (error) {
         console.log(error);
-        await transaction?.rollback();
       }
     }
-
-    // return false;
   },
 
   /**
