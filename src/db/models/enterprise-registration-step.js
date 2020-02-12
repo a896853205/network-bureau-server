@@ -6,12 +6,10 @@ export default db.define('enterprise_registration_step', {
     type: Sequelize.BIGINT(11),
     allowNull: false,
     unique: true,
-    autoIncrement: true
+    autoIncrement: true,
+    primaryKey: true
   },
-  uuid: {
-    primaryKey: true,
-    type: Sequelize.STRING(36)
-  }, // 这个uuid要与enterprise-registration的uuid一致
+  uuid: Sequelize.STRING(36), // 这个uuid要与enterprise-registration的uuid一致
   step: Sequelize.BIGINT(3), // 步骤数
   status: Sequelize.BIGINT(3),
   // 未开始     0 灰色

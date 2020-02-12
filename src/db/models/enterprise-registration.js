@@ -40,7 +40,7 @@ enterpriseRegistration.hasOne(enterpriseRegistrationContract, {
   as: 'enterpriseRegistrationContract'
 });
 
-enterpriseRegistration.hasOne(enterpriseRegistrationStep, {
+enterpriseRegistration.hasMany(enterpriseRegistrationStep, {
   foreignKey: 'uuid',
   sourceKey: 'uuid',
   as: 'enterpriseRegistrationStep'
