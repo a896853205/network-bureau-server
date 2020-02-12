@@ -494,7 +494,7 @@ export default {
     return await enterpriseRegistrationProductDao.updateRegistrationProduct({
       registrationUuid,
       productUrl: productionUrl,
-      status: 2,
+      status: 1,
       statusText: '待审核',
       failText: ''
     });
@@ -586,14 +586,14 @@ export default {
         );
 
         if (
-          enterpriseRegistrationBasicStatus.status === 3 &&
-          enterpriseRegistrationContractStatus.status === 3 &&
-          enterpriseRegistrationCopyrightStatus.status === 3 &&
-          enterpriseRegistrationSpecimenStatus.status === 3 &&
-          enterpriseRegistrationProductDescriptionStatus.status === 3 &&
-          enterpriseRegistrationDocumentStatus.status === 3 &&
-          enterpriseRegistrationProductStatus.status === 3 &&
-          enterpriseRegistrationApplyStatus.status === 3
+          enterpriseRegistrationBasicStatus.status === 100 &&
+          enterpriseRegistrationContractStatus.status === 100 &&
+          enterpriseRegistrationCopyrightStatus.status === 100 &&
+          enterpriseRegistrationSpecimenStatus.status === 100 &&
+          enterpriseRegistrationProductDescriptionStatus.status === 100 &&
+          enterpriseRegistrationDocumentStatus.status === 100 &&
+          enterpriseRegistrationProductStatus.status === 100 &&
+          enterpriseRegistrationApplyStatus.status === 100
         ) {
           // 改进度和steps表
           await Promise.all([
