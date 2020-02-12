@@ -1,14 +1,15 @@
-require('babel-register')({
+require('@babel/register')({
   presets: [
     [
-      'env',
+      '@babel/preset-env',
       {
         targets: {
           node: '12.13.1'
         }
       }
     ]
-  ]
+  ],
+  plugins: ['@babel/plugin-proposal-optional-chaining']
 });
 
 const enterpriseUser = require('./models/enterprise-user').default;
