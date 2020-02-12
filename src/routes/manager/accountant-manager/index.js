@@ -18,7 +18,7 @@ router.put('/accountantConfirmPayment', async (ctx, next) => {
   const { registrationUuid } = ctx.state.param;
 
   const data = await enterpriseRegistrationService.accountantConfirmPayment(
-    registrationUuid,
+    registrationUuid
   );
 
   if (data) {
@@ -37,7 +37,8 @@ router.put('/accountantConfirmPayment', async (ctx, next) => {
  * 查询企业的缴费信息
  */
 router.get('/queryRegistrationPayment', async (ctx, next) => {
-  const { page, managerUuid } = ctx.state.param;
+  const { page } = ctx.state.param;
+  const managerUuid = ctx.state.user.uuid;
 
   const data = await enterpriseRegistrationService.queryRegistrationPayment({
     page,
