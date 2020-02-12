@@ -4,12 +4,15 @@ export default {
   /**
    * 增加样品登记表信息
    */
-  insertRegistrationSpecimen: async registrationUuid => {
-    return await enterpriseRegistrationSpecimen.create({
-      uuid: registrationUuid,
-      status: 0,
-      statusText: '未填写'
-    });
+  insertRegistrationSpecimen: ({ uuid, transaction }) => {
+    return enterpriseRegistrationSpecimen.create(
+      {
+        uuid,
+        status: 0,
+        statusText: '未填写'
+      },
+      { transaction }
+    );
   },
   /**
    * 查询的样品登记表信息

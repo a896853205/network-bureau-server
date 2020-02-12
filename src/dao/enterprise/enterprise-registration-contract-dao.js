@@ -4,14 +4,17 @@ export default {
   /**
    * 增加评测合同信息
    */
-  insertRegistrationContract: async registrationUuid => {
-    return await enterpriseRegistrationContract.create({
-      uuid: registrationUuid,
-      status: 0,
-      statusText: '未填写'
-    });
+  insertRegistrationContract: ({ uuid, transaction = null }) => {
+    return enterpriseRegistrationContract.create(
+      {
+        uuid,
+        status: 0,
+        statusText: '未填写'
+      },
+      { transaction }
+    );
   },
-  
+
   /**
    * 查询的评测合同信息
    */

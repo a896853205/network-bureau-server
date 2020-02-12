@@ -4,12 +4,15 @@ export default {
   /**
    * 新增产品介质信息
    */
-  insertRegistrationProduct: async registrationUuid => {
-    return await enterpriseRegistrationProduct.create({
-      uuid: registrationUuid,
-      status: 0,
-      statusText: '未上传'
-    });
+  insertRegistrationProduct: ({ uuid, transaction }) => {
+    return enterpriseRegistrationProduct.create(
+      {
+        uuid,
+        status: 0,
+        statusText: '未上传'
+      },
+      { transaction }
+    );
   },
   /**
    * 查询的产品介质信息

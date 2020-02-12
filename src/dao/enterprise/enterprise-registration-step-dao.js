@@ -1,10 +1,13 @@
 import enterpriseRegistrationStep from '../../db/models/enterprise-registration-step';
 
 export default {
-  bulkInsertRegistrationStep: async enterpriseRegistrationSteps => {
-    return await enterpriseRegistrationStep.bulkCreate(
-      enterpriseRegistrationSteps
-    );
+  bulkInsertRegistrationStep: ({
+    enterpriseRegistrationSteps,
+    transaction
+  }) => {
+    return enterpriseRegistrationStep.bulkCreate(enterpriseRegistrationSteps, {
+      transaction
+    });
   },
 
   /**

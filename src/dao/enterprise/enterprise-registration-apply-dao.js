@@ -4,12 +4,17 @@ export default {
   /**
    * 新增现场申请表信息
    */
-  insertRegistrationApply: async registrationUuid => {
-    return await enterpriseRegistrationApply.create({
-      uuid: registrationUuid,
-      status: 0,
-      statusText: '未填写'
-    });
+  insertRegistrationApply: ({ uuid, transaction }) => {
+    return enterpriseRegistrationApply.create(
+      {
+        uuid,
+        status: 0,
+        statusText: '未填写'
+      },
+      {
+        transaction
+      }
+    );
   },
   /**
    * 保存现场测试申请表信息

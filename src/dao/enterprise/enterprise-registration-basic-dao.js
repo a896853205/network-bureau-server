@@ -4,12 +4,15 @@ export default {
   /**
    * 新增基本信息
    */
-  insertRegistrationBasic: async registrationUuid => {
-    return await enterpriseRegistrationBasic.create({
-      uuid: registrationUuid,
-      status: 0,
-      statusText: '未填写'
-    });
+  insertRegistrationBasic: ({ uuid, transaction }) => {
+    return enterpriseRegistrationBasic.create(
+      {
+        uuid,
+        status: 0,
+        statusText: '未填写'
+      },
+      { transaction }
+    );
   },
   /**
    * 查询的登记测试的基本信息

@@ -36,17 +36,21 @@ export default {
   /**
    * 创建一个登记注册
    */
-  insertEnterpriseRegistration: async (
-    uuid = uuid.v1(),
+  insertEnterpriseRegistration: ({
+    uuid,
     name,
-    enterpriseUuid
-  ) => {
-    return await enterpriseRegistration.create({
-      name,
-      currentStep: 1,
-      uuid,
-      enterpriseUuid: enterpriseUuid
-    });
+    enterpriseUuid,
+    transaction = null
+  }) => {
+    return enterpriseRegistration.create(
+      {
+        name,
+        currentStep: 1,
+        uuid,
+        enterpriseUuid
+      },
+      { transaction }
+    );
   },
 
   /**

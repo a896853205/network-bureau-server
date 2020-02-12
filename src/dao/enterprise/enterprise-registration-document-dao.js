@@ -4,12 +4,17 @@ export default {
   /**
    * 新增用户文档集信息
    */
-  insertRegistrationDocument: async registrationUuid => {
-    return await enterpriseRegistrationDocument.create({
-      uuid: registrationUuid,
-      status: 0,
-      statusText: '未上传'
-    });
+  insertRegistrationDocument: ({ uuid, transaction }) => {
+    return enterpriseRegistrationDocument.create(
+      {
+        uuid,
+        status: 0,
+        statusText: '未上传'
+      },
+      {
+        transaction
+      }
+    );
   },
 
   /**

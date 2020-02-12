@@ -4,12 +4,15 @@ export default {
   /**
    * 新增软件著作权
    */
-  insertRegistrationCopyright: async registrationUuid => {
-    return enterpriseRegistrationCopyright.create({
-      uuid: registrationUuid,
-      status: 0,
-      statusText: '未上传'
-    });
+  insertRegistrationCopyright: ({ uuid, transaction = null }) => {
+    return enterpriseRegistrationCopyright.create(
+      {
+        uuid,
+        status: 0,
+        statusText: '未上传'
+      },
+      { transaction }
+    );
   },
   /**
    * 查询的现场测试软件著作权信息
