@@ -2,7 +2,18 @@ import enterpriseRegistrationContract from '../../db/models/enterprise-registrat
 
 export default {
   /**
-   * 查询的评测合同的基本信息
+   * 增加评测合同信息
+   */
+  insertRegistrationContract: async registrationUuid => {
+    return await enterpriseRegistrationContract.create({
+      uuid: registrationUuid,
+      status: 0,
+      statusText: '未填写'
+    });
+  },
+  
+  /**
+   * 查询的评测合同信息
    */
   selectRegistrationContractByRegistrationUuid: async registrationUuid => {
     return await enterpriseRegistrationContract.findOne({

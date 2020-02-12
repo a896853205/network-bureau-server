@@ -29,6 +29,8 @@ import moment from 'moment';
 // service
 import fileService from '../../service/user/file-service';
 
+import uuid from 'uuid';
+
 export default {
   /**
    * 根据名字查询
@@ -59,17 +61,93 @@ export default {
     } else {
       // 查询一个项目管理员
       const projectManager = await managerUserDao.selectManagerUserByRole(10);
-      let projectManagerUuid = '';
+      const projectManagerUuid = projectManager?.uuid;
 
-      if (projectManager && projectManager.uuid) {
-        projectManagerUuid = projectManager.uuid;
-      }
+      // 初始化步骤的数据
+      const enterpriseRegistrationUuid = uuid.v1(),
+        enterpriseRegistrationSteps = [
+          {
+            uuid: enterpriseRegistrationUuid,
+            step: 1,
+            status: 1,
+            statusText: '正在进行',
+            managerUuid: projectManagerUuid
+          },
+          {
+            uuid: enterpriseRegistrationUuid,
+            step: 2,
+            status: 0,
+            statusText: '未开始',
+            managerUuid: projectManagerUuid
+          },
+          {
+            uuid: enterpriseRegistrationUuid,
+            step: 3,
+            status: 0,
+            statusText: '未开始',
+            managerUuid: projectManagerUuid
+          },
+          {
+            uuid: enterpriseRegistrationUuid,
+            step: 4,
+            status: 0,
+            statusText: '未开始',
+            managerUuid: projectManagerUuid
+          },
+          {
+            uuid: enterpriseRegistrationUuid,
+            step: 5,
+            status: 0,
+            statusText: '未开始',
+            managerUuid: projectManagerUuid
+          },
+          {
+            uuid: enterpriseRegistrationUuid,
+            step: 6,
+            status: 0,
+            statusText: '未开始',
+            managerUuid: projectManagerUuid
+          }
+        ];
 
-      return await enterpriseRegistrationDao.createEnterpriseRegistration(
-        name,
-        enterpriseUuid,
-        projectManagerUuid
-      );
+      await db.transaction(() => {
+        return Promise.all([
+          enterpriseRegistrationDao.insertEnterpriseRegistration(
+            enterpriseRegistrationUuid,
+            name,
+            enterpriseUuid
+          ),
+          enterpriseRegistrationStepDao.bulkInsertRegistrationStep(
+            enterpriseRegistrationSteps
+          ),
+          enterpriseRegistrationCopyrightDao.insertRegistrationCopyright(
+            enterpriseRegistrationUuid
+          ),
+          enterpriseRegistrationContractDao.insertRegistrationContract(
+            enterpriseRegistrationUuid
+          ),
+          enterpriseRegistrationSpecimenDao.insertRegistrationSpecimen(
+            enterpriseRegistrationUuid
+          ),
+          enterpriseRegistrationProductDao.insertRegistrationProduct(
+            enterpriseRegistrationUuid
+          ),
+          enterpriseRegistrationProductDescriptionDao.insertRegistrationProductDescription(
+            enterpriseRegistrationUuid
+          ),
+          enterpriseRegistrationDocumentDao.insertRegistrationDocument(
+            enterpriseRegistrationUuid
+          ),
+          enterpriseRegistrationApplyDao.insertRegistrationApply(
+            enterpriseRegistrationUuid
+          ),
+          enterpriseRegistrationBasicDao.insertRegistrationBasic(
+            enterpriseRegistrationUuid
+          )
+        ]);
+      });
+
+      return enterpriseRegistrationUuid;
     }
   },
 
@@ -139,7 +217,7 @@ export default {
       address,
       devStartTime,
       enterpriseName,
-      status: 2,
+      status: 1,
       statusText: '待审核',
       failText: ''
     });
@@ -172,7 +250,7 @@ export default {
       postalCode,
       mainFunction,
       techIndex,
-      status: 2,
+      status: 1,
       statusText: '待审核',
       failText: ''
     });
@@ -205,7 +283,7 @@ export default {
       securityClassification,
       email,
       unit,
-      status: 2,
+      status: 1,
       statusText: '待审核',
       failText: ''
     });
@@ -227,7 +305,7 @@ export default {
     return await enterpriseRegistrationApplyDao.updateRegistrationApply({
       registrationUuid,
       content,
-      status: 2,
+      status: 1,
       statusText: '待审核',
       failText: ''
     });
@@ -269,7 +347,7 @@ export default {
       {
         registrationUuid,
         copyrightUrl: productionUrl,
-        status: 2,
+        status: 1,
         statusText: '待审核',
         failText: ''
       }
@@ -311,7 +389,7 @@ export default {
     return await enterpriseRegistrationDocumentDao.updateRegistrationDocument({
       registrationUuid,
       documentUrl: productionUrl,
-      status: 2,
+      status: 1,
       statusText: '待审核',
       failText: ''
     });
@@ -356,7 +434,7 @@ export default {
       {
         registrationUuid,
         productDescriptionUrl: productionUrl,
-        status: 2,
+        status: 1,
         statusText: '待审核',
         failText: ''
       }
@@ -457,7 +535,7 @@ export default {
       registrationUuid,
       status,
       failText,
-      statusText: status === 4 ? '内容错误' : '已审核'
+      statusText: status === -1 ? '内容错误' : '已审核'
     });
   },
 
@@ -506,13 +584,13 @@ export default {
             }),
             enterpriseRegistrationStepDao.updateRegistrationStep({
               registrationUuid,
-              status: 3,
+              status: 100,
               statusText: '已完成',
               step: 1
             }),
             enterpriseRegistrationStepDao.updateRegistrationStep({
               registrationUuid,
-              status: 2,
+              status: 1,
               statusText: '正在进行',
               step: 2
             }),
@@ -547,7 +625,7 @@ export default {
             }),
             enterpriseRegistrationStepDao.updateRegistrationStep({
               registrationUuid,
-              status: 3,
+              status: 100,
               statusText: '已完成',
               step: 2
             }),

@@ -2,7 +2,17 @@ import enterpriseRegistrationApply from '../../db/models/enterprise-registration
 
 export default {
   /**
-   * 保存现场测试申请表的基本信息
+   * 新增现场申请表信息
+   */
+  insertRegistrationApply: async registrationUuid => {
+    return await enterpriseRegistrationApply.create({
+      uuid: registrationUuid,
+      status: 0,
+      statusText: '未填写'
+    });
+  },
+  /**
+   * 保存现场测试申请表信息
    */
   updateRegistrationApply: async ({
     registrationUuid,

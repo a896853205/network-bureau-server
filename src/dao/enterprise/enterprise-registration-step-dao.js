@@ -1,8 +1,12 @@
 import enterpriseRegistrationStep from '../../db/models/enterprise-registration-step';
 
-import { REGISTRATION_PAGE_SIZE } from '../../config/system-config';
-
 export default {
+  bulkInsertRegistrationStep: async enterpriseRegistrationSteps => {
+    return await enterpriseRegistrationStep.bulkCreate(
+      enterpriseRegistrationSteps
+    );
+  },
+
   /**
    * 根据enterpriseRegistrationUuid查询具体步骤状态
    */

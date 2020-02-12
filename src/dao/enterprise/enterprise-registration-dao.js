@@ -1,5 +1,3 @@
-import { db } from '../../db/db-connect';
-
 import enterpriseUser from '../../db/models/enterprise-user';
 import enterpriseRegistrationApply from '../../db/models/enterprise-registration-apply';
 import enterpriseRegistrationContract from '../../db/models/enterprise-registration-contract';
@@ -13,8 +11,6 @@ import enterpriseRegistrationStep from '../../db/models/enterprise-registration-
 import enterpriseRegistrationBasic from '../../db/models/enterprise-registration-basic';
 
 import { REGISTRATION_PAGE_SIZE } from '../../config/system-config';
-
-import uuid from 'uuid';
 
 export default {
   /**
@@ -40,110 +36,17 @@ export default {
   /**
    * 创建一个登记注册
    */
-  createEnterpriseRegistration: async (
+  insertEnterpriseRegistration: async (
+    uuid = uuid.v1(),
     name,
-    enterpriseUuid,
-    managerProjectUuid
+    enterpriseUuid
   ) => {
-    const enterpriseRegistrationUuid = uuid.v1(),
-      enterpriseRegistrationStepArr = [
-        {
-          uuid: enterpriseRegistrationUuid,
-          step: 1,
-          status: 2,
-          statusText: '正在进行',
-          managerUuid: managerProjectUuid
-        },
-        {
-          uuid: enterpriseRegistrationUuid,
-          step: 2,
-          status: 1,
-          statusText: '未开始',
-          managerUuid: managerProjectUuid
-        },
-        {
-          uuid: enterpriseRegistrationUuid,
-          step: 3,
-          status: 1,
-          statusText: '未开始',
-          managerUuid: managerProjectUuid
-        },
-        {
-          uuid: enterpriseRegistrationUuid,
-          step: 4,
-          status: 1,
-          statusText: '未开始',
-          managerUuid: managerProjectUuid
-        },
-        {
-          uuid: enterpriseRegistrationUuid,
-          step: 5,
-          status: 1,
-          statusText: '未开始',
-          managerUuid: managerProjectUuid
-        },
-        {
-          uuid: enterpriseRegistrationUuid,
-          step: 6,
-          status: 1,
-          statusText: '未开始',
-          managerUuid: managerProjectUuid
-        }
-      ];
-
-    db.transaction(() => {
-      return Promise.all([
-        enterpriseRegistration.create({
-          name,
-          currentStep: 1,
-          uuid: enterpriseRegistrationUuid,
-          enterpriseUuid: enterpriseUuid
-        }),
-        enterpriseRegistrationStep.bulkCreate(enterpriseRegistrationStepArr),
-        enterpriseRegistrationCopyright.create({
-          uuid: enterpriseRegistrationUuid,
-          status: 1,
-          statusText: '未上传'
-        }),
-        enterpriseRegistrationContract.create({
-          uuid: enterpriseRegistrationUuid,
-          status: 1,
-          statusText: '未填写'
-        }),
-        enterpriseRegistrationSpecimen.create({
-          uuid: enterpriseRegistrationUuid,
-          status: 1,
-          statusText: '未填写'
-        }),
-        enterpriseRegistrationProduct.create({
-          uuid: enterpriseRegistrationUuid,
-          status: 1,
-          statusText: '未上传'
-        }),
-        enterpriseRegistrationProductDescription.create({
-          uuid: enterpriseRegistrationUuid,
-          status: 1,
-          statusText: '未上传'
-        }),
-        enterpriseRegistrationDocument.create({
-          uuid: enterpriseRegistrationUuid,
-          status: 1,
-          statusText: '未上传'
-        }),
-        enterpriseRegistrationApply.create({
-          uuid: enterpriseRegistrationUuid,
-          status: 1,
-          statusText: '未填写'
-        }),
-        enterpriseRegistrationBasic.create({
-          uuid: enterpriseRegistrationUuid,
-          status: 1,
-          statusText: '未填写'
-        })
-      ]);
+    return await enterpriseRegistration.create({
+      name,
+      currentStep: 1,
+      uuid,
+      enterpriseUuid: enterpriseUuid
     });
-
-    return enterpriseRegistrationUuid;
   },
 
   /**
