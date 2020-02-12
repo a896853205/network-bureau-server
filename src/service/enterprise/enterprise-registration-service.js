@@ -510,7 +510,6 @@ export default {
   setRegistrationDetailStatus: async ({
     registrationUuid,
     type,
-    status,
     failText
   }) => {
     const statusDao = {
@@ -533,9 +532,9 @@ export default {
 
     return await getStatusDao(type)({
       registrationUuid,
-      status,
+      status : failText ? -1 : 100,
       failText,
-      statusText: status === -1 ? '内容错误' : '已审核'
+      statusText: failText ? '内容错误' : '已审核'
     });
   },
 
