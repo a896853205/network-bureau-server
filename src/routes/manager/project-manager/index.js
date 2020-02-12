@@ -231,14 +231,42 @@ router.get('/selectRegistrationApply', async (ctx, next) => {
   }
 });
 
-router.post('/setRegistrationDetailStatus', async (ctx, next) => {
-  const { registrationUuid, type, status, failText } = ctx.state.param;
+/**
+ * 设置审核通过状态
+ */
+router.post('/setRegistrationDetailSuccessStatus', async (ctx, next) => {
+  const { registrationUuid, type } = ctx.state.param;
 
   const res = await enterpriseRegistrationService.setRegistrationDetailStatus({
     registrationUuid,
     type,
-    status,
-    failText
+    status: 100
+  });
+
+  if (res) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data: res
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error,
+      msg: '查询失败'
+    });
+  }
+});
+
+/**
+ * 设置内容错误状态
+ */
+router.post('/setRegistrationDetailFailStatus', async (ctx, next) => {
+  const { registrationUuid, type, statusText } = ctx.state.param;
+
+  const res = await enterpriseRegistrationService.setRegistrationDetailStatus({
+    registrationUuid,
+    type,
+    status: -1,
+    statusText
   });
 
   if (res) {
