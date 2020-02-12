@@ -239,7 +239,8 @@ router.post('/setRegistrationDetailSuccessStatus', async (ctx, next) => {
 
   const res = await enterpriseRegistrationService.setRegistrationDetailStatus({
     registrationUuid,
-    type
+    type,
+    isPass: true
   });
 
   if (res) {
@@ -264,7 +265,8 @@ router.post('/setRegistrationDetailFailStatus', async (ctx, next) => {
   const res = await enterpriseRegistrationService.setRegistrationDetailStatus({
     registrationUuid,
     type,
-    failText
+    failText,
+    isPass: false
   });
 
   if (res) {
