@@ -108,27 +108,27 @@ export default {
   /**
    * 保存评测合同的基本信息
    */
-  updateRegistrationContractManager: async ({
+  updateRegistrationContractManager: ({
     registrationUuid,
     contractCode,
     specimenHaveTime,
     payment,
     paymentTime,
     contractTime,
-    managerStatus
+    transaction = null
   }) => {
-    return await enterpriseRegistrationContract.update(
+    return enterpriseRegistrationContract.update(
       {
         contractCode,
         specimenHaveTime,
         payment,
         paymentTime,
-        contractTime,
-        managerStatus
+        contractTime
       },
       {
         where: { uuid: registrationUuid },
-        raw: true
+        raw: true,
+        transaction
       }
     );
   },
@@ -147,19 +147,15 @@ export default {
   /**
    * 保存评测合同的甲方基本信息
    */
-  updateManagerContractUrl: async ({
-    registrationUuid,
-    managerUrl,
-    managerStatus
-  }) => {
-    return await enterpriseRegistrationContract.update(
+  updateManagerContractUrl: ({ registrationUuid, managerUrl, transaction }) => {
+    return enterpriseRegistrationContract.update(
       {
-        managerUrl,
-        managerStatus
+        managerUrl
       },
       {
         where: { uuid: registrationUuid },
-        raw: true
+        raw: true,
+        transaction
       }
     );
   },
@@ -167,21 +163,21 @@ export default {
   /**
    * 保存评测合同的乙方基本信息
    */
-  updateEnterpriseContractUrl: async ({
+  updateEnterpriseContractUrl: ({
     registrationUuid,
     enterpriseUrl,
-    managerStatus,
-    failText
+    managerFailText,
+    transaction = null
   }) => {
-    return await enterpriseRegistrationContract.update(
+    return enterpriseRegistrationContract.update(
       {
         enterpriseUrl,
-        managerStatus,
-        failText
+        managerFailText
       },
       {
         where: { uuid: registrationUuid },
-        raw: true
+        raw: true,
+        transaction
       }
     );
   },

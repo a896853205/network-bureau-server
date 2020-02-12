@@ -511,12 +511,12 @@ export default {
    * 查询企业的缴费信息
    */
   queryRegistrationPayment: async ({ page, managerUuid }) => {
-    const uuidList = await enterpriseRegistrationStepDao.queryRegistrationByManagerUuid(
+    const registrationList = await enterpriseRegistrationStepDao.queryRegistrationByManagerUuid(
       managerUuid
     );
-    for (let item = 0; item < uuidList.length; item++) {
-      uuidList[item] = uuidList[item].uuid;
-    }
+
+    const uuidList = registrationList.map(item => item.uuid);
+
     return await enterpriseRegistrationDao.queryRegistrationPayment({
       page,
       uuidList
@@ -610,15 +610,9 @@ export default {
             enterpriseRegistrationStepDao.updateRegistrationStep({
               registrationUuid,
               status: 1,
-              statusText: '正在进行',
+              statusText: '管理员填写内容',
               step: 2
-            }),
-            enterpriseRegistrationContractDao.updateRegistrationContractManager(
-              {
-                registrationUuid,
-                managerStatus: 1
-              }
-            )
+            })
           ]);
 
           return true;
@@ -627,8 +621,12 @@ export default {
         const contract = await enterpriseRegistrationContractDao.selectRegistrationContractManager(
           registrationUuid
         );
+
+        const steps = await enterpriseRegistrationStepDao.queryEnterpriseRegistrationStepByRegistrationUuid(
+          registrationUuid
+        );
         // 第二步电子签合同
-        if (contract.managerStatus === 5) {
+        if (steps[1].status === 5) {
           // 到了最后一步就可以
           // 下一步的人员先把自己配置上,
           // 等第三步的第一步配置上人了,企业那边才显示具体交钱信息
@@ -824,17 +822,34 @@ export default {
     paymentTime,
     contractTime
   }) => {
-    return await enterpriseRegistrationContractDao.updateRegistrationContractManager(
-      {
-        registrationUuid,
-        contractCode,
-        specimenHaveTime,
-        payment,
-        paymentTime,
-        contractTime,
-        managerStatus: 2
-      }
-    );
+    try {
+      await db.transaction(async transaction => {
+        return await Promise.all[
+          enterpriseRegistrationContractDao.updateRegistrationContractManager(
+            {
+              registrationUuid,
+              contractCode,
+              specimenHaveTime,
+              payment,
+              paymentTime,
+              contractTime,
+              transaction
+            },
+            enterpriseRegistrationStepDao.updateRegistrationStep({
+              registrationUuid,
+              status: 2,
+              statusText: '管理员生成合同',
+              step: 2,
+              transaction
+            })
+          )
+        ];
+      });
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
   },
 
   /**
@@ -855,16 +870,29 @@ export default {
       }
 
       await client.copy(productionUrl, tempUrl);
+
+      await db.transaction(async transaction => {
+        return Promise.all([
+          enterpriseRegistrationContractDao.updateManagerContractUrl({
+            registrationUuid,
+            managerUrl: productionUrl,
+            transaction
+          }),
+          enterpriseRegistrationStepDao.updateRegistrationStep({
+            registrationUuid,
+            status: 3,
+            statusText: '企业上传合同',
+            step: 2,
+            transaction
+          })
+        ]);
+      });
+
+      return true;
     } catch (error) {
       console.log(error);
       return false;
     }
-
-    return await enterpriseRegistrationContractDao.updateManagerContractUrl({
-      registrationUuid,
-      managerUrl: productionUrl,
-      managerStatus: 3
-    });
   },
 
   /**
@@ -885,17 +913,28 @@ export default {
       }
 
       await client.copy(productionUrl, tempUrl);
+
+      await db.transaction(transaction => {
+        return Promise.all([
+          enterpriseRegistrationContractDao.updateEnterpriseContractUrl({
+            registrationUuid,
+            enterpriseUrl: productionUrl,
+            managerFailText: '',
+            transaction
+          }),
+          enterpriseRegistrationStepDao.updateRegistrationStep({
+            status: 4,
+            step: 2,
+            registrationUuid,
+            statusText: '审核最终合同',
+            transaction
+          })
+        ]);
+      });
     } catch (error) {
       console.log(error);
       return false;
     }
-
-    return await enterpriseRegistrationContractDao.updateEnterpriseContractUrl({
-      registrationUuid,
-      enterpriseUrl: productionUrl,
-      managerStatus: 4,
-      failText: ''
-    });
   },
 
   /**
