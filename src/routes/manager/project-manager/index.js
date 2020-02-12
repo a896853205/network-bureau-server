@@ -239,8 +239,7 @@ router.post('/setRegistrationDetailSuccessStatus', async (ctx, next) => {
 
   const res = await enterpriseRegistrationService.setRegistrationDetailStatus({
     registrationUuid,
-    type,
-    status: 100
+    type
   });
 
   if (res) {
@@ -260,13 +259,12 @@ router.post('/setRegistrationDetailSuccessStatus', async (ctx, next) => {
  * 设置内容错误状态
  */
 router.post('/setRegistrationDetailFailStatus', async (ctx, next) => {
-  const { registrationUuid, type, statusText } = ctx.state.param;
+  const { registrationUuid, type, failText } = ctx.state.param;
 
   const res = await enterpriseRegistrationService.setRegistrationDetailStatus({
     registrationUuid,
     type,
-    status: -1,
-    statusText
+    failText
   });
 
   if (res) {
