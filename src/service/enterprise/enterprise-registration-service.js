@@ -110,15 +110,12 @@ export default {
           }
         ];
 
-      await db.transaction(() => {
-        return Promise.all([
+      await db.transaction(async () => {
+        await Promise.all([
           enterpriseRegistrationDao.insertEnterpriseRegistration(
             enterpriseRegistrationUuid,
             name,
             enterpriseUuid
-          ),
-          enterpriseRegistrationStepDao.bulkInsertRegistrationStep(
-            enterpriseRegistrationSteps
           ),
           enterpriseRegistrationCopyrightDao.insertRegistrationCopyright(
             enterpriseRegistrationUuid
@@ -145,6 +142,9 @@ export default {
             enterpriseRegistrationUuid
           )
         ]);
+        await enterpriseRegistrationStepDao.bulkInsertRegistrationStep(
+          enterpriseRegistrationSteps
+        );
       });
 
       return enterpriseRegistrationUuid;
