@@ -2,6 +2,16 @@ import enterpriseRegistrationDocument from '../../db/models/enterprise-registrat
 
 export default {
   /**
+   * 新增用户文档集信息
+   */
+  insertRegistrationDocument: async registrationUuid => {
+    return await enterpriseRegistrationDocument.create({
+      uuid: registrationUuid,
+      status: 0,
+      statusText: '未上传'
+    });
+  },
+  /**
    * 查询的用户文档集信息
    */
   selectRegistrationDocumentByRegistrationUuid: async registrationUuid => {

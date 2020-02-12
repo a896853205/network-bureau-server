@@ -2,6 +2,16 @@ import enterpriseRegistrationBasic from '../../db/models/enterprise-registration
 
 export default {
   /**
+   * 新增基本信息
+   */
+  insertRegistrationBasic: async registrationUuid => {
+    return await enterpriseRegistrationBasic.create({
+      uuid: registrationUuid,
+      status: 0,
+      statusText: '未填写'
+    });
+  },
+  /**
    * 查询的登记测试的基本信息
    */
   selectRegistrationBasicByRegistrationUuid: async registrationUuid => {

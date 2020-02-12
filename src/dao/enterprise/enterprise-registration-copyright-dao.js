@@ -2,6 +2,16 @@ import enterpriseRegistrationCopyright from '../../db/models/enterprise-registra
 
 export default {
   /**
+   * 新增软件著作权
+   */
+  insertRegistrationCopyright: async registrationUuid => {
+    return enterpriseRegistrationCopyright.create({
+      uuid: registrationUuid,
+      status: 0,
+      statusText: '未上传'
+    });
+  },
+  /**
    * 查询的现场测试软件著作权信息
    */
   selectRegistrationCopyrightByRegistrationUuid: async registrationUuid => {

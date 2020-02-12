@@ -1,9 +1,18 @@
-import enterpriseRegistrationStep from '../../db/models/enterprise-registration-step';
 import enterpriseRegistrationSpecimen from '../../db/models/enterprise-registration-specimen';
 
 export default {
   /**
-   * 查询的样品登记表的基本信息
+   * 增加样品登记表信息
+   */
+  insertRegistrationSpecimen: async registrationUuid => {
+    return await enterpriseRegistrationSpecimen.create({
+      uuid: registrationUuid,
+      status: 0,
+      statusText: '未填写'
+    });
+  },
+  /**
+   * 查询的样品登记表信息
    */
   selectRegistrationSpecimenByRegistrationUuid: async registrationUuid => {
     return await enterpriseRegistrationSpecimen.findOne({
@@ -23,7 +32,7 @@ export default {
   },
 
   /**
-   * 保存样品登记表的基本信息
+   * 保存样品登记表信息
    */
   updateRegistrationSpecimen: async ({
     registrationUuid,

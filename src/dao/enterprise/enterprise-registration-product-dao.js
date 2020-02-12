@@ -2,6 +2,16 @@ import enterpriseRegistrationProduct from '../../db/models/enterprise-registrati
 
 export default {
   /**
+   * 新增产品介质信息
+   */
+  insertRegistrationProduct: async registrationUuid => {
+    return await enterpriseRegistrationProduct.create({
+      uuid: registrationUuid,
+      status: 0,
+      statusText: '未上传'
+    });
+  },
+  /**
    * 查询的产品介质信息
    */
   selectRegistrationProductByRegistrationUuid: async registrationUuid => {
