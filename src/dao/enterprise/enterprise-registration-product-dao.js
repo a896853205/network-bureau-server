@@ -17,8 +17,8 @@ export default {
   /**
    * 查询的产品介质信息
    */
-  selectRegistrationProductByRegistrationUuid: async registrationUuid => {
-    return await enterpriseRegistrationProduct.findOne({
+  selectRegistrationProductByRegistrationUuid: registrationUuid => {
+    return enterpriseRegistrationProduct.findOne({
       attributes: ['url', 'failText', 'status', 'statusText'],
       raw: true,
       where: { uuid: registrationUuid }
@@ -28,7 +28,7 @@ export default {
   /**
    * 保存产品介质信息
    */
-  updateRegistrationProduct: async ({
+  updateRegistrationProduct: ({
     registrationUuid,
     productUrl,
     status,
@@ -36,7 +36,7 @@ export default {
     failText
   }) => {
     // 这里还得更新状态信息为2待审核
-    return await enterpriseRegistrationProduct.update(
+    return enterpriseRegistrationProduct.update(
       {
         url: productUrl,
         status,
@@ -53,13 +53,8 @@ export default {
   /**
    * 设置产品介质的状态
    */
-  updateProductStatus: async ({
-    registrationUuid,
-    status,
-    failText,
-    statusText
-  }) => {
-    return await enterpriseRegistrationProduct.update(
+  updateProductStatus: ({ registrationUuid, status, failText, statusText }) => {
+    return enterpriseRegistrationProduct.update(
       { status, failText, statusText },
       {
         where: { uuid: registrationUuid }

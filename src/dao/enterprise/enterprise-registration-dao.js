@@ -16,8 +16,8 @@ export default {
   /**
    * 通过name查询登记注册
    */
-  selectEnterpriseRegistrationByName: async name => {
-    return await enterpriseRegistration.findOne({
+  selectEnterpriseRegistrationByName: name => {
+    return enterpriseRegistration.findOne({
       where: { name }
     });
   },
@@ -25,8 +25,8 @@ export default {
   /**
    * 通过RegistrationUuid查询
    */
-  selectRegistrationByRegistrationUuid: async registrationUuid => {
-    return await enterpriseRegistration.findOne({
+  selectRegistrationByRegistrationUuid: registrationUuid => {
+    return enterpriseRegistration.findOne({
       where: { uuid: registrationUuid },
       attributes: ['uuid', 'currentStep', 'name'],
       raw: true
@@ -176,8 +176,8 @@ export default {
   /**
    * 更新登记测试的步骤
    */
-  updateRegistrationCurrentStep: async ({ registrationUuid, currentStep }) => {
-    return await enterpriseRegistration.update(
+  updateRegistrationCurrentStep: ({ registrationUuid, currentStep }) => {
+    return enterpriseRegistration.update(
       {
         currentStep
       },

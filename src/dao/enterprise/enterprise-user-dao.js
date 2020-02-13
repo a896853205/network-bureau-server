@@ -6,18 +6,18 @@ export default {
   /**
    * 通过uuid查询企业账号
    */
-  selectEnterpriseByUuid: async uuid => {
-    return await enterpriseUser.findOne({
+  selectEnterpriseByUuid: uuid => {
+    return enterpriseUser.findOne({
       where: { uuid },
-      attributes: ['code','uuid', 'phone', 'name', 'password'],
+      attributes: ['code', 'uuid', 'phone', 'name', 'password'],
       raw: true
     });
   },
   /**
    * 通过用户名查询企业账号
    */
-  selectEnterpriseUserByCode: async code => {
-    return await enterpriseUser.findOne({
+  selectEnterpriseUserByCode: code => {
+    return enterpriseUser.findOne({
       where: { code },
       attributes: ['uuid', 'phone', 'name', 'password'],
       raw: true
@@ -27,8 +27,8 @@ export default {
   /**
    * 根据用户名查找是否有相同企业
    */
-  selectEnterpriseByCode: async code => {
-    return await enterpriseUser.findOne({
+  selectEnterpriseByCode: code => {
+    return enterpriseUser.findOne({
       where: { code },
       raw: true
     });
@@ -37,14 +37,13 @@ export default {
   /**
    * 创建企业用户
    */
-  createNewEnterprise: async ({ name, password, phone, code }) => {
-    return await enterpriseUser.create({
+  createNewEnterprise: ({ name, password, phone, code }) => {
+    return enterpriseUser.create({
       name,
       password,
       phone,
       code,
       uuid: uuid.v1()
     });
-  },
-
+  }
 };

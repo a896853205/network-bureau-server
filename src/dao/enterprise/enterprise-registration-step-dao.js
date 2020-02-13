@@ -14,7 +14,6 @@ export default {
    * 根据enterpriseRegistrationUuid查询具体步骤状态
    */
   queryEnterpriseRegistrationStepByRegistrationUuid: registrationUuid => {
-    console.log(registrationUuid);
     return enterpriseRegistrationStep.findAll({
       where: { uuid: registrationUuid },
       attributes: ['step', 'status', 'statusText', 'managerUuid'],
@@ -51,12 +50,12 @@ export default {
   /**
    * 更新步骤的管理员
    */
-  updateRegistrationStepManagerUuid: async ({
+  updateRegistrationStepManagerUuid: ({
     registrationUuid,
     step,
     managerUuid
   }) => {
-    return await enterpriseRegistrationStep.update(
+    return enterpriseRegistrationStep.update(
       { managerUuid },
       {
         where: {
@@ -70,8 +69,8 @@ export default {
   /**
    * 查询企业的缴费信息
    */
-  queryRegistrationByManagerUuid: async managerUuid => {
-    return await enterpriseRegistrationStep.findAll({
+  queryRegistrationByManagerUuid: managerUuid => {
+    return enterpriseRegistrationStep.findAll({
       attributes: ['uuid'],
       raw: true,
       where: { managerUuid }

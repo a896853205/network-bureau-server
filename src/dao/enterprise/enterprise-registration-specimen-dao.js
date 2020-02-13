@@ -17,8 +17,8 @@ export default {
   /**
    * 查询的样品登记表信息
    */
-  selectRegistrationSpecimenByRegistrationUuid: async registrationUuid => {
-    return await enterpriseRegistrationSpecimen.findOne({
+  selectRegistrationSpecimenByRegistrationUuid: registrationUuid => {
+    return enterpriseRegistrationSpecimen.findOne({
       attributes: [
         'trademark',
         'developmentTool',
@@ -37,7 +37,7 @@ export default {
   /**
    * 保存样品登记表信息
    */
-  updateRegistrationSpecimen: async ({
+  updateRegistrationSpecimen: ({
     registrationUuid,
     trademark,
     developmentTool,
@@ -48,7 +48,7 @@ export default {
     statusText,
     failText
   }) => {
-    return await enterpriseRegistrationSpecimen.update(
+    return enterpriseRegistrationSpecimen.update(
       {
         trademark,
         developmentTool,
@@ -69,13 +69,13 @@ export default {
   /**
    * 设置样品文档集的状态
    */
-  updateSpecimenStatus: async ({
+  updateSpecimenStatus: ({
     registrationUuid,
     status,
     failText,
     statusText
   }) => {
-    return await enterpriseRegistrationSpecimen.update(
+    return enterpriseRegistrationSpecimen.update(
       { status, failText, statusText },
       {
         where: { uuid: registrationUuid }

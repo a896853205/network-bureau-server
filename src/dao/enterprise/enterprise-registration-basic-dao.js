@@ -17,8 +17,8 @@ export default {
   /**
    * 查询的登记测试的基本信息
    */
-  selectRegistrationBasicByRegistrationUuid: async registrationUuid => {
-    return await enterpriseRegistrationBasic.findOne({
+  selectRegistrationBasicByRegistrationUuid: registrationUuid => {
+    return enterpriseRegistrationBasic.findOne({
       attributes: [
         'version',
         'linkman',
@@ -39,7 +39,7 @@ export default {
   /**
    * 保存登记测试的基本信息
    */
-  updateRegistrationBasic: async ({
+  updateRegistrationBasic: ({
     registrationUuid,
     version,
     linkman,
@@ -52,7 +52,7 @@ export default {
     statusText,
     failText
   }) => {
-    return await enterpriseRegistrationBasic.update(
+    return enterpriseRegistrationBasic.update(
       {
         version,
         linkman,
@@ -75,13 +75,8 @@ export default {
   /**
    * 设置基本信息的状态
    */
-  updateBasicStatus: async ({
-    registrationUuid,
-    status,
-    failText,
-    statusText
-  }) => {
-    return await enterpriseRegistrationBasic.update(
+  updateBasicStatus: ({ registrationUuid, status, failText, statusText }) => {
+    return enterpriseRegistrationBasic.update(
       { status, failText, statusText },
       {
         where: { uuid: registrationUuid }
