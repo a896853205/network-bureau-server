@@ -198,8 +198,6 @@ export default {
       }
     );
   },
-<<<<<<< HEAD
-=======
 
   /**
    * 查询合同的错误文字
@@ -211,5 +209,4 @@ export default {
       where: { uuid: registrationUuid }
     });
   }
->>>>>>> 422df6ccf993dab1d096a42d441dc52cda1c9214
 };
