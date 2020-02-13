@@ -544,28 +544,6 @@ router.post('/updateFinanceManager', async (ctx, next) => {
 });
 
 /**
- * 查询第二步合同签署步骤
- */
-router.get('/selectContractManagerStatus', async (ctx, next) => {
-  const { registrationUuid } = ctx.state.param;
-
-  const data = await enterpriseRegistrationService.selectContractManagerStatus(
-    registrationUuid
-  );
-
-  if (data) {
-    ctx.body = new Res({
-      status: RESPONSE_CODE.success,
-      data
-    });
-  } else {
-    ctx.body = new Res({
-      status: RESPONSE_CODE.error
-    });
-  }
-});
-
-/**
  * 设置第二步合同签署步骤
  */
 router.post('/setContractManagerStatus', async (ctx, next) => {

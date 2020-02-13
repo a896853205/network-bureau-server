@@ -197,15 +197,4 @@ export default {
       }
     );
   },
-
-  /**
-   * 查询合同的状态值和错误文字
-   */
-  selectContractManagerStatus: async ({ registrationUuid }) => {
-    return await enterpriseRegistrationContract.findOne({
-      attributes: ['managerStatus', 'managerFailText'],
-      raw: true,
-      where: { uuid: registrationUuid }
-    });
-  }
 };
