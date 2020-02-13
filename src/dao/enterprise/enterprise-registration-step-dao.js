@@ -14,11 +14,12 @@ export default {
    * 根据enterpriseRegistrationUuid查询具体步骤状态
    */
   queryEnterpriseRegistrationStepByRegistrationUuid: registrationUuid => {
+    console.log(registrationUuid);
     return enterpriseRegistrationStep.findAll({
       where: { uuid: registrationUuid },
       attributes: ['step', 'status', 'statusText', 'managerUuid'],
       raw: true,
-      order: 'step'
+      order: ['step']
     });
   },
 
