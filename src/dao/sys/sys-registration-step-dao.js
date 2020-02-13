@@ -4,8 +4,8 @@ export default {
   /**
    *  无参数查询sys_registration_step表
    */
-  querySysRegistrationStep: async () => {
-    return await sysRegistrationStep.findAll({
+  querySysRegistrationStep: () => {
+    return sysRegistrationStep.findAll({
       attributes: ['name', 'step']
     });
   }

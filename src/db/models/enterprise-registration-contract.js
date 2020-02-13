@@ -36,7 +36,6 @@ export default db.define('enterprise_registration_contract', {
   paymentTime: Sequelize.STRING(36), // 交钱时间
   contractTime: Sequelize.STRING(36), // 合同日期
   managerUrl: Sequelize.TEXT, // 管理员上传文件地址
-  managerStatus: Sequelize.BIGINT(3),
   managerFailText: Sequelize.STRING(100) // 合同阶段错误提示
   // 1 开始进行
   // 2 管理者填写完成

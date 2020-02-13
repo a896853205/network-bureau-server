@@ -19,7 +19,7 @@ export default {
   /**
    * 保存现场测试申请表信息
    */
-  updateRegistrationApply: async ({
+  updateRegistrationApply: ({
     registrationUuid,
     content,
     status,
@@ -27,7 +27,7 @@ export default {
     failText
   }) => {
     // 这里还得更新状态信息为2待审核
-    return await enterpriseRegistrationApply.update(
+    return enterpriseRegistrationApply.update(
       {
         content,
         status,
@@ -44,8 +44,8 @@ export default {
   /**
    * 查询的现场测试申请表信息
    */
-  selectRegistrationApplyByRegistrationUuid: async registrationUuid => {
-    return await enterpriseRegistrationApply.findOne({
+  selectRegistrationApplyByRegistrationUuid: registrationUuid => {
+    return enterpriseRegistrationApply.findOne({
       attributes: ['content', 'failText', 'status', 'statusText'],
       raw: true,
       where: { uuid: registrationUuid }
@@ -55,13 +55,8 @@ export default {
   /**
    * 设置现场测试申请表的状态
    */
-  updateApplyStatus: async ({
-    registrationUuid,
-    status,
-    failText,
-    statusText
-  }) => {
-    return await enterpriseRegistrationApply.update(
+  updateApplyStatus: ({ registrationUuid, status, failText, statusText }) => {
+    return enterpriseRegistrationApply.update(
       { status, failText, statusText },
       {
         where: { uuid: registrationUuid }

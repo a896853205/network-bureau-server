@@ -18,8 +18,8 @@ export default {
   /**
    * 查询的评测合同信息
    */
-  selectRegistrationContractByRegistrationUuid: async registrationUuid => {
-    return await enterpriseRegistrationContract.findOne({
+  selectRegistrationContractByRegistrationUuid: registrationUuid => {
+    return enterpriseRegistrationContract.findOne({
       attributes: [
         'amount',
         'fax',
@@ -38,7 +38,7 @@ export default {
   /**
    * 保存评测合同的基本信息
    */
-  updateRegistrationContract: async ({
+  updateRegistrationContract: ({
     registrationUuid,
     amount,
     fax,
@@ -49,7 +49,7 @@ export default {
     statusText,
     failText
   }) => {
-    return await enterpriseRegistrationContract.update(
+    return enterpriseRegistrationContract.update(
       {
         amount,
         fax,
@@ -70,13 +70,13 @@ export default {
   /**
    * 设置评测合同的状态
    */
-  updateContractStatus: async ({
+  updateContractStatus: ({
     registrationUuid,
     status,
     failText,
     statusText
   }) => {
-    return await enterpriseRegistrationContract.update(
+    return enterpriseRegistrationContract.update(
       { status, failText, statusText },
       {
         where: { uuid: registrationUuid }
@@ -87,15 +87,14 @@ export default {
   /**
    * 查询的评测合同的基本信息
    */
-  selectRegistrationContractManager: async registrationUuid => {
-    return await enterpriseRegistrationContract.findOne({
+  selectRegistrationContractManager: registrationUuid => {
+    return enterpriseRegistrationContract.findOne({
       attributes: [
         'contractCode',
         'specimenHaveTime',
         'payment',
         'paymentTime',
         'contractTime',
-        'managerStatus',
         'failText',
         'managerUrl',
         'enterpriseUrl'
@@ -136,8 +135,8 @@ export default {
   /**
    * 查询的评测合同的两个url
    */
-  selectContractUrl: async registrationUuid => {
-    return await enterpriseRegistrationContract.findOne({
+  selectContractUrl: registrationUuid => {
+    return enterpriseRegistrationContract.findOne({
       attributes: ['managerUrl', 'enterpriseUrl'],
       raw: true,
       where: { uuid: registrationUuid }
@@ -183,18 +182,34 @@ export default {
   },
 
   /**
-   * 设置第二步合同签署步骤
+   * 设置第二步合同签署错误状态
    */
-  updateContractManagerStatus: async ({
+  updateContractManagerStatus: ({
     registrationUuid,
-    managerStatus,
-    managerFailText
+    managerFailText,
+    transaction = null
   }) => {
-    return await enterpriseRegistrationContract.update(
-      { managerStatus, managerFailText },
+    return enterpriseRegistrationContract.update(
+      { managerFailText },
       {
-        where: { uuid: registrationUuid }
+        where: { uuid: registrationUuid },
+        raw: true,
+        transaction
       }
     );
   },
+<<<<<<< HEAD
+=======
+
+  /**
+   * 查询合同的错误文字
+   */
+  selectContractManagerFailText: registrationUuid => {
+    return enterpriseRegistrationContract.findOne({
+      attributes: ['managerFailText'],
+      raw: true,
+      where: { uuid: registrationUuid }
+    });
+  }
+>>>>>>> 422df6ccf993dab1d096a42d441dc52cda1c9214
 };

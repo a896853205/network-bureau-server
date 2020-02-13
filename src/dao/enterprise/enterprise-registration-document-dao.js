@@ -20,8 +20,8 @@ export default {
   /**
    * 查询的用户文档集信息
    */
-  selectRegistrationDocumentByRegistrationUuid: async registrationUuid => {
-    return await enterpriseRegistrationDocument.findOne({
+  selectRegistrationDocumentByRegistrationUuid: registrationUuid => {
+    return enterpriseRegistrationDocument.findOne({
       attributes: ['url', 'failText', 'status', 'statusText'],
       raw: true,
       where: { uuid: registrationUuid }
@@ -31,7 +31,7 @@ export default {
   /**
    * 保存用户文档集信息
    */
-  updateRegistrationDocument: async ({
+  updateRegistrationDocument: ({
     registrationUuid,
     documentUrl,
     status,
@@ -39,7 +39,7 @@ export default {
     failText
   }) => {
     // 这里还得更新状态信息为2待审核
-    return await enterpriseRegistrationDocument.update(
+    return enterpriseRegistrationDocument.update(
       {
         url: documentUrl,
         status,
@@ -56,13 +56,13 @@ export default {
   /**
    * 设置用户文档集的状态
    */
-  updateDocumentStatus: async ({
+  updateDocumentStatus: ({
     registrationUuid,
     status,
     failText,
     statusText
   }) => {
-    return await enterpriseRegistrationDocument.update(
+    return enterpriseRegistrationDocument.update(
       { status, failText, statusText },
       {
         where: { uuid: registrationUuid }

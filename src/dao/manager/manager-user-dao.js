@@ -8,8 +8,8 @@ export default {
   /**
    * 通过managerUuid查询管理员
    */
-  selectManagerByManagerUuid: async managerUuid => {
-    return await managerUser.findOne({
+  selectManagerByManagerUuid: managerUuid => {
+    return managerUser.findOne({
       where: { uuid: managerUuid },
       attributes: [
         'uuid',
@@ -27,8 +27,8 @@ export default {
   /**
    * 通过用户名查询管理员
    */
-  selectManagerUserByUsername: async username => {
-    return await managerUser.findOne({
+  selectManagerUserByUsername: username => {
+    return managerUser.findOne({
       where: { username },
       attributes: ['uuid', 'phone', 'username', 'password', 'name', 'role'],
       raw: true
@@ -37,8 +37,8 @@ export default {
   /**
    * 通过权限查一个管理员
    */
-  selectManagerUserByRole: async role => {
-    return await managerUser.findOne({
+  selectManagerUserByRole: role => {
+    return managerUser.findOne({
       where: { role },
       attributes: ['uuid', 'phone', 'username', 'password', 'name', 'role'],
       raw: true
@@ -47,7 +47,7 @@ export default {
   /**
    * 创建管理员
    */
-  createNewManagerUser: async (
+  createNewManagerUser: (
     username,
     phone,
     password,
@@ -55,7 +55,7 @@ export default {
     role,
     headPortraitUrl
   ) => {
-    return await managerUser.create({
+    return managerUser.create({
       username,
       password,
       phone,
@@ -70,8 +70,8 @@ export default {
   /**
    * 删除企业用户
    */
-  deleteManager: async managerUuid => {
-    return await managerUser.destroy({
+  deleteManager: managerUuid => {
+    return managerUser.destroy({
       where: { uuid: managerUuid }
     });
   },
@@ -79,14 +79,8 @@ export default {
   /**
    * 更改企业用户
    */
-  updeteManager: async (
-    managerUuid,
-    phone,
-    password,
-    name,
-    headPortraitUrl
-  ) => {
-    return await managerUser.update(
+  updeteManager: (managerUuid, phone, password, name, headPortraitUrl) => {
+    return managerUser.update(
       { phone, password, name, headPortraitUrl },
       {
         where: { uuid: managerUuid },

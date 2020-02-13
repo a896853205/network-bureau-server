@@ -544,15 +544,41 @@ router.post('/updateFinanceManager', async (ctx, next) => {
 });
 
 /**
+<<<<<<< HEAD
  * 设置第二步合同签署步骤
+=======
+ * 设置第二步合同签署成功状态
  */
-router.post('/setContractManagerStatus', async (ctx, next) => {
-  const { registrationUuid, managerFailText, managerStatus } = ctx.state.param;
+router.put('/setContractManagerSuccessStatus', async (ctx, next) => {
+  const { registrationUuid } = ctx.state.param;
 
-  const res = await enterpriseRegistrationService.setContractManagerStatus({
+  const res = await enterpriseRegistrationService.setContractManagerSuccessStatus(
+    registrationUuid
+  );
+
+  if (res) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data: res
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error,
+      msg: '查询失败'
+    });
+  }
+});
+
+/**
+ * 设置第二步合同签署失败状态
+>>>>>>> 422df6ccf993dab1d096a42d441dc52cda1c9214
+ */
+router.post('/setContractManagerFailStatus', async (ctx, next) => {
+  const { registrationUuid, managerFailText } = ctx.state.param;
+
+  const res = await enterpriseRegistrationService.setContractManagerFailStatus({
     registrationUuid,
-    managerFailText,
-    managerStatus
+    managerFailText
   });
 
   if (res) {
