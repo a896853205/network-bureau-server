@@ -626,7 +626,7 @@ export default {
           registrationUuid
         );
         // 第二步电子签合同
-        if (steps[1].status === 5) {
+        if (steps[1].status === 100) {
           // 到了最后一步就可以
           // 下一步的人员先把自己配置上,
           // 等第三步的第一步配置上人了,企业那边才显示具体交钱信息
@@ -692,7 +692,11 @@ export default {
       registrationUuid
     );
 
-    if (statusManager && statusManager.managerStatus >= 2) {
+    const statusList = await enterpriseRegistrationStepDao.queryEnterpriseRegistrationStepByRegistrationUuid(
+      registrationUuid
+    );
+
+    if (statusManager && statusList[1].status >= 2) {
       // 查询contract内容
       const [
         contract,
@@ -938,27 +942,64 @@ export default {
   },
 
   /**
-   * 设置第二步合同签署步骤
+   * 设置第二步合同签署成功状态
    */
-  setContractManagerStatus: async ({
+  setContractManagerSuccessStatus: async registrationUuid => {
+    try {
+      await db.transaction(async transaction => {
+        return await enterpriseRegistrationStepDao.updateRegistrationStep({
+          registrationUuid,
+          status: 100,
+          statusText: '审核通过',
+          step: 2,
+          transaction
+        });
+      });
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  },
+  /**
+   * 设置第二步合同签署失败状态
+   */
+  setContractManagerFailStatus: async ({
     registrationUuid,
-    managerStatus,
     managerFailText
   }) => {
-    return await enterpriseRegistrationContractDao.updateContractManagerStatus({
-      registrationUuid,
-      managerStatus,
-      managerFailText
-    });
+    try {
+      await db.transaction(async transaction => {
+        return Promise.all([
+          enterpriseRegistrationContractDao.updateContractManagerStatus({
+            registrationUuid,
+            managerFailText,
+            transaction
+          }),
+          enterpriseRegistrationStepDao.updateRegistrationStep({
+            registrationUuid,
+            status: -1,
+            statusText: '审核未通过',
+            step: 2,
+            transaction
+          })
+        ]);
+      });
+
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
   },
 
   /**
    * 查询第二步合同签署状态
    */
-  selectContractManagerStatus: async registrationUuid => {
-    return await enterpriseRegistrationContractDao.selectContractManagerStatus({
+  selectContractManagerFailText: async registrationUuid => {
+    return await enterpriseRegistrationContractDao.selectContractManagerFailText(
       registrationUuid
-    });
+    );
   },
 
   /**

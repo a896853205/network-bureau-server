@@ -95,7 +95,6 @@ export default {
         'payment',
         'paymentTime',
         'contractTime',
-        'managerStatus',
         'failText',
         'managerUrl',
         'enterpriseUrl'
@@ -183,27 +182,29 @@ export default {
   },
 
   /**
-   * 设置第二步合同签署步骤
+   * 设置第二步合同签署错误状态
    */
-  updateContractManagerStatus: async ({
+  updateContractManagerStatus: ({
     registrationUuid,
-    managerStatus,
-    managerFailText
+    managerFailText,
+    transaction = null
   }) => {
-    return await enterpriseRegistrationContract.update(
-      { managerStatus, managerFailText },
+    return enterpriseRegistrationContract.update(
+      { managerFailText },
       {
-        where: { uuid: registrationUuid }
+        where: { uuid: registrationUuid },
+        raw: true,
+        transaction
       }
     );
   },
 
   /**
-   * 查询合同的状态值和错误文字
+   * 查询合同的错误文字
    */
-  selectContractManagerStatus: async ({ registrationUuid }) => {
+  selectContractManagerFailText: async registrationUuid => {
     return await enterpriseRegistrationContract.findOne({
-      attributes: ['managerStatus', 'managerFailText'],
+      attributes: ['managerFailText'],
       raw: true,
       where: { uuid: registrationUuid }
     });

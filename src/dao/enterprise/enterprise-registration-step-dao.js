@@ -18,7 +18,7 @@ export default {
       where: { uuid: registrationUuid },
       attributes: ['step', 'status', 'statusText', 'managerUuid'],
       raw: true,
-      order: 'step'
+      order: ['step']
     });
   },
 

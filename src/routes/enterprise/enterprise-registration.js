@@ -570,13 +570,12 @@ router.post('/saveRegistrationProduct', async (ctx, next) => {
 });
 
 /**
- * 查询经管部门填写评测合同的状态
+ * 查询第二步合同签署步骤
  */
-router.get('/selectContractManagerStatus', async (ctx, next) => {
+router.get('/selectContractManagerFailText', async (ctx, next) => {
   const { registrationUuid } = ctx.state.param;
 
-  // 只查询状态和failText
-  const data = await enterpriseRegistrationService.selectContractManagerStatus(
+  const data = await enterpriseRegistrationService.selectContractManagerFailText(
     registrationUuid
   );
 
@@ -591,6 +590,7 @@ router.get('/selectContractManagerStatus', async (ctx, next) => {
     });
   }
 });
+
 
 /**
  * 查询评测合同的路由
