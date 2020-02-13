@@ -125,7 +125,7 @@ router.get('/queryRole', ctx => {
 /**
  * 通过managerUuid查询管理员数据
  */
-router.get('/getManagerInfo', async ctx => {
+router.get('/selectManagerInfo', async ctx => {
   const { managerUuid } = ctx.state.param;
 
   const res = await managerUserService.getManagerByManagerUuid(managerUuid);
