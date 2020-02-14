@@ -123,5 +123,24 @@ export default {
       total: result.count,
       pageSize: MANAGER_PAGE_SIZE
     };
+  },
+
+  /**
+   * 查询技术负责人
+   */
+  queryTechnicalManagerUser: async page => {
+    const result = await managerUser.findAndCountAll({
+      attributes: ['uuid', 'username', 'phone', 'name', 'role', 'star'],
+      limit: MANAGER_PAGE_SIZE,
+      where: { role: 15 },
+      offset: (page - 1) * MANAGER_PAGE_SIZE,
+      raw: true
+    });
+
+    return {
+      technicalManagerList: result.rows,
+      total: result.count,
+      pageSize: MANAGER_PAGE_SIZE
+    };
   }
 };
