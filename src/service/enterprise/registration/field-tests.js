@@ -16,7 +16,7 @@ export default {
   /**
    * 安排技术负责人
    */
-  arrangeTechnicalManager: async ({ registrationUuid, technicalManagerUuid }) => {
+  arrangeTechLeaderManager: async ({ registrationUuid, technicalManagerUuid }) => {
     return db.transaction(() => {
       return Promise.all([
         enterpriseRegistrationStepDao.updateRegistrationStep({

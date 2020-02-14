@@ -545,10 +545,10 @@ router.post('/updateFinanceManager', async (ctx, next) => {
 /**
  * 更新技术负责人
  */
-router.post('/arrangeTechnicalManager', async (ctx, next) => {
+router.post('/arrangeTechLeaderManager', async (ctx, next) => {
   const { registrationUuid, technicalManagerUuid } = ctx.state.param;
 
-  const data = await service.arrangeTechnicalManager({
+  const data = await service.arrangeTechLeaderManager({
     registrationUuid,
     technicalManagerUuid
   });
