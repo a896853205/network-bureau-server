@@ -312,6 +312,12 @@ export default {
             }),
             enterpriseRegistrationStepDao.updateRegistrationStep({
               registrationUuid,
+              status: 100,
+              statusText: '已完成',
+              step: 3
+            }),
+            enterpriseRegistrationStepDao.updateRegistrationStep({
+              registrationUuid,
               status: 1,
               statusText: '未选择测试管理员',
               step: 4

@@ -543,6 +543,29 @@ router.post('/updateFinanceManager', async (ctx, next) => {
 });
 
 /**
+ * 更新技术负责人
+ */
+router.post('/updateTechnicalManager', async (ctx, next) => {
+  const { registrationUuid, technicalManagerUuid } = ctx.state.param;
+
+  const data = await service.updateTechnicalManager({
+    registrationUuid,
+    technicalManagerUuid
+  });
+
+  if (data) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error
+    });
+  }
+});
+
+/**
  * 设置第二步合同签署成功状态
  */
 router.put('/setContractManagerSuccessStatus', async (ctx, next) => {
@@ -596,6 +619,27 @@ router.get('/queryFinanceManager', async (ctx, next) => {
   const { page } = ctx.state.param;
 
   const data = await service.queryFinanceManager(page);
+
+  if (data) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error,
+      msg: '查询失败'
+    });
+  }
+});
+
+/**
+ * 查询技术负责人
+ */
+router.get('/queryTechnicalManager', async (ctx, next) => {
+  const { page } = ctx.state.param;
+
+  const data = await service.queryTechnicalManager(page);
 
   if (data) {
     ctx.body = new Res({
