@@ -14,9 +14,9 @@ export default {
   },
 
   /**
-   * 更新财务人员信息
+   * 安排技术负责人
    */
-  updateTechnicalManager: async ({ registrationUuid, technicalManagerUuid }) => {
+  arrangeTechnicalManager: async ({ registrationUuid, technicalManagerUuid }) => {
     return db.transaction(() => {
       return Promise.all([
         enterpriseRegistrationStepDao.updateRegistrationStep({
