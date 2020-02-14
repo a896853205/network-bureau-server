@@ -1,3 +1,6 @@
+// oss
+import client from '../../../util/oss';
+
 // dao
 import enterpriseRegistrationDao from '../../../dao/enterprise/enterprise-registration-dao';
 import enterpriseRegistrationBasicDao from '../../../dao/enterprise/enterprise-registration-basic-dao';
