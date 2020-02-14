@@ -5,7 +5,7 @@ import Res from '../../util/response';
 import { RESPONSE_CODE } from '../../constants/domain-constants';
 
 // service
-import fileService from '../../service/user/file-service';
+import service from '../../service';
 
 const upload = multer();
 
@@ -17,7 +17,7 @@ router.post('/uploadFile', upload.single('file'), async (ctx, next) => {
   const param = ctx.request.file,
     folderName = ctx.request.body.folderName;
 
-  const data = await fileService.uploadFile(param, folderName);
+  const data = await service.uploadFile(param, folderName);
 
   if (data === -1) {
     ctx.body = new Res({
@@ -42,7 +42,7 @@ router.post('/uploadWordFile', upload.single('file'), async (ctx, next) => {
   const param = ctx.request.file,
     folderName = ctx.request.body.folderName;
 
-  const data = await fileService.uploadWordFile(param, folderName);
+  const data = await service.uploadWordFile(param, folderName);
 
   if (data === -1) {
     ctx.body = new Res({
@@ -67,7 +67,7 @@ router.post('/uploadPdfFile', upload.single('file'), async (ctx, next) => {
   const param = ctx.request.file,
     folderName = ctx.request.body.folderName;
 
-  const data = await fileService.uploadPdfFile(param, folderName);
+  const data = await service.uploadPdfFile(param, folderName);
 
   if (data === -1) {
     ctx.body = new Res({
@@ -92,7 +92,7 @@ router.post('/uploadZipFile', upload.single('file'), async (ctx, next) => {
   const param = ctx.request.file,
     folderName = ctx.request.body.folderName;
 
-  const data = await fileService.uploadZipFile(param, folderName);
+  const data = await service.uploadZipFile(param, folderName);
 
   if (data === -1) {
     ctx.body = new Res({
@@ -116,7 +116,7 @@ router.post('/uploadZipFile', upload.single('file'), async (ctx, next) => {
 router.get('/getFileUrl', async (ctx, next) => {
   const { fileUrl } = ctx.state.param;
 
-  const url = await fileService.getFileUrl(fileUrl);
+  const url = await service.getFileUrl(fileUrl);
 
   if (url) {
     ctx.body = new Res({

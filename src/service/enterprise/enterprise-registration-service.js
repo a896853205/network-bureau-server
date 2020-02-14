@@ -29,9 +29,14 @@ import moment from 'moment';
 // service
 import fileService from '../../service/user/file-service';
 
+// 工具
 import uuid from 'uuid';
 
+// 子service
+import fieldTest from './registration/field-tests';
+
 export default {
+  ...fieldTest,
   /**
    * 根据名字查询
    */

@@ -3,7 +3,7 @@ import Res from '../../../util/response';
 import { RESPONSE_CODE } from '../../../constants/domain-constants';
 
 // service
-import managerUserService from '../../../service/manager/manager-user-service';
+import service from '../../../service';
 
 // 权限
 import { AUTHORITY } from '../../../constants/role-constants';
@@ -27,7 +27,7 @@ router.post('/saveManager', async (ctx, next) => {
   } = ctx.state.param;
 
   if (managerUuid) {
-    const status = await managerUserService.updateManager(
+    const status = await service.updateManager(
       managerUuid,
       phone,
       password,
@@ -47,7 +47,7 @@ router.post('/saveManager', async (ctx, next) => {
       });
     }
   } else {
-    const status = await managerUserService.createNewManager(
+    const status = await service.createNewManager(
       username,
       phone,
       password,
@@ -76,7 +76,7 @@ router.post('/saveManager', async (ctx, next) => {
 router.del('/deleteManager', async (ctx, next) => {
   const { managerUuid } = ctx.state.param;
 
-  const status = await managerUserService.deleteManager(managerUuid);
+  const status = await service.deleteManager(managerUuid);
 
   if (status) {
     ctx.body = new Res({
@@ -97,7 +97,7 @@ router.del('/deleteManager', async (ctx, next) => {
 router.get('/queryManager', async (ctx, next) => {
   const { page } = ctx.state.param;
 
-  const data = await managerUserService.queryManager(page);
+  const data = await service.queryManager(page);
 
   if (data) {
     ctx.body = new Res({
@@ -128,7 +128,7 @@ router.get('/queryRole', ctx => {
 router.get('/getManagerInfo', async ctx => {
   const { managerUuid } = ctx.state.param;
 
-  const res = await managerUserService.getManagerByManagerUuid(managerUuid);
+  const res = await service.getManagerByManagerUuid(managerUuid);
 
   ctx.body = new Res({
     status: RESPONSE_CODE.success,

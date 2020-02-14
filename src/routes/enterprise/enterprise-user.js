@@ -5,7 +5,7 @@ import Res from '../../util/response';
 import { RESPONSE_CODE } from '../../constants/domain-constants';
 
 // service
-import enterpriseService from '../../service/enterprise/enterprise-user-service';
+import service from '../../service';
 
 const router = new Router({
   prefix: '/enterprise'
@@ -16,7 +16,7 @@ const router = new Router({
  */
 router.get('/getEnterpriseToken', async (ctx, next) => {
   let { code, password } = ctx.state.param,
-    token = await enterpriseService.getEnterpriseToken(code, password);
+    token = await service.getEnterpriseToken(code, password);
 
   if (token) {
     ctx.body = new Res({
@@ -37,7 +37,7 @@ router.get('/getEnterpriseToken', async (ctx, next) => {
 router.post('/createNewEnterprise', async (ctx, next) => {
   let { name, password, phone, code } = ctx.state.param;
 
-  const status = await enterpriseService.createNewEnterprise({
+  const status = await service.createNewEnterprise({
     name,
     password,
     phone,

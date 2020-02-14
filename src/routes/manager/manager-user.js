@@ -5,7 +5,7 @@ import Res from '../../util/response';
 import { RESPONSE_CODE } from '../../constants/domain-constants';
 
 // service
-import managerUserService from '../../service/manager/manager-user-service';
+import service from '../../service';
 
 const router = new Router({
   prefix: '/managerUser'
@@ -27,7 +27,7 @@ router.get('/getMyInfo', async (ctx, next) => {
 router.get('/getManagerToken', async (ctx, next) => {
   let { username, password } = ctx.state.param;
 
-  const token = await managerUserService.getManagerToken(username, password);
+  const token = await service.getManagerToken(username, password);
 
   if (token) {
     ctx.body = new Res({
