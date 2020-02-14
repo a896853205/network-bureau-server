@@ -5,8 +5,7 @@ import Res from '../../util/response';
 import { RESPONSE_CODE } from '../../constants/domain-constants';
 
 // service
-import enterpriseRegistrationService from '../../service/enterprise/enterprise-registration-service';
-import managerUserService from '../../service/manager/manager-user-service';
+import service from '../../service';
 
 const router = new Router({
   prefix: '/enterprise'
@@ -16,10 +15,7 @@ router.post('/createEnterpriseRegistration', async (ctx, next) => {
   const { uuid: enterpriseUuid } = ctx.state.user,
     { name } = ctx.state.param;
 
-  const data = await enterpriseRegistrationService.createEnterpriseRegistration(
-    name,
-    enterpriseUuid
-  );
+  const data = await service.createEnterpriseRegistration(name, enterpriseUuid);
 
   if (data) {
     ctx.body = new Res({
@@ -42,7 +38,7 @@ router.get('/queryRegistration', async (ctx, next) => {
   const { uuid: enterpriseUuid } = ctx.state.user,
     { page } = ctx.state.param;
 
-  const data = await enterpriseRegistrationService.queryRegistrationByEnterpriseUuid(
+  const data = await service.queryRegistrationByEnterpriseUuid(
     enterpriseUuid,
     page
   );
@@ -66,7 +62,7 @@ router.get('/queryRegistration', async (ctx, next) => {
 router.get('/selectRegistration', async (ctx, next) => {
   const { registrationUuid } = ctx.state.param;
 
-  const data = await enterpriseRegistrationService.selectRegistrationByRegistrationUuid(
+  const data = await service.selectRegistrationByRegistrationUuid(
     registrationUuid
   );
 
@@ -89,7 +85,7 @@ router.get('/selectRegistration', async (ctx, next) => {
 router.get('/selectRegistrationStatus', async (ctx, next) => {
   const { registrationUuid } = ctx.state.param;
 
-  const data = await enterpriseRegistrationService.selectRegistrationStatusByRegistrationUuid(
+  const data = await service.selectRegistrationStatusByRegistrationUuid(
     registrationUuid
   );
 
@@ -112,7 +108,7 @@ router.get('/selectRegistrationStatus', async (ctx, next) => {
 router.get('/queryEnterpriseRegistrationStep', async (ctx, next) => {
   const { registrationUuid } = ctx.state.param;
 
-  const data = await enterpriseRegistrationService.queryEnterpriseRegistrationStepByRegistrationUuid(
+  const data = await service.queryEnterpriseRegistrationStepByRegistrationUuid(
     registrationUuid
   );
 
@@ -133,7 +129,7 @@ router.get('/queryEnterpriseRegistrationStep', async (ctx, next) => {
  * 无参数查询sys_registration_step表
  */
 router.get('/querySysRegistrationStep', async (ctx, next) => {
-  const data = await enterpriseRegistrationService.querySysRegistrationStep();
+  const data = await service.querySysRegistrationStep();
 
   if (data) {
     ctx.body = new Res({
@@ -154,7 +150,7 @@ router.get('/querySysRegistrationStep', async (ctx, next) => {
 router.get('/selectManagerInfo', async (ctx, next) => {
   const { managerUuid } = ctx.state.param;
 
-  const data = await managerUserService.getManagerByManagerUuid(managerUuid);
+  const data = await service.getManagerByManagerUuid(managerUuid);
 
   if (data) {
     ctx.body = new Res({
@@ -174,7 +170,7 @@ router.get('/selectManagerInfo', async (ctx, next) => {
 router.get('/selectRegistrationBasic', async (ctx, next) => {
   const { registrationUuid } = ctx.state.param;
 
-  const data = await enterpriseRegistrationService.selectRegistrationBasicByRegistrationUuid(
+  const data = await service.selectRegistrationBasicByRegistrationUuid(
     registrationUuid
   );
 
@@ -205,7 +201,7 @@ router.post('/saveRegistrationBasic', async (ctx, next) => {
     enterpriseName
   } = ctx.state.param;
 
-  const data = await enterpriseRegistrationService.saveRegistrationBasic({
+  const data = await service.saveRegistrationBasic({
     registrationUuid,
     version,
     linkman,
@@ -234,7 +230,7 @@ router.post('/saveRegistrationBasic', async (ctx, next) => {
 router.get('/selectRegistrationContract', async (ctx, next) => {
   const { registrationUuid } = ctx.state.param;
 
-  const data = await enterpriseRegistrationService.selectRegistrationContractByRegistrationUuid(
+  const data = await service.selectRegistrationContractByRegistrationUuid(
     registrationUuid
   );
 
@@ -263,7 +259,7 @@ router.post('/saveRegistrationContract', async (ctx, next) => {
     techIndex
   } = ctx.state.param;
 
-  const data = await enterpriseRegistrationService.saveRegistrationContract({
+  const data = await service.saveRegistrationContract({
     registrationUuid,
     amount,
     fax,
@@ -290,7 +286,7 @@ router.post('/saveRegistrationContract', async (ctx, next) => {
 router.get('/selectRegistrationSpecimen', async (ctx, next) => {
   const { registrationUuid } = ctx.state.param;
 
-  const data = await enterpriseRegistrationService.selectRegistrationSpecimenByRegistrationUuid(
+  const data = await service.selectRegistrationSpecimenByRegistrationUuid(
     registrationUuid
   );
 
@@ -319,7 +315,7 @@ router.post('/saveRegistrationSpecimen', async (ctx, next) => {
     unit
   } = ctx.state.param;
 
-  const data = await enterpriseRegistrationService.saveRegistrationSpecimen({
+  const data = await service.saveRegistrationSpecimen({
     registrationUuid,
     trademark,
     developmentTool,
@@ -346,7 +342,7 @@ router.post('/saveRegistrationSpecimen', async (ctx, next) => {
 router.get('/selectRegistrationApply', async (ctx, next) => {
   const { registrationUuid } = ctx.state.param;
 
-  const data = await enterpriseRegistrationService.selectRegistrationApplyByRegistrationUuid(
+  const data = await service.selectRegistrationApplyByRegistrationUuid(
     registrationUuid
   );
 
@@ -368,7 +364,7 @@ router.get('/selectRegistrationApply', async (ctx, next) => {
 router.post('/saveRegistrationApply', async (ctx, next) => {
   const { registrationUuid, content } = ctx.state.param;
 
-  const data = await enterpriseRegistrationService.saveRegistrationApply({
+  const data = await service.saveRegistrationApply({
     registrationUuid,
     content
   });
@@ -391,7 +387,7 @@ router.post('/saveRegistrationApply', async (ctx, next) => {
 router.get('/selectRegistrationCopyright', async (ctx, next) => {
   const { registrationUuid } = ctx.state.param;
 
-  const data = await enterpriseRegistrationService.selectRegistrationCopyright({
+  const data = await service.selectRegistrationCopyright({
     registrationUuid
   });
 
@@ -413,7 +409,7 @@ router.get('/selectRegistrationCopyright', async (ctx, next) => {
 router.post('/saveRegistrationCopyright', async (ctx, next) => {
   const { registrationUuid, copyrightUrl } = ctx.state.param;
 
-  const data = await enterpriseRegistrationService.saveRegistrationCopyright({
+  const data = await service.saveRegistrationCopyright({
     registrationUuid,
     copyrightUrl
   });
@@ -436,7 +432,7 @@ router.post('/saveRegistrationCopyright', async (ctx, next) => {
 router.get('/selectRegistrationDocument', async (ctx, next) => {
   const { registrationUuid } = ctx.state.param;
 
-  const data = await enterpriseRegistrationService.selectRegistrationDocument({
+  const data = await service.selectRegistrationDocument({
     registrationUuid
   });
 
@@ -458,7 +454,7 @@ router.get('/selectRegistrationDocument', async (ctx, next) => {
 router.post('/saveRegistrationDocument', async (ctx, next) => {
   const { registrationUuid, documentUrl } = ctx.state.param;
 
-  const data = await enterpriseRegistrationService.saveRegistrationDocument({
+  const data = await service.saveRegistrationDocument({
     registrationUuid,
     documentUrl
   });
@@ -481,11 +477,9 @@ router.post('/saveRegistrationDocument', async (ctx, next) => {
 router.get('/selectRegistrationProductDescription', async (ctx, next) => {
   const { registrationUuid } = ctx.state.param;
 
-  const data = await enterpriseRegistrationService.selectRegistrationProductDescription(
-    {
-      registrationUuid
-    }
-  );
+  const data = await service.selectRegistrationProductDescription({
+    registrationUuid
+  });
 
   if (data) {
     ctx.body = new Res({
@@ -505,12 +499,10 @@ router.get('/selectRegistrationProductDescription', async (ctx, next) => {
 router.post('/saveRegistrationProductDescription', async (ctx, next) => {
   const { registrationUuid, productDescriptionUrl } = ctx.state.param;
 
-  const data = await enterpriseRegistrationService.saveRegistrationProductDescription(
-    {
-      registrationUuid,
-      productDescriptionUrl
-    }
-  );
+  const data = await service.saveRegistrationProductDescription({
+    registrationUuid,
+    productDescriptionUrl
+  });
 
   if (data) {
     ctx.body = new Res({
@@ -530,7 +522,7 @@ router.post('/saveRegistrationProductDescription', async (ctx, next) => {
 router.get('/selectRegistrationProduct', async (ctx, next) => {
   const { registrationUuid } = ctx.state.param;
 
-  const data = await enterpriseRegistrationService.selectRegistrationProduct({
+  const data = await service.selectRegistrationProduct({
     registrationUuid
   });
 
@@ -552,7 +544,7 @@ router.get('/selectRegistrationProduct', async (ctx, next) => {
 router.post('/saveRegistrationProduct', async (ctx, next) => {
   const { registrationUuid, productUrl } = ctx.state.param;
 
-  const data = await enterpriseRegistrationService.saveRegistrationProduct({
+  const data = await service.saveRegistrationProduct({
     registrationUuid,
     productUrl
   });
@@ -575,9 +567,7 @@ router.post('/saveRegistrationProduct', async (ctx, next) => {
 router.get('/selectContractManagerFailText', async (ctx, next) => {
   const { registrationUuid } = ctx.state.param;
 
-  const data = await enterpriseRegistrationService.selectContractManagerFailText(
-    registrationUuid
-  );
+  const data = await service.selectContractManagerFailText(registrationUuid);
 
   if (data) {
     ctx.body = new Res({
@@ -591,16 +581,13 @@ router.get('/selectContractManagerFailText', async (ctx, next) => {
   }
 });
 
-
 /**
  * 查询评测合同的路由
  */
 router.get('/selectContractUrl', async (ctx, next) => {
   const { registrationUuid } = ctx.state.param;
 
-  const data = await enterpriseRegistrationService.selectContractUrl(
-    registrationUuid
-  );
+  const data = await service.selectContractUrl(registrationUuid);
 
   if (data) {
     ctx.body = new Res({
@@ -620,7 +607,7 @@ router.get('/selectContractUrl', async (ctx, next) => {
 router.post('/saveEnterpriseContractUrl', async (ctx, next) => {
   const { registrationUuid, enterpriseUrl } = ctx.state.param;
 
-  const data = await enterpriseRegistrationService.saveEnterpriseContractUrl({
+  const data = await service.saveEnterpriseContractUrl({
     registrationUuid,
     enterpriseUrl
   });
@@ -643,9 +630,7 @@ router.post('/saveEnterpriseContractUrl', async (ctx, next) => {
 router.put('/noticeAccountPayment', async (ctx, next) => {
   const { registrationUuid } = ctx.state.param;
 
-  const data = await enterpriseRegistrationService.noticeAccountPayment(
-    registrationUuid,
-  );
+  const data = await service.noticeAccountPayment(registrationUuid);
 
   if (data) {
     ctx.body = new Res({

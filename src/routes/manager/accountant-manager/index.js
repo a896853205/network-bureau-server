@@ -5,7 +5,8 @@ import { RESPONSE_CODE } from '../../../constants/domain-constants';
 // 权限
 import { AUTHORITY } from '../../../constants/role-constants';
 
-import enterpriseRegistrationService from '../../../service/enterprise/enterprise-registration-service';
+// services
+import service from '../../../service';
 
 const router = new Router({
   prefix: AUTHORITY.ACCOUNTANT.router
@@ -17,9 +18,7 @@ const router = new Router({
 router.put('/accountantConfirmPayment', async (ctx, next) => {
   const { registrationUuid } = ctx.state.param;
 
-  const data = await enterpriseRegistrationService.accountantConfirmPayment(
-    registrationUuid
-  );
+  const data = await service.accountantConfirmPayment(registrationUuid);
 
   if (data) {
     ctx.body = new Res({
@@ -40,7 +39,7 @@ router.get('/queryRegistrationPayment', async (ctx, next) => {
   const { page } = ctx.state.param;
   const managerUuid = ctx.state.user.uuid;
 
-  const data = await enterpriseRegistrationService.queryRegistrationPayment({
+  const data = await service.queryRegistrationPayment({
     page,
     managerUuid
   });
