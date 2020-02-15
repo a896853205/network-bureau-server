@@ -160,34 +160,43 @@ export default {
    * 保存软件著作权的信息
    */
   saveRegistrationCopyright: async ({ registrationUuid, copyrightUrl }) => {
-    // 将temp的文件copy到production中
-    const tempUrl = copyrightUrl,
-      productionUrl = copyrightUrl.replace('temp', 'production');
-
     try {
-      const copyright = await enterpriseRegistrationCopyrightDao.selectRegistrationCopyrightByRegistrationUuid(
-        registrationUuid
-      );
+      let productionUrl = '';
+      // 将temp的文件copy到production中
+      const [filePosition] = copyrightUrl.split('/');
 
-      if (copyright?.url) {
-        await client.delete(copyright.url);
+      if (filePosition === 'temp') {
+        const tempUrl = copyrightUrl;
+        productionUrl = copyrightUrl.replace('temp', 'production');
+
+        const copyright = await enterpriseRegistrationCopyrightDao.selectRegistrationCopyrightByRegistrationUuid(
+          registrationUuid
+        );
+
+        if (copyright?.url) {
+          await client.delete(copyright.url);
+        }
+
+        await client.copy(productionUrl, tempUrl);
+      } else if (filePosition === 'production') {
+        productionUrl = copyrightUrl;
+      } else {
+        throw Error('oss文件路径错误');
       }
 
-      await client.copy(productionUrl, tempUrl);
-    } catch (error) {
-      console.log(error);
-      return false;
-    }
-
-    return await enterpriseRegistrationCopyrightDao.updateRegistrationCopyright(
-      {
+      await enterpriseRegistrationCopyrightDao.updateRegistrationCopyright({
         registrationUuid,
         copyrightUrl: productionUrl,
         status: 1,
         statusText: '待审核',
         failText: ''
-      }
-    );
+      });
+
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
   },
 
   /**

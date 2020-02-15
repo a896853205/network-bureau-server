@@ -261,5 +261,47 @@ export default {
       total: result.count,
       pageSize: REGISTRATION_PAGE_SIZE
     };
+  },
+
+  /**
+   * 更新负责的财务人员
+   */
+  updateRegistrationAccountantUuid: ({
+    registrationUuid,
+    accountantManagerUuid,
+    transaction = null
+  }) => {
+    return enterpriseRegistration.update(
+      {
+        accountantManagerUuid
+      },
+      {
+        where: {
+          uuid: registrationUuid
+        },
+        transaction
+      }
+    );
+  },
+
+  /**
+   * 更新负责的项目管理员人员
+   */
+  updateRegistrationProjectManagerUuid: ({
+    registrationUuid,
+    projectManagerUuid,
+    transaction = null
+  }) => {
+    return enterpriseRegistration.update(
+      {
+        projectManagerUuid
+      },
+      {
+        where: {
+          uuid: registrationUuid
+        },
+        transaction
+      }
+    );
   }
 };

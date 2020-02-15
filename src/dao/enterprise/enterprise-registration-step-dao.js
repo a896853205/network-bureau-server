@@ -53,7 +53,8 @@ export default {
   updateRegistrationStepManagerUuid: ({
     registrationUuid,
     step,
-    managerUuid
+    managerUuid,
+    transaction = null
   }) => {
     return enterpriseRegistrationStep.update(
       { managerUuid },
@@ -61,7 +62,8 @@ export default {
         where: {
           uuid: registrationUuid,
           step
-        }
+        },
+        transaction
       }
     );
   },
