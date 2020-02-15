@@ -224,5 +224,42 @@ export default {
       total: result.count,
       pageSize: REGISTRATION_PAGE_SIZE
     };
+  },
+
+  /**
+   *查询待分配技术负责人员的企业登记测试列表
+   */
+  queryRegistrationNeedAssigned: async ({ page, uuidList }) => {
+    const result = await enterpriseRegistration.findAndCountAll({
+      attributes: ['uuid'],
+      limit: REGISTRATION_PAGE_SIZE,
+      offset: (page - 1) * REGISTRATION_PAGE_SIZE,
+      raw: true,
+      where: { uuid: uuidList },
+      include: [
+        {
+          model: enterpriseRegistrationBasic,
+          attributes: ['enterpriseName', 'phone'],
+          as: 'enterpriseRegistrationBasic'
+        },
+        {
+          model: enterpriseRegistrationContract,
+          attributes: ['contractCode'],
+          as: 'enterpriseRegistrationContract'
+        },
+        {
+          model: enterpriseRegistrationStep,
+          attributes: ['statusText', 'status'],
+          where: { step: 4 },
+          as: 'enterpriseRegistrationStep'
+        }
+      ]
+    });
+
+    return {
+      enterpriseRegistrationList: result.rows,
+      total: result.count,
+      pageSize: REGISTRATION_PAGE_SIZE
+    };
   }
 };
