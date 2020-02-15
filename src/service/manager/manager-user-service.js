@@ -68,27 +68,36 @@ export default {
       return false;
     }
 
-    // 将temp的文件copy到production中
-    const tempUrl = headPortraitUrl,
-      productionUrl = headPortraitUrl.replace('temp', 'production');
-
     try {
-      await client.copy(productionUrl, tempUrl);
+      let productionUrl = '';
+      // 将temp的文件copy到production中
+      const [filePosition] = headPortraitUrl.split('/');
+
+      if (filePosition === 'temp') {
+        const tempUrl = headPortraitUrl;
+        productionUrl = headPortraitUrl.replace('temp', 'production');
+
+        await client.copy(productionUrl, tempUrl);
+      } else if (filePosition === 'production') {
+        productionUrl = headPortraitUrl;
+      } else {
+        throw Error('oss文件路径错误');
+      }
+
+      await managerUserDao.createNewManagerUser(
+        username,
+        phone,
+        password,
+        name,
+        role,
+        productionUrl
+      );
+
+      return true;
     } catch (error) {
       console.log(error);
       return false;
     }
-
-    await managerUserDao.createNewManagerUser(
-      username,
-      phone,
-      password,
-      name,
-      role,
-      productionUrl
-    );
-
-    return true;
   },
 
   /**
@@ -111,39 +120,45 @@ export default {
     name,
     headPortraitUrl
   ) => {
-    // 将temp的文件copy到production中
-    const tempUrl = headPortraitUrl,
-      productionUrl = headPortraitUrl.replace('temp', 'production');
-
     try {
-      // 从temp中copy出来而且删除数据库中的url的文件
-      const managerUser = await managerUserDao.selectManagerByManagerUuid(
-        managerUuid
-      );
+      let productionUrl = '';
+      // 将temp的文件copy到production中
+      const [filePosition] = headPortraitUrl.split('/');
 
-      if (managerUser.headPortraitUrl) {
-        await client.delete(managerUser.headPortraitUrl);
+      if (filePosition === 'temp') {
+        const tempUrl = headPortraitUrl;
+        productionUrl = headPortraitUrl.replace('temp', 'production');
+        const managerUser = await managerUserDao.selectManagerByManagerUuid(
+          managerUuid
+        );
+
+        if (managerUser?.headPortraitUrl) {
+          await client.delete(managerUser.headPortraitUrl);
+        }
+
+        await client.copy(productionUrl, tempUrl);
+      } else if (filePosition === 'production') {
+        productionUrl = headPortraitUrl;
+      } else {
+        throw Error('oss文件路径错误');
       }
 
-      await client.copy(productionUrl, tempUrl);
+      if (
+        await managerUserDao.updeteManager(
+          managerUuid,
+          phone,
+          password,
+          name,
+          productionUrl
+        )
+      ) {
+        return true;
+      }
+      return false;
     } catch (error) {
       console.log(error);
       return false;
     }
-
-    if (
-      await managerUserDao.updeteManager(
-        managerUuid,
-        phone,
-        password,
-        name,
-        productionUrl
-      )
-    ) {
-      return true;
-    }
-
-    return false;
   },
 
   /**
@@ -153,7 +168,7 @@ export default {
     return await managerUserDao.queryManagerUser(page);
   },
 
-   /**
+  /**
    * 查询财务管理员账号
    */
   queryFinanceManager: async page => {
