@@ -28,12 +28,7 @@ export default {
 
     return managerUser;
   },
-  /**
-   * 根据账号查找用户
-   */
-  // getManagerUserByUsername: async username => {
-  //   return await managerUserDao.selectManagerUserByUsername(username);
-  // },
+  
   /**
    * 管理账号登录
    */
