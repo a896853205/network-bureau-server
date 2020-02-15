@@ -198,20 +198,28 @@ export default {
    * 保存评测合同甲方上传pdf合同的信息
    */
   saveManagerContractUrl: async ({ registrationUuid, managerUrl }) => {
-    // 将temp的文件copy到production中
-    const tempUrl = managerUrl,
-      productionUrl = managerUrl.replace('temp', 'production');
-
     try {
-      const contract = await enterpriseRegistrationContractDao.selectContractUrl(
-        registrationUuid
-      );
+      let productionUrl = '';
+      // 将temp的文件copy到production中
+      const [filePosition] = managerUrl.split('/');
 
-      if (contract && contract.managerUrl) {
-        await client.delete(contract.managerUrl);
+      if (filePosition === 'temp') {
+        const tempUrl = managerUrl;
+        productionUrl = managerUrl.replace('temp', 'production');
+        const contract = await enterpriseRegistrationContractDao.selectContractUrl(
+          registrationUuid
+        );
+
+        if (contract?.url) {
+          await client.delete(contract.url);
+        }
+
+        await client.copy(productionUrl, tempUrl);
+      } else if (filePosition === 'production') {
+        productionUrl = managerUrl;
+      } else {
+        throw Error('oss文件路径错误');
       }
-
-      await client.copy(productionUrl, tempUrl);
 
       await db.transaction(async transaction => {
         return Promise.all([
@@ -241,20 +249,28 @@ export default {
    * 保存评测合同乙方上传pdf合同的信息
    */
   saveEnterpriseContractUrl: async ({ registrationUuid, enterpriseUrl }) => {
-    // 将temp的文件copy到production中
-    const tempUrl = enterpriseUrl,
-      productionUrl = enterpriseUrl.replace('temp', 'production');
-
     try {
-      const contract = await enterpriseRegistrationContractDao.selectContractUrl(
-        registrationUuid
-      );
+      let productionUrl = '';
+      // 将temp的文件copy到production中
+      const [filePosition] = enterpriseUrl.split('/');
 
-      if (contract && contract.enterpriseUrl) {
-        await client.delete(contract.enterpriseUrl);
+      if (filePosition === 'temp') {
+        const tempUrl = enterpriseUrl;
+        productionUrl = enterpriseUrl.replace('temp', 'production');
+        const contract = await enterpriseRegistrationContractDao.selectContractUrl(
+          registrationUuid
+        );
+
+        if (contract?.url) {
+          await client.delete(contract.url);
+        }
+
+        await client.copy(productionUrl, tempUrl);
+      } else if (filePosition === 'production') {
+        productionUrl = enterpriseUrl;
+      } else {
+        throw Error('oss文件路径错误');
       }
-
-      await client.copy(productionUrl, tempUrl);
 
       await db.transaction(transaction => {
         return Promise.all([

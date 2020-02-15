@@ -212,32 +212,43 @@ export default {
    * 保存用户文档集的信息
    */
   saveRegistrationDocument: async ({ registrationUuid, documentUrl }) => {
-    // 将temp的文件copy到production中
-    const tempUrl = documentUrl,
-      productionUrl = documentUrl.replace('temp', 'production');
-
     try {
-      const document = await enterpriseRegistrationDocumentDao.selectRegistrationDocumentByRegistrationUuid(
-        registrationUuid
-      );
+      let productionUrl = '';
+      // 将temp的文件copy到production中
+      const [filePosition] = documentUrl.split('/');
 
-      if (document && document.url) {
-        await client.delete(document.url);
+      if (filePosition === 'temp') {
+        const tempUrl = documentUrl;
+        productionUrl = documentUrl.replace('temp', 'production');
+
+        const document = await enterpriseRegistrationDocumentDao.selectRegistrationDocumentByRegistrationUuid(
+          registrationUuid
+        );
+
+        if (document?.url) {
+          await client.delete(document.url);
+        }
+
+        await client.copy(productionUrl, tempUrl);
+      } else if (filePosition === 'production') {
+        productionUrl = documentUrl;
+      } else {
+        throw Error('oss文件路径错误');
       }
 
-      await client.copy(productionUrl, tempUrl);
+      await enterpriseRegistrationDocumentDao.updateRegistrationDocument({
+        registrationUuid,
+        documentUrl: productionUrl,
+        status: 1,
+        statusText: '待审核',
+        failText: ''
+      });
+
+      return true;
     } catch (error) {
       console.log(error);
       return false;
     }
-
-    return await enterpriseRegistrationDocumentDao.updateRegistrationDocument({
-      registrationUuid,
-      documentUrl: productionUrl,
-      status: 1,
-      statusText: '待审核',
-      failText: ''
-    });
   },
 
   /**
@@ -256,34 +267,43 @@ export default {
     registrationUuid,
     productDescriptionUrl
   }) => {
-    // 将temp的文件copy到production中
-    const tempUrl = productDescriptionUrl,
-      productionUrl = productDescriptionUrl.replace('temp', 'production');
-
     try {
-      const productDescription = await enterpriseRegistrationProductDescriptionDao.selectRegistrationProductDescriptionByRegistrationUuid(
-        registrationUuid
-      );
+      let productionUrl = '';
+      // 将temp的文件copy到production中
+      const [filePosition] = productDescriptionUrl.split('/');
 
-      if (productDescription.url) {
-        await client.delete(productDescription.url);
+      if (filePosition === 'temp') {
+        const tempUrl = productDescriptionUrl;
+        productionUrl = productDescriptionUrl.replace('temp', 'production');
+        const productDescription = await enterpriseRegistrationProductDescriptionDao.selectRegistrationProductDescriptionByRegistrationUuid(
+          registrationUuid
+        );
+
+        if (productDescription?.url) {
+          await client.delete(productDescription.url);
+        }
+
+        await client.copy(productionUrl, tempUrl);
+      } else if (filePosition === 'production') {
+        productionUrl = productDescriptionUrl;
+      } else {
+        throw Error('oss文件路径错误');
       }
 
-      await client.copy(productionUrl, tempUrl);
+      await enterpriseRegistrationProductDescriptionDao.updateRegistrationProductDescription(
+        {
+          registrationUuid,
+          productDescriptionUrl: productionUrl,
+          status: 1,
+          statusText: '待审核',
+          failText: ''
+        }
+      );
+      return true;
     } catch (error) {
       console.log(error);
       return false;
     }
-
-    return await enterpriseRegistrationProductDescriptionDao.updateRegistrationProductDescription(
-      {
-        registrationUuid,
-        productDescriptionUrl: productionUrl,
-        status: 1,
-        statusText: '待审核',
-        failText: ''
-      }
-    );
   },
 
   /**
@@ -299,31 +319,41 @@ export default {
    * 保存产品介质的信息
    */
   saveRegistrationProduct: async ({ registrationUuid, productUrl }) => {
-    // 将temp的文件copy到production中
-    const tempUrl = productUrl,
-      productionUrl = productUrl.replace('temp', 'production');
-
     try {
-      const product = await enterpriseRegistrationProductDao.selectRegistrationProductByRegistrationUuid(
-        registrationUuid
-      );
+      let productionUrl = '';
+      // 将temp的文件copy到production中
+      const [filePosition] = productUrl.split('/');
 
-      if (product && product.url) {
-        await client.delete(product.url);
+      if (filePosition === 'temp') {
+        const tempUrl = productUrl;
+        productionUrl = productUrl.replace('temp', 'production');
+        const product = await enterpriseRegistrationProductDao.selectRegistrationProductByRegistrationUuid(
+          registrationUuid
+        );
+
+        if (product?.url) {
+          await client.delete(product.url);
+        }
+
+        await client.copy(productionUrl, tempUrl);
+      } else if (filePosition === 'production') {
+        productionUrl = productUrl;
+      } else {
+        throw Error('oss文件路径错误');
       }
 
-      await client.copy(productionUrl, tempUrl);
+      await enterpriseRegistrationProductDao.updateRegistrationProduct({
+        registrationUuid,
+        productUrl: productionUrl,
+        status: 1,
+        statusText: '待审核',
+        failText: ''
+      });
+      return true;
     } catch (error) {
       console.log(error);
       return false;
     }
-    return await enterpriseRegistrationProductDao.updateRegistrationProduct({
-      registrationUuid,
-      productUrl: productionUrl,
-      status: 1,
-      statusText: '待审核',
-      failText: ''
-    });
   },
 
   /**
