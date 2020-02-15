@@ -20,6 +20,11 @@ const enterpriseRegistration = db.define('enterprise_registration', {
     type: Sequelize.STRING(36)
   },
   enterpriseUuid: Sequelize.STRING(36),
+  projectManagerUuid: Sequelize.STRING(36), // 项目管理人员
+  techLeaderManagerUuid: Sequelize.STRING(36), // 技术负责人
+  techManagerUuid: Sequelize.STRING(36), // 技术人员
+  certifierManagerUuid: Sequelize.STRING(36), // 批准人
+  accountantManagerUuid: Sequelize.STRING(36), // 财务
 });
 
 enterpriseRegistration.belongsTo(enterpriseUser, {
