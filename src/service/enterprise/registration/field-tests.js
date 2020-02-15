@@ -2,11 +2,11 @@ import { db } from '../../../db/db-connect';
 
 // dao
 import managerUserDao from '../../../dao/manager/manager-user-dao';
+import enterpriseRegistrationDao from '../../../dao/enterprise/enterprise-registration-dao';
 import enterpriseRegistrationStepDao from '../../../dao/enterprise/enterprise-registration-step-dao';
 
 export default {
-
-/**
+  /**
    * 查询技术负责人
    */
   queryTechnicalManager: async page => {
@@ -14,9 +14,12 @@ export default {
   },
 
   /**
-   * 更新财务人员信息
+   * 安排技术负责人
    */
-  updateTechnicalManager: async ({ registrationUuid, technicalManagerUuid }) => {
+  arrangeTechLeaderManager: async ({
+    registrationUuid,
+    technicalManagerUuid
+  }) => {
     return db.transaction(() => {
       return Promise.all([
         enterpriseRegistrationStepDao.updateRegistrationStep({
@@ -34,4 +37,20 @@ export default {
     });
   },
 
+  /**
+   * 查询待分配技术负责人员的企业登记测试列表
+   */
+  queryRegistrationNeedAssigned: async ({ page, managerUuid }) => {
+    const registrationList = await enterpriseRegistrationStepDao.queryRegistrationByManagerUuid(
+      managerUuid
+    );
+    console.log('registrationList=', registrationList);
+
+    const uuidList = registrationList.map(item => item.uuid);
+
+    return await enterpriseRegistrationDao.queryRegistrationNeedAssigned({
+      page,
+      uuidList
+    });
+  }
 };
