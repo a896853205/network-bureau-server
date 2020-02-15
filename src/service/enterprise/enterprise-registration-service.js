@@ -149,6 +149,11 @@ export default {
             enterpriseRegistrationBasicDao.insertRegistrationBasic({
               uuid: enterpriseRegistrationUuid,
               transaction
+            }),
+            enterpriseRegistrationDao.updateRegistrationProjectManagerUuid({
+              registrationUuid: enterpriseRegistrationUuid,
+              projectManagerUuid,
+              transaction
             })
           ]);
 

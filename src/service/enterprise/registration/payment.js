@@ -42,7 +42,7 @@ export default {
         }),
         enterpriseRegistrationDao.updateRegistrationAccountantUuid({
           registrationUuid,
-          accountantUuid: financeManagerUuid,
+          accountantManagerUuid: financeManagerUuid,
           transaction
         })
       ]);
