@@ -28,7 +28,6 @@ export default {
       return Promise.all([
         enterpriseRegistrationStepDao.updateRegistrationStep({
           registrationUuid,
-          financeManagerUuid,
           status: 2,
           statusText: '已选择财务人员',
           step: 3,
