@@ -20,23 +20,29 @@ export default {
     registrationUuid,
     technicalManagerUuid
   }) => {
-    return db.transaction(() => {
+    return await db.transaction(transaction => {
       return Promise.all([
         enterpriseRegistrationStepDao.updateRegistrationStep({
           registrationUuid,
           status: 2,
           statusText: '已选择技术负责人',
-          step: 4
+          step: 4,
+          transaction
         }),
         enterpriseRegistrationStepDao.updateRegistrationStepManagerUuid({
           registrationUuid,
           step: 4,
-          managerUuid: technicalManagerUuid
+          managerUuid: technicalManagerUuid,
+          transaction
+        }),
+        enterpriseRegistrationDao.updateRegistrationTechLeaderUuid({
+          registrationUuid,
+          techLeaderManagerUuid: technicalManagerUuid,
+          transaction
         })
       ]);
     });
   },
-
   /**
    * 查询待分配技术负责人员的企业登记测试列表
    */
@@ -44,7 +50,6 @@ export default {
     const registrationList = await enterpriseRegistrationStepDao.queryRegistrationByManagerUuid(
       managerUuid
     );
-    console.log('registrationList=', registrationList);
 
     const uuidList = registrationList.map(item => item.uuid);
 

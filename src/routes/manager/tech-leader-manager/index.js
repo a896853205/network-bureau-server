@@ -18,7 +18,6 @@ const router = new Router({
 router.get('/queryRegistrationNeedAssigned', async (ctx, next) => {
   const { page } = ctx.state.param;
   const managerUuid = ctx.state.user.uuid;
-  console.log('managerUuid=', managerUuid);
 
   const data = await service.queryRegistrationNeedAssigned({
     page,

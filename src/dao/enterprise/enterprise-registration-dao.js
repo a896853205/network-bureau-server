@@ -285,6 +285,27 @@ export default {
   },
 
   /**
+   * 更新负责的技术负责人
+   */
+  updateRegistrationTechLeaderUuid: ({
+    registrationUuid,
+    techLeaderManagerUuid,
+    transaction = null
+  }) => {
+    return enterpriseRegistration.update(
+      {
+        techLeaderManagerUuid
+      },
+      {
+        where: {
+          uuid: registrationUuid
+        },
+        transaction
+      }
+    );
+  },
+
+  /**
    * 更新负责的项目管理员人员
    */
   updateRegistrationProjectManagerUuid: ({

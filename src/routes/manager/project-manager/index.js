@@ -547,7 +547,8 @@ router.post('/arrangeTechLeaderManager', async (ctx, next) => {
   if (data) {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
-      data
+      data,
+      msg: '已选择技术负责人'
     });
   } else {
     ctx.body = new Res({
