@@ -523,7 +523,8 @@ router.post('/updateFinanceManager', async (ctx, next) => {
   if (data) {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
-      data
+      data,
+      msg: '已选择负责的财务人员'
     });
   } else {
     ctx.body = new Res({
