@@ -287,11 +287,9 @@ router.post('/setRegistrationDetailFailStatus', async (ctx, next) => {
 router.get('/selectRegistrationProductDescription', async (ctx, next) => {
   const { registrationUuid } = ctx.state.param;
 
-  const data = await service.selectRegistrationProductDescription(
-    {
-      registrationUuid
-    }
-  );
+  const data = await service.selectRegistrationProductDescription({
+    registrationUuid
+  });
 
   if (data) {
     ctx.body = new Res({
@@ -377,9 +375,7 @@ router.get('/selectRegistrationCopyright', async (ctx, next) => {
 router.post('/pushRegistrationProcess', async (ctx, next) => {
   const { registrationUuid } = ctx.state.param;
 
-  const data = await service.pushRegistrationProcess(
-    registrationUuid
-  );
+  const data = await service.pushRegistrationProcess(registrationUuid);
 
   if (data) {
     ctx.body = new Res({
@@ -422,9 +418,7 @@ router.get('/selectRegistrationContractManager', async (ctx, next) => {
 router.get('/selectContractUrl', async (ctx, next) => {
   const { registrationUuid } = ctx.state.param;
 
-  const data = await service.selectContractUrl(
-    registrationUuid
-  );
+  const data = await service.selectContractUrl(registrationUuid);
 
   if (data) {
     ctx.body = new Res({
@@ -451,16 +445,14 @@ router.post('/saveRegistrationContractManager', async (ctx, next) => {
     contractTime
   } = ctx.state.param;
 
-  const data = await service.saveRegistrationContractManager(
-    {
-      registrationUuid,
-      contractCode,
-      specimenHaveTime,
-      payment,
-      paymentTime,
-      contractTime
-    }
-  );
+  const data = await service.saveRegistrationContractManager({
+    registrationUuid,
+    contractCode,
+    specimenHaveTime,
+    payment,
+    paymentTime,
+    contractTime
+  });
 
   if (data) {
     ctx.body = new Res({
@@ -480,9 +472,7 @@ router.post('/saveRegistrationContractManager', async (ctx, next) => {
 router.get('/downloadContractWord', async ctx => {
   const { registrationUuid } = ctx.state.param;
 
-  const data = await service.downloadContract(
-    registrationUuid
-  );
+  const data = await service.downloadContract(registrationUuid);
 
   if (data) {
     ctx.body = new Res({
@@ -533,7 +523,8 @@ router.post('/updateFinanceManager', async (ctx, next) => {
   if (data) {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
-      data
+      data,
+      msg: '已选择负责的财务人员'
     });
   } else {
     ctx.body = new Res({
@@ -571,9 +562,7 @@ router.post('/updateTechnicalManager', async (ctx, next) => {
 router.put('/setContractManagerSuccessStatus', async (ctx, next) => {
   const { registrationUuid } = ctx.state.param;
 
-  const res = await service.setContractManagerSuccessStatus(
-    registrationUuid
-  );
+  const res = await service.setContractManagerSuccessStatus(registrationUuid);
 
   if (res) {
     ctx.body = new Res({

@@ -260,10 +260,6 @@ export default {
           return true;
         }
       } else if (registration.currentStep === 2) {
-        const contract = await enterpriseRegistrationContractDao.selectRegistrationContractManager(
-          registrationUuid
-        );
-
         const steps = await enterpriseRegistrationStepDao.queryEnterpriseRegistrationStepByRegistrationUuid(
           registrationUuid
         );

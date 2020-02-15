@@ -9,8 +9,7 @@ import Result from '../util/response';
 import { UNLESS_PATH_ARR } from '../config/system-config';
 
 // service
-import enterpriseUserService from '../service/enterprise/enterprise-user-service';
-import managerUserService from '../service/manager/manager-user-service';
+import service from '../service';
 
 /**
  * token验证中间件
@@ -28,11 +27,11 @@ export default async (ctx, next) => {
 
       switch (data.auth) {
         case 'manager':
-          user = await managerUserService.getManagerByManagerUuid(data.uuid);
+          user = await service.getManagerByManagerUuid(data.uuid);
 
           break;
         case 'enterprise':
-          user = await enterpriseUserService.getEnterpriseByUuid(data.uuid);
+          user = await service.getEnterpriseByUuid(data.uuid);
 
           // 设置上权限号
           user.role = 100;

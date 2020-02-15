@@ -1,3 +1,5 @@
+import { db } from '../../../db/db-connect';
+
 // oss
 import client from '../../../util/oss';
 
@@ -271,6 +273,8 @@ export default {
           })
         ]);
       });
+
+      return true;
     } catch (error) {
       console.log(error);
       return false;

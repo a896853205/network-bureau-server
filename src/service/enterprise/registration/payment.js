@@ -1,3 +1,5 @@
+import { db } from '../../../db/db-connect';
+
 import enterpriseRegistrationStepDao from '../../../dao/enterprise/enterprise-registration-step-dao';
 import enterpriseRegistrationDao from '../../../dao/enterprise/enterprise-registration-dao';
 
