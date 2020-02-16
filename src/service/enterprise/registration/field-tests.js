@@ -69,21 +69,27 @@ export default {
    * 安排技术人员
    */
   arrangeTechManager: async ({ registrationUuid, techManagerUuid }) => {
-    return await db.transaction(transaction => {
-      return Promise.all([
-        enterpriseRegistrationStepDao.updateRegistrationStep({
-          registrationUuid,
-          status: 3,
-          statusText: '已选择技术人员',
-          step: 4,
-          transaction
-        }),
-        enterpriseRegistrationDao.updateRegistrationTechManagerUuid({
-          registrationUuid,
-          techManagerUuid,
-          transaction
-        })
-      ]);
-    });
+    try {
+      await db.transaction(transaction => {
+        return Promise.all([
+          enterpriseRegistrationStepDao.updateRegistrationStep({
+            registrationUuid,
+            status: 3,
+            statusText: '已选择技术人员',
+            step: 4,
+            transaction
+          }),
+          enterpriseRegistrationDao.updateRegistrationTechManagerUuid({
+            registrationUuid,
+            techManagerUuid,
+            transaction
+          })
+        ]);
+      });
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
   }
 };
