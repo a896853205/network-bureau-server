@@ -47,12 +47,11 @@ export default {
    * 查询待分配技术负责人员的企业登记测试列表
    */
   queryRegistrationNeedAssigned: async ({ page, managerUuid }) => {
-    const registrationList = await enterpriseRegistrationStepDao.queryRegistrationByManagerUuid(
+    const registrationList = await enterpriseRegistrationStepDao.queryRegistrationNeedAssignedByManagerUuid(
       managerUuid
     );
 
     const uuidList = registrationList.map(item => item.uuid);
-
     return await enterpriseRegistrationDao.queryRegistrationNeedAssigned({
       page,
       uuidList
@@ -69,10 +68,7 @@ export default {
   /**
    * 安排技术人员
    */
-  arrangeTechManager: async ({
-    registrationUuid,
-    techManagerUuid
-  }) => {
+  arrangeTechManager: async ({ registrationUuid, techManagerUuid }) => {
     return await db.transaction(transaction => {
       return Promise.all([
         enterpriseRegistrationStepDao.updateRegistrationStep({

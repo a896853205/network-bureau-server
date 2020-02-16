@@ -77,5 +77,16 @@ export default {
       raw: true,
       where: { managerUuid }
     });
+  },
+
+  /**
+   * 查询企业的第四步信息
+   */
+  queryRegistrationNeedAssignedByManagerUuid: managerUuid => {
+    return enterpriseRegistrationStep.findAll({
+      attributes: ['uuid'],
+      raw: true,
+      where: { managerUuid }
+    });
   }
 };
