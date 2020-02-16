@@ -20,28 +20,36 @@ export default {
     registrationUuid,
     technicalManagerUuid
   }) => {
-    return await db.transaction(transaction => {
-      return Promise.all([
-        enterpriseRegistrationStepDao.updateRegistrationStep({
-          registrationUuid,
-          status: 2,
-          statusText: '已选择技术负责人',
-          step: 4,
-          transaction
-        }),
-        enterpriseRegistrationStepDao.updateRegistrationStepManagerUuid({
-          registrationUuid,
-          step: 4,
-          managerUuid: technicalManagerUuid,
-          transaction
-        }),
-        enterpriseRegistrationDao.updateRegistrationTechLeaderUuid({
-          registrationUuid,
-          techLeaderManagerUuid: technicalManagerUuid,
-          transaction
-        })
-      ]);
-    });
+    try {
+      await db.transaction(transaction => {
+        return Promise.all([
+          enterpriseRegistrationStepDao.updateRegistrationStep({
+            registrationUuid,
+            status: 2,
+            statusText: '已选择技术负责人',
+            step: 4,
+            transaction
+          }),
+          enterpriseRegistrationStepDao.updateRegistrationStepManagerUuid({
+            registrationUuid,
+            step: 4,
+            managerUuid: technicalManagerUuid,
+            transaction
+          }),
+          enterpriseRegistrationDao.updateRegistrationTechLeaderUuid({
+            registrationUuid,
+            techLeaderManagerUuid: technicalManagerUuid,
+            transaction
+          })
+        ]);
+      });
+
+      return true;
+    } catch (error) {
+      console.error(error);
+      return false  
+    }
+    
   },
   /**
    * 查询待分配技术负责人员的企业登记测试列表
@@ -88,7 +96,7 @@ export default {
       });
       return true;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return false;
     }
   }
