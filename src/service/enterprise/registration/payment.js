@@ -24,28 +24,34 @@ export default {
    * 更新财务人员信息
    */
   updateFinanceManager: async ({ registrationUuid, financeManagerUuid }) => {
-    return await db.transaction(transaction => {
-      return Promise.all([
-        enterpriseRegistrationStepDao.updateRegistrationStep({
-          registrationUuid,
-          status: 2,
-          statusText: '已选择财务人员',
-          step: 3,
-          transaction
-        }),
-        enterpriseRegistrationStepDao.updateRegistrationStepManagerUuid({
-          registrationUuid,
-          step: 3,
-          managerUuid: financeManagerUuid,
-          transaction
-        }),
-        enterpriseRegistrationDao.updateRegistrationAccountantUuid({
-          registrationUuid,
-          accountantManagerUuid: financeManagerUuid,
-          transaction
-        })
-      ]);
-    });
+    try {
+      await db.transaction(transaction => {
+        return Promise.all([
+          enterpriseRegistrationStepDao.updateRegistrationStep({
+            registrationUuid,
+            status: 2,
+            statusText: '已选择财务人员',
+            step: 3,
+            transaction
+          }),
+          enterpriseRegistrationStepDao.updateRegistrationStepManagerUuid({
+            registrationUuid,
+            step: 3,
+            managerUuid: financeManagerUuid,
+            transaction
+          }),
+          enterpriseRegistrationDao.updateRegistrationAccountantUuid({
+            registrationUuid,
+            accountantManagerUuid: financeManagerUuid,
+            transaction
+          })
+        ]);
+      });
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
   },
 
   /**
