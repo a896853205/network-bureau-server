@@ -37,4 +37,95 @@ router.get('/queryRegistrationNeedAssigned', async (ctx, next) => {
   }
 });
 
+/**
+ * 查询技术人员
+ */
+router.get('/queryTechManager', async (ctx, next) => {
+  const { page } = ctx.state.param;
+
+  const data = await service.queryTechManager(page);
+
+  if (data) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error,
+      msg: '查询失败'
+    });
+  }
+});
+
+/**
+ * 更新技术人员
+ */
+router.post('/arrangeTechManager', async (ctx, next) => {
+  const { registrationUuid, techManagerUuid } = ctx.state.param;
+
+  const data = await service.arrangeTechManager({
+    registrationUuid,
+    techManagerUuid
+  });
+
+  if (data) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+      msg: '已选择技术人员'
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error
+    });
+  }
+});
+
+/**
+ * 根据registrationUuid查询具体步骤
+ */
+router.get('/queryTechLeaderEnterpriseRegistrationStep', async (ctx, next) => {
+  const { registrationUuid } = ctx.state.param;
+
+  const data = await service.queryEnterpriseRegistrationStepByRegistrationUuid(
+    registrationUuid
+  );
+
+  if (data) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error,
+      msg: '查询失败'
+    });
+  }
+});
+
+/**
+ * 查询登记测试信息(单独)
+ */
+router.get('/selectTechLeaderRegistration', async (ctx, next) => {
+  const { registrationUuid } = ctx.state.param;
+
+  const data = await service.selectRegistrationByRegistrationUuid(
+    registrationUuid
+  );
+
+  if (data) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error,
+      msg: '查询失败'
+    });
+  }
+});
+
 export default router;
