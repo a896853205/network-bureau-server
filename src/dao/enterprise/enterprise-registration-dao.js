@@ -28,7 +28,16 @@ export default {
   selectRegistrationByRegistrationUuid: registrationUuid => {
     return enterpriseRegistration.findOne({
       where: { uuid: registrationUuid },
-      attributes: ['uuid', 'currentStep', 'name'],
+      attributes: [
+        'uuid',
+        'currentStep',
+        'name',
+        'projectManagerUuid',
+        'techLeaderManagerUuid',
+        'techManagerUuid',
+        'certifierManagerUuid',
+        'accountantManagerUuid'
+      ],
       raw: true
     });
   },
@@ -316,6 +325,27 @@ export default {
     return enterpriseRegistration.update(
       {
         projectManagerUuid
+      },
+      {
+        where: {
+          uuid: registrationUuid
+        },
+        transaction
+      }
+    );
+  },
+
+  /**
+   * 更新负责的技术人员
+   */
+  updateRegistrationTechManagerUuid: ({
+    registrationUuid,
+    techManagerUuid,
+    transaction = null
+  }) => {
+    return enterpriseRegistration.update(
+      {
+        techManagerUuid
       },
       {
         where: {

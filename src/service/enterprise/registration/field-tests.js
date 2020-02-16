@@ -57,5 +57,38 @@ export default {
       page,
       uuidList
     });
+  },
+
+  /**
+   * 查询技术人员
+   */
+  queryTechManager: async page => {
+    return await managerUserDao.queryTechManagerUser(page);
+  },
+
+  /**
+   * 安排技术人员
+   */
+  arrangeTechManager: async ({
+    registrationUuid,
+    techManagerUuid
+  }) => {
+    return await db.transaction(transaction => {
+      return Promise.all([
+        enterpriseRegistrationStepDao.updateRegistrationStep({
+          registrationUuid,
+          status: 3,
+          statusText: '已选择技术人员',
+          step: 4,
+          transaction
+        }),
+        enterpriseRegistrationDao.updateRegistrationTechManagerUuid({
+          registrationUuid,
+          techManagerUuid,
+          transaction
+        })
+      ]);
+    });
   }
+
 };
