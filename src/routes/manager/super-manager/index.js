@@ -95,20 +95,17 @@ router.del('/deleteManager', async (ctx, next) => {
  * 查询管理账号
  */
 router.get('/queryManager', async (ctx, next) => {
-  const { page } = ctx.state.param;
+  try {
+    const { page } = ctx.state.param;
 
-  const data = await service.queryManager(page);
+    const data = await service.queryManager(page);
 
-  if (data) {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data
     });
-  } else {
-    ctx.body = new Res({
-      status: RESPONSE_CODE.error,
-      msg: '查询失败'
-    });
+  } catch (error) {
+    ctx.throw(RESPONSE_CODE.error, '查询失败');
   }
 });
 
@@ -126,14 +123,18 @@ router.get('/queryRole', ctx => {
  * 通过managerUuid查询管理员数据
  */
 router.get('/selectManagerInfo', async ctx => {
-  const { managerUuid } = ctx.state.param;
+  try {
+    const { managerUuid } = ctx.state.param;
 
-  const res = await service.getManagerByManagerUuid(managerUuid);
+    const data = await service.selectManagerByManagerUuid(managerUuid);
 
-  ctx.body = new Res({
-    status: RESPONSE_CODE.success,
-    data: res
-  });
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } catch (error) {
+    ctx.throw(RESPONSE_CODE.error, '查询失败');
+  }
 });
 
 export default router;

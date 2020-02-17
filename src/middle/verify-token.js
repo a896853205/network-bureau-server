@@ -18,16 +18,15 @@ export default async (ctx, next) => {
   if (verifyUnlessPath(ctx.url, UNLESS_PATH_ARR)) {
     await next();
   } else {
-    // 获取jwt
-    const token = ctx.header.authorization;
-    let user = null;
-
     try {
-      let data = webToken.resolveToken(token);
+      // 获取jwt
+      const token = ctx.header.authorization;
+      let data = webToken.resolveToken(token),
+        user = null;
 
       switch (data.auth) {
         case 'manager':
-          user = await service.getManagerByManagerUuid(data.uuid);
+          user = await service.selectManagerByManagerUuid(data.uuid);
 
           break;
         case 'enterprise':
@@ -37,16 +36,12 @@ export default async (ctx, next) => {
           user.role = 100;
           break;
       }
+
+      ctx.state.user = user;
     } catch (error) {
       ctx.throw(RESPONSE_CODE.unauthorized, '请重新登录');
     }
 
-    if (user) {
-      ctx.state.user = user;
-
-      await next();
-    } else {
-      ctx.throw(RESPONSE_CODE.unauthorized, '请重新登录');
-    }
+    await next();
   }
 };

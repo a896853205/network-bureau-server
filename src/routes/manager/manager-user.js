@@ -15,10 +15,14 @@ const router = new Router({
  * 通过token获取自己信息
  */
 router.get('/getMyInfo', async (ctx, next) => {
-  ctx.body = new Res({
-    status: RESPONSE_CODE.success,
-    data: ctx.state.user
-  });
+  try {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data: ctx.state.user
+    });
+  } catch (error) {
+    ctx.throw(RESPONSE_CODE.unauthorized, '请重新登录');
+  }
 });
 
 /**

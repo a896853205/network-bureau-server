@@ -9,26 +9,32 @@ export default {
   /**
    * 根据managerUuid查询用户
    */
-  getManagerByManagerUuid: async managerUuid => {
-    // 数据库中查询出头像的路径之后去oss获取当前url
-    let managerUser = {},
-      headPreviewUrl = null;
-
+  selectManagerByManagerUuid: async managerUuid => {
     try {
+      // 数据库中查询出头像的路径之后去oss获取当前url
+      let managerUser = {},
+        headPreviewUrl = null;
+
       managerUser = await managerUserDao.selectManagerByManagerUuid(
         managerUuid
       );
-      headPreviewUrl = await client.signatureUrl(managerUser.headPortraitUrl);
+
+      if (!managerUser) {
+        throw new Error('未查询到此管理员');
+      }
+      headPreviewUrl = await client.signatureUrl(
+        managerUser.headPortraitUrl || ''
+      );
+
+      // 将头像具体的url属性放入返回对象中
+      managerUser.headPreviewUrl = headPreviewUrl;
+
+      return managerUser;
     } catch (error) {
-      headPreviewUrl = '';
+      throw new Error(error);
     }
-
-    // 将头像具体的url属性放入返回对象中
-    managerUser.headPreviewUrl = headPreviewUrl;
-
-    return managerUser;
   },
-  
+
   /**
    * 管理账号登录
    */
@@ -160,7 +166,12 @@ export default {
    * 查询管理员账号
    */
   queryManager: async page => {
-    return await managerUserDao.queryManagerUser(page);
+    try {
+      return await managerUserDao.queryManagerUser(page);
+    } catch (error) {
+      throw new Error('查询所有管理员账号错误');
+    }
+    
   },
 
   /**
