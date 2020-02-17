@@ -188,6 +188,7 @@ export default {
         certifierManager: managerList[4]
       };
     } catch (error) {
+      console.error('登记测试查询5个管理员错误');
       throw new Error(error);
     }
   },
