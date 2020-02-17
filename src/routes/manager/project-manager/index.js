@@ -470,19 +470,17 @@ router.post('/saveRegistrationContractManager', async (ctx, next) => {
  * 管理员下载合同word
  */
 router.get('/downloadContractWord', async ctx => {
-  const { registrationUuid } = ctx.state.param;
+  try {
+    const { registrationUuid } = ctx.state.param;
 
-  const data = await service.downloadContract(registrationUuid);
+    const data = await service.downloadContract(registrationUuid);
 
-  if (data) {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data
     });
-  } else {
-    ctx.body = new Res({
-      status: RESPONSE_CODE.error
-    });
+  } catch (error) {
+    ctx.throw(RESPONSE_CODE.error, '目前状态不可以生成合同或出现错误');
   }
 });
 

@@ -259,4 +259,22 @@ router.get('/downloadCopyright', async ctx => {
   }
 });
 
+/**
+ * 管理员下载合同word
+ */
+router.get('/downloadContract', async ctx => {
+  try {
+    const { registrationUuid } = ctx.state.param;
+
+    const data = await service.downloadContract(registrationUuid);
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } catch (error) {
+    ctx.throw(RESPONSE_CODE.error, '目前状态不可以生成合同或出现错误');
+  }
+});
+
 export default router;
