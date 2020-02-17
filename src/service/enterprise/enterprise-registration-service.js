@@ -355,5 +355,50 @@ export default {
       console.error('下载登记测试的产品介质错误');
       throw new Error(error);
     }
+  },
+
+  downloadProductDescription: async registrationUuid => {
+    try {
+      const {
+        url
+      } = await enterpriseRegistrationProductDescriptionDao.selectRegistrationProductDescriptionUrlByRegistrationUuid(
+        registrationUuid
+      );
+
+      return await fileService.getFileUrl(url);
+    } catch (error) {
+      console.error('下载登记测试的产品说明错误');
+      throw new Error(error);
+    }
+  },
+
+  downloadDocument: async registrationUuid => {
+    try {
+      const {
+        url
+      } = await enterpriseRegistrationDocumentDao.selectRegistrationDocumentUrlByRegistrationUuid(
+        registrationUuid
+      );
+
+      return await fileService.getFileUrl(url);
+    } catch (error) {
+      console.error('下载登记测试的用户文档集错误');
+      throw new Error(error);
+    }
+  },
+
+  downloadCopyright: async registrationUuid => {
+    try {
+      const {
+        url
+      } = await enterpriseRegistrationCopyrightDao.selectRegistrationCopyrightUrlByRegistrationUuid(
+        registrationUuid
+      );
+
+      return await fileService.getFileUrl(url);
+    } catch (error) {
+      console.error('下载登记测试的软件著作权错误');
+      throw new Error(error);
+    }
   }
 };

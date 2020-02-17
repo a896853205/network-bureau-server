@@ -211,4 +211,52 @@ router.get('/downloadProduct', async ctx => {
   }
 });
 
+router.get('/downloadProductDescription', async ctx => {
+  try {
+    const { registrationUuid } = ctx.state.param;
+
+    const data = await service.downloadProductDescription(registrationUuid);
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } catch (error) {
+    console.error(error);
+    ctx.throw(RESPONSE_CODE.error, '查询失败');
+  }
+});
+
+router.get('/downloadDocument', async ctx => {
+  try {
+    const { registrationUuid } = ctx.state.param;
+
+    const data = await service.downloadDocument(registrationUuid);
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } catch (error) {
+    console.error(error);
+    ctx.throw(RESPONSE_CODE.error, '查询失败');
+  }
+});
+
+router.get('/downloadCopyright', async ctx => {
+  try {
+    const { registrationUuid } = ctx.state.param;
+
+    const data = await service.downloadCopyright(registrationUuid);
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } catch (error) {
+    console.error(error);
+    ctx.throw(RESPONSE_CODE.error, '查询失败');
+  }
+});
+
 export default router;
