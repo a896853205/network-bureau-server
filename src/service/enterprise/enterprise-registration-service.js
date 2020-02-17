@@ -412,88 +412,15 @@ export default {
   },
 
   downloadContract: async registrationUuid => {
-    // 先判断statusManager是不是2
-    // 再用数据库中的数据通过模板生成word
-    // 等到上传盖章pdf上传完成后删除word
     try {
-      const statusManager = await enterpriseRegistrationContractDao.selectRegistrationContractManager(
+      // 查询contract内容
+      const {
+        enterpriseUrl
+      } = await enterpriseRegistrationContractDao.selectContractUrl(
         registrationUuid
       );
 
-      const statusList = await enterpriseRegistrationStepDao.queryEnterpriseRegistrationStepByRegistrationUuid(
-        registrationUuid
-      );
-
-      if (statusManager && statusList[1].status >= 2) {
-        // 查询contract内容
-        const [
-          contract,
-          basic,
-          registration,
-          contractManager
-        ] = await Promise.all([
-          enterpriseRegistrationContractDao.selectRegistrationContractByRegistrationUuid(
-            registrationUuid
-          ),
-          enterpriseRegistrationBasicDao.selectRegistrationBasicByRegistrationUuid(
-            registrationUuid
-          ),
-          enterpriseRegistrationDao.selectRegistrationByRegistrationUuid(
-            registrationUuid
-          ),
-          enterpriseRegistrationContractDao.selectRegistrationContractManager(
-            registrationUuid
-          )
-        ]);
-
-        // Load the docx file as a binary
-        let content = fs.readFileSync(
-          path.resolve(__dirname, '../../template/contract.docx'),
-          'binary'
-        );
-
-        let zip = new PizZip(content);
-
-        let doc = new Docxtemplater();
-        doc.loadZip(zip);
-
-        let data = {};
-
-        Object.assign(data, contract, basic, registration, contractManager);
-
-        moment.locale('zh-cn');
-        // 数据整理
-        if (!data.fax) {
-          data.fax = '';
-        }
-
-        if (data.devStartTime) {
-          data.devStartTime = moment(data.devStartTime).format('YYYY/MM/DD');
-        }
-
-        if (data.specimenHaveTime) {
-          data.specimenHaveTime = moment(data.specimenHaveTime).format('LL');
-        }
-
-        if (data.paymentTime) {
-          data.paymentTime = moment(data.paymentTime).format('LL');
-        }
-
-        if (data.contractTime) {
-          data.contractTime = moment(data.contractTime).format('LL');
-        }
-        // 设置模板数据
-        doc.setData(data);
-
-        // render the document (replace all occurences of {first_name} by John, {last_name} by Doe, ...)
-        doc.render();
-
-        let buf = doc.getZip().generate({ type: 'nodebuffer' });
-
-        return await fileService.uploadDownloadBufFile(buf, 'registration');
-      } else {
-        throw new Error('目前状态不可以生成合同');
-      }
+      return await fileService.getFileUrl(enterpriseUrl);
     } catch (error) {
       console.error(error);
       throw error;
