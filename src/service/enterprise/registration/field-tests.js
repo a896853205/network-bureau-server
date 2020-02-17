@@ -47,10 +47,16 @@ export default {
           })
         ]);
       });
+<<<<<<< HEAD
 
       return true;
     } catch (error) {
       console.error(error);
+=======
+      return true;
+    } catch (error) {
+      console.log(error);
+>>>>>>> cf583f6d0f46398df8ee2e2488e7080677a2ea6c
       return false;
     }
   },
