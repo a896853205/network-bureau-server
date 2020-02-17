@@ -196,25 +196,30 @@ export default {
    * 获取登记测试的文件
    */
   getRegistrationFileByFileDownloadRegistrationUuid: async registrationUuid => {
-    const [
-      { copyrightUrl },
-      { productDescriptionUrl },
-      { documentUrl },
-      { productUrl }
-    ] = await Promise.all([
-      enterpriseRegistrationCopyrightDao.selectRegistrationCopyrightUrlByRegistrationUuid(
-        registrationUuid
-      ),
-      enterpriseRegistrationProductDescriptionDao.selectRegistrationProductDescriptionUrlByRegistrationUuid(
-        registrationUuid
-      ),
-      enterpriseRegistrationDocumentDao.selectRegistrationDocumentUrlByRegistrationUuid(
-        registrationUuid
-      ),
-      enterpriseRegistrationProductDao.selectRegistrationProductUrlByRegistrationUuid(
-        registrationUuid
-      )
-    ]);
-    return { copyrightUrl, productDescriptionUrl, documentUrl, productUrl };
+    try {
+      const [
+        { url: copyrightUrl },
+        { url: productDescriptionUrl },
+        { url: documentUrl },
+        { url: productUrl }
+      ] = await Promise.all([
+        enterpriseRegistrationCopyrightDao.selectRegistrationCopyrightUrlByRegistrationUuid(
+          registrationUuid
+        ),
+        enterpriseRegistrationProductDescriptionDao.selectRegistrationProductDescriptionUrlByRegistrationUuid(
+          registrationUuid
+        ),
+        enterpriseRegistrationDocumentDao.selectRegistrationDocumentUrlByRegistrationUuid(
+          registrationUuid
+        ),
+        enterpriseRegistrationProductDao.selectRegistrationProductUrlByRegistrationUuid(
+          registrationUuid
+        )
+      ]);
+      return { copyrightUrl, productDescriptionUrl, documentUrl, productUrl };
+    } catch (error) {
+      console.error('查询登记测试的文件错误');
+      throw new Error(error);
+    }
   }
 };

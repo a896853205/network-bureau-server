@@ -181,7 +181,6 @@ router.get(
     const data = await service.selectEnterpriseInfoByFileDownloadRegistrationUuid(
       registrationUuid
     );
-
     if (data) {
       ctx.body = new Res({
         status: RESPONSE_CODE.success,
@@ -189,8 +188,7 @@ router.get(
       });
     } else {
       ctx.body = new Res({
-        status: RESPONSE_CODE.error,
-        msg: '查询失败'
+        status: RESPONSE_CODE.error
       });
     }
   }
@@ -202,23 +200,22 @@ router.get(
 router.get(
   '/getRegistrationFileByFileDownloadRegistrationUuid',
   async (ctx, next) => {
-    const { registrationUuid } = ctx.state.param;
+    try {
+      const { registrationUuid } = ctx.state.param;
 
-    const data = await service.getRegistrationFileByFileDownloadRegistrationUuid(
-      {
+      const data = await service.getRegistrationFileByFileDownloadRegistrationUuid(
         registrationUuid
-      }
-    );
+      );
 
-    if (data) {
-      ctx.body = new Res({
-        status: RESPONSE_CODE.success,
-        data
-      });
-    } else {
-      ctx.body = new Res({
-        status: RESPONSE_CODE.error
-      });
+      if (data) {
+        ctx.body = new Res({
+          status: RESPONSE_CODE.success,
+          data
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      ctx.throw(RESPONSE_CODE.error, '查询失败');
     }
   }
 );
