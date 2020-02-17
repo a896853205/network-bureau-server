@@ -47,9 +47,8 @@ export default {
       return true;
     } catch (error) {
       console.error(error);
-      return false  
+      return false;
     }
-    
   },
   /**
    * 查询待分配技术负责人员的企业登记测试列表
