@@ -128,4 +128,98 @@ router.get('/selectTechLeaderRegistration', async (ctx, next) => {
   }
 });
 
+/**
+ * 查询登记测试管理员信息(文件审核页面)
+ */
+router.get('/selectRegistrationManagerUuid', async (ctx, next) => {
+  const { registrationUuid } = ctx.state.param;
+
+  const data = await service.selectRegistrationByRegistrationUuid(
+    registrationUuid
+  );
+
+  if (data) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error,
+      msg: '查询失败'
+    });
+  }
+});
+
+/**
+ * 查询登记测试企业信息(文件审核页面)
+ */
+router.get('/getRegistrationManagerInfo', async (ctx, next) => {
+  const { registrationUuid } = ctx.state.param;
+
+  const data = await service.getRegistrationManagerInfo(
+    registrationUuid
+  );
+
+  if (data) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error,
+      msg: '查询失败'
+    });
+  }
+});
+
+/**
+ * 查询登记测试企业信息(文件审核页面)
+ */
+router.get(
+  '/selectEnterpriseInfoByFileDownloadRegistrationUuid',
+  async (ctx, next) => {
+    const { registrationUuid } = ctx.state.param;
+
+    const data = await service.selectEnterpriseInfoByFileDownloadRegistrationUuid(
+      registrationUuid
+    );
+
+    if (data) {
+      ctx.body = new Res({
+        status: RESPONSE_CODE.success,
+        data
+      });
+    } else {
+      ctx.body = new Res({
+        status: RESPONSE_CODE.error,
+        msg: '查询失败'
+      });
+    }
+  }
+);
+
+/**
+ * 获取软件著作权证书的信息
+ */
+router.get('/getRegistrationFileByFileDownloadRegistrationUuid', async (ctx, next) => {
+  const { registrationUuid } = ctx.state.param;
+
+  const data = await service.getRegistrationFileByFileDownloadRegistrationUuid({
+    registrationUuid
+  });
+
+  if (data) {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } else {
+    ctx.body = new Res({
+      status: RESPONSE_CODE.error
+    });
+  }
+});
+
 export default router;

@@ -354,5 +354,18 @@ export default {
         transaction
       }
     );
+  },
+
+  /**
+   * 查询登记测试企业信息(文件审核页面)
+   */
+  selectEnterpriseInfoByRegistrationUuid: registrationUuid => {
+    return enterpriseRegistration.findOne({
+      where: { uuid: registrationUuid },
+      attributes: [
+        'enterpriseUuid'
+      ],
+      raw: true
+    });
   }
 };
