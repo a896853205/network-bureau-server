@@ -181,6 +181,7 @@ router.get(
     const data = await service.selectEnterpriseInfoByFileDownloadRegistrationUuid(
       registrationUuid
     );
+
     if (data) {
       ctx.body = new Res({
         status: RESPONSE_CODE.success,
@@ -194,30 +195,20 @@ router.get(
   }
 );
 
-/**
- * 获取登记测试的文件
- */
-router.get(
-  '/getRegistrationFileByFileDownloadRegistrationUuid',
-  async (ctx, next) => {
-    try {
-      const { registrationUuid } = ctx.state.param;
+router.get('/downloadProduct', async ctx => {
+  try {
+    const { registrationUuid } = ctx.state.param;
 
-      const data = await service.getRegistrationFileByFileDownloadRegistrationUuid(
-        registrationUuid
-      );
+    const data = await service.downloadProduct(registrationUuid);
 
-      if (data) {
-        ctx.body = new Res({
-          status: RESPONSE_CODE.success,
-          data
-        });
-      }
-    } catch (error) {
-      console.error(error);
-      ctx.throw(RESPONSE_CODE.error, '查询失败');
-    }
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } catch (error) {
+    console.error(error);
+    ctx.throw(RESPONSE_CODE.error, '查询失败');
   }
-);
+});
 
 export default router;

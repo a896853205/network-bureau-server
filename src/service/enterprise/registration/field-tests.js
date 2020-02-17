@@ -191,35 +191,5 @@ export default {
       console.error('登记测试查询5个管理员错误');
       throw new Error(error);
     }
-  },
-  /**
-   * 获取登记测试的文件
-   */
-  getRegistrationFileByFileDownloadRegistrationUuid: async registrationUuid => {
-    try {
-      const [
-        { url: copyrightUrl },
-        { url: productDescriptionUrl },
-        { url: documentUrl },
-        { url: productUrl }
-      ] = await Promise.all([
-        enterpriseRegistrationCopyrightDao.selectRegistrationCopyrightUrlByRegistrationUuid(
-          registrationUuid
-        ),
-        enterpriseRegistrationProductDescriptionDao.selectRegistrationProductDescriptionUrlByRegistrationUuid(
-          registrationUuid
-        ),
-        enterpriseRegistrationDocumentDao.selectRegistrationDocumentUrlByRegistrationUuid(
-          registrationUuid
-        ),
-        enterpriseRegistrationProductDao.selectRegistrationProductUrlByRegistrationUuid(
-          registrationUuid
-        )
-      ]);
-      return { copyrightUrl, productDescriptionUrl, documentUrl, productUrl };
-    } catch (error) {
-      console.error('查询登记测试的文件错误');
-      throw new Error(error);
-    }
   }
 };

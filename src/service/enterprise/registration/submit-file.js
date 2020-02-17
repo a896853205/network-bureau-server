@@ -181,7 +181,7 @@ export default {
       } else if (filePosition === 'production') {
         productionUrl = copyrightUrl;
       } else {
-        throw Error('oss文件路径错误');
+        throw new Error('oss文件路径错误');
       }
 
       await enterpriseRegistrationCopyrightDao.updateRegistrationCopyright({

@@ -23,6 +23,9 @@ import submitFile from './registration/submit-file';
 import electronicContract from './registration/electronic-contract';
 import payment from './registration/payment';
 
+// 其他service
+import fileService from '../user/file-service';
+
 export default {
   ...fieldTest,
   ...submitFile,
@@ -337,5 +340,20 @@ export default {
     }
 
     return false;
+  },
+
+  downloadProduct: async registrationUuid => {
+    try {
+      const {
+        url
+      } = await enterpriseRegistrationProductDao.selectRegistrationProductUrlByRegistrationUuid(
+        registrationUuid
+      );
+
+      return await fileService.getFileUrl(url);
+    } catch (error) {
+      console.error('下载登记测试的产品介质错误');
+      throw new Error(error);
+    }
   }
 };
