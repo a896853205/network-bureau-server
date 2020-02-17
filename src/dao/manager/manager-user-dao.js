@@ -25,6 +25,25 @@ export default {
     });
   },
   /**
+   * 通过managerUuid查询管理员
+   */
+  selectManagerByManagerUuidAndRole: ({ managerUuid, role }) => {
+    return managerUser.findOne({
+      where: { uuid: managerUuid, role: role },
+      attributes: [
+        'uuid',
+        'phone',
+        'username',
+        'password',
+        'name',
+        'role',
+        'headPortraitUrl',
+        'star'
+      ],
+      raw: true
+    });
+  },
+  /**
    * 通过用户名查询管理员
    */
   selectManagerUserByUsername: username => {
