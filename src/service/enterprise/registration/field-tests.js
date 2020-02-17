@@ -5,6 +5,10 @@ import managerUserDao from '../../../dao/manager/manager-user-dao';
 import enterpriseRegistrationDao from '../../../dao/enterprise/enterprise-registration-dao';
 import enterpriseRegistrationStepDao from '../../../dao/enterprise/enterprise-registration-step-dao';
 import enterpriseUserDao from '../../../dao/enterprise/enterprise-user-dao';
+import enterpriseRegistrationCopyrightDao from '../../../dao/enterprise/enterprise-registration-copyright-dao';
+import enterpriseRegistrationDocumentDao from '../../../dao/enterprise/enterprise-registration-document-dao';
+import enterpriseRegistrationProductDescriptionDao from '../../../dao/enterprise/enterprise-registration-product-description-dao';
+import enterpriseRegistrationProductDao from '../../../dao/enterprise/enterprise-registration-product-dao';
 
 // oss
 import client from '../../../util/oss';
@@ -113,13 +117,13 @@ export default {
     return await enterpriseUserDao.selectEnterpriseByUuid(uuid.enterpriseUuid);
   },
 
- /**
+  /**
    * 根据RegistrationUuid查询5个管理员信息
    */
   selectRegistrationManagerUuid: async registrationUuid => {
-    return registrationManagerUuidList = await enterpriseRegistrationDao.selectRegistrationByRegistrationUuid(
+    return (registrationManagerUuidList = await enterpriseRegistrationDao.selectRegistrationByRegistrationUuid(
       registrationUuid
-    );
+    ));
   },
 
   /**
@@ -129,17 +133,12 @@ export default {
     const registrationManagerUuidList = await enterpriseRegistrationDao.selectRegistrationByRegistrationUuid(
       registrationUuid
     );
-    let projectManagerHeadPreviewUrl,
-      accountantManagerHeadPreviewUrl,
-      techLeaderManagerHeadPreviewUrl,
-      techManagerHeadPreviewUrl,
-      certifierManagerHeadPreviewUrl = null;
     const [
-      projectManagerList,
-      accountantManagerList,
-      techLeaderManagerList,
-      techManagerList,
-      certifierManagerList
+      projectManager,
+      accountantManager,
+      techLeaderManager,
+      techManager,
+      certifierManager
     ] = await Promise.all([
       managerUserDao.selectManagerByManagerUuidAndRole({
         managerUuid: registrationManagerUuidList.projectManagerUuid,
@@ -163,67 +162,91 @@ export default {
       })
     ]);
 
-    if (projectManagerList) {
-      try {
-        projectManagerHeadPreviewUrl = await client.signatureUrl(
-          projectManagerList.headPortraitUrl
-        );
-      } catch (error) {
-        projectManagerHeadPreviewUrl = '';
-      }
-      projectManagerList.headPortraitUrl = projectManagerHeadPreviewUrl;
-    }
-
-    if (accountantManagerList) {
-      try {
-        accountantManagerHeadPreviewUrl = await client.signatureUrl(
-          accountantManagerList.headPortraitUrl
-        );
-      } catch (error) {
-        accountantManagerHeadPreviewUrl = '';
-      }
-      accountantManagerList.headPortraitUrl = accountantManagerHeadPreviewUrl;
-    }
-
-    if (techLeaderManagerList) {
-      try {
-        techLeaderManagerHeadPreviewUrl = await client.signatureUrl(
-          techLeaderManagerList.headPortraitUrl
-        );
-      } catch (error) {
-        techLeaderManagerHeadPreviewUrl = '';
-      }
-      techLeaderManagerList.headPortraitUrl = techLeaderManagerHeadPreviewUrl;
-    }
-
-    if (techManagerList) {
-      try {
-        techManagerHeadPreviewUrl = await client.signatureUrl(
-          techManagerList.headPortraitUrl
-        );
-      } catch (error) {
-        techManagerHeadPreviewUrl = '';
-      }
-      techManagerList.headPortraitUrl = techManagerHeadPreviewUrl;
-    }
-
-    if (certifierManagerList) {
-      try {
-        certifierManagerHeadPreviewUrl = await client.signatureUrl(
-          certifierManagerList.headPortraitUrl
-        );
-      } catch (error) {
+    try {
+      /*let projectManagerHeadPreviewUrl,
+        accountantManagerHeadPreviewUrl,
+        techLeaderManagerHeadPreviewUrl,
+        techManagerHeadPreviewUrl,
         certifierManagerHeadPreviewUrl = '';
+      */
+      let managerList = [];
+      if (projectManager) {
+        managerList.push(projectManager);
       }
-      certifierManagerList.headPortraitUrl = certifierManagerHeadPreviewUrl;
-    }
+      if (accountantManager) {
+        managerList.push(accountantManager);
+      }
+      if (techLeaderManager) {
+        managerList.push(techLeaderManager);
+      }
+      if (techManager) {
+        managerList.push(techManager);
+      }
+      if (certifierManager) {
+        managerList.push(certifierManager);
+      }
+      /* const {
+         projectManagerHeadPreviewUrl,
+           accountantManagerHeadPreviewUrl,
+           techLeaderManagerHeadPreviewUrl,
+          techManagerHeadPreviewUrl,
+           certifierManagerHeadPreviewUrl
+          }*/
+      const managerHeadPreviewUrlList = await Promise.all([
+        managerList.map(item => {
+          let headPreviewUrl = client.signatureUrl(item.headPortraitUrl);
+          item.headPortraitUrl = headPreviewUrl;
+          return item;
+        })
+      ]);
+      projectManager = projectManager ? managerHeadPreviewUrlList.shift(): projectManager;
+      accountantManager = accountantManager ? managerHeadPreviewUrlList.shift(): accountantManager;
+      techLeaderManager = techLeaderManager ? managerHeadPreviewUrlList.shift(): techLeaderManager;
+      techManager = techManager ? managerHeadPreviewUrlList.shift(): techManager;
+      certifierManager = certifierManager ? managerHeadPreviewUrlList.shift(): certifierManager;
 
-    return {
-      projectManagerList,
-      accountantManagerList,
-      techLeaderManagerList,
-      techManagerList,
-      certifierManagerList
-    };
+      /*   client.signatureUrl(projectManager.headPortraitUrl),
+           client.signatureUrl(accountantManager.headPortraitUrl),
+          client.signatureUrl(techLeaderManager.headPortraitUrl),
+            client.signatureUrl(techManager.headPortraitUrl),
+           client.signatureUrl(certifierManager.headPortraitUrl)
+          ]);*/
+
+      return {
+        projectManager,
+        accountantManager,
+        techLeaderManager,
+        techManager,
+        certifierManager
+      };
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  },
+  /**
+   * 获取登记测试的文件
+   */
+  getRegistrationFileByFileDownloadRegistrationUuid: async registrationUuid => {
+    const [
+      { copyrightUrl },
+      { productDescriptionUrl },
+      { documentUrl },
+      { productUrl }
+    ] = await Promise.all([
+      enterpriseRegistrationCopyrightDao.selectRegistrationCopyrightUrlByRegistrationUuid(
+        registrationUuid
+      ),
+      enterpriseRegistrationProductDescriptionDao.selectRegistrationProductDescriptionUrlByRegistrationUuid(
+        registrationUuid
+      ),
+      enterpriseRegistrationDocumentDao.selectRegistrationDocumentUrlByRegistrationUuid(
+        registrationUuid
+      ),
+      enterpriseRegistrationProductDao.selectRegistrationProductUrlByRegistrationUuid(
+        registrationUuid
+      )
+    ]);
+    return { copyrightUrl, productDescriptionUrl, documentUrl, productUrl };
   }
 };

@@ -29,6 +29,17 @@ export default {
   },
 
   /**
+   * 查询的用户文档集url信息
+   */
+  selectRegistrationDocumentUrlByRegistrationUuid: registrationUuid => {
+    return enterpriseRegistrationDocument.findOne({
+      attributes: ['url'],
+      raw: true,
+      where: { uuid: registrationUuid }
+    });
+  },
+
+  /**
    * 保存用户文档集信息
    */
   updateRegistrationDocument: ({
