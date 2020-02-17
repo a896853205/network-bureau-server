@@ -26,6 +26,17 @@ export default {
   },
 
   /**
+   * 查询的现场测试软件著作权url信息
+   */
+  selectRegistrationCopyrightUrlByRegistrationUuid: registrationUuid => {
+    return enterpriseRegistrationCopyright.findOne({
+      attributes: ['url'],
+      raw: true,
+      where: { uuid: registrationUuid }
+    });
+  },
+
+  /**
    * 保存现场测试软件著作权信息
    */
   updateRegistrationCopyright: ({

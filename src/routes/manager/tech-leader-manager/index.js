@@ -201,7 +201,7 @@ router.get(
 );
 
 /**
- * 获取软件著作权证书的信息
+ * 获取登记测试的文件
  */
 router.get('/getRegistrationFileByFileDownloadRegistrationUuid', async (ctx, next) => {
   const { registrationUuid } = ctx.state.param;

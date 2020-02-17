@@ -26,6 +26,17 @@ export default {
   },
 
   /**
+   * 查询的产品介质url信息
+   */
+  selectRegistrationProductUrlByRegistrationUuid: registrationUuid => {
+    return enterpriseRegistrationProduct.findOne({
+      attributes: ['url'],
+      raw: true,
+      where: { uuid: registrationUuid }
+    });
+  },
+
+  /**
    * 保存产品介质信息
    */
   updateRegistrationProduct: ({
