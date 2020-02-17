@@ -473,7 +473,7 @@ router.get('/downloadContractWord', async ctx => {
   try {
     const { registrationUuid } = ctx.state.param;
 
-    const data = await service.downloadContract(registrationUuid);
+    const data = await service.generateContractWord(registrationUuid);
 
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
