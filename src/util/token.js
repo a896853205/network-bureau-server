@@ -31,14 +31,10 @@ export default {
    * 解析token
    */
   resolveToken: token => {
-    let obj = null;
-
     try {
-      obj = jwt.verify(token.split(' ')[1], TOKEN_KEY);
+      return jwt.verify(token.split(' ')[1], TOKEN_KEY).data;
     } catch (error) {
       throw error;
     }
-
-    return obj.data;
   }
 };

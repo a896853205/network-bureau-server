@@ -23,6 +23,9 @@ import verifyToken from './src/middle/verify-token';
 import param from './src/middle/param';
 import verifyAuth from './src/middle/verify-auth';
 
+// 返回前台的对象
+import Result from './src/util/response';
+
 const app = new Koa();
 
 app.use(cors());
@@ -67,6 +70,17 @@ app.use(file.routes(), file.allowedMethods());
 
 // error-handling
 app.on('error', (err, ctx) => {
+  ctx.res.writeHead(err.statusCode || err.status, {
+    'content-Type': 'application/json'
+  });
+  ctx.res.end(
+    JSON.stringify(
+      new Result({
+        status: err.statusCode || err.status,
+        msg: err.message
+      })
+    )
+  );
   console.error('server error', err, ctx);
 });
 

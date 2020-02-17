@@ -38,10 +38,7 @@ export default async (ctx, next) => {
           break;
       }
     } catch (error) {
-      ctx.body = new Result({
-        status: RESPONSE_CODE.unauthorized,
-        msg: '请重新登录'
-      });
+      ctx.throw(RESPONSE_CODE.unauthorized, '请重新登录');
     }
 
     if (user) {
@@ -49,10 +46,7 @@ export default async (ctx, next) => {
 
       await next();
     } else {
-      ctx.body = new Result({
-        status: RESPONSE_CODE.unauthorized,
-        msg: '请重新登录'
-      });
+      ctx.throw(RESPONSE_CODE.unauthorized, '请重新登录');
     }
   }
 };
