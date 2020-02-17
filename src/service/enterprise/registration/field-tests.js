@@ -131,98 +131,64 @@ export default {
    * 根据RegistrationUuid查询5个管理员信息
    */
   getRegistrationManagerInfo: async registrationUuid => {
-    const registrationManagerUuidList = await enterpriseRegistrationDao.selectRegistrationByRegistrationUuid(
-      registrationUuid
-    );
-    const [
-      projectManager,
-      accountantManager,
-      techLeaderManager,
-      techManager,
-      certifierManager
-    ] = await Promise.all([
-      managerUserDao.selectManagerByManagerUuidAndRole({
-        managerUuid: registrationManagerUuidList.projectManagerUuid,
-        role: 10
-      }),
-      managerUserDao.selectManagerByManagerUuidAndRole({
-        managerUuid: registrationManagerUuidList.accountantManagerUuid,
-        role: 5
-      }),
-      managerUserDao.selectManagerByManagerUuidAndRole({
-        managerUuid: registrationManagerUuidList.techLeaderManagerUuid,
-        role: 15
-      }),
-      managerUserDao.selectManagerByManagerUuidAndRole({
-        managerUuid: registrationManagerUuidList.techManagerUuid,
-        role: 20
-      }),
-      managerUserDao.selectManagerByManagerUuidAndRole({
-        managerUuid: registrationManagerUuidList.certifierManagerUuid,
-        role: 25
-      })
-    ]);
-
     try {
-      /*let projectManagerHeadPreviewUrl,
-        accountantManagerHeadPreviewUrl,
-        techLeaderManagerHeadPreviewUrl,
-        techManagerHeadPreviewUrl,
-        certifierManagerHeadPreviewUrl = '';
-      */
-      let managerList = [];
-      if (projectManager) {
-        managerList.push(projectManager);
-      }
-      if (accountantManager) {
-        managerList.push(accountantManager);
-      }
-      if (techLeaderManager) {
-        managerList.push(techLeaderManager);
-      }
-      if (techManager) {
-        managerList.push(techManager);
-      }
-      if (certifierManager) {
-        managerList.push(certifierManager);
-      }
-      /* const {
-         projectManagerHeadPreviewUrl,
-           accountantManagerHeadPreviewUrl,
-           techLeaderManagerHeadPreviewUrl,
-          techManagerHeadPreviewUrl,
-           certifierManagerHeadPreviewUrl
-          }*/
-      const managerHeadPreviewUrlList = await Promise.all([
-        managerList.map(item => {
-          let headPreviewUrl = client.signatureUrl(item.headPortraitUrl);
-          item.headPortraitUrl = headPreviewUrl;
-          return item;
+      const registrationManagerUuidList = await enterpriseRegistrationDao.selectRegistrationByRegistrationUuid(
+        registrationUuid
+      );
+      let managerList = await Promise.all([
+        managerUserDao.selectManagerByManagerUuidAndRole({
+          managerUuid: registrationManagerUuidList.projectManagerUuid,
+          role: 10
+        }),
+        managerUserDao.selectManagerByManagerUuidAndRole({
+          managerUuid: registrationManagerUuidList.accountantManagerUuid,
+          role: 5
+        }),
+        managerUserDao.selectManagerByManagerUuidAndRole({
+          managerUuid: registrationManagerUuidList.techLeaderManagerUuid,
+          role: 15
+        }),
+        managerUserDao.selectManagerByManagerUuidAndRole({
+          managerUuid: registrationManagerUuidList.techManagerUuid,
+          role: 20
+        }),
+        managerUserDao.selectManagerByManagerUuidAndRole({
+          managerUuid: registrationManagerUuidList.certifierManagerUuid,
+          role: 25
         })
       ]);
-      projectManager = projectManager ? managerHeadPreviewUrlList.shift(): projectManager;
-      accountantManager = accountantManager ? managerHeadPreviewUrlList.shift(): accountantManager;
-      techLeaderManager = techLeaderManager ? managerHeadPreviewUrlList.shift(): techLeaderManager;
-      techManager = techManager ? managerHeadPreviewUrlList.shift(): techManager;
-      certifierManager = certifierManager ? managerHeadPreviewUrlList.shift(): certifierManager;
 
-      /*   client.signatureUrl(projectManager.headPortraitUrl),
-           client.signatureUrl(accountantManager.headPortraitUrl),
-          client.signatureUrl(techLeaderManager.headPortraitUrl),
-            client.signatureUrl(techManager.headPortraitUrl),
-           client.signatureUrl(certifierManager.headPortraitUrl)
-          ]);*/
+      let haveHeadPortraitUrlManagerList = managerList.filter(
+          manager => manager?.headPortraitUrl
+        ),
+        headPreviewUrlList = await Promise.all(
+          haveHeadPortraitUrlManagerList.map(manager =>
+            client.signatureUrl(manager.headPortraitUrl)
+          )
+        );
+
+      haveHeadPortraitUrlManagerList = haveHeadPortraitUrlManagerList.map(
+        (haveHeadPortraitUrlManager, index) => {
+          haveHeadPortraitUrlManager.headPreviewUrl = headPreviewUrlList[index];
+          return haveHeadPortraitUrlManager;
+        }
+      );
+
+      managerList = managerList.map(manager =>
+        manager?.headPortraitUrl
+          ? haveHeadPortraitUrlManagerList.shift()
+          : manager
+      );
 
       return {
-        projectManager,
-        accountantManager,
-        techLeaderManager,
-        techManager,
-        certifierManager
+        projectManager: managerList[0],
+        accountantManager: managerList[1],
+        techLeaderManager: managerList[2],
+        techManager: managerList[3],
+        certifierManager: managerList[4]
       };
     } catch (error) {
-      console.error(error);
-      return false;
+      throw new Error(error);
     }
   },
   /**
