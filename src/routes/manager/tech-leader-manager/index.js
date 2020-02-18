@@ -110,12 +110,12 @@ router.get('/queryTechLeaderEnterpriseRegistrationStep', async (ctx, next) => {
  */
 router.get('/selectRegistrationTechManagerUuid', async (ctx, next) => {
   try {
-    const { registrationUuid } = ctx.state.param;
+  const { registrationUuid } = ctx.state.param;
 
-    const data = await service.selectRegistrationTechManagerUuid(
-      registrationUuid
-    );
-
+  const data = await service.selectRegistrationTechManagerUuid(
+    registrationUuid
+  );
+  
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data

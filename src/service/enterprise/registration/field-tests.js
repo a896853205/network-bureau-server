@@ -225,5 +225,20 @@ export default {
       console.error('登记测试查询5个管理员错误');
       throw new Error(error);
     }
+  },
+
+  /**
+   * 技术人员查找注册登记信息
+   */
+  quaryRegistratiomNeedFieldTest: async ({ page, managerUuid }) => {
+    try {
+      return await enterpriseRegistrationDao.quaryRegistratiomNeedFieldTest({
+        page,
+        managerUuid
+      });
+    } catch (error) {
+      console.error('技术人员查询登记测试错误');
+      throw new Error(error);
+    }
   }
 };
