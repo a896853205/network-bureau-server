@@ -18,6 +18,40 @@ export default {
   },
 
   /**
+   * 查询登记测试技术人员的uuid
+   */
+  selectRegistrationTechManagerUuid: async registrationUuid => {
+    try {
+      const {
+        techManagerUuid
+      } = await enterpriseRegistrationDao.selectRegistrationTechManagerUuid(
+        registrationUuid
+      );
+      return techManagerUuid;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  },
+
+  /**
+   * 查询登记测试技术负责人的uuid
+   */
+  selectRegistrationTechLeaderManagerUuid: async registrationUuid => {
+    try {
+      const {
+        techLeaderManagerUuid
+      } = await enterpriseRegistrationDao.selectRegistrationTechLeaderManagerUuid(
+        registrationUuid
+      );
+      return techLeaderManagerUuid;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  },
+
+  /**
    * 安排技术负责人
    */
   arrangeTechLeaderManager: async ({
@@ -184,8 +218,21 @@ export default {
         certifierManager: managerList[4]
       };
     } catch (error) {
-      console.error('登记测试查询5个管理员错误');
-      throw new Error(error);
+      throw error;
+    }
+  },
+
+  /**
+   * 技术人员查找注册登记信息
+   */
+  quaryRegistratiomNeedFieldTest: ({ page, managerUuid }) => {
+    try {
+      return enterpriseRegistrationDao.quaryRegistratiomNeedFieldTest({
+        page,
+        managerUuid
+      });
+    } catch (error) {
+      throw error;
     }
   }
 };

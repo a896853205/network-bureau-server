@@ -178,6 +178,42 @@ export default {
         }
       ]
     });
+    return {
+      enterpriseRegistrationList: result.rows,
+      total: result.count,
+      pageSize: REGISTRATION_PAGE_SIZE
+    };
+  },
+
+  /**
+   *查询待分配技术负责人员的企业登记测试列表
+   */
+  quaryRegistratiomNeedFieldTest: async ({ page, managerUuid }) => {
+    const result = await enterpriseRegistration.findAndCountAll({
+      attributes: ['uuid'],
+      limit: REGISTRATION_PAGE_SIZE,
+      offset: (page - 1) * REGISTRATION_PAGE_SIZE,
+      raw: true,
+      where: { techManagerUuid: managerUuid },
+      include: [
+        {
+          model: enterpriseRegistrationBasic,
+          attributes: ['enterpriseName', 'phone'],
+          as: 'enterpriseRegistrationBasic'
+        },
+        {
+          model: enterpriseRegistrationContract,
+          attributes: ['contractCode'],
+          as: 'enterpriseRegistrationContract'
+        },
+        {
+          model: enterpriseRegistrationStep,
+          attributes: ['statusText', 'status'],
+          where: { step: 4 },
+          as: 'enterpriseRegistrationStep'
+        }
+      ]
+    });
 
     return {
       enterpriseRegistrationList: result.rows,
@@ -274,5 +310,38 @@ export default {
       where: { uuid: registrationUuid },
       attributes: ['enterpriseUuid'],
       raw: true
-    })
+    }),
+    
+  /**
+   * 查询登记测试财技术人员的uuid
+   */
+  selectRegistrationTechManagerUuid: registrationUuid => {
+    return enterpriseRegistration.findOne({
+      where: { uuid: registrationUuid },
+      attributes: ['techManagerUuid'],
+      raw: true
+    });
+  },
+
+  /**
+   * 查询登记测试财务管理员的uuid
+   */
+  selectRegistrationAccoutantManagerUuid: registrationUuid => {
+    return enterpriseRegistration.findOne({
+      where: { uuid: registrationUuid },
+      attributes: ['accountantManagerUuid'],
+      raw: true
+    });
+  },
+
+  /**
+   * 查询登记测试技术负责人的uuid
+   */
+  selectRegistrationTechLeaderManagerUuid: registrationUuid => {
+    return enterpriseRegistration.findOne({
+      where: { uuid: registrationUuid },
+      attributes: ['techLeaderManagerUuid'],
+      raw: true
+    });
+  }
 };

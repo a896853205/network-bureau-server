@@ -106,25 +106,23 @@ router.get('/queryTechLeaderEnterpriseRegistrationStep', async (ctx, next) => {
 });
 
 /**
- * 查询登记测试信息(单独)
+ * 查询登记测试技术人员uuid
  */
-router.get('/selectTechLeaderRegistration', async (ctx, next) => {
+router.get('/selectRegistrationTechManagerUuid', async (ctx, next) => {
+  try {
   const { registrationUuid } = ctx.state.param;
 
-  const data = await service.selectRegistrationByRegistrationUuid(
+  const data = await service.selectRegistrationTechManagerUuid(
     registrationUuid
   );
-
-  if (data) {
+  
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data
     });
-  } else {
-    ctx.body = new Res({
-      status: RESPONSE_CODE.error,
-      msg: '查询失败'
-    });
+  } catch (error) {
+    console.error(error);
+    ctx.throw(RESPONSE_CODE.error, '查询失败');
   }
 });
 

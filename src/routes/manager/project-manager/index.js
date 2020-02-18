@@ -632,4 +632,46 @@ router.get('/queryTechnicalManager', async (ctx, next) => {
   }
 });
 
+/**
+ * 查询登记测试财务管理员的uuid
+ */
+router.get('/selectRegistrationAccoutantManagerUuid', async (ctx, next) => {
+  try {
+    const { registrationUuid } = ctx.state.param;
+
+    const data = await service.selectRegistrationAccoutantManagerUuid(
+      registrationUuid
+    );
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } catch (error) {
+    console.error(error);
+    ctx.throw(RESPONSE_CODE.error, '查询失败');
+  }
+});
+
+/**
+ * 查询登记测试技术负责人的uuid
+ */
+router.get('/selectRegistrationTechLeaderManagerUuid', async (ctx, next) => {
+  try {
+    const { registrationUuid } = ctx.state.param;
+
+    const data = await service.selectRegistrationTechLeaderManagerUuid(
+      registrationUuid
+    );
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } catch (error) {
+    console.error(error);
+    ctx.throw(RESPONSE_CODE.error, '查询失败');
+  }
+});
+
 export default router;
