@@ -4,21 +4,20 @@ export default {
   /**
    * 新增基本信息
    */
-  insertRegistrationBasic: ({ uuid, transaction = null }) => {
-    return enterpriseRegistrationBasic.create(
+  insertRegistrationBasic: ({ uuid, transaction = null }) =>
+    enterpriseRegistrationBasic.create(
       {
         uuid,
         status: 0,
         statusText: '未填写'
       },
       { transaction }
-    );
-  },
+    ),
   /**
    * 查询的登记测试的基本信息
    */
-  selectRegistrationBasicByRegistrationUuid: registrationUuid => {
-    return enterpriseRegistrationBasic.findOne({
+  selectRegistrationBasicByRegistrationUuid: registrationUuid =>
+    enterpriseRegistrationBasic.findOne({
       attributes: [
         'version',
         'linkman',
@@ -33,8 +32,7 @@ export default {
       ],
       raw: true,
       where: { uuid: registrationUuid }
-    });
-  },
+    }),
 
   /**
    * 保存登记测试的基本信息
@@ -51,8 +49,8 @@ export default {
     status,
     statusText,
     failText
-  }) => {
-    return enterpriseRegistrationBasic.update(
+  }) =>
+    enterpriseRegistrationBasic.update(
       {
         version,
         linkman,
@@ -69,18 +67,16 @@ export default {
         where: { uuid: registrationUuid },
         raw: true
       }
-    );
-  },
+    ),
 
   /**
    * 设置基本信息的状态
    */
-  updateBasicStatus: ({ registrationUuid, status, failText, statusText }) => {
-    return enterpriseRegistrationBasic.update(
+  updateBasicStatus: ({ registrationUuid, status, failText, statusText }) =>
+    enterpriseRegistrationBasic.update(
       { status, failText, statusText },
       {
         where: { uuid: registrationUuid }
       }
-    );
-  }
+    )
 };

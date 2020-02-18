@@ -123,22 +123,20 @@ router.get('/queryEnterpriseRegistrationStep', async (ctx, next) => {
  * 查询企业用户登记测试8个文件
  */
 router.get('/selectRegistrationStatus', async (ctx, next) => {
-  const { registrationUuid } = ctx.state.param;
+  try {
+    const { registrationUuid } = ctx.state.param;
 
-  const data = await service.selectRegistrationStatusByRegistrationUuid(
-    registrationUuid
-  );
+    const data = await service.selectRegistrationStatusByRegistrationUuid(
+      registrationUuid
+    );
 
-  if (data) {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data
     });
-  } else {
-    ctx.body = new Res({
-      status: RESPONSE_CODE.error,
-      msg: '查询失败'
-    });
+  } catch (error) {
+    console.error(error);
+    ctx.throw(RESPONSE_CODE.error, '查询失败');
   }
 });
 
@@ -436,33 +434,31 @@ router.get('/selectContractUrl', async (ctx, next) => {
  * 保存经管部门填写评测合同的基本信息
  */
 router.post('/saveRegistrationContractManager', async (ctx, next) => {
-  const {
-    registrationUuid,
-    contractCode,
-    specimenHaveTime,
-    payment,
-    paymentTime,
-    contractTime
-  } = ctx.state.param;
+  try {
+    const {
+      registrationUuid,
+      contractCode,
+      specimenHaveTime,
+      payment,
+      paymentTime,
+      contractTime
+    } = ctx.state.param;
 
-  const data = await service.saveRegistrationContractManager({
-    registrationUuid,
-    contractCode,
-    specimenHaveTime,
-    payment,
-    paymentTime,
-    contractTime
-  });
+    await service.saveRegistrationContractManager({
+      registrationUuid,
+      contractCode,
+      specimenHaveTime,
+      payment,
+      paymentTime,
+      contractTime
+    });
 
-  if (data) {
     ctx.body = new Res({
-      status: RESPONSE_CODE.success,
-      data
+      status: RESPONSE_CODE.success
     });
-  } else {
-    ctx.body = new Res({
-      status: RESPONSE_CODE.error
-    });
+  } catch (error) {
+    console.error(error);
+    ctx.throw(RESPONSE_CODE.error, '保存错误');
   }
 });
 
@@ -488,22 +484,19 @@ router.get('/downloadContractWord', async ctx => {
  * 保存评测合同甲方上传pdf合同的信息
  */
 router.post('/saveManagerContractUrl', async (ctx, next) => {
-  const { registrationUuid, managerUrl } = ctx.state.param;
+  try {
+    const { registrationUuid, managerUrl } = ctx.state.param;
 
-  const data = await service.saveManagerContractUrl({
-    registrationUuid,
-    managerUrl
-  });
+    await service.saveManagerContractUrl({
+      registrationUuid,
+      managerUrl
+    });
 
-  if (data) {
     ctx.body = new Res({
-      status: RESPONSE_CODE.success,
-      data
+      status: RESPONSE_CODE.success
     });
-  } else {
-    ctx.body = new Res({
-      status: RESPONSE_CODE.error
-    });
+  } catch (error) {
+    ctx.throw(RESPONSE_CODE.error, '保存失败');
   }
 });
 
@@ -579,24 +572,21 @@ router.put('/setContractManagerSuccessStatus', async (ctx, next) => {
 /**
  * 设置第二步合同签署失败状态
  */
-router.post('/setContractManagerFailStatus', async (ctx, next) => {
-  const { registrationUuid, managerFailText } = ctx.state.param;
+router.post('/setContractManagerFailStatus', async ctx => {
+  try {
+    const { registrationUuid, managerFailText } = ctx.state.param;
 
-  const res = await service.setContractManagerFailStatus({
-    registrationUuid,
-    managerFailText
-  });
+    await service.setContractManagerFailStatus({
+      registrationUuid,
+      managerFailText
+    });
 
-  if (res) {
     ctx.body = new Res({
-      status: RESPONSE_CODE.success,
-      data: res
+      status: RESPONSE_CODE.success
     });
-  } else {
-    ctx.body = new Res({
-      status: RESPONSE_CODE.error,
-      msg: '查询失败'
-    });
+  } catch (error) {
+    console.error(error);
+    ctx.throw(RESPONSE_CODE.error, '查询失败');
   }
 });
 

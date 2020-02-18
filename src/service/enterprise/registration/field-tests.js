@@ -5,10 +5,6 @@ import managerUserDao from '../../../dao/manager/manager-user-dao';
 import enterpriseRegistrationDao from '../../../dao/enterprise/enterprise-registration-dao';
 import enterpriseRegistrationStepDao from '../../../dao/enterprise/enterprise-registration-step-dao';
 import enterpriseUserDao from '../../../dao/enterprise/enterprise-user-dao';
-import enterpriseRegistrationCopyrightDao from '../../../dao/enterprise/enterprise-registration-copyright-dao';
-import enterpriseRegistrationDocumentDao from '../../../dao/enterprise/enterprise-registration-document-dao';
-import enterpriseRegistrationProductDescriptionDao from '../../../dao/enterprise/enterprise-registration-product-description-dao';
-import enterpriseRegistrationProductDao from '../../../dao/enterprise/enterprise-registration-product-dao';
 
 // oss
 import client from '../../../util/oss';

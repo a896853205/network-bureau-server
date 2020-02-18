@@ -8,8 +8,8 @@ export default {
   /**
    * 通过managerUuid查询管理员
    */
-  selectManagerByManagerUuid: managerUuid => {
-    return managerUser.findOne({
+  selectManagerByManagerUuid: managerUuid =>
+    managerUser.findOne({
       where: { uuid: managerUuid },
       attributes: [
         'uuid',
@@ -22,13 +22,12 @@ export default {
         'star'
       ],
       raw: true
-    });
-  },
+    }),
   /**
    * 通过managerUuid查询管理员
    */
-  selectManagerByManagerUuidAndRole: ({ managerUuid, role }) => {
-    return managerUser.findOne({
+  selectManagerByManagerUuidAndRole: ({ managerUuid, role }) =>
+    managerUser.findOne({
       where: { uuid: managerUuid, role: role },
       attributes: [
         'uuid',
@@ -41,28 +40,25 @@ export default {
         'star'
       ],
       raw: true
-    });
-  },
+    }),
   /**
    * 通过用户名查询管理员
    */
-  selectManagerUserByUsername: username => {
-    return managerUser.findOne({
+  selectManagerUserByUsername: username =>
+    managerUser.findOne({
       where: { username },
       attributes: ['uuid', 'phone', 'username', 'password', 'name', 'role'],
       raw: true
-    });
-  },
+    }),
   /**
    * 通过权限查一个管理员
    */
-  selectManagerUserByRole: role => {
-    return managerUser.findOne({
+  selectManagerUserByRole: role =>
+    managerUser.findOne({
       where: { role },
       attributes: ['uuid', 'phone', 'username', 'password', 'name', 'role'],
       raw: true
-    });
-  },
+    }),
   /**
    * 创建管理员
    */
@@ -73,8 +69,8 @@ export default {
     name,
     role,
     headPortraitUrl
-  ) => {
-    return managerUser.create({
+  ) =>
+    managerUser.create({
       username,
       password,
       phone,
@@ -83,30 +79,26 @@ export default {
       uuid: uuid.v1(),
       headPortraitUrl,
       star: 5
-    });
-  },
+    }),
 
   /**
    * 删除企业用户
    */
-  deleteManager: managerUuid => {
-    return managerUser.destroy({
+  deleteManager: managerUuid =>
+    managerUser.destroy({
       where: { uuid: managerUuid }
-    });
-  },
-
+    }),
   /**
    * 更改企业用户
    */
-  updeteManager: (managerUuid, phone, password, name, headPortraitUrl) => {
-    return managerUser.update(
+  updeteManager: (managerUuid, phone, password, name, headPortraitUrl) =>
+    managerUser.update(
       { phone, password, name, headPortraitUrl },
       {
         where: { uuid: managerUuid },
         raw: true
       }
-    );
-  },
+    ),
   /**
    * 查询管理员用户
    */

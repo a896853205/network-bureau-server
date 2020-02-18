@@ -11,20 +11,15 @@ export default {
   /**
    * 查询评测合同的基本信息
    */
-  selectRegistrationContractManager: async registrationUuid => {
-    return await enterpriseRegistrationContractDao.selectRegistrationContractManager(
+  selectRegistrationContractManager: registrationUuid =>
+    enterpriseRegistrationContractDao.selectRegistrationContractManager(
       registrationUuid
-    );
-  },
-
+    ),
   /**
    * 查询评测合同的url
    */
-  selectContractUrl: async registrationUuid => {
-    return await enterpriseRegistrationContractDao.selectContractUrl(
-      registrationUuid
-    );
-  },
+  selectContractUrl: registrationUuid =>
+    enterpriseRegistrationContractDao.selectContractUrl(registrationUuid),
 
   /**
    * 保存评测合同的基本信息
@@ -60,10 +55,8 @@ export default {
           )
         ];
       });
-      return true;
     } catch (error) {
-      console.log(error);
-      return false;
+      throw error;
     }
   },
 
@@ -91,10 +84,10 @@ export default {
       } else if (filePosition === 'production') {
         productionUrl = managerUrl;
       } else {
-        throw Error('oss文件路径错误');
+        throw new Error('oss文件路径错误');
       }
 
-      await db.transaction(async transaction => {
+      await db.transaction(transaction => {
         return Promise.all([
           enterpriseRegistrationContractDao.updateManagerContractUrl({
             registrationUuid,
@@ -110,11 +103,8 @@ export default {
           })
         ]);
       });
-
-      return true;
     } catch (error) {
-      console.log(error);
-      return false;
+      throw error;
     }
   },
 
@@ -142,7 +132,7 @@ export default {
       } else if (filePosition === 'production') {
         productionUrl = enterpriseUrl;
       } else {
-        throw Error('oss文件路径错误');
+        throw new Error('oss文件路径错误');
       }
 
       await db.transaction(transaction => {
@@ -162,43 +152,27 @@ export default {
           })
         ]);
       });
-
-      return true;
     } catch (error) {
-      console.log(error);
-      return false;
+      throw error;
     }
   },
 
   /**
    * 设置第二步合同签署成功状态
    */
-  setContractManagerSuccessStatus: async registrationUuid => {
-    try {
-      await db.transaction(async transaction => {
-        return await enterpriseRegistrationStepDao.updateRegistrationStep({
-          registrationUuid,
-          status: 100,
-          statusText: '审核通过',
-          step: 2,
-          transaction
-        });
-      });
-      return true;
-    } catch (error) {
-      console.log(error);
-      return false;
-    }
-  },
+  setContractManagerSuccessStatus: registrationUuid =>
+    enterpriseRegistrationStepDao.updateRegistrationStep({
+      registrationUuid,
+      status: 100,
+      statusText: '审核通过',
+      step: 2
+    }),
   /**
    * 设置第二步合同签署失败状态
    */
-  setContractManagerFailStatus: async ({
-    registrationUuid,
-    managerFailText
-  }) => {
+  setContractManagerFailStatus: ({ registrationUuid, managerFailText }) => {
     try {
-      await db.transaction(async transaction => {
+      return db.transaction(async transaction => {
         return Promise.all([
           enterpriseRegistrationContractDao.updateContractManagerStatus({
             registrationUuid,
@@ -214,20 +188,16 @@ export default {
           })
         ]);
       });
-
-      return true;
     } catch (error) {
-      console.log(error);
-      return false;
+      throw error;
     }
   },
 
   /**
    * 查询第二步合同错误信息
    */
-  selectContractManagerFailText: async registrationUuid => {
-    return await enterpriseRegistrationContractDao.selectContractManagerFailText(
+  selectContractManagerFailText: registrationUuid =>
+    enterpriseRegistrationContractDao.selectContractManagerFailText(
       registrationUuid
-    );
-  }
+    )
 };
