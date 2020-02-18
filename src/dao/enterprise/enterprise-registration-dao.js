@@ -362,9 +362,40 @@ export default {
   selectEnterpriseInfoByRegistrationUuid: registrationUuid => {
     return enterpriseRegistration.findOne({
       where: { uuid: registrationUuid },
-      attributes: [
-        'enterpriseUuid'
-      ],
+      attributes: ['enterpriseUuid'],
+      raw: true
+    });
+  },
+
+  /**
+   * 查询登记测试财技术人员的uuid
+   */
+  selectRegistrationTechManagerUuid: registrationUuid => {
+    return enterpriseRegistration.findOne({
+      where: { uuid: registrationUuid },
+      attributes: ['techManagerUuid'],
+      raw: true
+    });
+  },
+
+  /**
+   * 查询登记测试财务管理员的uuid
+   */
+  selectRegistrationAccoutantManagerUuid: registrationUuid => {
+    return enterpriseRegistration.findOne({
+      where: { uuid: registrationUuid },
+      attributes: ['accountantManagerUuid'],
+      raw: true
+    });
+  },
+
+  /**
+   * 查询登记测试技术负责人的uuid
+   */
+  selectRegistrationTechLeaderManagerUuid: registrationUuid => {
+    return enterpriseRegistration.findOne({
+      where: { uuid: registrationUuid },
+      attributes: ['techLeaderManagerUuid'],
       raw: true
     });
   }

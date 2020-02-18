@@ -67,6 +67,23 @@ export default {
   },
 
   /**
+   * 查询登记测试财务管理员的uuid
+   */
+  selectRegistrationAccoutantManagerUuid: async registrationUuid => {
+    try {
+      const {
+        accountantManagerUuid
+      } = await enterpriseRegistrationDao.selectRegistrationAccoutantManagerUuid(
+        registrationUuid
+      );
+      return accountantManagerUuid;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  },
+
+  /**
    * 财务确认已付款
    */
   accountantConfirmPayment: async registrationUuid => {

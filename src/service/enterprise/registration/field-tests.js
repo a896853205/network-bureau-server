@@ -22,6 +22,40 @@ export default {
   },
 
   /**
+   * 查询登记测试技术人员的uuid
+   */
+  selectRegistrationTechManagerUuid: async registrationUuid => {
+    try {
+      const {
+        techManagerUuid
+      } = await enterpriseRegistrationDao.selectRegistrationTechManagerUuid(
+        registrationUuid
+      );
+      return techManagerUuid;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  },
+
+  /**
+   * 查询登记测试技术负责人的uuid
+   */
+  selectRegistrationTechLeaderManagerUuid: async registrationUuid => {
+    try {
+      const {
+        techLeaderManagerUuid
+      } = await enterpriseRegistrationDao.selectRegistrationTechLeaderManagerUuid(
+        registrationUuid
+      );
+      return techLeaderManagerUuid;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  },
+
+  /**
    * 安排技术负责人
    */
   arrangeTechLeaderManager: async ({
