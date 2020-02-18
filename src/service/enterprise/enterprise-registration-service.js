@@ -34,7 +34,6 @@ import path from 'path';
 
 // 时间
 import moment from 'moment';
-import { CITEXT } from 'sequelize/types';
 
 export default {
   ...fieldTest,

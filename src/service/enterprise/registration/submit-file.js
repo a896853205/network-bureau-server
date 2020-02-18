@@ -17,7 +17,16 @@ export default {
    */
   selectRegistrationStatusByRegistrationUuid: async registrationUuid => {
     try {
-      return await Promise.all([
+      const [
+        enterpriseRegistrationApplyStatus,
+        enterpriseRegistrationContractStatus,
+        enterpriseRegistrationCopyrightStatus,
+        enterpriseRegistrationDocumentStatus,
+        enterpriseRegistrationProductDescriptionStatus,
+        enterpriseRegistrationProductStatus,
+        enterpriseRegistrationSpecimenStatus,
+        enterpriseRegistrationBasicStatus
+      ] = await Promise.all([
         enterpriseRegistrationBasicDao.selectRegistrationBasicByRegistrationUuid(
           registrationUuid
         ),
@@ -43,6 +52,17 @@ export default {
           registrationUuid
         )
       ]);
+
+      return {
+        enterpriseRegistrationApplyStatus,
+        enterpriseRegistrationContractStatus,
+        enterpriseRegistrationCopyrightStatus,
+        enterpriseRegistrationDocumentStatus,
+        enterpriseRegistrationProductDescriptionStatus,
+        enterpriseRegistrationProductStatus,
+        enterpriseRegistrationSpecimenStatus,
+        enterpriseRegistrationBasicStatus
+      };
     } catch (error) {
       console.error('查询企业用户登记测试八个状态错误');
       throw error;
