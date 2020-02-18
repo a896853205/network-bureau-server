@@ -231,7 +231,7 @@ export default {
     if (registration) {
       if (registration.currentStep === 1) {
         // 第一步
-        const {
+        const [
           enterpriseRegistrationBasicStatus,
           enterpriseRegistrationContractStatus,
           enterpriseRegistrationCopyrightStatus,
@@ -240,9 +240,32 @@ export default {
           enterpriseRegistrationDocumentStatus,
           enterpriseRegistrationProductStatus,
           enterpriseRegistrationApplyStatus
-        } = await enterpriseRegistrationDao.selectRegistrationStatusByRegistrationUuid(
-          registrationUuid
-        );
+        ] = await Promise.all([
+          enterpriseRegistrationBasicDao.selectRegistrationBasicByRegistrationUuid(
+            registrationUuid
+          ),
+          enterpriseRegistrationContractDao.selectRegistrationContractByRegistrationUuid(
+            registrationUuid
+          ),
+          enterpriseRegistrationCopyrightDao.selectRegistrationCopyrightByRegistrationUuid(
+            registrationUuid
+          ),
+          enterpriseRegistrationSpecimenDao.selectRegistrationSpecimenByRegistrationUuid(
+            registrationUuid
+          ),
+          enterpriseRegistrationProductDescriptionDao.selectRegistrationProductDescriptionByRegistrationUuid(
+            registrationUuid
+          ),
+          enterpriseRegistrationDocumentDao.selectRegistrationDocumentByRegistrationUuid(
+            registrationUuid
+          ),
+          enterpriseRegistrationProductDao.selectRegistrationProductByRegistrationUuid(
+            registrationUuid
+          ),
+          enterpriseRegistrationApplyDao.selectRegistrationApplyByRegistrationUuid(
+            registrationUuid
+          )
+        ]);
 
         if (
           enterpriseRegistrationBasicStatus.status === 100 &&

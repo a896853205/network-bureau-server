@@ -82,23 +82,21 @@ router.get('/selectRegistration', async (ctx, next) => {
 /**
  * 查询企业用户登记测试七个状态通过registrationUuid
  */
-router.get('/selectRegistrationStatus', async (ctx, next) => {
-  const { registrationUuid } = ctx.state.param;
+router.get('/selectRegistrationStatus', async ctx => {
+  try {
+    const { registrationUuid } = ctx.state.param;
 
-  const data = await service.selectRegistrationStatusByRegistrationUuid(
-    registrationUuid
-  );
+    const data = await service.selectRegistrationStatusByRegistrationUuid(
+      registrationUuid
+    );
 
-  if (data) {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data
     });
-  } else {
-    ctx.body = new Res({
-      status: RESPONSE_CODE.error,
-      msg: '查询失败'
-    });
+  } catch (error) {
+    console.error(error);
+    ctx.throw(RESPONSE_CODE.error, '查询失败');
   }
 });
 

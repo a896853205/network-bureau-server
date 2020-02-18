@@ -1,11 +1,5 @@
 import enterpriseUser from '../../db/models/enterprise-user';
-import enterpriseRegistrationApply from '../../db/models/enterprise-registration-apply';
 import enterpriseRegistrationContract from '../../db/models/enterprise-registration-contract';
-import enterpriseRegistrationCopyright from '../../db/models/enterprise-registration-copyright';
-import enterpriseRegistrationDocument from '../../db/models/enterprise-registration-document';
-import enterpriseRegistrationProductDescription from '../../db/models/enterprise-registration-product-description';
-import enterpriseRegistrationProduct from '../../db/models/enterprise-registration-product';
-import enterpriseRegistrationSpecimen from '../../db/models/enterprise-registration-specimen';
 import enterpriseRegistration from '../../db/models/enterprise-registration';
 import enterpriseRegistrationStep from '../../db/models/enterprise-registration-step';
 import enterpriseRegistrationBasic from '../../db/models/enterprise-registration-basic';
@@ -78,82 +72,6 @@ export default {
       enterpriseRegistrationList: result.rows,
       total: result.count,
       pageSize: REGISTRATION_PAGE_SIZE
-    };
-  },
-
-  /**
-   * 查询企业用户登记测试七个状态通过uuid
-   */
-  selectRegistrationStatusByRegistrationUuid: async uuid => {
-    const [
-      enterpriseRegistrationBasicStatus,
-      enterpriseRegistrationContractStatus,
-      enterpriseRegistrationCopyrightStatus,
-      enterpriseRegistrationSpecimenStatus,
-      enterpriseRegistrationProductDescriptionStatus,
-      enterpriseRegistrationDocumentStatus,
-      enterpriseRegistrationProductStatus,
-      enterpriseRegistrationApplyStatus
-    ] = await Promise.all([
-      // 登记测试基本信息
-      enterpriseRegistrationBasic.findOne({
-        where: { uuid },
-        attributes: ['uuid', 'status', 'statusText'],
-        raw: true
-      }),
-      // 评测合同
-      enterpriseRegistrationContract.findOne({
-        where: { uuid },
-        attributes: ['uuid', 'status', 'statusText'],
-        raw: true
-      }),
-      // 软件著作权证书表
-      enterpriseRegistrationCopyright.findOne({
-        where: { uuid },
-        attributes: ['uuid', 'status', 'statusText'],
-        raw: true
-      }),
-      // 样品登记表
-      enterpriseRegistrationSpecimen.findOne({
-        where: { uuid },
-        attributes: ['uuid', 'status', 'statusText'],
-        raw: true
-      }),
-      // 产品说明表
-      enterpriseRegistrationProductDescription.findOne({
-        where: { uuid },
-        attributes: ['uuid', 'status', 'statusText'],
-        raw: true
-      }),
-      // 用户文档表
-      enterpriseRegistrationDocument.findOne({
-        where: { uuid },
-        attributes: ['uuid', 'status', 'statusText'],
-        raw: true
-      }),
-      // 产品介质表
-      enterpriseRegistrationProduct.findOne({
-        where: { uuid },
-        attributes: ['uuid', 'status', 'statusText'],
-        raw: true
-      }),
-      // 现场测试申请表
-      enterpriseRegistrationApply.findOne({
-        where: { uuid },
-        attributes: ['uuid', 'status', 'statusText'],
-        raw: true
-      })
-    ]);
-
-    return {
-      enterpriseRegistrationBasicStatus,
-      enterpriseRegistrationContractStatus,
-      enterpriseRegistrationCopyrightStatus,
-      enterpriseRegistrationSpecimenStatus,
-      enterpriseRegistrationProductDescriptionStatus,
-      enterpriseRegistrationDocumentStatus,
-      enterpriseRegistrationProductStatus,
-      enterpriseRegistrationApplyStatus
     };
   },
 

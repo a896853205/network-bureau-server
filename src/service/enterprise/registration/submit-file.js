@@ -2,7 +2,6 @@
 import client from '../../../util/oss';
 
 // dao
-import enterpriseRegistrationDao from '../../../dao/enterprise/enterprise-registration-dao';
 import enterpriseRegistrationBasicDao from '../../../dao/enterprise/enterprise-registration-basic-dao';
 import enterpriseRegistrationContractDao from '../../../dao/enterprise/enterprise-registration-contract-dao';
 import enterpriseRegistrationSpecimenDao from '../../../dao/enterprise/enterprise-registration-specimen-dao';
@@ -14,12 +13,40 @@ import enterpriseRegistrationProductDao from '../../../dao/enterprise/enterprise
 
 export default {
   /**
-   * 查询企业用户登记测试七个状态通过uuid
+   * 查询企业用户登记测试八个状态通过uuid
    */
   selectRegistrationStatusByRegistrationUuid: async registrationUuid => {
-    return await enterpriseRegistrationDao.selectRegistrationStatusByRegistrationUuid(
-      registrationUuid
-    );
+    try {
+      return await Promise.all([
+        enterpriseRegistrationBasicDao.selectRegistrationBasicByRegistrationUuid(
+          registrationUuid
+        ),
+        enterpriseRegistrationContractDao.selectRegistrationContractByRegistrationUuid(
+          registrationUuid
+        ),
+        enterpriseRegistrationCopyrightDao.selectRegistrationCopyrightByRegistrationUuid(
+          registrationUuid
+        ),
+        enterpriseRegistrationSpecimenDao.selectRegistrationSpecimenByRegistrationUuid(
+          registrationUuid
+        ),
+        enterpriseRegistrationProductDescriptionDao.selectRegistrationProductDescriptionByRegistrationUuid(
+          registrationUuid
+        ),
+        enterpriseRegistrationDocumentDao.selectRegistrationDocumentByRegistrationUuid(
+          registrationUuid
+        ),
+        enterpriseRegistrationProductDao.selectRegistrationProductByRegistrationUuid(
+          registrationUuid
+        ),
+        enterpriseRegistrationApplyDao.selectRegistrationApplyByRegistrationUuid(
+          registrationUuid
+        )
+      ]);
+    } catch (error) {
+      console.error('查询企业用户登记测试八个状态错误');
+      throw error;
+    }
   },
 
   /**
