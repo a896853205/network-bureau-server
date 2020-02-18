@@ -4,23 +4,21 @@ export default {
   bulkInsertRegistrationStep: ({
     enterpriseRegistrationSteps,
     transaction = null
-  }) => {
-    return enterpriseRegistrationStep.bulkCreate(enterpriseRegistrationSteps, {
+  }) =>
+    enterpriseRegistrationStep.bulkCreate(enterpriseRegistrationSteps, {
       transaction
-    });
-  },
+    }),
 
   /**
    * 根据enterpriseRegistrationUuid查询具体步骤状态
    */
-  queryEnterpriseRegistrationStepByRegistrationUuid: registrationUuid => {
-    return enterpriseRegistrationStep.findAll({
+  queryEnterpriseRegistrationStepByRegistrationUuid: registrationUuid =>
+    enterpriseRegistrationStep.findAll({
       where: { uuid: registrationUuid },
       attributes: ['step', 'status', 'statusText', 'managerUuid'],
       raw: true,
       order: ['step']
-    });
-  },
+    }),
 
   /**
    * 更新登记测试的步骤
@@ -31,8 +29,8 @@ export default {
     statusText,
     step,
     transaction = null
-  }) => {
-    return enterpriseRegistrationStep.update(
+  }) =>
+    enterpriseRegistrationStep.update(
       {
         status,
         statusText
@@ -44,8 +42,7 @@ export default {
         },
         transaction
       }
-    );
-  },
+    ),
 
   /**
    * 更新步骤的管理员
@@ -55,8 +52,8 @@ export default {
     step,
     managerUuid,
     transaction = null
-  }) => {
-    return enterpriseRegistrationStep.update(
+  }) =>
+    enterpriseRegistrationStep.update(
       { managerUuid },
       {
         where: {
@@ -65,28 +62,25 @@ export default {
         },
         transaction
       }
-    );
-  },
+    ),
 
   /**
    * 查询企业的缴费信息
    */
-  queryRegistrationByManagerUuid: managerUuid => {
-    return enterpriseRegistrationStep.findAll({
+  queryRegistrationByManagerUuid: managerUuid =>
+    enterpriseRegistrationStep.findAll({
       attributes: ['uuid'],
       raw: true,
       where: { managerUuid }
-    });
-  },
+    }),
 
   /**
    * 查询企业的第四步信息
    */
-  queryRegistrationNeedAssignedByManagerUuid: managerUuid => {
-    return enterpriseRegistrationStep.findAll({
+  queryRegistrationNeedAssignedByManagerUuid: managerUuid =>
+    enterpriseRegistrationStep.findAll({
       attributes: ['uuid'],
       raw: true,
       where: { managerUuid }
-    });
-  }
+    })
 };

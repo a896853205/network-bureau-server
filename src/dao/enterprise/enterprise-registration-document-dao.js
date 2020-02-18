@@ -4,8 +4,8 @@ export default {
   /**
    * 新增用户文档集信息
    */
-  insertRegistrationDocument: ({ uuid, transaction = null }) => {
-    return enterpriseRegistrationDocument.create(
+  insertRegistrationDocument: ({ uuid, transaction = null }) =>
+    enterpriseRegistrationDocument.create(
       {
         uuid,
         status: 0,
@@ -14,30 +14,27 @@ export default {
       {
         transaction
       }
-    );
-  },
+    ),
 
   /**
    * 查询的用户文档集信息
    */
-  selectRegistrationDocumentByRegistrationUuid: registrationUuid => {
-    return enterpriseRegistrationDocument.findOne({
+  selectRegistrationDocumentByRegistrationUuid: registrationUuid =>
+    enterpriseRegistrationDocument.findOne({
       attributes: ['url', 'failText', 'status', 'statusText'],
       raw: true,
       where: { uuid: registrationUuid }
-    });
-  },
+    }),
 
   /**
    * 查询的用户文档集url信息
    */
-  selectRegistrationDocumentUrlByRegistrationUuid: registrationUuid => {
-    return enterpriseRegistrationDocument.findOne({
+  selectRegistrationDocumentUrlByRegistrationUuid: registrationUuid =>
+    enterpriseRegistrationDocument.findOne({
       attributes: ['url'],
       raw: true,
       where: { uuid: registrationUuid }
-    });
-  },
+    }),
 
   /**
    * 保存用户文档集信息
@@ -48,9 +45,8 @@ export default {
     status,
     statusText,
     failText
-  }) => {
-    // 这里还得更新状态信息为2待审核
-    return enterpriseRegistrationDocument.update(
+  }) =>
+    enterpriseRegistrationDocument.update(
       {
         url: documentUrl,
         status,
@@ -61,23 +57,16 @@ export default {
         where: { uuid: registrationUuid },
         raw: true
       }
-    );
-  },
+    ),
 
   /**
    * 设置用户文档集的状态
    */
-  updateDocumentStatus: ({
-    registrationUuid,
-    status,
-    failText,
-    statusText
-  }) => {
-    return enterpriseRegistrationDocument.update(
+  updateDocumentStatus: ({ registrationUuid, status, failText, statusText }) =>
+    enterpriseRegistrationDocument.update(
       { status, failText, statusText },
       {
         where: { uuid: registrationUuid }
       }
-    );
-  }
+    )
 };

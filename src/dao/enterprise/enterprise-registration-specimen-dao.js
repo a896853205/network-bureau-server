@@ -4,21 +4,20 @@ export default {
   /**
    * 增加样品登记表信息
    */
-  insertRegistrationSpecimen: ({ uuid, transaction = null }) => {
-    return enterpriseRegistrationSpecimen.create(
+  insertRegistrationSpecimen: ({ uuid, transaction = null }) =>
+    enterpriseRegistrationSpecimen.create(
       {
         uuid,
         status: 0,
         statusText: '未填写'
       },
       { transaction }
-    );
-  },
+    ),
   /**
    * 查询的样品登记表信息
    */
-  selectRegistrationSpecimenByRegistrationUuid: registrationUuid => {
-    return enterpriseRegistrationSpecimen.findOne({
+  selectRegistrationSpecimenByRegistrationUuid: registrationUuid =>
+    enterpriseRegistrationSpecimen.findOne({
       attributes: [
         'trademark',
         'developmentTool',
@@ -31,8 +30,7 @@ export default {
       ],
       raw: true,
       where: { uuid: registrationUuid }
-    });
-  },
+    }),
 
   /**
    * 保存样品登记表信息
@@ -47,8 +45,8 @@ export default {
     status,
     statusText,
     failText
-  }) => {
-    return enterpriseRegistrationSpecimen.update(
+  }) =>
+    enterpriseRegistrationSpecimen.update(
       {
         trademark,
         developmentTool,
@@ -63,23 +61,16 @@ export default {
         where: { uuid: registrationUuid },
         raw: true
       }
-    );
-  },
+    ),
 
   /**
    * 设置样品文档集的状态
    */
-  updateSpecimenStatus: ({
-    registrationUuid,
-    status,
-    failText,
-    statusText
-  }) => {
-    return enterpriseRegistrationSpecimen.update(
+  updateSpecimenStatus: ({ registrationUuid, status, failText, statusText }) =>
+    enterpriseRegistrationSpecimen.update(
       { status, failText, statusText },
       {
         where: { uuid: registrationUuid }
       }
-    );
-  }
+    )
 };

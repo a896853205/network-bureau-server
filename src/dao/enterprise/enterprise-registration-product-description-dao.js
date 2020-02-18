@@ -4,37 +4,34 @@ export default {
   /**
    * 新增产品说明信息
    */
-  insertRegistrationProductDescription: ({ uuid, transaction = null }) => {
-    return enterpriseRegistrationProductDescription.create(
+  insertRegistrationProductDescription: ({ uuid, transaction = null }) =>
+    enterpriseRegistrationProductDescription.create(
       {
         uuid,
         status: 0,
         statusText: '未上传'
       },
       { transaction }
-    );
-  },
+    ),
   /**
    * 查询的产品说明信息
    */
-  selectRegistrationProductDescriptionByRegistrationUuid: registrationUuid => {
-    return enterpriseRegistrationProductDescription.findOne({
+  selectRegistrationProductDescriptionByRegistrationUuid: registrationUuid =>
+    enterpriseRegistrationProductDescription.findOne({
       attributes: ['url', 'failText', 'status', 'statusText'],
       raw: true,
       where: { uuid: registrationUuid }
-    });
-  },
+    }),
 
   /**
    * 查询的产品说明url信息
    */
-  selectRegistrationProductDescriptionUrlByRegistrationUuid: registrationUuid => {
-    return enterpriseRegistrationProductDescription.findOne({
+  selectRegistrationProductDescriptionUrlByRegistrationUuid: registrationUuid =>
+    enterpriseRegistrationProductDescription.findOne({
       attributes: ['url'],
       raw: true,
       where: { uuid: registrationUuid }
-    });
-  },
+    }),
 
   /**
    * 保存产品说明信息
@@ -45,9 +42,8 @@ export default {
     status,
     statusText,
     failText
-  }) => {
-    // 这里还得更新状态信息为2待审核
-    return enterpriseRegistrationProductDescription.update(
+  }) =>
+    enterpriseRegistrationProductDescription.update(
       {
         url: productDescriptionUrl,
         status,
@@ -58,8 +54,7 @@ export default {
         where: { uuid: registrationUuid },
         raw: true
       }
-    );
-  },
+    ),
 
   /**
    * 设置产品描述的状态
@@ -69,12 +64,11 @@ export default {
     status,
     failText,
     statusText
-  }) => {
-    return enterpriseRegistrationProductDescription.update(
+  }) =>
+    enterpriseRegistrationProductDescription.update(
       { status, failText, statusText },
       {
         where: { uuid: registrationUuid }
       }
-    );
-  }
+    )
 };

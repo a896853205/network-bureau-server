@@ -8,19 +8,18 @@ import { REGISTRATION_PAGE_SIZE } from '../../config/system-config';
 
 export default {
   /**
-   * 通过name查询登记注册
+   * 通过name查询登记测试
    */
-  selectEnterpriseRegistrationByName: name => {
-    return enterpriseRegistration.findOne({
+  selectEnterpriseRegistrationByName: name =>
+    enterpriseRegistration.findOne({
       where: { name }
-    });
-  },
+    }),
 
   /**
    * 通过RegistrationUuid查询
    */
-  selectRegistrationByRegistrationUuid: registrationUuid => {
-    return enterpriseRegistration.findOne({
+  selectRegistrationByRegistrationUuid: registrationUuid =>
+    enterpriseRegistration.findOne({
       where: { uuid: registrationUuid },
       attributes: [
         'uuid',
@@ -33,8 +32,7 @@ export default {
         'accountantManagerUuid'
       ],
       raw: true
-    });
-  },
+    }),
 
   /**
    * 创建一个登记注册
@@ -44,8 +42,8 @@ export default {
     name,
     enterpriseUuid,
     transaction = null
-  }) => {
-    return enterpriseRegistration.create(
+  }) =>
+    enterpriseRegistration.create(
       {
         name,
         currentStep: 1,
@@ -53,8 +51,7 @@ export default {
         enterpriseUuid
       },
       { transaction }
-    );
-  },
+    ),
 
   /**
    * 查询企业用户登记测试
@@ -103,8 +100,8 @@ export default {
   /**
    * 更新登记测试的步骤
    */
-  updateRegistrationCurrentStep: ({ registrationUuid, currentStep }) => {
-    return enterpriseRegistration.update(
+  updateRegistrationCurrentStep: ({ registrationUuid, currentStep }) =>
+    enterpriseRegistration.update(
       {
         currentStep
       },
@@ -113,8 +110,7 @@ export default {
           uuid: registrationUuid
         }
       }
-    );
-  },
+    ),
 
   /**
    * 查询企业的缴费信息
@@ -197,8 +193,8 @@ export default {
     registrationUuid,
     accountantManagerUuid,
     transaction = null
-  }) => {
-    return enterpriseRegistration.update(
+  }) =>
+    enterpriseRegistration.update(
       {
         accountantManagerUuid
       },
@@ -208,8 +204,7 @@ export default {
         },
         transaction
       }
-    );
-  },
+    ),
 
   /**
    * 更新负责的技术负责人
@@ -218,8 +213,8 @@ export default {
     registrationUuid,
     techLeaderManagerUuid,
     transaction = null
-  }) => {
-    return enterpriseRegistration.update(
+  }) =>
+    enterpriseRegistration.update(
       {
         techLeaderManagerUuid
       },
@@ -229,8 +224,7 @@ export default {
         },
         transaction
       }
-    );
-  },
+    ),
 
   /**
    * 更新负责的项目管理员人员
@@ -239,8 +233,8 @@ export default {
     registrationUuid,
     projectManagerUuid,
     transaction = null
-  }) => {
-    return enterpriseRegistration.update(
+  }) =>
+    enterpriseRegistration.update(
       {
         projectManagerUuid
       },
@@ -250,8 +244,7 @@ export default {
         },
         transaction
       }
-    );
-  },
+    ),
 
   /**
    * 更新负责的技术人员
@@ -260,8 +253,8 @@ export default {
     registrationUuid,
     techManagerUuid,
     transaction = null
-  }) => {
-    return enterpriseRegistration.update(
+  }) =>
+    enterpriseRegistration.update(
       {
         techManagerUuid
       },
@@ -271,19 +264,15 @@ export default {
         },
         transaction
       }
-    );
-  },
+    ),
 
   /**
    * 查询登记测试企业信息(文件审核页面)
    */
-  selectEnterpriseInfoByRegistrationUuid: registrationUuid => {
-    return enterpriseRegistration.findOne({
+  selectEnterpriseInfoByRegistrationUuid: registrationUuid =>
+    enterpriseRegistration.findOne({
       where: { uuid: registrationUuid },
-      attributes: [
-        'enterpriseUuid'
-      ],
+      attributes: ['enterpriseUuid'],
       raw: true
-    });
-  }
+    })
 };
