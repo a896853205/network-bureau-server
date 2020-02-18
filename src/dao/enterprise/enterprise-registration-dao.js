@@ -185,7 +185,7 @@ export default {
     };
   },
 
-    /**
+  /**
    *查询待分配技术负责人员的企业登记测试列表
    */
   quaryRegistratiomNeedFieldTest: async ({ page, managerUuid }) => {
@@ -310,9 +310,8 @@ export default {
       where: { uuid: registrationUuid },
       attributes: ['enterpriseUuid'],
       raw: true
-    });
-  },
-
+    }),
+    
   /**
    * 查询登记测试财技术人员的uuid
    */
@@ -344,5 +343,6 @@ export default {
       attributes: ['techLeaderManagerUuid'],
       raw: true
     })
+    });
   }
 };

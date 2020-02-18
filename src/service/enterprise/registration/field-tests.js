@@ -218,23 +218,21 @@ export default {
         certifierManager: managerList[4]
       };
     } catch (error) {
-      console.error('登记测试查询5个管理员错误');
-      throw new Error(error);
+      throw error;
     }
   },
 
   /**
    * 技术人员查找注册登记信息
    */
-  quaryRegistratiomNeedFieldTest: async ({ page, managerUuid }) => {
+  quaryRegistratiomNeedFieldTest: ({ page, managerUuid }) => {
     try {
-      return await enterpriseRegistrationDao.quaryRegistratiomNeedFieldTest({
+      return enterpriseRegistrationDao.quaryRegistratiomNeedFieldTest({
         page,
         managerUuid
       });
     } catch (error) {
-      console.error('技术人员查询登记测试错误');
-      throw new Error(error);
+      throw error;
     }
   }
 };
