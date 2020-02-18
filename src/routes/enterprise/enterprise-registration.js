@@ -11,23 +11,24 @@ const router = new Router({
   prefix: '/enterprise'
 });
 
-router.post('/createEnterpriseRegistration', async (ctx, next) => {
-  const { uuid: enterpriseUuid } = ctx.state.user,
-    { name } = ctx.state.param;
+router.post('/createEnterpriseRegistration', async ctx => {
+  try {
+    const { uuid: enterpriseUuid } = ctx.state.user,
+      { name } = ctx.state.param;
 
-  const data = await service.createEnterpriseRegistration(name, enterpriseUuid);
+    const data = await service.createEnterpriseRegistration(
+      name,
+      enterpriseUuid
+    );
 
-  if (data) {
     ctx.body = new Res({
       data,
       status: RESPONSE_CODE.success,
       msg: '登录测试创建成功'
     });
-  } else {
-    ctx.body = new Res({
-      status: RESPONSE_CODE.error,
-      msg: '登录测试名称重复'
-    });
+  } catch (error) {
+    console.error(error);
+    ctx.throw(RESPONSE_CODE.error, '登录测试名称重复');
   }
 });
 

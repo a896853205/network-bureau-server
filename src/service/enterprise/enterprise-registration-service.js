@@ -34,6 +34,7 @@ import path from 'path';
 
 // 时间
 import moment from 'moment';
+import { CITEXT } from 'sequelize/types';
 
 export default {
   ...fieldTest,
@@ -66,7 +67,7 @@ export default {
     if (
       await enterpriseRegistrationDao.selectEnterpriseRegistrationByName(name)
     ) {
-      return false;
+      throw new Error('登记测试名重复')
     } else {
       // 查询一个项目管理员
       const projectManager = await managerUserDao.selectManagerUserByRole(10);
@@ -180,6 +181,7 @@ export default {
         return enterpriseRegistrationUuid;
       } catch (error) {
         console.log(error);
+        throw error;
       }
     }
   },

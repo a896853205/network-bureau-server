@@ -91,7 +91,7 @@ export default {
       } else if (filePosition === 'production') {
         productionUrl = managerUrl;
       } else {
-        throw Error('oss文件路径错误');
+        throw new Error('oss文件路径错误');
       }
 
       await db.transaction(async transaction => {
@@ -114,7 +114,7 @@ export default {
       return true;
     } catch (error) {
       console.log(error);
-      return false;
+      throw error;
     }
   },
 
@@ -142,7 +142,7 @@ export default {
       } else if (filePosition === 'production') {
         productionUrl = enterpriseUrl;
       } else {
-        throw Error('oss文件路径错误');
+        throw new Error('oss文件路径错误');
       }
 
       await db.transaction(transaction => {

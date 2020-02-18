@@ -486,22 +486,19 @@ router.get('/downloadContractWord', async ctx => {
  * 保存评测合同甲方上传pdf合同的信息
  */
 router.post('/saveManagerContractUrl', async (ctx, next) => {
-  const { registrationUuid, managerUrl } = ctx.state.param;
+  try {
+    const { registrationUuid, managerUrl } = ctx.state.param;
 
-  const data = await service.saveManagerContractUrl({
-    registrationUuid,
-    managerUrl
-  });
+    await service.saveManagerContractUrl({
+      registrationUuid,
+      managerUrl
+    });
 
-  if (data) {
     ctx.body = new Res({
-      status: RESPONSE_CODE.success,
-      data
+      status: RESPONSE_CODE.success
     });
-  } else {
-    ctx.body = new Res({
-      status: RESPONSE_CODE.error
-    });
+  } catch (error) {
+    ctx.throw(RESPONSE_CODE.error, '保存失败');
   }
 });
 
