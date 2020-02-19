@@ -34,7 +34,7 @@ export default {
   }) => {
     try {
       return db.transaction(transaction => {
-        return Promise.all[
+        return Promise.all([
           enterpriseRegistrationContractDao.updateRegistrationContractManager(
             {
               registrationUuid,
@@ -53,7 +53,7 @@ export default {
               transaction
             })
           )
-        ];
+        ]);
       });
     } catch (error) {
       throw error;
@@ -172,7 +172,7 @@ export default {
    */
   setContractManagerFailStatus: ({ registrationUuid, managerFailText }) => {
     try {
-      return db.transaction( transaction => {
+      return db.transaction(transaction => {
         return Promise.all([
           enterpriseRegistrationContractDao.updateContractManagerStatus({
             registrationUuid,

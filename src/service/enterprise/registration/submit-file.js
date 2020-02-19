@@ -18,14 +18,14 @@ export default {
   selectRegistrationStatusByRegistrationUuid: async registrationUuid => {
     try {
       const [
-        enterpriseRegistrationApplyStatus,
+        enterpriseRegistrationBasicStatus,
         enterpriseRegistrationContractStatus,
         enterpriseRegistrationCopyrightStatus,
-        enterpriseRegistrationDocumentStatus,
-        enterpriseRegistrationProductDescriptionStatus,
-        enterpriseRegistrationProductStatus,
         enterpriseRegistrationSpecimenStatus,
-        enterpriseRegistrationBasicStatus
+        enterpriseRegistrationProductDescriptionStatus,
+        enterpriseRegistrationDocumentStatus,
+        enterpriseRegistrationProductStatus,
+        enterpriseRegistrationApplyStatus
       ] = await Promise.all([
         enterpriseRegistrationBasicDao.selectRegistrationBasicByRegistrationUuid(
           registrationUuid
@@ -54,14 +54,14 @@ export default {
       ]);
 
       return {
-        enterpriseRegistrationApplyStatus,
+        enterpriseRegistrationBasicStatus,
         enterpriseRegistrationContractStatus,
         enterpriseRegistrationCopyrightStatus,
-        enterpriseRegistrationDocumentStatus,
-        enterpriseRegistrationProductDescriptionStatus,
-        enterpriseRegistrationProductStatus,
         enterpriseRegistrationSpecimenStatus,
-        enterpriseRegistrationBasicStatus
+        enterpriseRegistrationProductDescriptionStatus,
+        enterpriseRegistrationDocumentStatus,
+        enterpriseRegistrationProductStatus,
+        enterpriseRegistrationApplyStatus
       };
     } catch (error) {
       throw error;
