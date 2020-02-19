@@ -16,18 +16,16 @@ const router = new Router({
  * 无参数查询sys_registration_step表
  */
 router.get('/querySysRegistrationStep', async (ctx, next) => {
-  const data = await service.querySysRegistrationStep();
+  try {
+    const data = await service.querySysRegistrationStep();
 
-  if (data) {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data
     });
-  } else {
-    ctx.body = new Res({
-      status: RESPONSE_CODE.error,
-      msg: '查询失败'
-    });
+  } catch (error) {
+    console.error(error);
+    ctx.throw(RESPONSE_CODE.error, '查询失败');
   }
 });
 
@@ -35,20 +33,18 @@ router.get('/querySysRegistrationStep', async (ctx, next) => {
  * 查询企业的登记测试列表
  */
 router.get('/queryRegistration', async (ctx, next) => {
-  const { page } = ctx.state.param;
+  try {
+    const { page } = ctx.state.param;
 
-  const data = await service.queryRegistration(page);
+    const data = await service.queryRegistration(page);
 
-  if (data) {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data
     });
-  } else {
-    ctx.body = new Res({
-      status: RESPONSE_CODE.error,
-      msg: '查询失败'
-    });
+  } catch (error) {
+    console.error(error);
+    ctx.throw(RESPONSE_CODE.error, '查询失败');
   }
 });
 
@@ -56,20 +52,18 @@ router.get('/queryRegistration', async (ctx, next) => {
  * 通过uuid查询企业基本信息
  */
 router.get('/selectEnterpriseInfo', async (ctx, next) => {
-  const { uuid } = ctx.state.param;
+  try {
+    const { uuid } = ctx.state.param;
 
-  const data = await service.getEnterpriseByUuid(uuid);
+    const data = await service.getEnterpriseByUuid(uuid);
 
-  if (data) {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data
     });
-  } else {
-    ctx.body = new Res({
-      status: RESPONSE_CODE.error,
-      msg: '查询失败'
-    });
+  } catch (error) {
+    console.error(error);
+    ctx.throw(RESPONSE_CODE.error, '查询失败');
   }
 });
 
@@ -77,22 +71,20 @@ router.get('/selectEnterpriseInfo', async (ctx, next) => {
  * 查询登记测试信息(单独)
  */
 router.get('/selectRegistration', async (ctx, next) => {
-  const { registrationUuid } = ctx.state.param;
+  try {
+    const { registrationUuid } = ctx.state.param;
 
-  const data = await service.selectRegistrationByRegistrationUuid(
-    registrationUuid
-  );
+    const data = await service.selectRegistrationByRegistrationUuid(
+      registrationUuid
+    );
 
-  if (data) {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data
     });
-  } else {
-    ctx.body = new Res({
-      status: RESPONSE_CODE.error,
-      msg: '查询失败'
-    });
+  } catch (error) {
+    console.error(error);
+    ctx.throw(RESPONSE_CODE.error, '查询失败');
   }
 });
 
@@ -100,22 +92,20 @@ router.get('/selectRegistration', async (ctx, next) => {
  * 根据registrationUuid查询具体步骤
  */
 router.get('/queryEnterpriseRegistrationStep', async (ctx, next) => {
-  const { registrationUuid } = ctx.state.param;
+  try {
+    const { registrationUuid } = ctx.state.param;
 
-  const data = await service.queryEnterpriseRegistrationStepByRegistrationUuid(
-    registrationUuid
-  );
+    const data = await service.queryEnterpriseRegistrationStepByRegistrationUuid(
+      registrationUuid
+    );
 
-  if (data) {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data
     });
-  } else {
-    ctx.body = new Res({
-      status: RESPONSE_CODE.error,
-      msg: '查询失败'
-    });
+  } catch (error) {
+    console.error(error);
+    ctx.throw(RESPONSE_CODE.error, '查询失败');
   }
 });
 
@@ -144,43 +134,40 @@ router.get('/selectRegistrationStatus', async (ctx, next) => {
  * 查询登记测试的基本信息
  */
 router.get('/selectRegistrationBasic', async (ctx, next) => {
-  const { registrationUuid } = ctx.state.param;
+  try {
+    const { registrationUuid } = ctx.state.param;
 
-  const data = await service.selectRegistrationBasicByRegistrationUuid(
-    registrationUuid
-  );
+    const data = await service.selectRegistrationBasicByRegistrationUuid(
+      registrationUuid
+    );
 
-  if (data) {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data
     });
-  } else {
-    ctx.body = new Res({
-      status: RESPONSE_CODE.error
-    });
+  } catch (error) {
+    console.error(error);
+    ctx.throw(RESPONSE_CODE.error, '查询失败');
   }
 });
-
 /**
  * 查询评测合同的基本信息
  */
 router.get('/selectRegistrationContract', async (ctx, next) => {
-  const { registrationUuid } = ctx.state.param;
+  try {
+    const { registrationUuid } = ctx.state.param;
 
-  const data = await service.selectRegistrationContractByRegistrationUuid(
-    registrationUuid
-  );
+    const data = await service.selectRegistrationContractByRegistrationUuid(
+      registrationUuid
+    );
 
-  if (data) {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data
     });
-  } else {
-    ctx.body = new Res({
-      status: RESPONSE_CODE.error
-    });
+  } catch (error) {
+    console.error(error);
+    ctx.throw(RESPONSE_CODE.error, '查询失败');
   }
 });
 
@@ -188,21 +175,20 @@ router.get('/selectRegistrationContract', async (ctx, next) => {
  * 查询样品文档集的基本信息
  */
 router.get('/selectRegistrationSpecimen', async (ctx, next) => {
-  const { registrationUuid } = ctx.state.param;
+  try {
+    const { registrationUuid } = ctx.state.param;
 
-  const data = await service.selectRegistrationSpecimenByRegistrationUuid(
-    registrationUuid
-  );
+    const data = await service.selectRegistrationSpecimenByRegistrationUuid(
+      registrationUuid
+    );
 
-  if (data) {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data
     });
-  } else {
-    ctx.body = new Res({
-      status: RESPONSE_CODE.error
-    });
+  } catch (error) {
+    console.error(error);
+    ctx.throw(RESPONSE_CODE.error, '查询失败');
   }
 });
 
@@ -210,21 +196,20 @@ router.get('/selectRegistrationSpecimen', async (ctx, next) => {
  * 查询现场测试申请表的基本信息
  */
 router.get('/selectRegistrationApply', async (ctx, next) => {
-  const { registrationUuid } = ctx.state.param;
+  try {
+    const { registrationUuid } = ctx.state.param;
 
-  const data = await service.selectRegistrationApplyByRegistrationUuid(
-    registrationUuid
-  );
+    const data = await service.selectRegistrationApplyByRegistrationUuid(
+      registrationUuid
+    );
 
-  if (data) {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data
     });
-  } else {
-    ctx.body = new Res({
-      status: RESPONSE_CODE.error
-    });
+  } catch (error) {
+    console.error(error);
+    ctx.throw(RESPONSE_CODE.error, '查询失败');
   }
 });
 
@@ -232,24 +217,22 @@ router.get('/selectRegistrationApply', async (ctx, next) => {
  * 设置审核通过状态
  */
 router.post('/setRegistrationDetailSuccessStatus', async (ctx, next) => {
-  const { registrationUuid, type } = ctx.state.param;
+  try {
+    const { registrationUuid, type } = ctx.state.param;
 
-  const res = await service.setRegistrationDetailStatus({
-    registrationUuid,
-    type,
-    isPass: true
-  });
+    const res = await service.setRegistrationDetailStatus({
+      registrationUuid,
+      type,
+      isPass: true
+    });
 
-  if (res) {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data: res
     });
-  } else {
-    ctx.body = new Res({
-      status: RESPONSE_CODE.error,
-      msg: '查询失败'
-    });
+  } catch (error) {
+    console.error(error);
+    ctx.throw(RESPONSE_CODE.error, '设置状态失败');
   }
 });
 
@@ -257,25 +240,23 @@ router.post('/setRegistrationDetailSuccessStatus', async (ctx, next) => {
  * 设置内容错误状态
  */
 router.post('/setRegistrationDetailFailStatus', async (ctx, next) => {
-  const { registrationUuid, type, failText } = ctx.state.param;
+  try {
+    const { registrationUuid, type, failText } = ctx.state.param;
 
-  const res = await service.setRegistrationDetailStatus({
-    registrationUuid,
-    type,
-    failText,
-    isPass: false
-  });
+    const res = await service.setRegistrationDetailStatus({
+      registrationUuid,
+      type,
+      failText,
+      isPass: false
+    });
 
-  if (res) {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data: res
     });
-  } else {
-    ctx.body = new Res({
-      status: RESPONSE_CODE.error,
-      msg: '查询失败'
-    });
+  } catch (error) {
+    console.error(error);
+    ctx.throw(RESPONSE_CODE.error, '设置状态失败');
   }
 });
 
@@ -283,21 +264,20 @@ router.post('/setRegistrationDetailFailStatus', async (ctx, next) => {
  * 获取产品说明的信息
  */
 router.get('/selectRegistrationProductDescription', async (ctx, next) => {
-  const { registrationUuid } = ctx.state.param;
+  try {
+    const { registrationUuid } = ctx.state.param;
 
-  const data = await service.selectRegistrationProductDescription({
-    registrationUuid
-  });
+    const data = await service.selectRegistrationProductDescription({
+      registrationUuid
+    });
 
-  if (data) {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data
     });
-  } else {
-    ctx.body = new Res({
-      status: RESPONSE_CODE.error
-    });
+  } catch (error) {
+    console.error(error);
+    ctx.throw(RESPONSE_CODE.error, '获取文件失败');
   }
 });
 
@@ -305,21 +285,20 @@ router.get('/selectRegistrationProductDescription', async (ctx, next) => {
  * 获取产品介质的信息
  */
 router.get('/selectRegistrationProduct', async (ctx, next) => {
-  const { registrationUuid } = ctx.state.param;
+  try {
+    const { registrationUuid } = ctx.state.param;
 
-  const data = await service.selectRegistrationProduct({
-    registrationUuid
-  });
+    const data = await service.selectRegistrationProduct({
+      registrationUuid
+    });
 
-  if (data) {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data
     });
-  } else {
-    ctx.body = new Res({
-      status: RESPONSE_CODE.error
-    });
+  } catch (error) {
+    console.error(error);
+    ctx.throw(RESPONSE_CODE.error, '获取文件失败');
   }
 });
 
@@ -327,21 +306,20 @@ router.get('/selectRegistrationProduct', async (ctx, next) => {
  * 获取用户文档集的信息
  */
 router.get('/selectRegistrationDocument', async (ctx, next) => {
-  const { registrationUuid } = ctx.state.param;
+  try {
+    const { registrationUuid } = ctx.state.param;
 
-  const data = await service.selectRegistrationDocument({
-    registrationUuid
-  });
+    const data = await service.selectRegistrationDocument({
+      registrationUuid
+    });
 
-  if (data) {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data
     });
-  } else {
-    ctx.body = new Res({
-      status: RESPONSE_CODE.error
-    });
+  } catch (error) {
+    console.error(error);
+    ctx.throw(RESPONSE_CODE.error, '获取文件失败');
   }
 });
 
@@ -349,21 +327,20 @@ router.get('/selectRegistrationDocument', async (ctx, next) => {
  * 获取软件著作权证书的信息
  */
 router.get('/selectRegistrationCopyright', async (ctx, next) => {
-  const { registrationUuid } = ctx.state.param;
+  try {
+    const { registrationUuid } = ctx.state.param;
 
-  const data = await service.selectRegistrationCopyright({
-    registrationUuid
-  });
+    const data = await service.selectRegistrationCopyright({
+      registrationUuid
+    });
 
-  if (data) {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data
     });
-  } else {
-    ctx.body = new Res({
-      status: RESPONSE_CODE.error
-    });
+  } catch (error) {
+    console.error(error);
+    ctx.throw(RESPONSE_CODE.error, '获取文件失败');
   }
 });
 
@@ -371,20 +348,18 @@ router.get('/selectRegistrationCopyright', async (ctx, next) => {
  * 修改登记测试主流程进程修改
  */
 router.post('/pushRegistrationProcess', async (ctx, next) => {
-  const { registrationUuid } = ctx.state.param;
+  try {
+    const { registrationUuid } = ctx.state.param;
 
-  const data = await service.pushRegistrationProcess(registrationUuid);
+    const data = await service.pushRegistrationProcess(registrationUuid);
 
-  if (data) {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       msg: '成功推进登记测试进度'
     });
-  } else {
-    ctx.body = new Res({
-      status: RESPONSE_CODE.error,
-      msg: '审核进度下一步失败,请检查各种信息是否全部审核通过'
-    });
+  } catch (error) {
+    console.error(error);
+    ctx.throw(RESPONSE_CODE.error, '登记测试流程推进失败');
   }
 });
 
@@ -392,21 +367,20 @@ router.post('/pushRegistrationProcess', async (ctx, next) => {
  * 查询经管部门填写评测合同的基本信息
  */
 router.get('/selectRegistrationContractManager', async (ctx, next) => {
-  const { registrationUuid } = ctx.state.param;
+  try {
+    const { registrationUuid } = ctx.state.param;
 
-  const data = await service.selectRegistrationContractManager(
-    registrationUuid
-  );
+    const data = await service.selectRegistrationContractManager(
+      registrationUuid
+    );
 
-  if (data) {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data
     });
-  } else {
-    ctx.body = new Res({
-      status: RESPONSE_CODE.error
-    });
+  } catch (error) {
+    console.error(error);
+    ctx.throw(RESPONSE_CODE.error, '查询失败');
   }
 });
 
@@ -414,22 +388,20 @@ router.get('/selectRegistrationContractManager', async (ctx, next) => {
  * 查询评测合同的路由
  */
 router.get('/selectContractUrl', async (ctx, next) => {
-  const { registrationUuid } = ctx.state.param;
+  try {
+    const { registrationUuid } = ctx.state.param;
 
-  const data = await service.selectContractUrl(registrationUuid);
+    const data = await service.selectContractUrl(registrationUuid);
 
-  if (data) {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data
     });
-  } else {
-    ctx.body = new Res({
-      status: RESPONSE_CODE.error
-    });
+  } catch (error) {
+    console.error(error);
+    ctx.throw(RESPONSE_CODE.error, '查询失败');
   }
 });
-
 /**
  * 保存经管部门填写评测合同的基本信息
  */
@@ -506,22 +478,22 @@ router.post('/saveManagerContractUrl', async (ctx, next) => {
  * 更新交付汇款的状态
  */
 router.post('/updateFinanceManager', async (ctx, next) => {
-  try{
-  const { registrationUuid, financeManagerUuid } = ctx.state.param;
+  try {
+    const { registrationUuid, financeManagerUuid } = ctx.state.param;
 
-  const data = await service.updateFinanceManager({
-    registrationUuid,
-    financeManagerUuid
-  });
+    const data = await service.updateFinanceManager({
+      registrationUuid,
+      financeManagerUuid
+    });
 
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data,
       msg: '已选择负责的财务人员'
     });
-  } catch(error) {
+  } catch (error) {
     console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '更新失败');
+    ctx.throw(RESPONSE_CODE.error, '更新项目财务人员失败');
   }
 });
 
@@ -544,7 +516,7 @@ router.post('/arrangeTechLeaderManager', async (ctx, next) => {
     });
   } catch {
     console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '查询失败');
+    ctx.throw(RESPONSE_CODE.error, '更新项目技术负责人失败');
   }
 });
 
@@ -552,20 +524,17 @@ router.post('/arrangeTechLeaderManager', async (ctx, next) => {
  * 设置第二步合同签署成功状态
  */
 router.put('/setContractManagerSuccessStatus', async (ctx, next) => {
-  const { registrationUuid } = ctx.state.param;
+  try {
+    const { registrationUuid } = ctx.state.param;
 
-  const res = await service.setContractManagerSuccessStatus(registrationUuid);
+    await service.setContractManagerSuccessStatus(registrationUuid);
 
-  if (res) {
     ctx.body = new Res({
-      status: RESPONSE_CODE.success,
-      data: res
+      status: RESPONSE_CODE.success
     });
-  } else {
-    ctx.body = new Res({
-      status: RESPONSE_CODE.error,
-      msg: '查询失败'
-    });
+  } catch {
+    console.error(error);
+    ctx.throw(RESPONSE_CODE.error, '设置状态失败');
   }
 });
 
@@ -586,7 +555,7 @@ router.post('/setContractManagerFailStatus', async ctx => {
     });
   } catch (error) {
     console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '查询失败');
+    ctx.throw(RESPONSE_CODE.error, '设置状态失败');
   }
 });
 
@@ -594,20 +563,17 @@ router.post('/setContractManagerFailStatus', async ctx => {
  * 查询财务管理员
  */
 router.get('/queryFinanceManager', async (ctx, next) => {
-  const { page } = ctx.state.param;
+  try {
+    const { page } = ctx.state.param;
+    const data = await service.queryFinanceManager(page);
 
-  const data = await service.queryFinanceManager(page);
-
-  if (data) {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data
     });
-  } else {
-    ctx.body = new Res({
-      status: RESPONSE_CODE.error,
-      msg: '查询失败'
-    });
+  } catch (error) {
+    console.error(error);
+    ctx.throw(RESPONSE_CODE.error, '查询失败');
   }
 });
 
@@ -615,23 +581,19 @@ router.get('/queryFinanceManager', async (ctx, next) => {
  * 查询技术负责人
  */
 router.get('/queryTechnicalManager', async (ctx, next) => {
-  const { page } = ctx.state.param;
+  try {
+    const { page } = ctx.state.param;
+    const data = await service.queryTechnicalManager(page);
 
-  const data = await service.queryTechnicalManager(page);
-
-  if (data) {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data
     });
-  } else {
-    ctx.body = new Res({
-      status: RESPONSE_CODE.error,
-      msg: '查询失败'
-    });
+  } catch (error) {
+    console.error(error);
+    ctx.throw(RESPONSE_CODE.error, '查询失败');
   }
 });
-
 /**
  * 查询登记测试财务管理员的uuid
  */

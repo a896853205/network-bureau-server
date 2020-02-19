@@ -39,20 +39,18 @@ router.get('/queryRegistrationNeedAssigned', async (ctx, next) => {
  * 查询技术人员
  */
 router.get('/queryTechManager', async (ctx, next) => {
-  const { page } = ctx.state.param;
+  try {
+    const { page } = ctx.state.param;
 
-  const data = await service.queryTechManager(page);
+    const data = await service.queryTechManager(page);
 
-  if (data) {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data
     });
-  } else {
-    ctx.body = new Res({
-      status: RESPONSE_CODE.error,
-      msg: '查询失败'
-    });
+  } catch (error) {
+    console.error(error);
+    ctx.throw(RESPONSE_CODE.error, '查询失败');
   }
 });
 
@@ -82,22 +80,20 @@ router.post('/arrangeTechManager', async (ctx, next) => {
  * 根据registrationUuid查询具体步骤
  */
 router.get('/queryTechLeaderEnterpriseRegistrationStep', async (ctx, next) => {
-  const { registrationUuid } = ctx.state.param;
+  try {
+    const { registrationUuid } = ctx.state.param;
 
-  const data = await service.queryEnterpriseRegistrationStepByRegistrationUuid(
-    registrationUuid
-  );
+    const data = await service.queryEnterpriseRegistrationStepByRegistrationUuid(
+      registrationUuid
+    );
 
-  if (data) {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data
     });
-  } else {
-    ctx.body = new Res({
-      status: RESPONSE_CODE.error,
-      msg: '查询失败'
-    });
+  } catch (error) {
+    console.error(error);
+    ctx.throw(RESPONSE_CODE.error, '查询失败');
   }
 });
 
@@ -126,22 +122,20 @@ router.get('/selectRegistrationTechManagerUuid', async (ctx, next) => {
  * 查询登记测试管理员信息(文件审核页面)
  */
 router.get('/selectRegistrationManagerUuid', async (ctx, next) => {
-  const { registrationUuid } = ctx.state.param;
+  try {
+    const { registrationUuid } = ctx.state.param;
 
-  const data = await service.selectRegistrationByRegistrationUuid(
-    registrationUuid
-  );
+    const data = await service.selectRegistrationByRegistrationUuid(
+      registrationUuid
+    );
 
-  if (data) {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data
     });
-  } else {
-    ctx.body = new Res({
-      status: RESPONSE_CODE.error,
-      msg: '查询失败'
-    });
+  } catch (error) {
+    console.error(error);
+    ctx.throw(RESPONSE_CODE.error, '查询失败');
   }
 });
 

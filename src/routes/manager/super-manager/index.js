@@ -27,45 +27,41 @@ router.post('/saveManager', async (ctx, next) => {
   } = ctx.state.param;
 
   if (managerUuid) {
-    const status = await service.updateManager(
-      managerUuid,
-      phone,
-      password,
-      name,
-      headPortraitUrl
-    );
+    try {
+      await service.updateManager(
+        managerUuid,
+        phone,
+        password,
+        name,
+        headPortraitUrl
+      );
 
-    if (status) {
       ctx.body = new Res({
         status: RESPONSE_CODE.success,
         msg: '更改管理员成功'
       });
-    } else {
-      ctx.body = new Res({
-        status: RESPONSE_CODE.error,
-        msg: '更改管理员失败'
-      });
+    } catch (error) {
+      console.error(error);
+      ctx.throw(RESPONSE_CODE.error, '更改管理员失败');
     }
   } else {
-    const status = await service.createNewManager(
-      username,
-      phone,
-      password,
-      name,
-      role,
-      headPortraitUrl
-    );
+    try {
+      await service.createNewManager(
+        username,
+        phone,
+        password,
+        name,
+        role,
+        headPortraitUrl
+      );
 
-    if (status) {
       ctx.body = new Res({
         status: RESPONSE_CODE.created,
         msg: '创建管理用户成功'
       });
-    } else {
-      ctx.body = new Res({
-        status: RESPONSE_CODE.error,
-        msg: '用户已存在'
-      });
+    } catch (error) {
+      console.error(error);
+      ctx.throw(RESPONSE_CODE.error, '用户已存在');
     }
   }
 });
@@ -74,20 +70,18 @@ router.post('/saveManager', async (ctx, next) => {
  * 删除管理账号
  */
 router.del('/deleteManager', async (ctx, next) => {
-  const { managerUuid } = ctx.state.param;
+  try {
+    const { managerUuid } = ctx.state.param;
 
-  const status = await service.deleteManager(managerUuid);
+    await service.deleteManager(managerUuid);
 
-  if (status) {
     ctx.body = new Res({
       status: RESPONSE_CODE.noContent,
       msg: '删除管理员成功'
     });
-  } else {
-    ctx.body = new Res({
-      status: RESPONSE_CODE.error,
-      msg: '删除管理员失败'
-    });
+  } catch (error) {
+    console.error(error);
+    ctx.throw(RESPONSE_CODE.error, '删除管理员失败');
   }
 });
 

@@ -29,20 +29,17 @@ router.get('/getMyInfo', async (ctx, next) => {
  * 管理端登录
  */
 router.get('/getManagerToken', async (ctx, next) => {
-  let { username, password } = ctx.state.param;
+  try {
+    let { username, password } = ctx.state.param;
 
-  const token = await service.getManagerToken(username, password);
+    const token = await service.getManagerToken(username, password);
 
-  if (token) {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data: token
     });
-  } else {
-    ctx.body = new Res({
-      status: RESPONSE_CODE.error,
-      msg: '用户名或密码错误'
-    });
+  } catch (error) {
+    ctx.throw(RESPONSE_CODE.unauthorized, '用户名或密码错误');
   }
 });
 

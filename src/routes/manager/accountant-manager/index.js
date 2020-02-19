@@ -16,19 +16,18 @@ const router = new Router({
  * 财务确认已付款
  */
 router.put('/accountantConfirmPayment', async (ctx, next) => {
-  const { registrationUuid } = ctx.state.param;
+  try {
+    const { registrationUuid } = ctx.state.param;
 
-  const data = await service.accountantConfirmPayment(registrationUuid);
+    const data = await service.accountantConfirmPayment(registrationUuid);
 
-  if (data) {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data
     });
-  } else {
-    ctx.body = new Res({
-      status: RESPONSE_CODE.error
-    });
+  } catch (error) {
+    console.error(error);
+    ctx.throw(RESPONSE_CODE.error, '确认付款失败');
   }
 });
 

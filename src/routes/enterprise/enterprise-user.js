@@ -15,19 +15,17 @@ const router = new Router({
  * 企业用户登录
  */
 router.get('/getEnterpriseToken', async (ctx, next) => {
-  let { code, password } = ctx.state.param,
-    token = await service.getEnterpriseToken(code, password);
+  try {
+    let { code, password } = ctx.state.param,
+      token = await service.getEnterpriseToken(code, password);
 
-  if (token) {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data: token
     });
-  } else {
-    ctx.body = new Res({
-      status: RESPONSE_CODE.error,
-      msg: '用户名或密码错误'
-    });
+  } catch (error) {
+    console.error(error);
+    ctx.throw(RESPONSE_CODE.error, '用户名或密码错误');
   }
 });
 
@@ -35,25 +33,23 @@ router.get('/getEnterpriseToken', async (ctx, next) => {
  * 创建新企业用户
  */
 router.post('/createNewEnterprise', async (ctx, next) => {
-  let { name, password, phone, code } = ctx.state.param;
+  try {
+    let { name, password, phone, code } = ctx.state.param;
 
-  const status = await service.createNewEnterprise({
-    name,
-    password,
-    phone,
-    code
-  });
+    const status = await service.createNewEnterprise({
+      name,
+      password,
+      phone,
+      code
+    });
 
-  if (status) {
     ctx.body = new Res({
       status: RESPONSE_CODE.created,
       msg: '创建用户成功'
     });
-  } else {
-    ctx.body = new Res({
-      status: RESPONSE_CODE.error,
-      msg: '用户已存在'
-    });
+  } catch (error) {
+    console.error(error);
+    ctx.throw(RESPONSE_CODE.error, '用户名已存在');
   }
 });
 
