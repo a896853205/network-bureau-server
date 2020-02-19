@@ -36,24 +36,22 @@ router.post('/createEnterpriseRegistration', async ctx => {
  * 查询企业的登记测试列表
  */
 router.get('/queryRegistration', async (ctx, next) => {
-  const { uuid: enterpriseUuid } = ctx.state.user,
-    { page } = ctx.state.param;
+  try {
+    const { uuid: enterpriseUuid } = ctx.state.user,
+      { page } = ctx.state.param;
 
-  const data = await service.queryRegistrationByEnterpriseUuid(
-    enterpriseUuid,
-    page
-  );
+    const data = await service.queryRegistrationByEnterpriseUuid(
+      enterpriseUuid,
+      page
+    );
 
-  if (data) {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data
     });
-  } else {
-    ctx.body = new Res({
-      status: RESPONSE_CODE.error,
-      msg: '查询失败'
-    });
+  } catch (error) {
+    console.error(error);
+    ctx.throw(RESPONSE_CODE.error, '查询失败');
   }
 });
 
@@ -61,22 +59,20 @@ router.get('/queryRegistration', async (ctx, next) => {
  * 查询登记测试信息(单独)
  */
 router.get('/selectRegistration', async (ctx, next) => {
+  try{
   const { registrationUuid } = ctx.state.param;
 
   const data = await service.selectRegistrationByRegistrationUuid(
     registrationUuid
   );
 
-  if (data) {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data
     });
-  } else {
-    ctx.body = new Res({
-      status: RESPONSE_CODE.error,
-      msg: '查询失败'
-    });
+  } catch (error) {
+    console.error(error);
+    ctx.throw(RESPONSE_CODE.error, '查询失败');
   }
 });
 

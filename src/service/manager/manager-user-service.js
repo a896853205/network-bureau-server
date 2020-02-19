@@ -39,19 +39,25 @@ export default {
    * 管理账号登录
    */
   getManagerToken: async (username, password) => {
-    const manager = await managerUserDao.selectManagerUserByUsername(username);
+    try {
+      const manager = await managerUserDao.selectManagerUserByUsername(
+        username
+      );
 
-    if (!manager || manager.password !== password) {
-      return false;
+      if (!manager || manager.password !== password) {
+        throw new Error('账号或密码错误');
+      }
+
+      return {
+        token: webToken.parseToken({
+          uuid: manager.uuid,
+          auth: 'manager'
+        }),
+        manager
+      };
+    } catch (error) {
+      throw error;
     }
-
-    return {
-      token: webToken.parseToken({
-        uuid: manager.uuid,
-        auth: 'manager'
-      }),
-      manager
-    };
   },
 
   /**
@@ -65,11 +71,10 @@ export default {
     role,
     headPortraitUrl
   ) => {
-    if (await managerUserDao.selectManagerUserByUsername(username)) {
-      return false;
-    }
-
     try {
+      if (await managerUserDao.selectManagerUserByUsername(username)) {
+        throw new Error('管理员账号已存在');
+      }
       let productionUrl = '';
       // 将temp的文件copy到production中
       const [filePosition] = headPortraitUrl.split('/');
@@ -96,19 +101,19 @@ export default {
 
       return true;
     } catch (error) {
-      console.log(error);
-      return false;
+      throw error;
     }
   },
 
   /**
    * 删除管理员账号
    */
-  deleteManager: async managerUuid => {
-    if (await managerUserDao.deleteManager(managerUuid)) {
-      return true;
+  deleteManager: managerUuid => {
+    try {
+      return managerUserDao.deleteManager(managerUuid);
+    } catch (error) {
+      throw new Error('删除失败');
     }
-    return false;
   },
 
   /**
@@ -155,29 +160,25 @@ export default {
       ) {
         return true;
       }
-      return false;
+      throw error;
     } catch (error) {
-      console.log(error);
-      return false;
+      throw error;
     }
   },
 
   /**
    * 查询管理员账号
    */
-  queryManager: async page => {
+  queryManager: page => {
     try {
-      return await managerUserDao.queryManagerUser(page);
+      return managerUserDao.queryManagerUser(page);
     } catch (error) {
       throw new Error('查询所有管理员账号错误');
     }
-    
   },
 
   /**
    * 查询财务管理员账号
    */
-  queryFinanceManager: async page => {
-    return await managerUserDao.queryFinanceManagerUser(page);
-  }
+  queryFinanceManager: page => managerUserDao.queryFinanceManagerUser(page)
 };

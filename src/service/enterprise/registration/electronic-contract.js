@@ -24,7 +24,7 @@ export default {
   /**
    * 保存评测合同的基本信息
    */
-  saveRegistrationContractManager: async ({
+  saveRegistrationContractManager: ({
     registrationUuid,
     contractCode,
     specimenHaveTime,
@@ -33,8 +33,8 @@ export default {
     contractTime
   }) => {
     try {
-      await db.transaction(async transaction => {
-        return await Promise.all[
+      return db.transaction(transaction => {
+        return Promise.all([
           enterpriseRegistrationContractDao.updateRegistrationContractManager(
             {
               registrationUuid,
@@ -53,7 +53,7 @@ export default {
               transaction
             })
           )
-        ];
+        ]);
       });
     } catch (error) {
       throw error;
@@ -172,7 +172,7 @@ export default {
    */
   setContractManagerFailStatus: ({ registrationUuid, managerFailText }) => {
     try {
-      return db.transaction(async transaction => {
+      return db.transaction(transaction => {
         return Promise.all([
           enterpriseRegistrationContractDao.updateContractManagerStatus({
             registrationUuid,

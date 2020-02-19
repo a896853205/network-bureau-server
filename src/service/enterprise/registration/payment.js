@@ -8,24 +8,29 @@ export default {
    * 查询企业的缴费信息
    */
   queryRegistrationPayment: async ({ page, managerUuid }) => {
-    const registrationList = await enterpriseRegistrationStepDao.queryRegistrationByManagerUuid(
-      managerUuid
-    );
+    try {
+      const registrationList = await enterpriseRegistrationStepDao.queryRegistrationByManagerUuid(
+        managerUuid
+      );
 
-    const uuidList = registrationList.map(item => item.uuid);
+      const uuidList = registrationList.map(item => item.uuid);
 
-    return await enterpriseRegistrationDao.queryRegistrationPayment({
-      page,
-      uuidList
-    });
+      return await enterpriseRegistrationDao.queryRegistrationPayment({
+        page,
+        uuidList
+      });
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
   },
 
   /**
    * 更新财务人员信息
    */
-  updateFinanceManager: async ({ registrationUuid, financeManagerUuid }) => {
+  updateFinanceManager: ({ registrationUuid, financeManagerUuid }) => {
     try {
-      await db.transaction(transaction => {
+      return db.transaction(transaction => {
         return Promise.all([
           enterpriseRegistrationStepDao.updateRegistrationStep({
             registrationUuid,
@@ -47,24 +52,21 @@ export default {
           })
         ]);
       });
-      return true;
     } catch (error) {
-      console.log(error);
-      return false;
+      throw error;
     }
   },
 
   /**
    * 更新支付汇款状态
    */
-  noticeAccountPayment: async registrationUuid => {
-    return await enterpriseRegistrationStepDao.updateRegistrationStep({
+  noticeAccountPayment: registrationUuid =>
+    enterpriseRegistrationStepDao.updateRegistrationStep({
       registrationUuid,
       status: 3,
       statusText: '企业点击已交款按钮',
       step: 3
-    });
-  },
+    }),
 
   /**
    * 查询登记测试财务管理员的uuid
@@ -78,20 +80,18 @@ export default {
       );
       return accountantManagerUuid;
     } catch (error) {
-      console.error(error);
-      return false;
+      throw error;
     }
   },
 
   /**
    * 财务确认已付款
    */
-  accountantConfirmPayment: async registrationUuid => {
-    return await enterpriseRegistrationStepDao.updateRegistrationStep({
+  accountantConfirmPayment: registrationUuid =>
+    enterpriseRegistrationStepDao.updateRegistrationStep({
       registrationUuid,
       status: 4,
       statusText: '财务已确认收款',
       step: 3
-    });
-  }
+    })
 };
