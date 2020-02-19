@@ -21,5 +21,17 @@ export default db.define('enterprise_registration_apply', {
   techManagerUuid: Sequelize.STRING(36),
   techManagerDate: Sequelize.DATE,
   techLeaderManagerUuid: Sequelize.STRING(36),
-  techLeaderManagerDate: Sequelize.DATE
+  techLeaderManagerDate: Sequelize.DATE,
+  certifierManagerUuid: Sequelize.STRING(36),
+  certifierManagerData: Sequelize.DATE,
+  managerStatus: Sequelize.BIGINT(3), 
+  // -1 技术人员审查企业提交信息不合格
+  // -2 项目管理员审查技术人员不合格
+  // -3 批准人审查项目管理人员不合格
+  // 1 待技术人员确认
+  // 2 待项目管理员确认
+  // 3 待批准人确认
+  // 100 已完成
+  failManagerText: Sequelize.STRING(100),
+  // 审查表时候错误信息
 });
