@@ -59,12 +59,12 @@ router.get('/queryRegistration', async (ctx, next) => {
  * 查询登记测试信息(单独)
  */
 router.get('/selectRegistration', async (ctx, next) => {
-  try{
-  const { registrationUuid } = ctx.state.param;
+  try {
+    const { registrationUuid } = ctx.state.param;
 
-  const data = await service.selectRegistrationByRegistrationUuid(
-    registrationUuid
-  );
+    const data = await service.selectRegistrationByRegistrationUuid(
+      registrationUuid
+    );
 
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
