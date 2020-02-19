@@ -36,24 +36,22 @@ router.put('/accountantConfirmPayment', async (ctx, next) => {
  * 查询企业的缴费信息
  */
 router.get('/queryRegistrationPayment', async (ctx, next) => {
-  const { page } = ctx.state.param;
-  const managerUuid = ctx.state.user.uuid;
+  try {
+    const { page } = ctx.state.param;
+    const managerUuid = ctx.state.user.uuid;
 
-  const data = await service.queryRegistrationPayment({
-    page,
-    managerUuid
-  });
+    const data = await service.queryRegistrationPayment({
+      page,
+      managerUuid
+    });
 
-  if (data) {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data
     });
-  } else {
-    ctx.body = new Res({
-      status: RESPONSE_CODE.error,
-      msg: '查询失败'
-    });
+  } catch (error) {
+    console.error(error);
+    ctx.throw(RESPONSE_CODE.error, '查询失败');
   }
 });
 

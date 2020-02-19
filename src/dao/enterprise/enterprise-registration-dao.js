@@ -305,18 +305,18 @@ export default {
   /**
    * 查询登记测试企业信息(文件审核页面)
    */
-  selectEnterpriseInfoByRegistrationUuid: registrationUuid =>{
+  selectEnterpriseInfoByRegistrationUuid: registrationUuid => {
     enterpriseRegistration.findOne({
       where: { uuid: registrationUuid },
       attributes: ['enterpriseUuid'],
       raw: true
-    }),
-    
+    });
+  },
   /**
    * 查询登记测试财技术人员的uuid
    */
   selectRegistrationTechManagerUuid: registrationUuid => {
-    return enterpriseRegistration.findOne({
+    enterpriseRegistration.findOne({
       where: { uuid: registrationUuid },
       attributes: ['techManagerUuid'],
       raw: true
@@ -327,7 +327,7 @@ export default {
    * 查询登记测试财务管理员的uuid
    */
   selectRegistrationAccoutantManagerUuid: registrationUuid => {
-    return enterpriseRegistration.findOne({
+    enterpriseRegistration.findOne({
       where: { uuid: registrationUuid },
       attributes: ['accountantManagerUuid'],
       raw: true
@@ -338,11 +338,10 @@ export default {
    * 查询登记测试技术负责人的uuid
    */
   selectRegistrationTechLeaderManagerUuid: registrationUuid => {
-    return enterpriseRegistration.findOne({
+    enterpriseRegistration.findOne({
       where: { uuid: registrationUuid },
       attributes: ['techLeaderManagerUuid'],
       raw: true
-    })
     });
   }
 };

@@ -34,7 +34,6 @@ import path from 'path';
 
 // 时间
 import moment from 'moment';
-import { CITEXT } from 'sequelize/types';
 
 export default {
   ...fieldTest,
@@ -45,82 +44,77 @@ export default {
   /**
    * 根据名字查询
    */
-  selectEnterpriseRegistrationByName: async name => {
-    return await enterpriseRegistrationDao.selectEnterpriseRegistrationByName(
-      name
-    );
-  },
+  selectEnterpriseRegistrationByName: name =>
+    enterpriseRegistrationDao.selectEnterpriseRegistrationByName(name),
 
   /**
    * 根据RegistrationUuid查询
    */
-  selectRegistrationByRegistrationUuid: async registrationUuid => {
-    return await enterpriseRegistrationDao.selectRegistrationByRegistrationUuid(
+  selectRegistrationByRegistrationUuid: registrationUuid =>
+    enterpriseRegistrationDao.selectRegistrationByRegistrationUuid(
       registrationUuid
-    );
-  },
+    ),
 
   /**
    * 创建登记测试
    */
   createEnterpriseRegistration: async (name, enterpriseUuid) => {
-    if (
-      await enterpriseRegistrationDao.selectEnterpriseRegistrationByName(name)
-    ) {
-      throw new Error('登记测试名重复')
-    } else {
-      // 查询一个项目管理员
-      const projectManager = await managerUserDao.selectManagerUserByRole(10);
-      const projectManagerUuid = projectManager?.uuid;
+    try {
+      if (
+        await enterpriseRegistrationDao.selectEnterpriseRegistrationByName(name)
+      ) {
+        throw new Error('登记测试名重复');
+      } else {
+        // 查询一个项目管理员
+        const projectManager = await managerUserDao.selectManagerUserByRole(10);
+        const projectManagerUuid = projectManager?.uuid;
 
-      // 初始化步骤的数据
-      const enterpriseRegistrationUuid = uuid.v1(),
-        enterpriseRegistrationSteps = [
-          {
-            uuid: enterpriseRegistrationUuid,
-            step: 1,
-            status: 1,
-            statusText: '正在进行',
-            managerUuid: projectManagerUuid
-          },
-          {
-            uuid: enterpriseRegistrationUuid,
-            step: 2,
-            status: 0,
-            statusText: '未开始',
-            managerUuid: projectManagerUuid
-          },
-          {
-            uuid: enterpriseRegistrationUuid,
-            step: 3,
-            status: 0,
-            statusText: '未开始',
-            managerUuid: projectManagerUuid
-          },
-          {
-            uuid: enterpriseRegistrationUuid,
-            step: 4,
-            status: 0,
-            statusText: '未开始',
-            managerUuid: projectManagerUuid
-          },
-          {
-            uuid: enterpriseRegistrationUuid,
-            step: 5,
-            status: 0,
-            statusText: '未开始',
-            managerUuid: projectManagerUuid
-          },
-          {
-            uuid: enterpriseRegistrationUuid,
-            step: 6,
-            status: 0,
-            statusText: '未开始',
-            managerUuid: projectManagerUuid
-          }
-        ];
-
-      try {
+        // 初始化步骤的数据
+        const enterpriseRegistrationUuid = uuid.v1(),
+          enterpriseRegistrationSteps = [
+            {
+              uuid: enterpriseRegistrationUuid,
+              step: 1,
+              status: 1,
+              statusText: '正在进行',
+              managerUuid: projectManagerUuid
+            },
+            {
+              uuid: enterpriseRegistrationUuid,
+              step: 2,
+              status: 0,
+              statusText: '未开始',
+              managerUuid: projectManagerUuid
+            },
+            {
+              uuid: enterpriseRegistrationUuid,
+              step: 3,
+              status: 0,
+              statusText: '未开始',
+              managerUuid: projectManagerUuid
+            },
+            {
+              uuid: enterpriseRegistrationUuid,
+              step: 4,
+              status: 0,
+              statusText: '未开始',
+              managerUuid: projectManagerUuid
+            },
+            {
+              uuid: enterpriseRegistrationUuid,
+              step: 5,
+              status: 0,
+              statusText: '未开始',
+              managerUuid: projectManagerUuid
+            },
+            {
+              uuid: enterpriseRegistrationUuid,
+              step: 6,
+              status: 0,
+              statusText: '未开始',
+              managerUuid: projectManagerUuid
+            }
+          ];
         await db.transaction(async transaction => {
           await Promise.all([
             enterpriseRegistrationDao.insertEnterpriseRegistration({
@@ -179,45 +173,38 @@ export default {
         });
 
         return enterpriseRegistrationUuid;
-      } catch (error) {
-        console.log(error);
-        throw error;
       }
+    } catch (error) {
+      throw error;
     }
   },
 
   /**
    * 查询登记测试通过企业的uuid
    */
-  queryRegistrationByEnterpriseUuid: async (enterpriseUuid, page) => {
-    return await enterpriseRegistrationDao.queryRegistrationByEnterpriseUuid(
+  queryRegistrationByEnterpriseUuid: (enterpriseUuid, page) =>
+    enterpriseRegistrationDao.queryRegistrationByEnterpriseUuid(
       enterpriseUuid,
       page
-    );
-  },
+    ),
 
   /**
    * 查询企业用户登记测试具体的步骤状态
    */
-  queryEnterpriseRegistrationStepByRegistrationUuid: async registrationUuid => {
-    return await enterpriseRegistrationStepDao.queryEnterpriseRegistrationStepByRegistrationUuid(
+  queryEnterpriseRegistrationStepByRegistrationUuid: registrationUuid =>
+    enterpriseRegistrationStepDao.queryEnterpriseRegistrationStepByRegistrationUuid(
       registrationUuid
-    );
-  },
+    ),
 
   /**
    *  无参数查询sys_registration_step表
    */
-  querySysRegistrationStep: async () => {
-    return await sysRegistrationStepDao.querySysRegistrationStep();
-  },
-
+  querySysRegistrationStep: () =>
+    sysRegistrationStepDao.querySysRegistrationStep(),
   /**
    * 查询登记测试
    */
-  queryRegistration: async page => {
-    return await enterpriseRegistrationDao.queryRegistration(page);
-  },
+  queryRegistration: page => enterpriseRegistrationDao.queryRegistration(page),
 
   /**
    * 推进登记测试的进程
@@ -226,154 +213,150 @@ export default {
     // 先查询现在的进度,
     // 然后如果是进度1,就判断8种状态是不是都是2
     // 最后如果ok就进度改称,而且进度1的text改成已完成
-    const registration = await enterpriseRegistrationDao.selectRegistrationByRegistrationUuid(
-      registrationUuid
-    );
+    try {
+      const registration = await enterpriseRegistrationDao.selectRegistrationByRegistrationUuid(
+        registrationUuid
+      );
 
-    if (registration) {
-      if (registration.currentStep === 1) {
-        // 第一步
-        const [
-          enterpriseRegistrationBasicStatus,
-          enterpriseRegistrationContractStatus,
-          enterpriseRegistrationCopyrightStatus,
-          enterpriseRegistrationSpecimenStatus,
-          enterpriseRegistrationProductDescriptionStatus,
-          enterpriseRegistrationDocumentStatus,
-          enterpriseRegistrationProductStatus,
-          enterpriseRegistrationApplyStatus
-        ] = await Promise.all([
-          enterpriseRegistrationBasicDao.selectRegistrationBasicByRegistrationUuid(
-            registrationUuid
-          ),
-          enterpriseRegistrationContractDao.selectRegistrationContractByRegistrationUuid(
-            registrationUuid
-          ),
-          enterpriseRegistrationCopyrightDao.selectRegistrationCopyrightByRegistrationUuid(
-            registrationUuid
-          ),
-          enterpriseRegistrationSpecimenDao.selectRegistrationSpecimenByRegistrationUuid(
-            registrationUuid
-          ),
-          enterpriseRegistrationProductDescriptionDao.selectRegistrationProductDescriptionByRegistrationUuid(
-            registrationUuid
-          ),
-          enterpriseRegistrationDocumentDao.selectRegistrationDocumentByRegistrationUuid(
-            registrationUuid
-          ),
-          enterpriseRegistrationProductDao.selectRegistrationProductByRegistrationUuid(
-            registrationUuid
-          ),
-          enterpriseRegistrationApplyDao.selectRegistrationApplyByRegistrationUuid(
-            registrationUuid
-          )
-        ]);
-
-        if (
-          enterpriseRegistrationBasicStatus.status === 100 &&
-          enterpriseRegistrationContractStatus.status === 100 &&
-          enterpriseRegistrationCopyrightStatus.status === 100 &&
-          enterpriseRegistrationSpecimenStatus.status === 100 &&
-          enterpriseRegistrationProductDescriptionStatus.status === 100 &&
-          enterpriseRegistrationDocumentStatus.status === 100 &&
-          enterpriseRegistrationProductStatus.status === 100 &&
-          enterpriseRegistrationApplyStatus.status === 100
-        ) {
-          // 改进度和steps表
-          await Promise.all([
-            enterpriseRegistrationDao.updateRegistrationCurrentStep({
-              registrationUuid,
-              currentStep: 2
-            }),
-            enterpriseRegistrationStepDao.updateRegistrationStep({
-              registrationUuid,
-              status: 100,
-              statusText: '已完成',
-              step: 1
-            }),
-            enterpriseRegistrationStepDao.updateRegistrationStep({
-              registrationUuid,
-              status: 1,
-              statusText: '管理员填写内容',
-              step: 2
-            })
+      if (registration) {
+        if (registration.currentStep === 1) {
+          // 第一步
+          const [
+            enterpriseRegistrationBasicStatus,
+            enterpriseRegistrationContractStatus,
+            enterpriseRegistrationCopyrightStatus,
+            enterpriseRegistrationSpecimenStatus,
+            enterpriseRegistrationProductDescriptionStatus,
+            enterpriseRegistrationDocumentStatus,
+            enterpriseRegistrationProductStatus,
+            enterpriseRegistrationApplyStatus
+          ] = await Promise.all([
+            enterpriseRegistrationBasicDao.selectRegistrationBasicByRegistrationUuid(
+              registrationUuid
+            ),
+            enterpriseRegistrationContractDao.selectRegistrationContractByRegistrationUuid(
+              registrationUuid
+            ),
+            enterpriseRegistrationCopyrightDao.selectRegistrationCopyrightByRegistrationUuid(
+              registrationUuid
+            ),
+            enterpriseRegistrationSpecimenDao.selectRegistrationSpecimenByRegistrationUuid(
+              registrationUuid
+            ),
+            enterpriseRegistrationProductDescriptionDao.selectRegistrationProductDescriptionByRegistrationUuid(
+              registrationUuid
+            ),
+            enterpriseRegistrationDocumentDao.selectRegistrationDocumentByRegistrationUuid(
+              registrationUuid
+            ),
+            enterpriseRegistrationProductDao.selectRegistrationProductByRegistrationUuid(
+              registrationUuid
+            ),
+            enterpriseRegistrationApplyDao.selectRegistrationApplyByRegistrationUuid(
+              registrationUuid
+            )
           ]);
 
-          return true;
-        }
-      } else if (registration.currentStep === 2) {
-        const steps = await enterpriseRegistrationStepDao.queryEnterpriseRegistrationStepByRegistrationUuid(
-          registrationUuid
-        );
-        // 第二步电子签合同
-        if (steps[1].status === 100) {
-          // 到了最后一步就可以
-          // 下一步的人员先把自己配置上,
-          // 等第三步的第一步配置上人了,企业那边才显示具体交钱信息
-          // 1 是未选择财务人员
-          // 2 已选择财务人员
-          // 3 企业点击已交款按钮
-          // 4 财务点击了确认按钮, 结束
-          // 改进度和steps表
-          await Promise.all([
-            enterpriseRegistrationDao.updateRegistrationCurrentStep({
-              registrationUuid,
-              currentStep: 3
-            }),
-            enterpriseRegistrationStepDao.updateRegistrationStep({
-              registrationUuid,
-              status: 100,
-              statusText: '已完成',
-              step: 2
-            }),
-            enterpriseRegistrationStepDao.updateRegistrationStep({
-              registrationUuid,
-              status: 1,
-              statusText: '未选择财务人员',
-              step: 3
-            })
-          ]);
+          if (
+            enterpriseRegistrationBasicStatus.status === 100 &&
+            enterpriseRegistrationContractStatus.status === 100 &&
+            enterpriseRegistrationCopyrightStatus.status === 100 &&
+            enterpriseRegistrationSpecimenStatus.status === 100 &&
+            enterpriseRegistrationProductDescriptionStatus.status === 100 &&
+            enterpriseRegistrationDocumentStatus.status === 100 &&
+            enterpriseRegistrationProductStatus.status === 100 &&
+            enterpriseRegistrationApplyStatus.status === 100
+          ) {
+            // 改进度和steps表
+            return await Promise.all([
+              enterpriseRegistrationDao.updateRegistrationCurrentStep({
+                registrationUuid,
+                currentStep: 2
+              }),
+              enterpriseRegistrationStepDao.updateRegistrationStep({
+                registrationUuid,
+                status: 100,
+                statusText: '已完成',
+                step: 1
+              }),
+              enterpriseRegistrationStepDao.updateRegistrationStep({
+                registrationUuid,
+                status: 1,
+                statusText: '管理员填写内容',
+                step: 2
+              })
+            ]);
+          }
+        } else if (registration.currentStep === 2) {
+          const steps = await enterpriseRegistrationStepDao.queryEnterpriseRegistrationStepByRegistrationUuid(
+            registrationUuid
+          );
+          // 第二步电子签合同
+          if (steps[1].status === 100) {
+            // 到了最后一步就可以
+            // 下一步的人员先把自己配置上,
+            // 等第三步的第一步配置上人了,企业那边才显示具体交钱信息
+            // 1 是未选择财务人员
+            // 2 已选择财务人员
+            // 3 企业点击已交款按钮
+            // 4 财务点击了确认按钮, 结束
+            // 改进度和steps表
+            return await Promise.all([
+              enterpriseRegistrationDao.updateRegistrationCurrentStep({
+                registrationUuid,
+                currentStep: 3
+              }),
+              enterpriseRegistrationStepDao.updateRegistrationStep({
+                registrationUuid,
+                status: 100,
+                statusText: '已完成',
+                step: 2
+              }),
+              enterpriseRegistrationStepDao.updateRegistrationStep({
+                registrationUuid,
+                status: 1,
+                statusText: '未选择财务人员',
+                step: 3
+              })
+            ]);
+          }
+        } else if (registration.currentStep === 3) {
+          const steps = await enterpriseRegistrationStepDao.queryEnterpriseRegistrationStepByRegistrationUuid(
+            registrationUuid
+          );
 
-          return true;
-        }
-      } else if (registration.currentStep === 3) {
-        const steps = await enterpriseRegistrationStepDao.queryEnterpriseRegistrationStepByRegistrationUuid(
-          registrationUuid
-        );
-
-        // 财务通过之后
-        if (steps[2].status === 4) {
-          await Promise.all([
-            enterpriseRegistrationDao.updateRegistrationCurrentStep({
-              registrationUuid,
-              currentStep: 4
-            }),
-            enterpriseRegistrationStepDao.updateRegistrationStep({
-              registrationUuid,
-              status: 100,
-              statusText: '已完成',
-              step: 3
-            }),
-            enterpriseRegistrationStepDao.updateRegistrationStep({
-              registrationUuid,
-              status: 1,
-              statusText: '未选择测试管理员',
-              step: 4
-            }),
-            enterpriseRegistrationStepDao.updateRegistrationStep({
-              registrationUuid,
-              status: 100,
-              statusText: '已完成',
-              step: 3
-            })
-          ]);
-
-          return true;
+          // 财务通过之后
+          if (steps[2].status === 4) {
+            return await Promise.all([
+              enterpriseRegistrationDao.updateRegistrationCurrentStep({
+                registrationUuid,
+                currentStep: 4
+              }),
+              enterpriseRegistrationStepDao.updateRegistrationStep({
+                registrationUuid,
+                status: 100,
+                statusText: '已完成',
+                step: 3
+              }),
+              enterpriseRegistrationStepDao.updateRegistrationStep({
+                registrationUuid,
+                status: 1,
+                statusText: '未选择测试管理员',
+                step: 4
+              }),
+              enterpriseRegistrationStepDao.updateRegistrationStep({
+                registrationUuid,
+                status: 100,
+                statusText: '已完成',
+                step: 3
+              })
+            ]);
+          }
         }
       }
+    } catch (error) {
+      throw error;
     }
-
-    return false;
   },
 
   downloadProduct: async registrationUuid => {

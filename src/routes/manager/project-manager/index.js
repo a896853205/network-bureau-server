@@ -476,6 +476,7 @@ router.get('/downloadContractWord', async ctx => {
       data
     });
   } catch (error) {
+    console.error(error);
     ctx.throw(RESPONSE_CODE.error, '目前状态不可以生成合同或出现错误');
   }
 });
@@ -496,6 +497,7 @@ router.post('/saveManagerContractUrl', async (ctx, next) => {
       status: RESPONSE_CODE.success
     });
   } catch (error) {
+    console.error(error);
     ctx.throw(RESPONSE_CODE.error, '保存失败');
   }
 });
@@ -504,6 +506,7 @@ router.post('/saveManagerContractUrl', async (ctx, next) => {
  * 更新交付汇款的状态
  */
 router.post('/updateFinanceManager', async (ctx, next) => {
+  try{
   const { registrationUuid, financeManagerUuid } = ctx.state.param;
 
   const data = await service.updateFinanceManager({
@@ -511,16 +514,14 @@ router.post('/updateFinanceManager', async (ctx, next) => {
     financeManagerUuid
   });
 
-  if (data) {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data,
       msg: '已选择负责的财务人员'
     });
-  } else {
-    ctx.body = new Res({
-      status: RESPONSE_CODE.error
-    });
+  } catch(error) {
+    console.error(error);
+    ctx.throw(RESPONSE_CODE.error, '更新失败');
   }
 });
 
@@ -528,23 +529,22 @@ router.post('/updateFinanceManager', async (ctx, next) => {
  * 更新技术负责人
  */
 router.post('/arrangeTechLeaderManager', async (ctx, next) => {
-  const { registrationUuid, technicalManagerUuid } = ctx.state.param;
+  try {
+    const { registrationUuid, technicalManagerUuid } = ctx.state.param;
 
-  const data = await service.arrangeTechLeaderManager({
-    registrationUuid,
-    technicalManagerUuid
-  });
+    const data = await service.arrangeTechLeaderManager({
+      registrationUuid,
+      technicalManagerUuid
+    });
 
-  if (data) {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data,
       msg: '已选择技术负责人'
     });
-  } else {
-    ctx.body = new Res({
-      status: RESPONSE_CODE.error
-    });
+  } catch {
+    console.error(error);
+    ctx.throw(RESPONSE_CODE.error, '查询失败');
   }
 });
 

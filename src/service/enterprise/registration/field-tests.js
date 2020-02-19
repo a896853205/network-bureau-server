@@ -13,9 +13,7 @@ export default {
   /**
    * 查询技术负责人
    */
-  queryTechnicalManager: async page => {
-    return await managerUserDao.queryTechnicalManagerUser(page);
-  },
+  queryTechnicalManager: page => managerUserDao.queryTechnicalManagerUser(page),
 
   /**
    * 查询登记测试技术人员的uuid
@@ -54,12 +52,9 @@ export default {
   /**
    * 安排技术负责人
    */
-  arrangeTechLeaderManager: async ({
-    registrationUuid,
-    technicalManagerUuid
-  }) => {
+  arrangeTechLeaderManager: ({ registrationUuid, technicalManagerUuid }) => {
     try {
-      await db.transaction(transaction => {
+      return db.transaction(transaction => {
         return Promise.all([
           enterpriseRegistrationStepDao.updateRegistrationStep({
             registrationUuid,
@@ -81,41 +76,40 @@ export default {
           })
         ]);
       });
-
-      return true;
     } catch (error) {
-      console.error(error);
-      return false;
+      throw error;
     }
   },
   /**
    * 查询待分配技术负责人员的企业登记测试列表
    */
   queryRegistrationNeedAssigned: async ({ page, managerUuid }) => {
-    const registrationList = await enterpriseRegistrationStepDao.queryRegistrationNeedAssignedByManagerUuid(
-      managerUuid
-    );
+    try {
+      const registrationList = await enterpriseRegistrationStepDao.queryRegistrationNeedAssignedByManagerUuid(
+        managerUuid
+      );
 
-    const uuidList = registrationList.map(item => item.uuid);
-    return await enterpriseRegistrationDao.queryRegistrationNeedAssigned({
-      page,
-      uuidList
-    });
+      const uuidList = registrationList.map(item => item.uuid);
+      return await enterpriseRegistrationDao.queryRegistrationNeedAssigned({
+        page,
+        uuidList
+      });
+    } catch (error) {
+      throw error;
+    }
   },
 
   /**
    * 查询技术人员
    */
-  queryTechManager: async page => {
-    return await managerUserDao.queryTechManagerUser(page);
-  },
+  queryTechManager: page => managerUserDao.queryTechManagerUser(page),
 
   /**
    * 安排技术人员
    */
-  arrangeTechManager: async ({ registrationUuid, techManagerUuid }) => {
+  arrangeTechManager: ({ registrationUuid, techManagerUuid }) => {
     try {
-      await db.transaction(transaction => {
+      return db.transaction(transaction => {
         return Promise.all([
           enterpriseRegistrationStepDao.updateRegistrationStep({
             registrationUuid,
@@ -131,31 +125,34 @@ export default {
           })
         ]);
       });
-      return true;
     } catch (error) {
-      console.error(error);
-      return false;
+      throw error;
     }
   },
   /**
    * 查询登记测试企业信息(文件审核页面)
    */
   selectEnterpriseInfoByFileDownloadRegistrationUuid: async registrationUuid => {
-    const uuid = await enterpriseRegistrationDao.selectEnterpriseInfoByRegistrationUuid(
-      registrationUuid
-    );
+    try {
+      const uuid = await enterpriseRegistrationDao.selectEnterpriseInfoByRegistrationUuid(
+        registrationUuid
+      );
 
-    return await enterpriseUserDao.selectEnterpriseByUuid(uuid.enterpriseUuid);
+      return await enterpriseUserDao.selectEnterpriseByUuid(
+        uuid.enterpriseUuid
+      );
+    } catch (error) {
+      throw error;
+    }
   },
 
   /**
    * 根据RegistrationUuid查询5个管理员信息
    */
-  selectRegistrationManagerUuid: async registrationUuid => {
-    return (registrationManagerUuidList = await enterpriseRegistrationDao.selectRegistrationByRegistrationUuid(
+  selectRegistrationManagerUuid: registrationUuid =>
+    enterpriseRegistrationDao.selectRegistrationByRegistrationUuid(
       registrationUuid
-    ));
-  },
+    ),
 
   /**
    * 根据RegistrationUuid查询5个管理员信息

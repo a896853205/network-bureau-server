@@ -6,52 +6,56 @@ export default {
   /**
    * 获取企业信息通过UUID
    */
-  getEnterpriseByUuid: async uuid => {
-    const enterpriseUser = await enterpriseUserDao.selectEnterpriseByUuid(uuid);
-
-    if (!enterpriseUser) {
-      throw Error('未查询到此企业');
-    } else {
-      return enterpriseUser;
+  getEnterpriseByUuid: uuid => {
+    try {
+      return enterpriseUserDao.selectEnterpriseByUuid(uuid);
+    } catch (error) {
+      throw new Error('未查询到此企业');
     }
   },
   /**
    * 根据企业的用户名和密码判断之后生成token
    */
   getEnterpriseToken: async (code, password) => {
-    let enterprise = await enterpriseUserDao.selectEnterpriseUserByCode(code);
+    try {
+      let enterprise = await enterpriseUserDao.selectEnterpriseUserByCode(code);
 
-    if (!enterprise || enterprise.password !== password) {
-      return false;
+      if (!enterprise || enterprise.password !== password) {
+        return false;
+      }
+
+      delete enterprise.password;
+
+      return {
+        token: webToken.parseToken({
+          uuid: enterprise.uuid,
+          auth: 'enterprise'
+        }),
+        enterprise
+      };
+    } catch (error) {
+      throw error;
     }
-
-    delete enterprise.password;
-
-    return {
-      token: webToken.parseToken({
-        uuid: enterprise.uuid,
-        auth: 'enterprise'
-      }),
-      enterprise
-    };
   },
 
   /**
    * 企业注册
    */
   createNewEnterprise: async ({ code, name, password, phone }) => {
-    if (await enterpriseUserDao.selectEnterpriseByCode(code)) {
-      return false;
+    try {
+      if (await enterpriseUserDao.selectEnterpriseByCode(code)) {
+        throw new Error('社会统一信用代码已注册');
+      }
+
+      // 需要表单认证
+      return enterpriseUserDao.createNewEnterprise({
+        name,
+        password,
+        phone,
+        code
+      });
+    } catch (error) {
+      throw error;
     }
-
-    // 需要表单认证
-    await enterpriseUserDao.createNewEnterprise({
-      name,
-      password,
-      phone,
-      code
-    });
-
-    return true;
   }
 };
