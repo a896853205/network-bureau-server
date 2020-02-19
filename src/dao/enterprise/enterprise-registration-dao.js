@@ -3,6 +3,8 @@ import enterpriseRegistrationContract from '../../db/models/enterprise-registrat
 import enterpriseRegistration from '../../db/models/enterprise-registration';
 import enterpriseRegistrationStep from '../../db/models/enterprise-registration-step';
 import enterpriseRegistrationBasic from '../../db/models/enterprise-registration-basic';
+import enterpriseRegistrationSpecimen from '../../db/models/enterprise-registration-specimen';
+import enterpriseRegistrationApply from '../../db/models/enterprise-registration-apply';
 
 import { REGISTRATION_PAGE_SIZE } from '../../config/system-config';
 
@@ -211,6 +213,16 @@ export default {
           attributes: ['statusText', 'status'],
           where: { step: 4 },
           as: 'enterpriseRegistrationStep'
+        },
+        {
+          model: enterpriseRegistrationSpecimen,
+          attributes: ['managerStatus'],
+          as: 'enterpriseRegistrationSpecimen'
+        },
+        {
+          model: enterpriseRegistrationApply,
+          attributes: ['managerStatus'],
+          as: 'enterpriseRegistrationApply'
         }
       ]
     });

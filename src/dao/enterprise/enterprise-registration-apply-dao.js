@@ -57,5 +57,42 @@ export default {
       {
         where: { uuid: registrationUuid }
       }
+    ),
+
+  /**
+   * 设置现场测试申请表的管理员状态
+   */
+  updateApplyManagerStatus: ({
+    registrationUuid,
+    managerStatus,
+    transaction = null
+  }) =>
+    enterpriseRegistrationApply.update(
+      { managerStatus },
+      {
+        where: { uuid: registrationUuid },
+        transaction
+      }
+    ),
+  /**
+   * 设置现场测试申请表的管理员uuid
+   */
+  updateApplyManagerUuid: ({
+    registrationUuid,
+    techLeaderManagerUuid,
+    techManagerUuid,
+    certifierManagerUuid,
+    transaction = null
+  }) =>
+    enterpriseRegistrationApply.update(
+      {
+        techLeaderManagerUuid,
+        techManagerUuid,
+        certifierManagerUuid
+      },
+      {
+        where: { uuid: registrationUuid },
+        transaction
+      }
     )
 };

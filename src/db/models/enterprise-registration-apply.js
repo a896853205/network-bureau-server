@@ -7,12 +7,14 @@ const { db } = require('../db-connect');
 export default db.define('enterprise_registration_apply', {
   id: {
     type: Sequelize.BIGINT(11),
-    primaryKey: true,
     allowNull: false,
     unique: true,
     autoIncrement: true
   },
-  uuid: Sequelize.STRING(36), // 这个uuid要与enterprise-registration的uuid一致
+  uuid: {
+    primaryKey: true,
+    type: Sequelize.STRING(36)
+  }, // 这个uuid要与enterprise-registration的uuid一致
   status: Sequelize.BIGINT(3),
   statusText: Sequelize.STRING(32),
   step: Sequelize.INTEGER,
@@ -24,7 +26,7 @@ export default db.define('enterprise_registration_apply', {
   techLeaderManagerDate: Sequelize.DATE,
   certifierManagerUuid: Sequelize.STRING(36),
   certifierManagerDate: Sequelize.DATE,
-  managerStatus: Sequelize.BIGINT(3), 
+  managerStatus: Sequelize.BIGINT(3),
   // -1 技术人员审查企业提交信息不合格
   // -2 项目管理员审查技术人员不合格
   // -3 批准人审查项目管理人员不合格
@@ -32,6 +34,6 @@ export default db.define('enterprise_registration_apply', {
   // 2 待项目管理员确认
   // 3 待批准人确认
   // 100 已完成
-  failManagerText: Sequelize.STRING(100),
+  failManagerText: Sequelize.STRING(100)
   // 审查表时候错误信息
 });

@@ -72,5 +72,39 @@ export default {
       {
         where: { uuid: registrationUuid }
       }
+    ),
+  /**
+   * 设置样品文档集的管理员状态
+   */
+  updateSpecimenManagerStatus: ({
+    registrationUuid,
+    managerStatus,
+    transaction = null
+  }) =>
+    enterpriseRegistrationSpecimen.update(
+      { managerStatus },
+      {
+        where: { uuid: registrationUuid },
+        transaction
+      }
+    ),
+  /**
+   * 设置样品文档集的管理员uuid
+   */
+  updateSpecimenManagerUuid: ({
+    registrationUuid,
+    projectManagerUuid,
+    techManagerUuid,
+    transaction = null
+  }) =>
+    enterpriseRegistrationSpecimen.update(
+      {
+        projectManagerUuid,
+        techManagerUuid
+      },
+      {
+        where: { uuid: registrationUuid },
+        transaction
+      }
     )
 };

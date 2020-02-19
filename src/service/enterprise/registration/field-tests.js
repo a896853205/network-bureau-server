@@ -5,6 +5,8 @@ import managerUserDao from '../../../dao/manager/manager-user-dao';
 import enterpriseRegistrationDao from '../../../dao/enterprise/enterprise-registration-dao';
 import enterpriseRegistrationStepDao from '../../../dao/enterprise/enterprise-registration-step-dao';
 import enterpriseUserDao from '../../../dao/enterprise/enterprise-user-dao';
+import enterpriseRegistrationSpecimenDao from '../../../dao/enterprise/enterprise-registration-specimen-dao';
+import enterpriseRegistrationApplyDao from '../../../dao/enterprise/enterprise-registration-apply-dao';
 
 // oss
 import client from '../../../util/oss';
@@ -73,6 +75,11 @@ export default {
             registrationUuid,
             techLeaderManagerUuid: technicalManagerUuid,
             transaction
+          }),
+          enterpriseRegistrationApplyDao.updateApplyManagerUuid({
+            registrationUuid,
+            techLeaderManagerUuid: technicalManagerUuid,
+            transaction
           })
         ]);
       });
@@ -119,6 +126,26 @@ export default {
             transaction
           }),
           enterpriseRegistrationDao.updateRegistrationTechManagerUuid({
+            registrationUuid,
+            techManagerUuid,
+            transaction
+          }),
+          enterpriseRegistrationApplyDao.updateApplyManagerStatus({
+            registrationUuid,
+            managerStatus: 1,
+            transaction
+          }),
+          enterpriseRegistrationApplyDao.updateApplyManagerUuid({
+            registrationUuid,
+            techManagerUuid,
+            transaction
+          }),
+          enterpriseRegistrationSpecimenDao.updateSpecimenManagerStatus({
+            registrationUuid,
+            managerStatus: 1,
+            transaction
+          }),
+          enterpriseRegistrationSpecimenDao.updateSpecimenManagerUuid({
             registrationUuid,
             techManagerUuid,
             transaction
