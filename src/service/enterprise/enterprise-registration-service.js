@@ -503,7 +503,6 @@ export default {
         throw new Error('目前状态不可以生成合同');
       }
     } catch (error) {
-      console.error(error);
       throw error;
     }
   },
