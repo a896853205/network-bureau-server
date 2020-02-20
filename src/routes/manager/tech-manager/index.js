@@ -155,4 +155,46 @@ router.post('/setSpecimenManagerFailStatus', async (ctx, next) => {
   }
 });
 
+/**
+ * 查询登记测试信息(单独)
+ */
+router.get('/selectTechRegistration', async (ctx, next) => {
+  try {
+    const { registrationUuid } = ctx.state.param;
+
+    const data = await service.selectRegistrationByRegistrationUuid(
+      registrationUuid
+    );
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } catch (error) {
+    console.error(error);
+    ctx.throw(RESPONSE_CODE.error, '查询失败');
+  }
+});
+
+/**
+ * 根据registrationUuid查询具体步骤
+ */
+router.get('/queryTechEnterpriseRegistrationStep', async (ctx, next) => {
+  try {
+    const { registrationUuid } = ctx.state.param;
+
+    const data = await service.queryEnterpriseRegistrationStepByRegistrationUuid(
+      registrationUuid
+    );
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } catch (error) {
+    console.error(error);
+    ctx.throw(RESPONSE_CODE.error, '查询失败');
+  }
+});
+
 export default router;
