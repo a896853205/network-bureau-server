@@ -7,6 +7,9 @@ import client from '../../../util/oss';
 import enterpriseRegistrationContractDao from '../../../dao/enterprise/enterprise-registration-contract-dao';
 import enterpriseRegistrationStepDao from '../../../dao/enterprise/enterprise-registration-step-dao';
 
+// 工具类
+import CustomError from '../../../util/custom-error';
+
 export default {
   /**
    * 查询评测合同的基本信息
@@ -84,7 +87,7 @@ export default {
       } else if (filePosition === 'production') {
         productionUrl = managerUrl;
       } else {
-        throw new Error('oss文件路径错误');
+        throw new CustomError('oss文件路径错误');
       }
 
       await db.transaction(transaction => {
@@ -132,7 +135,7 @@ export default {
       } else if (filePosition === 'production') {
         productionUrl = enterpriseUrl;
       } else {
-        throw new Error('oss文件路径错误');
+        throw new CustomError('oss文件路径错误');
       }
 
       await db.transaction(transaction => {

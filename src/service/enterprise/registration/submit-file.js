@@ -11,6 +11,9 @@ import enterpriseRegistrationDocumentDao from '../../../dao/enterprise/enterpris
 import enterpriseRegistrationProductDescriptionDao from '../../../dao/enterprise/enterprise-registration-product-description-dao';
 import enterpriseRegistrationProductDao from '../../../dao/enterprise/enterprise-registration-product-dao';
 
+// 工具类
+import CustomError from '../../../util/custom-error';
+
 export default {
   /**
    * 查询企业用户登记测试八个状态通过uuid
@@ -218,10 +221,10 @@ export default {
       } else if (filePosition === 'production') {
         productionUrl = copyrightUrl;
       } else {
-        throw new Error('oss文件路径错误');
+        throw new CustomError('oss文件路径错误');
       }
 
-      return await enterpriseRegistrationCopyrightDao.updateRegistrationCopyright(
+      await enterpriseRegistrationCopyrightDao.updateRegistrationCopyright(
         {
           registrationUuid,
           copyrightUrl: productionUrl,
@@ -231,8 +234,7 @@ export default {
         }
       );
     } catch (error) {
-      console.log(error);
-      return false;
+      throw error;
     }
   },
 
@@ -269,7 +271,7 @@ export default {
       } else if (filePosition === 'production') {
         productionUrl = documentUrl;
       } else {
-        throw Error('oss文件路径错误');
+        throw new CustomError('oss文件路径错误');
       }
 
       await enterpriseRegistrationDocumentDao.updateRegistrationDocument({
@@ -279,8 +281,6 @@ export default {
         statusText: '待审核',
         failText: ''
       });
-
-      return true;
     } catch (error) {
       throw error;
     }
@@ -321,10 +321,10 @@ export default {
       } else if (filePosition === 'production') {
         productionUrl = productDescriptionUrl;
       } else {
-        throw Error('oss文件路径错误');
+        throw new CustomError('oss文件路径错误');
       }
 
-      return await enterpriseRegistrationProductDescriptionDao.updateRegistrationProductDescription(
+      await enterpriseRegistrationProductDescriptionDao.updateRegistrationProductDescription(
         {
           registrationUuid,
           productDescriptionUrl: productionUrl,
@@ -370,10 +370,10 @@ export default {
       } else if (filePosition === 'production') {
         productionUrl = productUrl;
       } else {
-        throw Error('oss文件路径错误');
+        throw new CustomError('oss文件路径错误');
       }
 
-      return await enterpriseRegistrationProductDao.updateRegistrationProduct({
+      await enterpriseRegistrationProductDao.updateRegistrationProduct({
         registrationUuid,
         productUrl: productionUrl,
         status: 1,
@@ -408,12 +408,12 @@ export default {
       };
 
       const getStatusDao = type => {
-        if (!statusDao[type]) throw new Error('错误类型');
+        if (!statusDao[type]) throw new CustomError('错误类型');
 
         return statusDao[type];
       };
 
-      return await getStatusDao(type)({
+      await getStatusDao(type)({
         registrationUuid,
         status: isPass ? 100 : -1,
         failText,
