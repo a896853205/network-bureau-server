@@ -602,4 +602,80 @@ router.get('/selectRegistrationTechLeaderManagerUuid', async (ctx, next) => {
   }
 });
 
+/**
+ * 项目管理员查询现场测试申请表的基本信息
+ */
+router.get('/getProjectRegistrationTestApply', async (ctx, next) => {
+  try {
+    const { registrationUuid } = ctx.state.param;
+
+    const data = await service.getRegistrationTestApply(registrationUuid);
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+
+/**
+ * 项目管理员查询样品文档集的基本信息
+ */
+router.get('/getProjectRegistrationTestSpecimen', async (ctx, next) => {
+  try {
+    const { registrationUuid } = ctx.state.param;
+
+    const data = await service.getRegistrationTestSpecimen(registrationUuid);
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 项目管理员设置样品登记表审核通过状态
+ */
+router.post('/setProjectSpecimenManagerStatus', async (ctx, next) => {
+  try {
+    const { registrationUuid } = ctx.state.param;
+
+    const res = await service.setProjectSpecimenManagerStatus(registrationUuid);
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data: res
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 项目管理员设置样品登记表审核不通过状态
+ */
+router.post('/setProjectSpecimenManagerFailStatus', async (ctx, next) => {
+  try {
+    const { registrationUuid, failManagerText } = ctx.state.param;
+
+    const res = await service.setProjectSpecimenManagerFailStatus({
+      registrationUuid,
+      failManagerText
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data: res
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
 export default router;
