@@ -38,7 +38,7 @@ router.get('/quaryRegistratiomNeedFieldTest', async (ctx, next) => {
 /**
  * 技术人员查询样品文档集的基本信息
  */
-router.get('/getRegistrationTestSpecimen', async (ctx, next) => {
+router.get('/getTechRegistrationTestSpecimen', async (ctx, next) => {
   try {
     const { registrationUuid } = ctx.state.param;
 
@@ -57,7 +57,7 @@ router.get('/getRegistrationTestSpecimen', async (ctx, next) => {
 /**
  * 技术人员查询现场测试申请表的基本信息
  */
-router.get('/getRegistrationTestApply', async (ctx, next) => {
+router.get('/getTechRegistrationTestApply', async (ctx, next) => {
   try {
     const { registrationUuid } = ctx.state.param;
 
@@ -76,11 +76,11 @@ router.get('/getRegistrationTestApply', async (ctx, next) => {
 /**
  * 设置现场申请表审核通过状态
  */
-router.post('/setApplyManagerStatus', async (ctx, next) => {
+router.post('/setTechApplyManagerStatus', async (ctx, next) => {
   try {
     const { registrationUuid } = ctx.state.param;
 
-    const res = await service.setApplyManagerStatus(registrationUuid);
+    const res = await service.setTechApplyManagerStatus(registrationUuid);
 
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
@@ -95,11 +95,11 @@ router.post('/setApplyManagerStatus', async (ctx, next) => {
 /**
  * 设置现场申请表审核不通过状态
  */
-router.post('/setApplyManagerFailStatus', async (ctx, next) => {
+router.post('/setTechApplyManagerFailStatus', async (ctx, next) => {
   try {
     const { registrationUuid, failManagerText } = ctx.state.param;
 
-    const res = await service.setApplyManagerFailStatus({
+    const res = await service.setTechApplyManagerFailStatus({
       registrationUuid,
       failManagerText
     });
@@ -117,11 +117,11 @@ router.post('/setApplyManagerFailStatus', async (ctx, next) => {
 /**
  * 设置样品登记表审核通过状态
  */
-router.post('/setSpecimenManagerStatus', async (ctx, next) => {
+router.post('/setTechSpecimenManagerStatus', async (ctx, next) => {
   try {
     const { registrationUuid } = ctx.state.param;
 
-    const res = await service.setSpecimenManagerStatus(registrationUuid);
+    const res = await service.setTechSpecimenManagerStatus(registrationUuid);
 
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
@@ -136,11 +136,11 @@ router.post('/setSpecimenManagerStatus', async (ctx, next) => {
 /**
  * 设置样品登记表审核不通过状态
  */
-router.post('/setSpecimenManagerFailStatus', async (ctx, next) => {
+router.post('/setTechSpecimenManagerFailStatus', async (ctx, next) => {
   try {
     const { registrationUuid, failManagerText } = ctx.state.param;
 
-    const res = await service.setSpecimenManagerFailStatus({
+    const res = await service.setTechSpecimenManagerFailStatus({
       registrationUuid,
       failManagerText
     });
