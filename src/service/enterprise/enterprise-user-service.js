@@ -8,13 +8,7 @@ export default {
   /**
    * 获取企业信息通过UUID
    */
-  getEnterpriseByUuid: uuid => {
-    try {
-      return enterpriseUserDao.selectEnterpriseByUuid(uuid);
-    } catch (error) {
-      throw new CustomError('未查询到此企业');
-    }
-  },
+  getEnterpriseByUuid: uuid => enterpriseUserDao.selectEnterpriseByUuid(uuid),
   /**
    * 根据企业的用户名和密码判断之后生成token
    */

@@ -35,6 +35,9 @@ import path from 'path';
 // 时间
 import moment from 'moment';
 
+// 工具类
+import CustomError from '../../util/custom-error';
+
 export default {
   ...fieldTest,
   ...submitFile,
@@ -63,7 +66,7 @@ export default {
       if (
         await enterpriseRegistrationDao.selectEnterpriseRegistrationByName(name)
       ) {
-        throw new Error('登记测试名重复');
+        throw new CustomError('登记测试名重复');
       } else {
         // 查询一个项目管理员
         const projectManager = await managerUserDao.selectManagerUserByRole(10);
@@ -268,7 +271,7 @@ export default {
             enterpriseRegistrationApplyStatus.status === 100
           ) {
             // 改进度和steps表
-            return await Promise.all([
+            await Promise.all([
               enterpriseRegistrationDao.updateRegistrationCurrentStep({
                 registrationUuid,
                 currentStep: 2
@@ -369,8 +372,7 @@ export default {
 
       return await fileService.getFileUrl(url);
     } catch (error) {
-      console.error('下载登记测试的产品介质错误');
-      throw new Error(error);
+      throw error;
     }
   },
 
@@ -384,8 +386,7 @@ export default {
 
       return await fileService.getFileUrl(url);
     } catch (error) {
-      console.error('下载登记测试的产品说明错误');
-      throw new Error(error);
+      throw error;
     }
   },
 
@@ -399,8 +400,7 @@ export default {
 
       return await fileService.getFileUrl(url);
     } catch (error) {
-      console.error('下载登记测试的用户文档集错误');
-      throw new Error(error);
+      throw error;
     }
   },
 
@@ -414,8 +414,7 @@ export default {
 
       return await fileService.getFileUrl(url);
     } catch (error) {
-      console.error('下载登记测试的软件著作权错误');
-      throw new Error(error);
+      throw error;
     }
   },
 
@@ -500,7 +499,7 @@ export default {
 
         return await fileService.uploadDownloadBufFile(buf, 'registration');
       } else {
-        throw new Error('目前状态不可以生成合同');
+        throw new CustomError('目前状态不可以生成合同');
       }
     } catch (error) {
       throw error;
@@ -518,7 +517,6 @@ export default {
 
       return await fileService.getFileUrl(enterpriseUrl);
     } catch (error) {
-      console.error(error);
       throw error;
     }
   }

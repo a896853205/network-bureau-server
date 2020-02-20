@@ -1,5 +1,7 @@
 import managerUserDao from '../../dao/manager/manager-user-dao';
 
+// 工具类
+import CustomError from '../../util/custom-error';
 import webToken from '../../util/token';
 
 // oss
@@ -20,7 +22,7 @@ export default {
       );
 
       if (!managerUser) {
-        throw new Error('未查询到此管理员');
+        throw new CustomError('未查询到此管理员');
       }
       headPreviewUrl = await client.signatureUrl(
         managerUser.headPortraitUrl || ''
@@ -31,7 +33,7 @@ export default {
 
       return managerUser;
     } catch (error) {
-      throw new Error(error);
+      throw error;
     }
   },
 
@@ -45,7 +47,7 @@ export default {
       );
 
       if (!manager || manager.password !== password) {
-        throw new Error('账号或密码错误');
+        throw new CustomError('账号或密码错误');
       }
 
       return {
@@ -73,7 +75,7 @@ export default {
   ) => {
     try {
       if (await managerUserDao.selectManagerUserByUsername(username)) {
-        throw new Error('管理员账号已存在');
+        throw new CustomError('管理员账号已存在');
       }
       let productionUrl = '';
       // 将temp的文件copy到production中
@@ -87,7 +89,7 @@ export default {
       } else if (filePosition === 'production') {
         productionUrl = headPortraitUrl;
       } else {
-        throw Error('oss文件路径错误');
+        throw new CustomError('oss文件路径错误');
       }
 
       await managerUserDao.createNewManagerUser(
@@ -98,8 +100,6 @@ export default {
         role,
         productionUrl
       );
-
-      return true;
     } catch (error) {
       throw error;
     }
@@ -108,13 +108,7 @@ export default {
   /**
    * 删除管理员账号
    */
-  deleteManager: managerUuid => {
-    try {
-      return managerUserDao.deleteManager(managerUuid);
-    } catch (error) {
-      throw new Error('删除失败');
-    }
-  },
+  deleteManager: managerUuid => managerUserDao.deleteManager(managerUuid),
 
   /**
    * 更改管理员账号
@@ -146,21 +140,16 @@ export default {
       } else if (filePosition === 'production') {
         productionUrl = headPortraitUrl;
       } else {
-        throw Error('oss文件路径错误');
+        throw new CustomError('oss文件路径错误');
       }
 
-      if (
-        await managerUserDao.updeteManager(
-          managerUuid,
-          phone,
-          password,
-          name,
-          productionUrl
-        )
-      ) {
-        return true;
-      }
-      throw error;
+      await managerUserDao.updeteManager(
+        managerUuid,
+        phone,
+        password,
+        name,
+        productionUrl
+      );
     } catch (error) {
       throw error;
     }
@@ -173,7 +162,7 @@ export default {
     try {
       return managerUserDao.queryManagerUser(page);
     } catch (error) {
-      throw new Error('查询所有管理员账号错误');
+      throw error;
     }
   },
 

@@ -20,25 +20,13 @@ router.post('/uploadFile', upload.single('file'), async (ctx, next) => {
 
     const data = await service.uploadFile(param, folderName);
 
-    if (data === -1) {
-      ctx.body = new Res({
-        status: RESPONSE_CODE.error,
-        msg: '图片格式必须为jpg,jpeg,png'
-      });
-    } else if (data === -2) {
-      ctx.body = new Res({
-        status: RESPONSE_CODE.error,
-        msg: '文件大小必须小于10MB'
-      });
-    } else {
-      ctx.body = new Res({
-        data,
-        status: RESPONSE_CODE.success,
-        msg: '文件上传成功'
-      });
-    }
+    ctx.body = new Res({
+      data,
+      status: RESPONSE_CODE.success,
+      msg: '文件上传成功'
+    });
   } catch (error) {
-    ctx.throw(RESPONSE_CODE.error, '上传错误');
+    throw error;
   }
 });
 
@@ -49,25 +37,13 @@ router.post('/uploadWordFile', upload.single('file'), async (ctx, next) => {
 
     const data = await service.uploadWordFile(param, folderName);
 
-    if (data === -1) {
-      ctx.body = new Res({
-        status: RESPONSE_CODE.error,
-        msg: '文件格式必须为doc,docx,pdf'
-      });
-    } else if (data === -2) {
-      ctx.body = new Res({
-        status: RESPONSE_CODE.error,
-        msg: '文件大小必须小于10MB'
-      });
-    } else {
-      ctx.body = new Res({
-        data,
-        status: RESPONSE_CODE.success,
-        msg: '文件上传成功'
-      });
-    }
+    ctx.body = new Res({
+      data,
+      status: RESPONSE_CODE.success,
+      msg: '文件上传成功'
+    });
   } catch (error) {
-    ctx.throw(RESPONSE_CODE.error, '上传错误');
+    throw error;
   }
 });
 
@@ -78,25 +54,13 @@ router.post('/uploadPdfFile', upload.single('file'), async (ctx, next) => {
 
     const data = await service.uploadPdfFile(param, folderName);
 
-    if (data === -1) {
-      ctx.body = new Res({
-        status: RESPONSE_CODE.error,
-        msg: '文件格式必须为pdf'
-      });
-    } else if (data === -2) {
-      ctx.body = new Res({
-        status: RESPONSE_CODE.error,
-        msg: '文件大小必须小于10MB'
-      });
-    } else {
-      ctx.body = new Res({
-        data,
-        status: RESPONSE_CODE.success,
-        msg: '文件上传成功'
-      });
-    }
+    ctx.body = new Res({
+      data,
+      status: RESPONSE_CODE.success,
+      msg: '文件上传成功'
+    });
   } catch (error) {
-    ctx.throw(RESPONSE_CODE.error, '上传错误');
+    throw error;
   }
 });
 
@@ -107,25 +71,13 @@ router.post('/uploadZipFile', upload.single('file'), async (ctx, next) => {
 
     const data = await service.uploadZipFile(param, folderName);
 
-    if (data === -1) {
-      ctx.body = new Res({
-        status: RESPONSE_CODE.error,
-        msg: '文件格式必须为zip,rar'
-      });
-    } else if (data === -2) {
-      ctx.body = new Res({
-        status: RESPONSE_CODE.error,
-        msg: '文件大小必须小于10GB'
-      });
-    } else {
-      ctx.body = new Res({
-        data,
-        status: RESPONSE_CODE.success,
-        msg: '文件上传成功'
-      });
-    }
+    ctx.body = new Res({
+      data,
+      status: RESPONSE_CODE.success,
+      msg: '文件上传成功'
+    });
   } catch (error) {
-    ctx.throw(RESPONSE_CODE.error, '上传错误');
+    throw error;
   }
 });
 
@@ -140,7 +92,7 @@ router.get('/getFileUrl', async (ctx, next) => {
       status: RESPONSE_CODE.success
     });
   } catch (error) {
-    ctx.throw(RESPONSE_CODE.error, '获取文件错误');
+    throw error;
   }
 });
 

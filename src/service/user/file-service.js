@@ -1,6 +1,9 @@
 // oss
 import client from '../../util/oss';
 
+// 工具类
+import CustomError from '../../util/custom-error';
+
 // 算法
 import uuid from 'uuid';
 
@@ -23,13 +26,13 @@ export default {
 
       // 判断后缀名是否非法
       if (!verifyExtensionName(['jpg', 'jpeg', 'png'], extensionName)) {
-        return -1;
+        throw new CustomError('图片格式必须为jpg,jpeg,png');
       }
 
       // 判断大小是否符合
       if (file.size > 1024 * 1024 * 10) {
         // 10MB
-        return -2;
+        throw new CustomError('文件大小必须小于10MB');
       }
 
       // 上传到oss
@@ -55,13 +58,13 @@ export default {
 
       // 判断后缀名是否非法
       if (!verifyExtensionName(['doc', 'docx', 'pdf'], extensionName)) {
-        return -1;
+        throw new CustomError('文件格式必须为doc,docx,pdf');
       }
 
       // 判断大小是否符合
       if (file.size > 1024 * 1024 * 10) {
         // 10MB
-        return -2;
+        throw new CustomError('文件大小必须小于10MB');
       }
 
       // 上传到oss
@@ -87,13 +90,13 @@ export default {
 
       // 判断后缀名是否非法
       if (!verifyExtensionName(['pdf'], extensionName)) {
-        return -1;
+        throw new CustomError('文件格式必须为pdf');
       }
 
       // 判断大小是否符合
       if (file.size > 1024 * 1024 * 10) {
         // 10MB
-        return -2;
+        throw new CustomError('文件大小必须小于10MB');
       }
 
       // 上传到oss
@@ -119,13 +122,13 @@ export default {
 
       // 判断后缀名是否非法
       if (!verifyExtensionName(['zip', 'rar'], extensionName)) {
-        return -1;
+        throw new CustomError('文件格式必须为zip, rar');
       }
 
       // 判断大小是否符合
       if (file.size > 1024 * 1024 * 1024 * 10) {
         // 10GB
-        return -2;
+        throw new CustomError('文件大小必须小于10GB');
       }
 
       // 上传到oss
