@@ -39,7 +39,7 @@ export default async (ctx, next) => {
 
       ctx.state.user = user;
     } catch (error) {
-      ctx.throw(RESPONSE_CODE.unauthorized, '请重新登录');
+      ctx.throw(RESPONSE_CODE.unauthorized);
     }
 
     await next();

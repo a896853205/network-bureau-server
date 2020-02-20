@@ -31,10 +31,7 @@ export default async (ctx, next) => {
       // file不控制权限获取
       await next();
     } else {
-      ctx.body = new Res({
-        status: RESPONSE_CODE.unauthorized,
-        msg: '您没有此权限'
-      });
+      ctx.throw(RESPONSE_CODE.unauthorized);
     }
   }
 };
