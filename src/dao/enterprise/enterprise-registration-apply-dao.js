@@ -58,27 +58,11 @@ export default {
         where: { uuid: registrationUuid }
       }
     ),
-
-  /**
-   * 设置现场测试申请表的管理员状态
-   */
-  updateApplyManagerStatus: ({
-    registrationUuid,
-    managerStatus,
-    transaction = null
-  }) =>
-    enterpriseRegistrationApply.update(
-      { managerStatus },
-      {
-        where: { uuid: registrationUuid },
-        transaction
-      }
-    ),
-
+    
   /**
    * 设置现场测试申请表的状态和审核不通过理由
    */
-  updateApplyManagerFailStatus: ({
+  updateApplyManagerStatus: ({
     registrationUuid,
     failManagerText,
     managerStatus

@@ -279,34 +279,40 @@ export default {
   /**
    * 设置现场申请表审核通过状态
    */
-  setApplyManagerStatus: registrationUuid =>
-  enterpriseRegistrationApplyDao.updateApplyManagerStatus(registrationUuid),
+  setTechApplyManagerStatus: registrationUuid =>
+    enterpriseRegistrationApplyDao.updateApplyManagerStatus({
+      registrationUuid,
+      failManagerText: null,
+      managerStatus: 2
+    }),
 
   /**
    * 设置现场申请表审核不通过状态
    */
-  setApplyManagerFailStatus: ({ registrationUuid, failManagerText }) =>
-  enterpriseRegistrationApplyDao.updateApplyManagerFailStatus(
-      {
-        registrationUuid,
-        failManagerText
-      }
-    ),
+  setTechApplyManagerFailStatus: ({ registrationUuid, failManagerText }) =>
+    enterpriseRegistrationApplyDao.updateApplyManagerStatus({
+      registrationUuid,
+      failManagerText,
+      managerStatus: -1
+    }),
 
   /**
    * 设置样品登记表审核通过状态
    */
-  setSpecimenManagerStatus: registrationUuid =>
-  enterpriseRegistrationSpecimenDao.updateSpecimenManagerStatus(registrationUuid),
+  setTechSpecimenManagerStatus: registrationUuid =>
+    enterpriseRegistrationSpecimenDao.updateSpecimenManagerStatus({
+      registrationUuid,
+      failManagerText: null,
+      managerStatus: 2
+    }),
 
   /**
    * 设置样品登记表审核不通过状态
    */
-  setSpecimenManagerFailStatus: ({ registrationUuid, failManagerText }) =>
-  enterpriseRegistrationSpecimenDao.updateSpecimenManagerFailStatus(
-      {
-        registrationUuid,
-        failManagerText
-      }
-    )
+  setTechSpecimenManagerFailStatus: ({ registrationUuid, failManagerText }) =>
+    enterpriseRegistrationSpecimenDao.updateSpecimenManagerStatus({
+      registrationUuid,
+      failManagerText,
+      managerStatus: -1
+    })
 };
