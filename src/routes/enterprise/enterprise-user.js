@@ -36,7 +36,7 @@ router.post('/createNewEnterprise', async (ctx, next) => {
   try {
     let { name, password, phone, code } = ctx.state.param;
 
-    const status = await service.createNewEnterprise({
+    await service.createNewEnterprise({
       name,
       password,
       phone,
@@ -48,8 +48,7 @@ router.post('/createNewEnterprise', async (ctx, next) => {
       msg: '创建用户成功'
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '用户名已存在');
+    throw error;
   }
 });
 

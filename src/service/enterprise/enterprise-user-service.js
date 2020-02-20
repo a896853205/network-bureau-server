@@ -1,6 +1,8 @@
 import enterpriseUserDao from '../../dao/enterprise/enterprise-user-dao';
 
+// 工具
 import webToken from '../../util/token';
+import CustomError from '../../util/custom-error';
 
 export default {
   /**
@@ -10,7 +12,7 @@ export default {
     try {
       return enterpriseUserDao.selectEnterpriseByUuid(uuid);
     } catch (error) {
-      throw new Error('未查询到此企业');
+      throw new CustomError('未查询到此企业');
     }
   },
   /**
@@ -44,7 +46,7 @@ export default {
   createNewEnterprise: async ({ code, name, password, phone }) => {
     try {
       if (await enterpriseUserDao.selectEnterpriseByCode(code)) {
-        throw new Error('社会统一信用代码已注册');
+        throw new CustomError('社会统一信用代码已注册');
       }
 
       // 需要表单认证

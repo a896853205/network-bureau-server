@@ -23,6 +23,7 @@ import file from './src/routes/user/file';
 import verifyToken from './src/middle/verify-token';
 import param from './src/middle/param';
 import verifyAuth from './src/middle/verify-auth';
+import error from './src/middle/error';
 
 // 返回前台的对象
 import Result from './src/util/response';
@@ -42,6 +43,7 @@ app.use(
 );
 app.use(json());
 app.use(logger());
+app.use(error);
 app.use(require('koa-static')(__dirname + '/public'));
 app.use(verifyToken);
 app.use(verifyAuth);
