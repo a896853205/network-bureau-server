@@ -30,8 +30,7 @@ router.get('/queryRegistrationNeedAssigned', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '查询失败');
+    throw error;
   }
 });
 
@@ -49,8 +48,7 @@ router.get('/queryTechManager', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '查询失败');
+    throw error;
   }
 });
 
@@ -61,18 +59,16 @@ router.post('/arrangeTechManager', async (ctx, next) => {
   try {
     const { registrationUuid, techManagerUuid } = ctx.state.param;
 
-    const data = await service.arrangeTechManager({
+    await service.arrangeTechManager({
       registrationUuid,
       techManagerUuid
     });
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
-      data,
       msg: '已选择技术人员'
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '查询失败');
+    throw error;
   }
 });
 
@@ -92,8 +88,7 @@ router.get('/queryTechLeaderEnterpriseRegistrationStep', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '查询失败');
+    throw error;
   }
 });
 
@@ -113,8 +108,7 @@ router.get('/selectRegistrationTechManagerUuid', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '查询失败');
+    throw error;
   }
 });
 
@@ -134,8 +128,7 @@ router.get('/selectRegistrationManagerUuid', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '查询失败');
+    throw error;
   }
 });
 
@@ -153,8 +146,7 @@ router.get('/getRegistrationManagerInfo', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '查询失败');
+    throw error;
   }
 });
 
@@ -176,8 +168,7 @@ router.get(
         data
       });
     } catch (error) {
-      console.error(error);
-      ctx.throw(RESPONSE_CODE.error, '查询失败');
+      throw error;
     }
   }
 );
@@ -193,8 +184,7 @@ router.get('/downloadProduct', async ctx => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '查询失败');
+    throw error;
   }
 });
 
@@ -209,8 +199,7 @@ router.get('/downloadProductDescription', async ctx => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '查询失败');
+    throw error;
   }
 });
 
@@ -225,8 +214,7 @@ router.get('/downloadDocument', async ctx => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '查询失败');
+    throw error;
   }
 });
 
@@ -241,8 +229,7 @@ router.get('/downloadCopyright', async ctx => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '查询失败');
+    throw error;
   }
 });
 
@@ -260,7 +247,7 @@ router.get('/downloadContract', async ctx => {
       data
     });
   } catch (error) {
-    ctx.throw(RESPONSE_CODE.error, '目前状态不可以生成合同或出现错误');
+    throw error;
   }
 });
 

@@ -99,7 +99,7 @@ router.get('/selectRegistrationStatus', async ctx => {
 /**
  * 根据registrationUuid查询具体步骤
  */
-router.get('/queryEnterpriseRegistrationStep', ctx => {
+router.get('/queryEnterpriseRegistrationStep', async ctx => {
   try {
     const { registrationUuid } = ctx.state.param;
 

@@ -30,8 +30,7 @@ router.get('/quaryRegistratiomNeedFieldTest', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '查询失败');
+    throw error;
   }
 });
 
@@ -49,8 +48,7 @@ router.get('/getTechRegistrationTestSpecimen', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '查询失败');
+    throw error;
   }
 });
 
@@ -68,8 +66,7 @@ router.get('/getTechRegistrationTestApply', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '查询失败');
+    throw error;
   }
 });
 
@@ -80,15 +77,13 @@ router.post('/setTechApplyManagerStatus', async (ctx, next) => {
   try {
     const { registrationUuid } = ctx.state.param;
 
-    const res = await service.setTechApplyManagerStatus(registrationUuid);
+    await service.setTechApplyManagerStatus(registrationUuid);
 
     ctx.body = new Res({
-      status: RESPONSE_CODE.success,
-      data: res
+      status: RESPONSE_CODE.success
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '设置状态失败');
+    throw error;
   }
 });
 
@@ -99,18 +94,16 @@ router.post('/setTechApplyManagerFailStatus', async (ctx, next) => {
   try {
     const { registrationUuid, failManagerText } = ctx.state.param;
 
-    const res = await service.setTechApplyManagerFailStatus({
+    await service.setTechApplyManagerFailStatus({
       registrationUuid,
       failManagerText
     });
 
     ctx.body = new Res({
-      status: RESPONSE_CODE.success,
-      data: res
+      status: RESPONSE_CODE.success
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '设置状态失败');
+    throw error;
   }
 });
 
@@ -121,15 +114,13 @@ router.post('/setTechSpecimenManagerStatus', async (ctx, next) => {
   try {
     const { registrationUuid } = ctx.state.param;
 
-    const res = await service.setTechSpecimenManagerStatus(registrationUuid);
+    await service.setTechSpecimenManagerStatus(registrationUuid);
 
     ctx.body = new Res({
-      status: RESPONSE_CODE.success,
-      data: res
+      status: RESPONSE_CODE.success
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '设置状态失败');
+    throw error;
   }
 });
 
@@ -140,18 +131,16 @@ router.post('/setTechSpecimenManagerFailStatus', async (ctx, next) => {
   try {
     const { registrationUuid, failManagerText } = ctx.state.param;
 
-    const res = await service.setTechSpecimenManagerFailStatus({
+    await service.setTechSpecimenManagerFailStatus({
       registrationUuid,
       failManagerText
     });
 
     ctx.body = new Res({
-      status: RESPONSE_CODE.success,
-      data: res
+      status: RESPONSE_CODE.success
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '设置状态失败');
+    throw error;
   }
 });
 
@@ -171,8 +160,7 @@ router.get('/selectTechRegistration', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '查询失败');
+    throw error;
   }
 });
 
@@ -192,8 +180,7 @@ router.get('/queryTechEnterpriseRegistrationStep', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '查询失败');
+    throw error;
   }
 });
 

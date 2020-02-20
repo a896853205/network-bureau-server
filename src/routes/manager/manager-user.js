@@ -21,7 +21,7 @@ router.get('/getMyInfo', async (ctx, next) => {
       data: ctx.state.user
     });
   } catch (error) {
-    ctx.throw(RESPONSE_CODE.unauthorized, '请重新登录');
+    ctx.throw(RESPONSE_CODE.unauthorized);
   }
 });
 
@@ -39,7 +39,7 @@ router.get('/getManagerToken', async (ctx, next) => {
       data: token
     });
   } catch (error) {
-    ctx.throw(RESPONSE_CODE.unauthorized, '用户名或密码错误');
+    ctx.throw(RESPONSE_CODE.unauthorized);
   }
 });
 
