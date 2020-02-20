@@ -23,7 +23,7 @@ export default {
       let enterprise = await enterpriseUserDao.selectEnterpriseUserByCode(code);
 
       if (!enterprise || enterprise.password !== password) {
-        return false;
+        throw new CustomError('用户名或密码错误');
       }
 
       delete enterprise.password;
