@@ -24,8 +24,7 @@ router.get('/querySysRegistrationStep', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '查询失败');
+    throw error;
   }
 });
 
@@ -43,8 +42,7 @@ router.get('/queryRegistration', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '查询失败');
+    throw error;
   }
 });
 
@@ -62,8 +60,7 @@ router.get('/selectEnterpriseInfo', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '查询失败');
+    throw error;
   }
 });
 
@@ -83,8 +80,7 @@ router.get('/selectRegistration', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '查询失败');
+    throw error;
   }
 });
 
@@ -104,8 +100,7 @@ router.get('/queryEnterpriseRegistrationStep', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '查询失败');
+    throw error;
   }
 });
 
@@ -125,8 +120,7 @@ router.get('/selectRegistrationStatus', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '查询失败');
+    throw error;
   }
 });
 
@@ -146,8 +140,7 @@ router.get('/selectRegistrationBasic', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '查询失败');
+    throw error;
   }
 });
 /**
@@ -166,8 +159,7 @@ router.get('/selectRegistrationContract', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '查询失败');
+    throw error;
   }
 });
 
@@ -187,8 +179,7 @@ router.get('/selectRegistrationSpecimen', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '查询失败');
+    throw error;
   }
 });
 
@@ -208,8 +199,7 @@ router.get('/selectRegistrationApply', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '查询失败');
+    throw error;
   }
 });
 
@@ -220,19 +210,17 @@ router.post('/setRegistrationDetailSuccessStatus', async (ctx, next) => {
   try {
     const { registrationUuid, type } = ctx.state.param;
 
-    const res = await service.setRegistrationDetailStatus({
+    await service.setRegistrationDetailStatus({
       registrationUuid,
       type,
       isPass: true
     });
 
     ctx.body = new Res({
-      status: RESPONSE_CODE.success,
-      data: res
+      status: RESPONSE_CODE.success
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '设置状态失败');
+    throw error;
   }
 });
 
@@ -243,7 +231,7 @@ router.post('/setRegistrationDetailFailStatus', async (ctx, next) => {
   try {
     const { registrationUuid, type, failText } = ctx.state.param;
 
-    const res = await service.setRegistrationDetailStatus({
+    await service.setRegistrationDetailStatus({
       registrationUuid,
       type,
       failText,
@@ -251,12 +239,10 @@ router.post('/setRegistrationDetailFailStatus', async (ctx, next) => {
     });
 
     ctx.body = new Res({
-      status: RESPONSE_CODE.success,
-      data: res
+      status: RESPONSE_CODE.success
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '设置状态失败');
+    throw error;
   }
 });
 
@@ -276,8 +262,7 @@ router.get('/selectRegistrationProductDescription', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '获取文件失败');
+    throw error;
   }
 });
 
@@ -297,8 +282,7 @@ router.get('/selectRegistrationProduct', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '获取文件失败');
+    throw error;
   }
 });
 
@@ -318,8 +302,7 @@ router.get('/selectRegistrationDocument', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '获取文件失败');
+    throw error;
   }
 });
 
@@ -339,8 +322,7 @@ router.get('/selectRegistrationCopyright', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '获取文件失败');
+    throw error;
   }
 });
 
@@ -351,15 +333,14 @@ router.post('/pushRegistrationProcess', async (ctx, next) => {
   try {
     const { registrationUuid } = ctx.state.param;
 
-    const data = await service.pushRegistrationProcess(registrationUuid);
+    await service.pushRegistrationProcess(registrationUuid);
 
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       msg: '成功推进登记测试进度'
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '登记测试流程推进失败');
+    throw error;
   }
 });
 
@@ -379,8 +360,7 @@ router.get('/selectRegistrationContractManager', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '查询失败');
+    throw error;
   }
 });
 
@@ -398,8 +378,7 @@ router.get('/selectContractUrl', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '查询失败');
+    throw error;
   }
 });
 /**
@@ -429,8 +408,7 @@ router.post('/saveRegistrationContractManager', async (ctx, next) => {
       status: RESPONSE_CODE.success
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '保存错误');
+    throw error;
   }
 });
 
@@ -448,8 +426,7 @@ router.get('/downloadContractWord', async ctx => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '目前状态不可以生成合同或出现错误');
+    throw error;
   }
 });
 
@@ -469,8 +446,7 @@ router.post('/saveManagerContractUrl', async (ctx, next) => {
       status: RESPONSE_CODE.success
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '保存失败');
+    throw error;
   }
 });
 
@@ -481,19 +457,17 @@ router.post('/updateFinanceManager', async (ctx, next) => {
   try {
     const { registrationUuid, financeManagerUuid } = ctx.state.param;
 
-    const data = await service.updateFinanceManager({
+    await service.updateFinanceManager({
       registrationUuid,
       financeManagerUuid
     });
 
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
-      data,
       msg: '已选择负责的财务人员'
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '更新项目财务人员失败');
+    throw error;
   }
 });
 
@@ -504,19 +478,17 @@ router.post('/arrangeTechLeaderManager', async (ctx, next) => {
   try {
     const { registrationUuid, technicalManagerUuid } = ctx.state.param;
 
-    const data = await service.arrangeTechLeaderManager({
+    await service.arrangeTechLeaderManager({
       registrationUuid,
       technicalManagerUuid
     });
 
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
-      data,
       msg: '已选择技术负责人'
     });
   } catch {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '更新项目技术负责人失败');
+    throw error;
   }
 });
 
@@ -533,8 +505,7 @@ router.put('/setContractManagerSuccessStatus', async (ctx, next) => {
       status: RESPONSE_CODE.success
     });
   } catch {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '设置状态失败');
+    throw error;
   }
 });
 
@@ -554,8 +525,7 @@ router.post('/setContractManagerFailStatus', async ctx => {
       status: RESPONSE_CODE.success
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '设置状态失败');
+    throw error;
   }
 });
 
@@ -572,8 +542,7 @@ router.get('/queryFinanceManager', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '查询失败');
+    throw error;
   }
 });
 
@@ -590,8 +559,7 @@ router.get('/queryTechnicalManager', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '查询失败');
+    throw error;
   }
 });
 /**
@@ -610,8 +578,7 @@ router.get('/selectRegistrationAccoutantManagerUuid', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '查询失败');
+    throw error;
   }
 });
 
@@ -631,8 +598,7 @@ router.get('/selectRegistrationTechLeaderManagerUuid', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '查询失败');
+    throw error;
   }
 });
 

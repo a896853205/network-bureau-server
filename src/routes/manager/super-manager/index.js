@@ -16,18 +16,18 @@ const router = new Router({
  * 增加/更新管理账号
  */
 router.post('/saveManager', async (ctx, next) => {
-  let {
-    managerUuid,
-    username,
-    phone,
-    password,
-    name,
-    role,
-    headPortraitUrl
-  } = ctx.state.param;
+  try {
+    let {
+      managerUuid,
+      username,
+      phone,
+      password,
+      name,
+      role,
+      headPortraitUrl
+    } = ctx.state.param;
 
-  if (managerUuid) {
-    try {
+    if (managerUuid) {
       await service.updateManager(
         managerUuid,
         phone,
@@ -40,12 +40,7 @@ router.post('/saveManager', async (ctx, next) => {
         status: RESPONSE_CODE.success,
         msg: '更改管理员成功'
       });
-    } catch (error) {
-      console.error(error);
-      ctx.throw(RESPONSE_CODE.error, '更改管理员失败');
-    }
-  } else {
-    try {
+    } else {
       await service.createNewManager(
         username,
         phone,
@@ -59,10 +54,9 @@ router.post('/saveManager', async (ctx, next) => {
         status: RESPONSE_CODE.created,
         msg: '创建管理用户成功'
       });
-    } catch (error) {
-      console.error(error);
-      ctx.throw(RESPONSE_CODE.error, '用户已存在');
     }
+  } catch (error) {
+    throw error;
   }
 });
 
@@ -80,8 +74,7 @@ router.del('/deleteManager', async (ctx, next) => {
       msg: '删除管理员成功'
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '删除管理员失败');
+    throw error;
   }
 });
 
@@ -99,7 +92,7 @@ router.get('/queryManager', async (ctx, next) => {
       data
     });
   } catch (error) {
-    ctx.throw(RESPONSE_CODE.error, '查询失败');
+    throw error;
   }
 });
 
@@ -127,7 +120,7 @@ router.get('/selectManagerInfo', async ctx => {
       data
     });
   } catch (error) {
-    ctx.throw(RESPONSE_CODE.error, '查询失败');
+    throw error;
   }
 });
 

@@ -7,8 +7,11 @@ import { RESPONSE_CODE } from '../../constants/domain-constants';
 // service
 import service from '../../service';
 
+// 权限
+import { AUTHORITY } from '../../constants/role-constants';
+
 const router = new Router({
-  prefix: '/enterprise'
+  prefix: AUTHORITY.ENTERPRISE.router
 });
 
 router.post('/createEnterpriseRegistration', async ctx => {
@@ -27,15 +30,14 @@ router.post('/createEnterpriseRegistration', async ctx => {
       msg: '登录测试创建成功'
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '登录测试名称重复');
+    throw error;
   }
 });
 
 /**
  * 查询企业的登记测试列表
  */
-router.get('/queryRegistration', async (ctx, next) => {
+router.get('/queryRegistration', async ctx => {
   try {
     const { uuid: enterpriseUuid } = ctx.state.user,
       { page } = ctx.state.param;
@@ -50,15 +52,14 @@ router.get('/queryRegistration', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '查询失败');
+    throw error;
   }
 });
 
 /**
  * 查询登记测试信息(单独)
  */
-router.get('/selectRegistration', async (ctx, next) => {
+router.get('/selectRegistration', async ctx => {
   try {
     const { registrationUuid } = ctx.state.param;
 
@@ -71,8 +72,7 @@ router.get('/selectRegistration', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '查询失败');
+    throw error;
   }
 });
 
@@ -92,15 +92,14 @@ router.get('/selectRegistrationStatus', async ctx => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '查询失败');
+    throw error;
   }
 });
 
 /**
  * 根据registrationUuid查询具体步骤
  */
-router.get('/queryEnterpriseRegistrationStep', async (ctx, next) => {
+router.get('/queryEnterpriseRegistrationStep', ctx => {
   try {
     const { registrationUuid } = ctx.state.param;
 
@@ -113,15 +112,14 @@ router.get('/queryEnterpriseRegistrationStep', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '查询失败');
+    throw error;
   }
 });
 
 /**
  * 无参数查询sys_registration_step表
  */
-router.get('/querySysRegistrationStep', async (ctx, next) => {
+router.get('/querySysRegistrationStep', async ctx => {
   try {
     const data = await service.querySysRegistrationStep();
 
@@ -130,15 +128,14 @@ router.get('/querySysRegistrationStep', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '查询失败');
+    throw error;
   }
 });
 
 /**
  * 获取管理员信息
  */
-router.get('/selectManagerInfo', async (ctx, next) => {
+router.get('/selectManagerInfo', async ctx => {
   try {
     const { managerUuid } = ctx.state.param;
 
@@ -149,15 +146,14 @@ router.get('/selectManagerInfo', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '查询失败');
+    throw error;
   }
 });
 
 /**
  * 查询登记测试的基本信息
  */
-router.get('/selectRegistrationBasic', async (ctx, next) => {
+router.get('/selectRegistrationBasic', async ctx => {
   try {
     const { registrationUuid } = ctx.state.param;
 
@@ -170,15 +166,14 @@ router.get('/selectRegistrationBasic', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '查询失败');
+    throw error;
   }
 });
 
 /**
  * 保存登记测试的基本信息
  */
-router.post('/saveRegistrationBasic', async (ctx, next) => {
+router.post('/saveRegistrationBasic', async ctx => {
   try {
     const {
       registrationUuid,
@@ -207,15 +202,14 @@ router.post('/saveRegistrationBasic', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '保存信息失败');
+    throw error;
   }
 });
 
 /**
  * 查询评测合同的基本信息
  */
-router.get('/selectRegistrationContract', async (ctx, next) => {
+router.get('/selectRegistrationContract', async ctx => {
   try {
     const { registrationUuid } = ctx.state.param;
 
@@ -228,15 +222,14 @@ router.get('/selectRegistrationContract', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '查询失败');
+    throw error;
   }
 });
 
 /**
  * 保存评测合同的基本信息
  */
-router.post('/saveRegistrationContract', async (ctx, next) => {
+router.post('/saveRegistrationContract', async ctx => {
   try {
     const {
       registrationUuid,
@@ -261,15 +254,14 @@ router.post('/saveRegistrationContract', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '保存信息失败');
+    throw error;
   }
 });
 
 /**
  * 查询样品登记表的基本信息
  */
-router.get('/selectRegistrationSpecimen', async (ctx, next) => {
+router.get('/selectRegistrationSpecimen', async ctx => {
   try {
     const { registrationUuid } = ctx.state.param;
 
@@ -282,15 +274,14 @@ router.get('/selectRegistrationSpecimen', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '查询失败');
+    throw error;
   }
 });
 
 /**
  * 保存样品登记表的基本信息
  */
-router.post('/saveRegistrationSpecimen', async (ctx, next) => {
+router.post('/saveRegistrationSpecimen', async ctx => {
   try {
     const {
       registrationUuid,
@@ -315,15 +306,14 @@ router.post('/saveRegistrationSpecimen', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '保存信息失败');
+    throw error;
   }
 });
 
 /**
  * 查询现场测试申请表的基本信息
  */
-router.get('/selectRegistrationApply', async (ctx, next) => {
+router.get('/selectRegistrationApply', async ctx => {
   try {
     const { registrationUuid } = ctx.state.param;
 
@@ -336,15 +326,14 @@ router.get('/selectRegistrationApply', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '查询失败');
+    throw error;
   }
 });
 
 /**
  * 保存现场测试申请表的基本信息
  */
-router.post('/saveRegistrationApply', async (ctx, next) => {
+router.post('/saveRegistrationApply', async ctx => {
   try {
     const { registrationUuid, content } = ctx.state.param;
 
@@ -358,15 +347,14 @@ router.post('/saveRegistrationApply', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '保存信息失败');
+    throw error;
   }
 });
 
 /**
  * 获取软件著作权的信息
  */
-router.get('/selectRegistrationCopyright', async (ctx, next) => {
+router.get('/selectRegistrationCopyright', async ctx => {
   try {
     const { registrationUuid } = ctx.state.param;
 
@@ -379,15 +367,14 @@ router.get('/selectRegistrationCopyright', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '获取文件失败');
+    throw error;
   }
 });
 
 /**
  * 保存软件著作权的信息
  */
-router.post('/saveRegistrationCopyright', async (ctx, next) => {
+router.post('/saveRegistrationCopyright', async ctx => {
   try {
     const { registrationUuid, copyrightUrl } = ctx.state.param;
 
@@ -401,15 +388,14 @@ router.post('/saveRegistrationCopyright', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '保存文件失败');
+    throw error;
   }
 });
 
 /**
  * 获取用户文档集的信息
  */
-router.get('/selectRegistrationDocument', async (ctx, next) => {
+router.get('/selectRegistrationDocument', async ctx => {
   try {
     const { registrationUuid } = ctx.state.param;
 
@@ -422,15 +408,14 @@ router.get('/selectRegistrationDocument', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '获取文件失败');
+    throw error;
   }
 });
 
 /**
  * 保存用户文档集的信息
  */
-router.post('/saveRegistrationDocument', async (ctx, next) => {
+router.post('/saveRegistrationDocument', async ctx => {
   try {
     const { registrationUuid, documentUrl } = ctx.state.param;
 
@@ -444,15 +429,14 @@ router.post('/saveRegistrationDocument', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '保存文件失败');
+    throw error;
   }
 });
 
 /**
  * 获取产品说明的信息
  */
-router.get('/selectRegistrationProductDescription', async (ctx, next) => {
+router.get('/selectRegistrationProductDescription', async ctx => {
   try {
     const { registrationUuid } = ctx.state.param;
 
@@ -465,15 +449,14 @@ router.get('/selectRegistrationProductDescription', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '获取文件失败');
+    throw error;
   }
 });
 
 /**
  * 保存产品说明的信息
  */
-router.post('/saveRegistrationProductDescription', async (ctx, next) => {
+router.post('/saveRegistrationProductDescription', async ctx => {
   try {
     const { registrationUuid, productDescriptionUrl } = ctx.state.param;
 
@@ -487,15 +470,14 @@ router.post('/saveRegistrationProductDescription', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '保存文件失败');
+    throw error;
   }
 });
 
 /**
  * 获取产品介质的信息
  */
-router.get('/selectRegistrationProduct', async (ctx, next) => {
+router.get('/selectRegistrationProduct', async ctx => {
   try {
     const { registrationUuid } = ctx.state.param;
 
@@ -508,15 +490,14 @@ router.get('/selectRegistrationProduct', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '获取文件失败');
+    throw error;
   }
 });
 
 /**
  * 保存产品介质的信息
  */
-router.post('/saveRegistrationProduct', async (ctx, next) => {
+router.post('/saveRegistrationProduct', async ctx => {
   try {
     const { registrationUuid, productUrl } = ctx.state.param;
 
@@ -530,8 +511,7 @@ router.post('/saveRegistrationProduct', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '保存文件失败');
+    throw error;
   }
 });
 
@@ -549,15 +529,14 @@ router.get('/selectContractManagerFailText', async ctx => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '查询失败');
+    throw error;
   }
 });
 
 /**
  * 查询评测合同的路由
  */
-router.get('/selectContractUrl', async (ctx, next) => {
+router.get('/selectContractUrl', async ctx => {
   try {
     const { registrationUuid } = ctx.state.param;
 
@@ -568,15 +547,14 @@ router.get('/selectContractUrl', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '查询失败');
+    throw error;
   }
 });
 
 /**
  * 保存评测合同乙方上传pdf合同的信息
  */
-router.post('/saveEnterpriseContractUrl', async (ctx, next) => {
+router.post('/saveEnterpriseContractUrl', async ctx => {
   try {
     const { registrationUuid, enterpriseUrl } = ctx.state.param;
 
@@ -589,15 +567,14 @@ router.post('/saveEnterpriseContractUrl', async (ctx, next) => {
       status: RESPONSE_CODE.success
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '保存失败');
+    throw error;
   }
 });
 
 /**
  * 更新交付汇款的状态
  */
-router.put('/noticeAccountPayment', async (ctx, next) => {
+router.put('/noticeAccountPayment', async ctx => {
   try {
     const { registrationUuid } = ctx.state.param;
 
@@ -608,8 +585,7 @@ router.put('/noticeAccountPayment', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '更新失败');
+    throw error;
   }
 });
 

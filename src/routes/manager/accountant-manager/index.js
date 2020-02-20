@@ -19,15 +19,13 @@ router.put('/accountantConfirmPayment', async (ctx, next) => {
   try {
     const { registrationUuid } = ctx.state.param;
 
-    const data = await service.accountantConfirmPayment(registrationUuid);
+    await service.accountantConfirmPayment(registrationUuid);
 
     ctx.body = new Res({
-      status: RESPONSE_CODE.success,
-      data
+      status: RESPONSE_CODE.success
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '确认付款失败');
+    throw error;
   }
 });
 
@@ -36,8 +34,8 @@ router.put('/accountantConfirmPayment', async (ctx, next) => {
  */
 router.get('/queryRegistrationPayment', async (ctx, next) => {
   try {
-    const { page } = ctx.state.param;
-    const managerUuid = ctx.state.user.uuid;
+    const { page } = ctx.state.param,
+      managerUuid = ctx.state.user.uuid;
 
     const data = await service.queryRegistrationPayment({
       page,
@@ -49,8 +47,7 @@ router.get('/queryRegistrationPayment', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '查询失败');
+    throw error;
   }
 });
 
