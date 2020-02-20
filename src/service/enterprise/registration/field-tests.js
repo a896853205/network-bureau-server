@@ -22,15 +22,13 @@ export default {
    */
   selectRegistrationTechManagerUuid: async registrationUuid => {
     try {
-      const {
-        techManagerUuid
-      } = await enterpriseRegistrationDao.selectRegistrationTechManagerUuid(
-        registrationUuid
-      );
-      return techManagerUuid;
+      return (
+        await enterpriseRegistrationDao.selectRegistrationTechManagerUuid(
+          registrationUuid
+        )
+      ).techManagerUuid;
     } catch (error) {
-      console.error(error);
-      return false;
+      throw error;
     }
   },
 
@@ -39,15 +37,13 @@ export default {
    */
   selectRegistrationTechLeaderManagerUuid: async registrationUuid => {
     try {
-      const {
-        techLeaderManagerUuid
-      } = await enterpriseRegistrationDao.selectRegistrationTechLeaderManagerUuid(
-        registrationUuid
-      );
-      return techLeaderManagerUuid;
+      return (
+        await enterpriseRegistrationDao.selectRegistrationTechLeaderManagerUuid(
+          registrationUuid
+        )
+      ).techLeaderManagerUuid;
     } catch (error) {
-      console.error(error);
-      return false;
+      throw error;
     }
   },
 
@@ -97,6 +93,7 @@ export default {
       );
 
       const uuidList = registrationList.map(item => item.uuid);
+
       return await enterpriseRegistrationDao.queryRegistrationNeedAssigned({
         page,
         uuidList

@@ -20,8 +20,7 @@ export default {
         uuidList
       });
     } catch (error) {
-      console.log(error);
-      return false;
+      throw error;
     }
   },
 
@@ -73,12 +72,11 @@ export default {
    */
   selectRegistrationAccoutantManagerUuid: async registrationUuid => {
     try {
-      const {
-        accountantManagerUuid
-      } = await enterpriseRegistrationDao.selectRegistrationAccoutantManagerUuid(
-        registrationUuid
-      );
-      return accountantManagerUuid;
+      return (
+        await enterpriseRegistrationDao.selectRegistrationAccoutantManagerUuid(
+          registrationUuid
+        )
+      ).accountantManagerUuid;
     } catch (error) {
       throw error;
     }
