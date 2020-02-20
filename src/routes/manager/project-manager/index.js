@@ -620,7 +620,6 @@ router.get('/getProjectRegistrationTestApply', async (ctx, next) => {
   }
 });
 
-
 /**
  * 项目管理员查询样品文档集的基本信息
  */
@@ -644,9 +643,12 @@ router.get('/getProjectRegistrationTestSpecimen', async (ctx, next) => {
  */
 router.post('/setProjectSpecimenManagerStatus', async (ctx, next) => {
   try {
-    const { registrationUuid } = ctx.state.param;
+    const { registrationUuid, projectManagerDate } = ctx.state.param;
 
-    const res = await service.setProjectSpecimenManagerStatus(registrationUuid);
+    const res = await service.setProjectSpecimenManagerStatus({
+      registrationUuid,
+      projectManagerDate
+    });
 
     ctx.body = new Res({
       status: RESPONSE_CODE.success,

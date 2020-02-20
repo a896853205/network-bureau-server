@@ -276,10 +276,11 @@ export default {
   /**
    * 技术人员设置现场申请表审核通过状态
    */
-  setTechApplyManagerStatus: registrationUuid =>
+  setTechApplyManagerStatus: ({ registrationUuid, techManagerDate }) =>
     enterpriseRegistrationApplyDao.updateApplyManagerStatus({
       registrationUuid,
       failManagerText: null,
+      techManagerDate,
       managerStatus: 2
     }),
 
@@ -296,9 +297,10 @@ export default {
   /**
    * 技术人员设置样品登记表审核通过状态
    */
-  setTechSpecimenManagerStatus: registrationUuid =>
+  setTechSpecimenManagerStatus: ({ registrationUuid, techManagerDate }) =>
     enterpriseRegistrationSpecimenDao.updateSpecimenManagerStatus({
       registrationUuid,
+      techManagerDate,
       failManagerText: null,
       managerStatus: 2
     }),
@@ -316,20 +318,24 @@ export default {
   /**
    * 项目管理员设置样品登记表审核通过状态
    */
-  setProjectSpecimenManagerStatus: registrationUuid =>
-  enterpriseRegistrationSpecimenDao.updateSpecimenManagerStatus({
-    registrationUuid,
-    failManagerText: null,
-    managerStatus: 100
-  }),
+  setProjectSpecimenManagerStatus: ({ registrationUuid, projectManagerDate }) =>
+    enterpriseRegistrationSpecimenDao.updateSpecimenManagerStatus({
+      registrationUuid,
+      projectManagerDate,
+      failManagerText: null,
+      managerStatus: 100
+    }),
 
-/**
- * 项目管理员设置样品登记表审核不通过状态
- */
-setProjectSpecimenManagerFailStatus: ({ registrationUuid, failManagerText }) =>
-  enterpriseRegistrationSpecimenDao.updateSpecimenManagerStatus({
+  /**
+   * 项目管理员设置样品登记表审核不通过状态
+   */
+  setProjectSpecimenManagerFailStatus: ({
     registrationUuid,
-    failManagerText,
-    managerStatus: -2
-  })
+    failManagerText
+  }) =>
+    enterpriseRegistrationSpecimenDao.updateSpecimenManagerStatus({
+      registrationUuid,
+      failManagerText,
+      managerStatus: -2
+    })
 };

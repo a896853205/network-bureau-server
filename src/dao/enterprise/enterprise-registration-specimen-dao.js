@@ -80,10 +80,12 @@ export default {
   updateSpecimenManagerStatus: ({
     registrationUuid,
     failManagerText,
+    techManagerDate,
+    projectManagerDate,
     managerStatus
   }) =>
     enterpriseRegistrationSpecimen.update(
-      { failManagerText, managerStatus },
+      { failManagerText, managerStatus, techManagerDate, projectManagerDate },
       {
         where: { uuid: registrationUuid }
       }
