@@ -650,8 +650,7 @@ router.get('/getProjectRegistrationTestApply', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '查询失败');
+    throw error;
   }
 });
 
@@ -670,8 +669,7 @@ router.get('/getProjectRegistrationTestSpecimen', async (ctx, next) => {
       data
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '查询失败');
+    throw error;
   }
 });
 
@@ -689,8 +687,7 @@ router.post('/setProjectSpecimenManagerStatus', async (ctx, next) => {
       data: res
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '设置状态失败');
+    throw error;
   }
 });
 
@@ -711,8 +708,7 @@ router.post('/setProjectSpecimenManagerFailStatus', async (ctx, next) => {
       data: res
     });
   } catch (error) {
-    console.error(error);
-    ctx.throw(RESPONSE_CODE.error, '设置状态失败');
+    throw error;
   }
 });
 
