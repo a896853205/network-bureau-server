@@ -258,5 +258,55 @@ export default {
     } catch (error) {
       throw error;
     }
-  }
+  },
+
+  /**
+   * 技术人员查询样品登记表信息
+   */
+  getRegistrationTestSpecimen: registrationUuid =>
+    enterpriseRegistrationSpecimenDao.selectRegistrationTestSpecimen(
+      registrationUuid
+    ),
+
+  /**
+   * 技术人员查询现场测试申请表的基本信息
+   */
+  getRegistrationTestApply: registrationUuid =>
+    enterpriseRegistrationApplyDao.selectRegistrationTestApply(
+      registrationUuid
+    ),
+
+  /**
+   * 设置现场申请表审核通过状态
+   */
+  setApplyManagerStatus: registrationUuid =>
+  enterpriseRegistrationApplyDao.updateApplyManagerStatus(registrationUuid),
+
+  /**
+   * 设置现场申请表审核不通过状态
+   */
+  setApplyManagerFailStatus: ({ registrationUuid, failManagerText }) =>
+  enterpriseRegistrationApplyDao.updateApplyManagerFailStatus(
+      {
+        registrationUuid,
+        failManagerText
+      }
+    ),
+
+  /**
+   * 设置样品登记表审核通过状态
+   */
+  setSpecimenManagerStatus: registrationUuid =>
+  enterpriseRegistrationSpecimenDao.updateSpecimenManagerStatus(registrationUuid),
+
+  /**
+   * 设置样品登记表审核不通过状态
+   */
+  setSpecimenManagerFailStatus: ({ registrationUuid, failManagerText }) =>
+  enterpriseRegistrationSpecimenDao.updateSpecimenManagerFailStatus(
+      {
+        registrationUuid,
+        failManagerText
+      }
+    )
 };

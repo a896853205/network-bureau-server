@@ -88,6 +88,21 @@ export default {
         transaction
       }
     ),
+
+  /**
+   * 设置样品文档集的状态和审核不通过理由
+   */
+  updateSpecimenManagerFailStatus: ({
+    registrationUuid,
+    failManagerText,
+    managerStatus
+  }) =>
+    enterpriseRegistrationSpecimen.update(
+      { failManagerText, managerStatus },
+      {
+        where: { uuid: registrationUuid }
+      }
+    ),
   /**
    * 设置样品文档集的管理员uuid
    */
@@ -106,5 +121,24 @@ export default {
         where: { uuid: registrationUuid },
         transaction
       }
-    )
+    ),
+
+  /**
+   * 查询的样品文档集信息
+   */
+  selectRegistrationTestSpecimen: registrationUuid =>
+    enterpriseRegistrationSpecimen.findOne({
+      attributes: [
+        'trademark',
+        'developmentTool',
+        'securityClassification',
+        'email',
+        'unit',
+        ,
+        'failManagerText',
+        'managerStatus'
+      ],
+      raw: true,
+      where: { uuid: registrationUuid }
+    })
 };

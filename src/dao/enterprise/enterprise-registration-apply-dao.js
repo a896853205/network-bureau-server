@@ -74,6 +74,22 @@ export default {
         transaction
       }
     ),
+
+  /**
+   * 设置现场测试申请表的状态和审核不通过理由
+   */
+  updateApplyManagerFailStatus: ({
+    registrationUuid,
+    failManagerText,
+    managerStatus
+  }) =>
+    enterpriseRegistrationApply.update(
+      { failManagerText, managerStatus },
+      {
+        where: { uuid: registrationUuid }
+      }
+    ),
+
   /**
    * 设置现场测试申请表的管理员uuid
    */
@@ -94,5 +110,15 @@ export default {
         where: { uuid: registrationUuid },
         transaction
       }
-    )
+    ),
+
+  /**
+   * 查询的现场测试申请表信息
+   */
+  selectRegistrationTestApply: registrationUuid =>
+    enterpriseRegistrationApply.findOne({
+      attributes: ['content', 'failManagerText', 'managerStatus'],
+      raw: true,
+      where: { uuid: registrationUuid }
+    })
 };
