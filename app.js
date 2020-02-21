@@ -15,7 +15,7 @@ import projectManager from './src/routes/manager/project-manager';
 import accountantManager from './src/routes/manager/accountant-manager';
 import techLeaderManager from './src/routes/manager/tech-leader-manager';
 import techManager from './src/routes/manager/tech-manager';
-import certifier from './src/routes/manager/certifier';
+import certifier from './src/routes/manager/certifier-manager';
 import enterpriseRegistration from './src/routes/enterprise/enterprise-registration';
 
 import file from './src/routes/user/file';
