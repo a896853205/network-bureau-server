@@ -351,5 +351,48 @@ export default {
       where: { uuid: registrationUuid },
       attributes: ['techLeaderManagerUuid'],
       raw: true
-    })
+    }),
+
+  /**
+   *查询待分配批准人的企业登记测试列表
+   */
+  quaryRegistratiomNeedCertified: async ({ page, managerUuid }) => {
+    const result = await enterpriseRegistration.findAndCountAll({
+      attributes: ['uuid'],
+      limit: REGISTRATION_PAGE_SIZE,
+      offset: (page - 1) * REGISTRATION_PAGE_SIZE,
+      raw: true,
+      where: { certifierManagerUuid: managerUuid },
+      include: [
+        {
+          model: enterpriseRegistrationBasic,
+          attributes: ['enterpriseName', 'phone'],
+          as: 'enterpriseRegistrationBasic'
+        },
+        {
+          model: enterpriseRegistrationContract,
+          attributes: ['contractCode'],
+          as: 'enterpriseRegistrationContract'
+        },
+        {
+          model: enterpriseRegistrationStep,
+          attributes: ['statusText', 'status'],
+          where: { step: 4 },
+          as: 'enterpriseRegistrationStep'
+        },
+        {
+          model: enterpriseRegistrationApply,
+          attributes: ['managerStatus'],
+          as: 'enterpriseRegistrationApply'
+        }
+      ]
+    });
+
+    return {
+      enterpriseRegistrationList: result.rows,
+      total: result.count,
+      pageSize: REGISTRATION_PAGE_SIZE
+    };
+  },
+
 };

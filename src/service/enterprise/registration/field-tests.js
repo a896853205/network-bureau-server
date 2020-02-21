@@ -358,5 +358,19 @@ export default {
       registrationUuid,
       failManagerText,
       managerStatus: -2
-    })
+    }),
+
+  /**
+   * 批准人查找注册登记信息
+   */
+  quaryRegistratiomNeedCertified: ({ page, managerUuid }) => {
+    try {
+      return enterpriseRegistrationDao.quaryRegistratiomNeedCertified({
+        page,
+        managerUuid
+      });
+    } catch (error) {
+      throw error;
+    }
+  },
 };
