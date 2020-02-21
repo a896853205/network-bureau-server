@@ -268,4 +268,40 @@ router.get('/selectTechLeaderRegistration', async ctx => {
   }
 });
 
+/**
+ * 技术负责人查询样品文档集的基本信息
+ */
+router.get('/getTechLeaderRegistrationTestSpecimen', async (ctx, next) => {
+  try {
+    const { registrationUuid } = ctx.state.param;
+
+    const data = await service.getRegistrationTestSpecimen(registrationUuid);
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 技术负责人查询现场测试申请表的基本信息
+ */
+router.get('/getTechLeaderRegistrationTestApply', async (ctx, next) => {
+  try {
+    const { registrationUuid } = ctx.state.param;
+
+    const data = await service.getRegistrationTestApply(registrationUuid);
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
 export default router;
