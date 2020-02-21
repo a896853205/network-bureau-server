@@ -304,4 +304,41 @@ router.get('/getTechLeaderRegistrationTestApply', async (ctx, next) => {
   }
 });
 
+/**
+ * 技术负责人设置现场申请表审核通过状态
+ */
+router.post('/setTechLeaderApplyManagerStatus', async (ctx, next) => {
+  try {
+    const { registrationUuid } = ctx.state.param;
+
+    await service.setTechLeaderApplyManagerStatus(registrationUuid);
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 技术负责人设置现场申请表审核不通过状态
+ */
+router.post('/setTechLeaderApplyManagerFailStatus', async (ctx, next) => {
+  try {
+    const { registrationUuid, failManagerText } = ctx.state.param;
+
+    await service.setTechLeaderApplyManagerFailStatus({
+      registrationUuid,
+      failManagerText
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
 export default router;

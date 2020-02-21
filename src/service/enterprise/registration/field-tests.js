@@ -276,7 +276,7 @@ export default {
   /**
    * 技术人员设置现场申请表审核通过状态
    */
-  setTechApplyManagerStatus:  registrationUuid =>
+  setTechApplyManagerStatus: registrationUuid =>
     enterpriseRegistrationApplyDao.updateApplyManagerStatus({
       registrationUuid,
       failManagerText: null,
@@ -300,7 +300,7 @@ export default {
   setTechSpecimenManagerStatus: registrationUuid =>
     enterpriseRegistrationSpecimenDao.updateSpecimenManagerStatus({
       registrationUuid,
-      techManagerDate : new Date(),
+      techManagerDate: new Date(),
       failManagerText: null,
       managerStatus: 2
     }),
@@ -321,7 +321,7 @@ export default {
   setProjectSpecimenManagerStatus: registrationUuid =>
     enterpriseRegistrationSpecimenDao.updateSpecimenManagerStatus({
       registrationUuid,
-      projectManagerDate : new Date(),
+      projectManagerDate: new Date(),
       failManagerText: null,
       managerStatus: 100
     }),
@@ -334,6 +334,27 @@ export default {
     failManagerText
   }) =>
     enterpriseRegistrationSpecimenDao.updateSpecimenManagerStatus({
+      registrationUuid,
+      failManagerText,
+      managerStatus: -2
+    }),
+
+  /**
+   * 技术负责人设置现场申请表审核通过状态
+   */
+  setTechLeaderApplyManagerStatus: registrationUuid =>
+    enterpriseRegistrationApplyDao.updateApplyManagerStatus({
+      registrationUuid,
+      failManagerText: null,
+      techManagerDate: new Date(),
+      managerStatus: 3
+    }),
+
+  /**
+   * 技术负责人设置现场申请表审核不通过状态
+   */
+  setTechLeaderApplyManagerFailStatus: ({ registrationUuid, failManagerText }) =>
+    enterpriseRegistrationApplyDao.updateApplyManagerStatus({
       registrationUuid,
       failManagerText,
       managerStatus: -2
