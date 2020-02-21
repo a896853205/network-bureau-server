@@ -251,4 +251,21 @@ router.get('/downloadContract', async ctx => {
   }
 });
 
+router.get('/selectTechLeaderRegistration', async ctx => {
+  try {
+    const { registrationUuid } = ctx.state.param;
+    
+    const data = await service.selectRegistrationByRegistrationUuid(
+      registrationUuid
+    );
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
 export default router;
