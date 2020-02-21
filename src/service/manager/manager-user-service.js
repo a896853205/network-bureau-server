@@ -108,7 +108,12 @@ export default {
   /**
    * 删除管理员账号
    */
-  deleteManager: managerUuid => managerUserDao.deleteManager(managerUuid),
+  deleteManager: managerUuid => {
+    // #TODO 删除之前判断是否有此管理员是否是项目管理员最后一个
+    // #TODO 判断此管理员是否被项目所依赖(登记测试有两个表, enterpriseRegistrationStep和enterpriseRegistration)
+    // #TODO 委托测试和委托合同的时候都要有所判断
+    return managerUserDao.deleteManager(managerUuid);
+  },
 
   /**
    * 更改管理员账号
