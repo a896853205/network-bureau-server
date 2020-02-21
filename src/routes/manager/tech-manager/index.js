@@ -75,12 +75,9 @@ router.get('/getTechRegistrationTestApply', async (ctx, next) => {
  */
 router.post('/setTechApplyManagerStatus', async (ctx, next) => {
   try {
-    const { registrationUuid, techManagerDate } = ctx.state.param;
+    const { registrationUuid } = ctx.state.param;
 
-    await service.setTechApplyManagerStatus({
-      registrationUuid,
-      techManagerDate
-    });
+    await service.setTechApplyManagerStatus(registrationUuid);
 
     ctx.body = new Res({
       status: RESPONSE_CODE.success
@@ -115,12 +112,9 @@ router.post('/setTechApplyManagerFailStatus', async (ctx, next) => {
  */
 router.post('/setTechSpecimenManagerStatus', async (ctx, next) => {
   try {
-    const { registrationUuid, techManagerDate } = ctx.state.param;
+    const { registrationUuid } = ctx.state.param;
 
-    await service.setTechSpecimenManagerStatus({
-      registrationUuid,
-      techManagerDate
-    });
+    await service.setTechSpecimenManagerStatus(registrationUuid);
 
     ctx.body = new Res({
       status: RESPONSE_CODE.success
