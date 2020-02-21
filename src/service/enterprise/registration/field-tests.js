@@ -276,11 +276,11 @@ export default {
   /**
    * 技术人员设置现场申请表审核通过状态
    */
-  setTechApplyManagerStatus: ({ registrationUuid, techManagerDate }) =>
+  setTechApplyManagerStatus:  registrationUuid =>
     enterpriseRegistrationApplyDao.updateApplyManagerStatus({
       registrationUuid,
       failManagerText: null,
-      techManagerDate,
+      techManagerDate: new Date(),
       managerStatus: 2
     }),
 
@@ -297,10 +297,10 @@ export default {
   /**
    * 技术人员设置样品登记表审核通过状态
    */
-  setTechSpecimenManagerStatus: ({ registrationUuid, techManagerDate }) =>
+  setTechSpecimenManagerStatus: registrationUuid =>
     enterpriseRegistrationSpecimenDao.updateSpecimenManagerStatus({
       registrationUuid,
-      techManagerDate,
+      techManagerDate : new Date(),
       failManagerText: null,
       managerStatus: 2
     }),
@@ -318,10 +318,10 @@ export default {
   /**
    * 项目管理员设置样品登记表审核通过状态
    */
-  setProjectSpecimenManagerStatus: ({ registrationUuid, projectManagerDate }) =>
+  setProjectSpecimenManagerStatus: registrationUuid =>
     enterpriseRegistrationSpecimenDao.updateSpecimenManagerStatus({
       registrationUuid,
-      projectManagerDate,
+      projectManagerDate : new Date(),
       failManagerText: null,
       managerStatus: 100
     }),
