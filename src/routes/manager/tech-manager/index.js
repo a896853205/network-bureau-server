@@ -184,11 +184,34 @@ router.get('/queryTechEnterpriseRegistrationStep', async (ctx, next) => {
   }
 });
 
+/**
+ * 生成报告模板
+ */
 router.get('/generateReportWord', async ctx => {
   try {
     const { registrationUuid } = ctx.state.param;
 
     const data = await service.generateReportWord(
+      registrationUuid
+    );
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 生成原始记录模板
+ */
+router.get('/generateRecordWord', async ctx => {
+  try {
+    const { registrationUuid } = ctx.state.param;
+
+    const data = await service.generateRecordWord(
       registrationUuid
     );
 
