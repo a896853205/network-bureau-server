@@ -1,6 +1,8 @@
 import { db } from '../../../db/db-connect';
 
 // dao
+import enterpriseRegistrationBasicDao from '../../../dao/enterprise/enterprise-registration-basic-dao';
+import enterpriseRegistrationContractDao from '../../../dao/enterprise/enterprise-registration-contract-dao';
 import managerUserDao from '../../../dao/manager/manager-user-dao';
 import enterpriseRegistrationDao from '../../../dao/enterprise/enterprise-registration-dao';
 import enterpriseRegistrationStepDao from '../../../dao/enterprise/enterprise-registration-step-dao';
@@ -11,6 +13,18 @@ import enterpriseRegistrationApplyDao from '../../../dao/enterprise/enterprise-r
 // oss
 import client from '../../../util/oss';
 import CustomError from '../../../util/custom-error';
+
+// 生成word
+import PizZip from 'pizzip';
+import Docxtemplater from 'docxtemplater';
+import fs from 'fs';
+import path from 'path';
+
+// 其他service
+import fileService from '../../user/file-service';
+
+// 时间
+import moment from 'moment';
 
 const _pushFieldTestStatus = async ({ registrationUuid, transaction }) => {
   // 查询当前步骤,
@@ -495,7 +509,7 @@ export default {
     );
 
     // 判断状态是否ok
-    if (statusList[4] >= 4) {
+    if (statusList[3].status >= 4) {
       // 根据模板生成word返回
       // 查询有关report的0内容
       const [
@@ -524,7 +538,7 @@ export default {
 
       // Load the docx file as a binary
       let content = fs.readFileSync(
-        path.resolve(__dirname, '../../template/report.docx'),
+        path.resolve(__dirname, '../../../template/report.docx'),
         'binary'
       );
 
@@ -568,6 +582,81 @@ export default {
       // 数据整理
     } else {
       throw new CustomError('现状态无法生成报告模板');
+    }
+  },
+
+  /**
+   * 生成原始记录模板
+   */
+  generateRecordWord: async registrationUuid => {
+    const statusList = await enterpriseRegistrationStepDao.queryEnterpriseRegistrationStepByRegistrationUuid(
+      registrationUuid
+    );
+
+    // 判断状态是否ok
+    if (statusList[3].status >= 4) {
+      // 根据模板生成word返回
+      // 查询有关report的0内容
+      const [
+        contract,
+        basic,
+        registration,
+        contractManager,
+        specimen
+      ] = await Promise.all([
+        enterpriseRegistrationContractDao.selectRegistrationContractByRegistrationUuid(
+          registrationUuid
+        ),
+        enterpriseRegistrationBasicDao.selectRegistrationBasicByRegistrationUuid(
+          registrationUuid
+        ),
+        enterpriseRegistrationDao.selectRegistrationByRegistrationUuid(
+          registrationUuid
+        ),
+        enterpriseRegistrationContractDao.selectRegistrationContractManager(
+          registrationUuid
+        ),
+        enterpriseRegistrationSpecimenDao.selectRegistrationSpecimenByRegistrationUuid(
+          registrationUuid
+        )
+      ]);
+
+      // Load the docx file as a binary
+      let content = fs.readFileSync(
+        path.resolve(__dirname, '../../../template/record.docx'),
+        'binary'
+      );
+
+      let zip = new PizZip(content);
+
+      let doc = new Docxtemplater();
+      doc.loadZip(zip);
+
+      let data = {};
+
+      Object.assign(
+        data,
+        contract,
+        basic,
+        registration,
+        contractManager,
+        specimen
+      );
+
+      moment.locale('zh-cn');
+
+      // 设置模板数据
+      doc.setData(data);
+
+      // render the document (replace all occurences of {first_name} by John, {last_name} by Doe, ...)
+      doc.render();
+
+      let buf = doc.getZip().generate({ type: 'nodebuffer' });
+
+      return await fileService.uploadDownloadBufFile(buf, 'registration');
+      // 数据整理
+    } else {
+      throw new CustomError('现状态无法生成原始记录模板');
     }
   }
 };
