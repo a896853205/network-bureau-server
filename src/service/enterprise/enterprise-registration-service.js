@@ -423,15 +423,11 @@ export default {
     // 再用数据库中的数据通过模板生成word
     // 等到上传盖章pdf上传完成后删除word
     try {
-      const statusManager = await enterpriseRegistrationContractDao.selectRegistrationContractManager(
-        registrationUuid
-      );
-
       const statusList = await enterpriseRegistrationStepDao.queryEnterpriseRegistrationStepByRegistrationUuid(
         registrationUuid
       );
 
-      if (statusManager && statusList[1].status >= 2) {
+      if (statusList[1].status >= 2) {
         // 查询contract内容
         const [
           contract,

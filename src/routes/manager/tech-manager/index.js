@@ -184,4 +184,21 @@ router.get('/queryTechEnterpriseRegistrationStep', async (ctx, next) => {
   }
 });
 
+router.get('/generateReportWord', async ctx => {
+  try {
+    const { registrationUuid } = ctx.state.param;
+
+    const data = await service.generateReportWord(
+      registrationUuid
+    );
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
 export default router;
