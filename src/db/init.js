@@ -25,6 +25,8 @@ require('./models/enterprise-registration-apply').default;
 require('./models/enterprise-registration-specimen').default;
 require('./models/enterprise-registration-contract').default;
 require('./models/enterprise-registration-basic').default;
+require('./models/enterprise-registration-original-record').default;
+require('./models/enterprise-registration-report').default;
 const sequelize = require('./db-connect');
 
 const sysRegistrationStepArray = [
@@ -49,7 +51,7 @@ Promise.all([
         uuid: 'guanliyuan',
         code: '91440400794618063Y',
         phone: '18507923354',
-        name: '管理员',
+        name: '企业',
         password: 'e10adc3949ba59abbe56e057f20f883e'
       }),
       managerUser.create({
@@ -67,6 +69,33 @@ Promise.all([
         password: 'e10adc3949ba59abbe56e057f20f883e',
         role: 10,
         name: '项目管理员',
+        phone: '15998133472',
+        star: 5
+      }),
+      managerUser.create({
+        username: 'jishuguanli',
+        uuid: 'jishuguanli',
+        password: 'e10adc3949ba59abbe56e057f20f883e',
+        role: 15,
+        name: '技术管理员',
+        phone: '15998133472',
+        star: 5
+      }),
+      managerUser.create({
+        username: 'jishu',
+        uuid: 'jishu',
+        password: 'e10adc3949ba59abbe56e057f20f883e',
+        role: 20,
+        name: '技术人员',
+        phone: '15998133472',
+        star: 5
+      }),
+      managerUser.create({
+        username: 'pizhun',
+        uuid: 'pizhun',
+        password: 'e10adc3949ba59abbe56e057f20f883e',
+        role: 25,
+        name: '批准人',
         phone: '15998133472',
         star: 5
       }),
