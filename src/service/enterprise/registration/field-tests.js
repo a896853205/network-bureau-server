@@ -11,6 +11,35 @@ import enterpriseRegistrationApplyDao from '../../../dao/enterprise/enterprise-r
 // oss
 import client from '../../../util/oss';
 
+const _pushFieldTestStatus = async ({ registrationUuid, transaction }) => {
+  // 查询当前步骤,
+  const steps = await enterpriseRegistrationStepDao.queryEnterpriseRegistrationStepByRegistrationUuid(
+    registrationUuid
+  );
+
+  if (steps[3].status === 3) {
+    const [apply, specimen] = await Promise.all([
+      enterpriseRegistrationApplyDao.selectRegistrationTestApply(
+        registrationUuid
+      ),
+      enterpriseRegistrationSpecimenDao.selectRegistrationTestSpecimen(
+        registrationUuid
+      )
+    ]);
+
+    // 如果为3,就判断两个表中的managerStatus是否为100
+    if (apply.managerStatus === 100 && specimen.managerStatus === 100) {
+      // 如果ok就把status改为4
+      enterpriseRegistrationStepDao.updateRegistrationStep({
+        registrationUuid,
+        status: 4,
+        step: 3,
+        transaction
+      });
+    }
+  }
+};
+
 export default {
   /**
    * 查询技术负责人
@@ -319,11 +348,16 @@ export default {
    * 项目管理员设置样品登记表审核通过状态
    */
   setProjectSpecimenManagerStatus: registrationUuid =>
-    enterpriseRegistrationSpecimenDao.updateSpecimenManagerStatus({
-      registrationUuid,
-      projectManagerDate: new Date(),
-      failManagerText: null,
-      managerStatus: 100
+    db.transaction(async transaction => {
+      await enterpriseRegistrationSpecimenDao.updateSpecimenManagerStatus({
+        registrationUuid,
+        projectManagerDate: new Date(),
+        failManagerText: null,
+        managerStatus: 100,
+        transaction
+      })
+
+      _pushFieldTestStatus({ registrationUuid, transaction });
     }),
 
   /**
@@ -353,7 +387,10 @@ export default {
   /**
    * 技术负责人设置现场申请表审核不通过状态
    */
-  setTechLeaderApplyManagerFailStatus: ({ registrationUuid, failManagerText }) =>
+  setTechLeaderApplyManagerFailStatus: ({
+    registrationUuid,
+    failManagerText
+  }) =>
     enterpriseRegistrationApplyDao.updateApplyManagerStatus({
       registrationUuid,
       failManagerText,
@@ -378,13 +415,17 @@ export default {
    * 批准人设置现场申请表审核通过状态
    */
   setCertifierApplyManagerStatus: registrationUuid =>
-    enterpriseRegistrationApplyDao.updateApplyManagerStatus({
-      registrationUuid,
-      failManagerText: null,
-      certifierManagerDate: new Date(),
-      managerStatus: 100
-    }),
+    db.transaction(async transaction => {
+      await enterpriseRegistrationApplyDao.updateApplyManagerStatus({
+        registrationUuid,
+        failManagerText: null,
+        certifierManagerDate: new Date(),
+        managerStatus: 100,
+        transaction
+      });
 
+      _pushFieldTestStatus({ registrationUuid, transaction });
+    }),
   /**
    * 批准人设置现场申请表审核不通过状态
    */
@@ -394,5 +435,4 @@ export default {
       failManagerText,
       managerStatus: -3
     })
-
 };

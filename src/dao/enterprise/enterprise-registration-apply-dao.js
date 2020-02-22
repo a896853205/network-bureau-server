@@ -68,7 +68,8 @@ export default {
     techManagerDate,
     certifierManagerDate,
     techLeaderManagerDate,
-    managerStatus
+    managerStatus,
+    transaction
   }) =>
     enterpriseRegistrationApply.update(
       {
@@ -79,7 +80,8 @@ export default {
         techLeaderManagerDate
       },
       {
-        where: { uuid: registrationUuid }
+        where: { uuid: registrationUuid },
+        transaction
       }
     ),
 
