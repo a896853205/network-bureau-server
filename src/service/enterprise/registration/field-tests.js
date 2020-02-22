@@ -346,7 +346,7 @@ export default {
     enterpriseRegistrationApplyDao.updateApplyManagerStatus({
       registrationUuid,
       failManagerText: null,
-      techManagerDate: new Date(),
+      techLeaderManagerDate: new Date(),
       managerStatus: 3
     }),
 
@@ -373,4 +373,26 @@ export default {
       throw error;
     }
   },
+
+  /**
+   * 批准人设置现场申请表审核通过状态
+   */
+  setCertifierApplyManagerStatus: registrationUuid =>
+    enterpriseRegistrationApplyDao.updateApplyManagerStatus({
+      registrationUuid,
+      failManagerText: null,
+      certifierManagerDate: new Date(),
+      managerStatus: 100
+    }),
+
+  /**
+   * 批准人设置现场申请表审核不通过状态
+   */
+  setCertifierApplyManagerFailStatus: ({ registrationUuid, failManagerText }) =>
+    enterpriseRegistrationApplyDao.updateApplyManagerStatus({
+      registrationUuid,
+      failManagerText,
+      managerStatus: -3
+    })
+
 };

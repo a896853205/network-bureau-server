@@ -66,10 +66,18 @@ export default {
     registrationUuid,
     failManagerText,
     techManagerDate,
+    certifierManagerDate,
+    techLeaderManagerDate,
     managerStatus
   }) =>
     enterpriseRegistrationApply.update(
-      { failManagerText, managerStatus, techManagerDate },
+      {
+        failManagerText,
+        managerStatus,
+        techManagerDate,
+        certifierManagerDate,
+        techLeaderManagerDate
+      },
       {
         where: { uuid: registrationUuid }
       }
