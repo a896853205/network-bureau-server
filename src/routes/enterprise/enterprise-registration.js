@@ -589,4 +589,97 @@ router.put('/noticeAccountPayment', async ctx => {
   }
 });
 
+/**
+ * 现场测试阶段查询现场测试申请表的基本信息
+ */
+router.get('/selectTestRegistrationApply', async ctx => {
+  try {
+    const { registrationUuid } = ctx.state.param;
+
+    const data = await service.selectTestRegistrationApplyByRegistrationUuid(
+      registrationUuid
+    );
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 现场测试阶段查询样品登记表的基本信息
+ */
+router.get('/selectTestRegistrationSpecimen', async ctx => {
+  try {
+    const { registrationUuid } = ctx.state.param;
+
+    const data = await service.selectTestRegistrationSpecimenByRegistrationUuid(
+      registrationUuid
+    );
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 现场测试阶段保存现场测试申请表的基本信息
+ */
+router.post('/saveTestRegistrationApply', async ctx => {
+  try {
+    const { registrationUuid, content } = ctx.state.param;
+
+    const data = await service.saveTestRegistrationApply({
+      registrationUuid,
+      content
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 现场测试阶段保存样品登记表的基本信息
+ */
+router.post('/saveTestRegistrationSpecimen', async ctx => {
+  try {
+    const {
+      registrationUuid,
+      trademark,
+      developmentTool,
+      securityClassification,
+      email,
+      unit
+    } = ctx.state.param;
+
+    const data = await service.saveTestRegistrationSpecimen({
+      registrationUuid,
+      trademark,
+      developmentTool,
+      securityClassification,
+      email,
+      unit
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
 export default router;

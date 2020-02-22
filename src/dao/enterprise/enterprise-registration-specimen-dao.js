@@ -44,7 +44,9 @@ export default {
     unit,
     status,
     statusText,
-    failText
+    failText,
+    managerStatus,
+    failManagerText
   }) =>
     enterpriseRegistrationSpecimen.update(
       {
@@ -55,7 +57,9 @@ export default {
         unit,
         status,
         statusText,
-        failText
+        failText,
+        managerStatus,
+        failManagerText
       },
       {
         where: { uuid: registrationUuid },
@@ -113,7 +117,7 @@ export default {
     ),
 
   /**
-   * 查询的样品文档集信息
+   * 查询样品登记表信息
    */
   selectRegistrationTestSpecimen: ({ registrationUuid, transaction }) =>
     enterpriseRegistrationSpecimen.findOne({

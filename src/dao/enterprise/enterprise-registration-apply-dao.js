@@ -23,14 +23,18 @@ export default {
     content,
     status,
     statusText,
-    failText
+    failText,
+    managerStatus,
+    failManagerText
   }) =>
     enterpriseRegistrationApply.update(
       {
         content,
         status,
         statusText,
-        failText
+        failText,
+        managerStatus,
+        failManagerText
       },
       {
         where: { uuid: registrationUuid },

@@ -435,5 +435,53 @@ export default {
       registrationUuid,
       failManagerText,
       managerStatus: -3
+    }),
+
+  /**
+   * 企业查询样品登记表信息
+   */
+  selectTestRegistrationSpecimenByRegistrationUuid: registrationUuid =>
+    enterpriseRegistrationSpecimenDao.selectRegistrationTestSpecimen({
+      registrationUuid
+    }),
+
+  /**
+   * 企业查询现场测试申请表的基本信息
+   */
+  selectTestRegistrationApplyByRegistrationUuid: registrationUuid =>
+    enterpriseRegistrationApplyDao.selectRegistrationTestApply({
+      registrationUuid
+    }),
+
+  /**
+   * 企业保存样品登记表信息
+   */
+  saveTestRegistrationSpecimen: ({
+    registrationUuid,
+    trademark,
+    developmentTool,
+    securityClassification,
+    email,
+    unit
+  }) =>
+    enterpriseRegistrationSpecimenDao.updateRegistrationSpecimen({
+      registrationUuid,
+      trademark,
+      developmentTool,
+      securityClassification,
+      email,
+      unit,
+      managerStatus: 1,
+      failManagerText: null
+    }),
+  /**
+   * 保存现场测试申请表的基本信息
+   */
+  saveTestRegistrationApply: ({ registrationUuid, content }) =>
+    enterpriseRegistrationApplyDao.updateRegistrationApply({
+      registrationUuid,
+      content,
+      managerStatus: 1,
+      failManagerText: null
     })
 };
