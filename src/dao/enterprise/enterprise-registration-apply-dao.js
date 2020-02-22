@@ -110,10 +110,11 @@ export default {
   /**
    * 查询的现场测试申请表信息
    */
-  selectRegistrationTestApply: registrationUuid =>
+  selectRegistrationTestApply: ({ registrationUuid, transaction }) =>
     enterpriseRegistrationApply.findOne({
       attributes: ['content', 'failManagerText', 'managerStatus'],
       raw: true,
-      where: { uuid: registrationUuid }
+      where: { uuid: registrationUuid },
+      transaction
     })
 };

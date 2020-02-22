@@ -19,21 +19,23 @@ const _pushFieldTestStatus = async ({ registrationUuid, transaction }) => {
 
   if (steps[3].status === 3) {
     const [apply, specimen] = await Promise.all([
-      enterpriseRegistrationApplyDao.selectRegistrationTestApply(
-        registrationUuid
-      ),
-      enterpriseRegistrationSpecimenDao.selectRegistrationTestSpecimen(
-        registrationUuid
-      )
+      enterpriseRegistrationApplyDao.selectRegistrationTestApply({
+        registrationUuid,
+        transaction
+      }),
+      enterpriseRegistrationSpecimenDao.selectRegistrationTestSpecimen({
+        registrationUuid,
+        transaction
+      })
     ]);
 
     // 如果为3,就判断两个表中的managerStatus是否为100
     if (apply.managerStatus === 100 && specimen.managerStatus === 100) {
       // 如果ok就把status改为4
-      enterpriseRegistrationStepDao.updateRegistrationStep({
+      await enterpriseRegistrationStepDao.updateRegistrationStep({
         registrationUuid,
         status: 4,
-        step: 3,
+        step: 4,
         transaction
       });
     }
@@ -290,17 +292,17 @@ export default {
    * 技术人员查询样品登记表信息
    */
   getRegistrationTestSpecimen: registrationUuid =>
-    enterpriseRegistrationSpecimenDao.selectRegistrationTestSpecimen(
+    enterpriseRegistrationSpecimenDao.selectRegistrationTestSpecimen({
       registrationUuid
-    ),
+    }),
 
   /**
    * 技术人员查询现场测试申请表的基本信息
    */
   getRegistrationTestApply: registrationUuid =>
-    enterpriseRegistrationApplyDao.selectRegistrationTestApply(
+    enterpriseRegistrationApplyDao.selectRegistrationTestApply({
       registrationUuid
-    ),
+    }),
 
   /**
    * 技术人员设置现场申请表审核通过状态
@@ -355,9 +357,9 @@ export default {
         failManagerText: null,
         managerStatus: 100,
         transaction
-      })
+      });
 
-      _pushFieldTestStatus({ registrationUuid, transaction });
+      return await _pushFieldTestStatus({ registrationUuid, transaction });
     }),
 
   /**
@@ -400,11 +402,10 @@ export default {
   /**
    * 批准人查找注册登记信息
    */
-  quaryRegistratiomNeedCertified: ({ page, managerUuid }) => {
+  quaryRegistratiomNeedCertified: ({ page }) => {
     try {
       return enterpriseRegistrationDao.quaryRegistratiomNeedCertified({
-        page,
-        managerUuid
+        page
       });
     } catch (error) {
       throw error;
@@ -424,7 +425,7 @@ export default {
         transaction
       });
 
-      _pushFieldTestStatus({ registrationUuid, transaction });
+      return await _pushFieldTestStatus({ registrationUuid, transaction });
     }),
   /**
    * 批准人设置现场申请表审核不通过状态

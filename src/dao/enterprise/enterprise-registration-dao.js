@@ -356,13 +356,12 @@ export default {
   /**
    *查询待分配批准人的企业登记测试列表
    */
-  quaryRegistratiomNeedCertified: async ({ page, managerUuid }) => {
+  quaryRegistratiomNeedCertified: async ({ page }) => {
     const result = await enterpriseRegistration.findAndCountAll({
       attributes: ['uuid'],
       limit: REGISTRATION_PAGE_SIZE,
       offset: (page - 1) * REGISTRATION_PAGE_SIZE,
       raw: true,
-      where: { certifierManagerUuid: managerUuid },
       include: [
         {
           model: enterpriseRegistrationBasic,
@@ -393,6 +392,5 @@ export default {
       total: result.count,
       pageSize: REGISTRATION_PAGE_SIZE
     };
-  },
-
+  }
 };

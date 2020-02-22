@@ -115,7 +115,7 @@ export default {
   /**
    * 查询的样品文档集信息
    */
-  selectRegistrationTestSpecimen: registrationUuid =>
+  selectRegistrationTestSpecimen: ({ registrationUuid, transaction }) =>
     enterpriseRegistrationSpecimen.findOne({
       attributes: [
         'trademark',
@@ -127,6 +127,7 @@ export default {
         'managerStatus'
       ],
       raw: true,
-      where: { uuid: registrationUuid }
+      where: { uuid: registrationUuid },
+      transaction
     })
 };
