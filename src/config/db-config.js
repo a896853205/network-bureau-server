@@ -1,4 +1,9 @@
-import { DATA_BASE_KEY, LOCATION_DATA_BASE_KEY } from '../keys/keys';
+import {
+  DEV_DATA_BASE_KEY,
+  PRO_DATA_BASE_KEY,
+  DEV_DATA_BASE_USER,
+  PRO_DATA_BASE_USER
+} from '../keys/keys';
 import { SAP_CONTROL } from './app-config';
 import { ENVIRONMENT } from '../constants/app-constants';
 
@@ -6,8 +11,8 @@ const SQL_CONFIG = {
   // 开发时配置
   [ENVIRONMENT.DEV]: {
     host: 'localhost',
-    user: 'root',
-    password: LOCATION_DATA_BASE_KEY,
+    user: DEV_DATA_BASE_USER,
+    password: DEV_DATA_BASE_KEY,
     database: 'softwareTest',
     port: 3306,
     connectionLimit: 10
@@ -16,7 +21,7 @@ const SQL_CONFIG = {
   [ENVIRONMENT.TEST]: {
     host: 'localhost',
     user: 'root',
-    password: LOCATION_DATA_BASE_KEY,
+    password: DEV_DATA_BASE_KEY,
     database: 'softwareTest',
     port: 3306,
     connectionLimit: 10
@@ -24,8 +29,8 @@ const SQL_CONFIG = {
   // 生产环境
   [ENVIRONMENT.PRO]: {
     host: 'localhost',
-    user: 'root',
-    password: LOCATION_DATA_BASE_KEY,
+    user: PRO_DATA_BASE_USER,
+    password: PRO_DATA_BASE_KEY,
     database: 'softwareTest',
     port: 3306,
     connectionLimit: 10
