@@ -10,6 +10,8 @@ import enterpriseRegistrationDocumentDao from '../../dao/enterprise/enterprise-r
 import enterpriseRegistrationProductDao from '../../dao/enterprise/enterprise-registration-product-dao';
 import enterpriseRegistrationProductDescriptionDao from '../../dao/enterprise/enterprise-registration-product-description-dao';
 import enterpriseRegistrationSpecimenDao from '../../dao/enterprise/enterprise-registration-specimen-dao';
+import enterpriseRegistrationOriginalRecordDao from '../../dao/enterprise/enterprise-registration-original-record-dao';
+import enterpriseRegistrationReportDao from '../../dao/enterprise/enterprise-registration-report-dao';
 import enterpriseRegistrationStepDao from '../../dao/enterprise/enterprise-registration-step-dao';
 import sysRegistrationStepDao from '../../dao/sys/sys-registration-step-dao';
 import managerUserDao from '../../dao/manager/manager-user-dao';
@@ -157,6 +159,14 @@ export default {
               transaction
             }),
             enterpriseRegistrationBasicDao.insertRegistrationBasic({
+              uuid: enterpriseRegistrationUuid,
+              transaction
+            }),
+            enterpriseRegistrationOriginalRecordDao.insertRegistrationRecord({
+              uuid: enterpriseRegistrationUuid,
+              transaction
+            }),
+            enterpriseRegistrationReportDao.insertRegistrationReport({
               uuid: enterpriseRegistrationUuid,
               transaction
             }),

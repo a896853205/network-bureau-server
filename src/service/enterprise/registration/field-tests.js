@@ -9,6 +9,8 @@ import enterpriseRegistrationStepDao from '../../../dao/enterprise/enterprise-re
 import enterpriseUserDao from '../../../dao/enterprise/enterprise-user-dao';
 import enterpriseRegistrationSpecimenDao from '../../../dao/enterprise/enterprise-registration-specimen-dao';
 import enterpriseRegistrationApplyDao from '../../../dao/enterprise/enterprise-registration-apply-dao';
+import enterpriseRegistrationOriginalRecordDao from '../../../dao/enterprise/enterprise-registration-original-record-dao';
+import enterpriseRegistrationReportDao from '../../../dao/enterprise/enterprise-registration-report-dao';
 
 // oss
 import client from '../../../util/oss';
@@ -47,12 +49,23 @@ const _pushFieldTestStatus = async ({ registrationUuid, transaction }) => {
     // 如果为3,就判断两个表中的managerStatus是否为100
     if (apply.managerStatus === 100 && specimen.managerStatus === 100) {
       // 如果ok就把status改为4
-      await enterpriseRegistrationStepDao.updateRegistrationStep({
-        registrationUuid,
-        status: 4,
-        step: 4,
-        transaction
-      });
+      await Promise.all([
+        enterpriseRegistrationStepDao.updateRegistrationStep({
+          registrationUuid,
+          status: 4,
+          statusText: '生成并审核原始报告和记录',
+          step: 4,
+          transaction
+        }),
+        enterpriseRegistrationOriginalRecordDao.updateRegistrationRecord({
+          registrationUuid,
+          status: 1
+        }),
+        enterpriseRegistrationReportDao.updateRegistrationReport({
+          registrationUuid,
+          status: 1
+        })
+      ]);
     }
   }
 };
@@ -72,7 +85,7 @@ export default {
         await enterpriseRegistrationDao.selectRegistrationTechManagerUuid(
           registrationUuid
         )
-      ).techManagerUuid;
+      )?.techManagerUuid;
     } catch (error) {
       throw error;
     }
@@ -87,7 +100,7 @@ export default {
         await enterpriseRegistrationDao.selectRegistrationTechLeaderManagerUuid(
           registrationUuid
         )
-      ).techLeaderManagerUuid;
+      )?.techLeaderManagerUuid;
     } catch (error) {
       throw error;
     }
@@ -657,6 +670,348 @@ export default {
       // 数据整理
     } else {
       throw new CustomError('现状态无法生成原始记录模板');
+    }
+  },
+
+  /**
+   * 查询现场记录信息
+   */
+  selectRegistrationRecordByRegistrationUuid: registrationUuid =>
+    enterpriseRegistrationOriginalRecordDao.selectRegistrationRecordByRegistrationUuid(
+      registrationUuid
+    ),
+
+  /**
+   * 保存现场记录信息
+   */
+  saveTechRegistrationRecord: async ({
+    registrationUuid,
+    url,
+    totalPage,
+    techManagerUuid
+  }) => {
+    try {
+      let productionUrl = '';
+      // 将temp的文件copy到production中
+      const [filePosition] = url.split('/');
+
+      if (filePosition === 'temp') {
+        const tempUrl = url;
+        productionUrl = url.replace('temp', 'production');
+        const record = await enterpriseRegistrationOriginalRecordDao.selectRegistrationRecordByRegistrationUuid(
+          registrationUuid
+        );
+
+        if (record?.url) {
+          await client.delete(record.url);
+        }
+
+        await client.copy(productionUrl, tempUrl);
+      } else if (filePosition === 'production') {
+        productionUrl = url;
+      } else {
+        throw new CustomError('oss文件路径错误');
+      }
+
+      await enterpriseRegistrationOriginalRecordDao.updateRegistrationRecord({
+        registrationUuid,
+        url: productionUrl,
+        status: 2,
+        totalPage,
+        failText: null,
+        techManagerUuid,
+        techManagerDate: new Date()
+      });
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  /**
+   * 管理员查询原始记录信息和状态
+   */
+  getManagerRegistrationRecord: registrationUuid =>
+    enterpriseRegistrationOriginalRecordDao.selectManagerRegistrationRecordByRegistrationUuid(
+      registrationUuid
+    ),
+
+  /**
+   * 查询现场报告信息
+   */
+  selectRegistrationReportByRegistrationUuid: registrationUuid =>
+    enterpriseRegistrationReportDao.selectRegistrationReportByRegistrationUuid(
+      registrationUuid
+    ),
+
+  /**
+   * 保存现场报告信息
+   */
+  saveTechRegistrationReport: async ({
+    registrationUuid,
+    url,
+    totalPage,
+    techManagerUuid
+  }) => {
+    try {
+      let productionUrl = '';
+      // 将temp的文件copy到production中
+      const [filePosition] = url.split('/');
+
+      if (filePosition === 'temp') {
+        const tempUrl = url;
+        productionUrl = url.replace('temp', 'production');
+        const report = await enterpriseRegistrationReportDao.selectRegistrationReportByRegistrationUuid(
+          registrationUuid
+        );
+
+        if (report?.url) {
+          await client.delete(report.url);
+        }
+
+        await client.copy(productionUrl, tempUrl);
+      } else if (filePosition === 'production') {
+        productionUrl = url;
+      } else {
+        throw new CustomError('oss文件路径错误');
+      }
+
+      await enterpriseRegistrationReportDao.updateRegistrationReport({
+        registrationUuid,
+        url: productionUrl,
+        status: 2,
+        totalPage,
+        techManagerUuid,
+        failText: null,
+        techManagerDate: new Date()
+      });
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  /**
+   * 管理员查询现场报告信息和状态
+   */
+  getManagerRegistrationReport: registrationUuid =>
+    enterpriseRegistrationReportDao.selectManagerRegistrationReportByRegistrationUuid(
+      registrationUuid
+    ),
+
+  /**
+   * 查询原始记录信息
+   */
+  getRegistrationRecordStatus: registrationUuid =>
+    enterpriseRegistrationOriginalRecordDao.selectRegistrationRecordStatus(
+      registrationUuid
+    ),
+
+  /**
+   * 查询现场记录信息
+   */
+  getRegistrationReportStatus: registrationUuid =>
+    enterpriseRegistrationReportDao.selectRegistrationReportStatus(
+      registrationUuid
+    ),
+
+  /**
+   * 设置原始记录审核通过状态
+   */
+  setTechLeaderRegistrationRecordSuccessStatus: ({
+    techLeaderManagerUuid,
+    registrationUuid
+  }) =>
+    enterpriseRegistrationOriginalRecordDao.updateRegistrationRecord({
+      registrationUuid,
+      status: 3,
+      techLeaderManagerUuid,
+      failText: null,
+      techLeaderManagerDate: new Date()
+    }),
+
+  /**
+   * 设置原始记录审核不通过状态
+   */
+  setTechLeaderRegistrationRecordFailStatus: ({ registrationUuid, failText }) =>
+    enterpriseRegistrationOriginalRecordDao.updateRegistrationRecord({
+      registrationUuid,
+      status: -2,
+      failText
+    }),
+
+  /**
+   * 设置现场报告审核通过状态
+   */
+  setTechLeaderRegistrationReportSuccessStatus: ({
+    techLeaderManagerUuid,
+    registrationUuid
+  }) =>
+    enterpriseRegistrationReportDao.updateRegistrationReport({
+      registrationUuid,
+      status: 3,
+      techLeaderManagerUuid,
+      failText: null,
+      techLeaderManagerDate: new Date()
+    }),
+
+  /**
+   * 设置现场报告审核不通过状态
+   */
+  setTechLeaderRegistrationReportFailStatus: ({ registrationUuid, failText }) =>
+    enterpriseRegistrationReportDao.updateRegistrationReport({
+      registrationUuid,
+      status: -2,
+      failText
+    }),
+
+  /**
+   * 批准人设置原始记录审核通过状态
+   */
+  setCertifierRegistrationRecordSuccessStatus: ({
+    certifierManagerUuid,
+    registrationUuid
+  }) =>
+    enterpriseRegistrationOriginalRecordDao.updateRegistrationRecord({
+      registrationUuid,
+      status: 4,
+      certifierManagerUuid,
+      failText: null,
+      certifierManagerDate: new Date()
+    }),
+
+  /**
+   * 批准人设置原始记录审核不通过状态
+   */
+  setCertifierRegistrationRecordFailStatus: ({ registrationUuid, failText }) =>
+    enterpriseRegistrationOriginalRecordDao.updateRegistrationRecord({
+      registrationUuid,
+      status: -3,
+      failText
+    }),
+
+  /**
+   * 批准人设置现场报告审核通过状态
+   */
+  setCertifierRegistrationReportSuccessStatus: ({
+    certifierManagerUuid,
+    registrationUuid
+  }) =>
+    enterpriseRegistrationReportDao.updateRegistrationReport({
+      registrationUuid,
+      status: 4,
+      certifierManagerUuid,
+      failText: null,
+      certifierManagerDate: new Date()
+    }),
+
+  /**
+   * 批准人设置现场报告审核不通过状态
+   */
+  setCertifierRegistrationReportFailStatus: ({ registrationUuid, failText }) =>
+    enterpriseRegistrationReportDao.updateRegistrationReport({
+      registrationUuid,
+      status: -3,
+      failText
+    }),
+
+  /**
+   * 查找原始记录url
+   */
+  selectProjectManagerRegistrationRecord: registrationUuid =>
+    enterpriseRegistrationOriginalRecordDao.selectProjectManagerRegistrationRecord(
+      registrationUuid
+    ),
+
+  /**
+   * 保存原始记录url
+   */
+  saveRecordFinaltUrl: async ({
+    registrationUuid,
+    finalUrl,
+    projectManagerUuid
+  }) => {
+    try {
+      let productionUrl = '';
+      // 将temp的文件copy到production中
+      const [filePosition] = finalUrl.split('/');
+
+      if (filePosition === 'temp') {
+        const tempUrl = finalUrl;
+        productionUrl = finalUrl.replace('temp', 'production');
+        const record = await enterpriseRegistrationOriginalRecordDao.selectProjectManagerRegistrationRecord(
+          registrationUuid
+        );
+
+        if (record?.finalUrl) {
+          await client.delete(record.finalUrl);
+        }
+
+        await client.copy(productionUrl, tempUrl);
+      } else if (filePosition === 'production') {
+        productionUrl = finalUrl;
+      } else {
+        throw new CustomError('oss文件路径错误');
+      }
+
+      return enterpriseRegistrationOriginalRecordDao.updateRegistrationRecord({
+        registrationUuid,
+        finalUrl: productionUrl,
+        projectManagerUuid,
+        projectManagerDate: new Date(),
+        status: 100
+      });
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  /**
+   * 查找原始记录url
+   */
+  selectProjectManagerRegistrationReport: registrationUuid =>
+  enterpriseRegistrationReportDao.selectProjectManagerRegistrationReport(
+      registrationUuid
+    ),
+
+  /**
+   * 保存原始记录url
+   */
+  saveReportFinaltUrl: async ({
+    registrationUuid,
+    finalUrl,
+    projectManagerUuid
+  }) => {
+    try {
+      let productionUrl = '';
+      // 将temp的文件copy到production中
+      const [filePosition] = finalUrl.split('/');
+
+      if (filePosition === 'temp') {
+        const tempUrl = finalUrl;
+        productionUrl = finalUrl.replace('temp', 'production');
+        const report = await enterpriseRegistrationReportDao.selectProjectManagerRegistrationReport(
+          registrationUuid
+        );
+
+        if (report?.finalUrl) {
+          await client.delete(report.finalUrl);
+        }
+
+        await client.copy(productionUrl, tempUrl);
+      } else if (filePosition === 'production') {
+        productionUrl = finalUrl;
+      } else {
+        throw new CustomError('oss文件路径错误');
+      }
+
+      return enterpriseRegistrationReportDao.updateRegistrationReport({
+        registrationUuid,
+        finalUrl: productionUrl,
+        projectManagerUuid,
+        projectManagerDate: new Date(),
+        status: 100
+      });
+    } catch (error) {
+      throw error;
     }
   }
 };

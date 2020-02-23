@@ -254,7 +254,7 @@ router.get('/downloadContract', async ctx => {
 router.get('/selectTechLeaderRegistration', async ctx => {
   try {
     const { registrationUuid } = ctx.state.param;
-    
+
     const data = await service.selectRegistrationByRegistrationUuid(
       registrationUuid
     );
@@ -331,6 +331,166 @@ router.post('/setTechLeaderApplyManagerFailStatus', async (ctx, next) => {
     await service.setTechLeaderApplyManagerFailStatus({
       registrationUuid,
       failManagerText
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 查询原始记录状态信息
+ */
+router.get('/getTechLeaderRegistrationRecordStatus', async ctx => {
+  try {
+    const { registrationUuid } = ctx.state.param;
+
+    const data = await service.getRegistrationRecordStatus(registrationUuid);
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 查询现场报告信息
+ */
+router.get('/getTechLeaderRegistrationReportStatus', async ctx => {
+  try {
+    const { registrationUuid } = ctx.state.param;
+
+    const data = await service.getRegistrationReportStatus(registrationUuid);
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 查询原始记录的基本信息
+ */
+router.get('/getTechLeaderRegistrationRecord', async ctx => {
+  try {
+    const { registrationUuid } = ctx.state.param;
+
+    const data = await service.getManagerRegistrationRecord(registrationUuid);
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 设置第二步合同签署成功状态
+ */
+router.put(
+  '/setTechLeaderRegistrationRecordSuccessStatus',
+  async (ctx, next) => {
+    try {
+      const { registrationUuid } = ctx.state.param;
+      const techLeaderManagerUuid = ctx.state.user.uuid;
+
+      await service.setTechLeaderRegistrationRecordSuccessStatus({
+        techLeaderManagerUuid,
+        registrationUuid
+      });
+
+      ctx.body = new Res({
+        status: RESPONSE_CODE.success
+      });
+    } catch {
+      throw error;
+    }
+  }
+);
+
+/**
+ * 设置第二步合同签署失败状态
+ */
+router.post('/setTechLeaderRegistrationRecordFailStatus', async ctx => {
+  try {
+    const { registrationUuid, failText } = ctx.state.param;
+
+    await service.setTechLeaderRegistrationRecordFailStatus({
+      registrationUuid,
+      failText
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 查询原始记录的基本信息
+ */
+router.get('/getTechLeaderRegistrationReport', async ctx => {
+  try {
+    const { registrationUuid } = ctx.state.param;
+
+    const data = await service.getManagerRegistrationReport(registrationUuid);
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 设置第二步合同签署成功状态
+ */
+router.put(
+  '/setTechLeaderRegistrationReportSuccessStatus',
+  async (ctx, next) => {
+    try {
+      const { registrationUuid } = ctx.state.param;
+      const techLeaderManagerUuid = ctx.state.user.uuid;
+
+      await service.setTechLeaderRegistrationReportSuccessStatus({
+        techLeaderManagerUuid,
+        registrationUuid
+      });
+
+      ctx.body = new Res({
+        status: RESPONSE_CODE.success
+      });
+    } catch {
+      throw error;
+    }
+  }
+);
+
+/**
+ * 设置第二步合同签署失败状态
+ */
+router.put('/setTechLeaderRegistrationReportFailStatus', async ctx => {
+  try {
+    const { registrationUuid, failText } = ctx.state.param;
+
+    await service.setTechLeaderRegistrationReportFailStatus({
+      registrationUuid,
+      failText
     });
 
     ctx.body = new Res({
