@@ -31,7 +31,7 @@ module.exports = {
       path: '/network-bureau/network-bureau-server',
       'post-deploy':
         'npm install && pm2 reload ecosystem.config.js --env production',
-      'post-setup': 'ls -la && npm install'
+      'post-setup': 'npm install'
     }
   }
 };
