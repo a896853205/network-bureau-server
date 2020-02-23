@@ -8,7 +8,9 @@
     "prd": "set NODE_ENV=production&&pm2 start bin/www",
     "test": "echo \"Error: no test specified\" && exit 1",
     "initDb": "set NODE_ENV=development&&node src/db/init",
-    "proInitDb": "export NODE_ENV=production&&node src/db/init"
+    "proInitDb": "export NODE_ENV=production&&node src/db/init",
+    "initDeploy": "pm2 deploy production setup",
+    "deploy": "pm2 deploy production update"
   },
   "dependencies": {
     "@koa/multer": "^2.0.2",
