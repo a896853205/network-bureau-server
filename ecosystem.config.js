@@ -30,7 +30,8 @@ module.exports = {
       repo: 'git@github.com:a896853205/network-bureau-server.git',
       path: '/network-bureau/network-bureau-server',
       'post-deploy':
-        'npm install && pm2 reload ecosystem.config.js --env production'
+        'npm install && pm2 reload ecosystem.config.js --env production',
+      'post-setup': 'npm run initDb.js'
     }
   }
 };
