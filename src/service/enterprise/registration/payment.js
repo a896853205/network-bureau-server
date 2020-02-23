@@ -76,7 +76,7 @@ export default {
         await enterpriseRegistrationDao.selectRegistrationAccoutantManagerUuid(
           registrationUuid
         )
-      ).accountantManagerUuid;
+      )?.accountantManagerUuid;
     } catch (error) {
       throw error;
     }

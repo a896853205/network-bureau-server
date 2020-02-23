@@ -18,7 +18,7 @@ export default {
    */
   selectRegistrationRecordByRegistrationUuid: registrationUuid =>
     enterpriseRegistrationOriginalRecord.findOne({
-      attributes: ['url', 'totalPage'],
+      attributes: ['url', 'totalPage', 'failText'],
       raw: true,
       where: { uuid: registrationUuid }
     }),
@@ -35,6 +35,8 @@ export default {
     techManagerDate,
     techLeaderManagerUuid,
     techLeaderManagerDate,
+    certifierManagerUuid,
+    certifierManagerDate,
     failText
   }) =>
     enterpriseRegistrationOriginalRecord.update(
@@ -46,6 +48,8 @@ export default {
         techManagerDate,
         techLeaderManagerUuid,
         techLeaderManagerDate,
+        certifierManagerUuid,
+        certifierManagerDate,
         failText
       },
       {

@@ -23,6 +23,7 @@ export default db.define('enterprise_registration_report', {
   failText: Sequelize.STRING(100), // 错误提示
   totalPage: Sequelize.STRING(100), // 页码总数
   url: Sequelize.TEXT,
+  finalUrl: Sequelize.TEXT,
   techManagerUuid: Sequelize.STRING(36),
   techManagerDate: Sequelize.DATE,
   techLeaderManagerUuid: Sequelize.STRING(36),

@@ -718,6 +718,7 @@ export default {
         url: productionUrl,
         status: 2,
         totalPage,
+        failText: null,
         techManagerUuid,
         techManagerDate: new Date()
       });
@@ -780,6 +781,7 @@ export default {
         status: 2,
         totalPage,
         techManagerUuid,
+        failText: null,
         techManagerDate: new Date()
       });
     } catch (error) {
@@ -858,6 +860,56 @@ export default {
     enterpriseRegistrationReportDao.updateRegistrationReport({
       registrationUuid,
       status: -2,
+      failText
+    }),
+
+  /**
+   * 批准人设置原始记录审核通过状态
+   */
+  setCertifierRegistrationRecordSuccessStatus: ({
+    certifierManagerUuid,
+    registrationUuid
+  }) =>
+    enterpriseRegistrationOriginalRecordDao.updateRegistrationRecord({
+      registrationUuid,
+      status: 4,
+      certifierManagerUuid,
+      failText: null,
+      certifierManagerDate: new Date()
+    }),
+
+  /**
+   * 批准人设置原始记录审核不通过状态
+   */
+  setCertifierRegistrationRecordFailStatus: ({ registrationUuid, failText }) =>
+    enterpriseRegistrationOriginalRecordDao.updateRegistrationRecord({
+      registrationUuid,
+      status: -3,
+      failText
+    }),
+
+  /**
+   * 批准人设置现场报告审核通过状态
+   */
+  setCertifierRegistrationReportSuccessStatus: ({
+    certifierManagerUuid,
+    registrationUuid
+  }) =>
+    enterpriseRegistrationReportDao.updateRegistrationReport({
+      registrationUuid,
+      status: 4,
+      certifierManagerUuid,
+      failText: null,
+      certifierManagerDate: new Date()
+    }),
+
+  /**
+   * 批准人设置现场报告审核不通过状态
+   */
+  setCertifierRegistrationReportFailStatus: ({ registrationUuid, failText }) =>
+    enterpriseRegistrationReportDao.updateRegistrationReport({
+      registrationUuid,
+      status: -3,
       failText
     })
 };
