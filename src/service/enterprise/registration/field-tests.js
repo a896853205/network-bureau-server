@@ -72,7 +72,7 @@ export default {
         await enterpriseRegistrationDao.selectRegistrationTechManagerUuid(
           registrationUuid
         )
-      ).techManagerUuid;
+      )?.techManagerUuid;
     } catch (error) {
       throw error;
     }
@@ -87,7 +87,7 @@ export default {
         await enterpriseRegistrationDao.selectRegistrationTechLeaderManagerUuid(
           registrationUuid
         )
-      ).techLeaderManagerUuid;
+      )?.techLeaderManagerUuid;
     } catch (error) {
       throw error;
     }
