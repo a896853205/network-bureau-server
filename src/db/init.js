@@ -64,6 +64,15 @@ Promise.all([
         star: 5
       }),
       managerUser.create({
+        username: 'caiwu',
+        uuid: 'caiwu',
+        password: 'e10adc3949ba59abbe56e057f20f883e',
+        role: 5,
+        name: '财务人员',
+        phone: '15998133472',
+        star: 5
+      }),
+      managerUser.create({
         username: 'xiangmu',
         uuid: 'woshiyigexiangmuguanliyuan',
         password: 'e10adc3949ba59abbe56e057f20f883e',

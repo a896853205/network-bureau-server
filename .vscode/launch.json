@@ -15,7 +15,10 @@
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
       "skipFiles": ["<node_internals>/**"],
-      "program": "${workspaceFolder}\\bin\\www"
+      "program": "${workspaceFolder}\\bin\\www",
+      "env": {
+        "NODE_ENV": "development"
+      }
     }
   ]
 }

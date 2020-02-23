@@ -39,7 +39,7 @@ router.get('/getManagerToken', async (ctx, next) => {
       data: token
     });
   } catch (error) {
-    ctx.throw(RESPONSE_CODE.unauthorized);
+    throw error;
   }
 });
 
