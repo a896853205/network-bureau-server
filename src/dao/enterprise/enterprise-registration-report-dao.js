@@ -37,6 +37,9 @@ export default {
     techLeaderManagerDate,
     certifierManagerUuid,
     certifierManagerDate,
+    finalUrl,
+    projectManagerUuid,
+    projectManagerDate,
     failText
   }) =>
     enterpriseRegistrationReport.update(
@@ -50,6 +53,9 @@ export default {
         techLeaderManagerDate,
         certifierManagerUuid,
         certifierManagerDate,
+        finalUrl,
+        projectManagerUuid,
+        projectManagerDate,
         failText
       },
       {
@@ -74,6 +80,16 @@ export default {
   selectManagerRegistrationReportByRegistrationUuid: registrationUuid =>
     enterpriseRegistrationReport.findOne({
       attributes: ['url', 'status'],
+      raw: true,
+      where: { uuid: registrationUuid }
+    }),
+
+  /**
+   * 查找现场报告url
+   */
+  selectProjectManagerRegistrationReport: registrationUuid =>
+    enterpriseRegistrationReport.findOne({
+      attributes: ['url', 'finalUrl'],
       raw: true,
       where: { uuid: registrationUuid }
     })

@@ -911,5 +911,107 @@ export default {
       registrationUuid,
       status: -3,
       failText
-    })
+    }),
+
+  /**
+   * 查找原始记录url
+   */
+  selectProjectManagerRegistrationRecord: registrationUuid =>
+    enterpriseRegistrationOriginalRecordDao.selectProjectManagerRegistrationRecord(
+      registrationUuid
+    ),
+
+  /**
+   * 保存原始记录url
+   */
+  saveRecordFinaltUrl: async ({
+    registrationUuid,
+    finalUrl,
+    projectManagerUuid
+  }) => {
+    try {
+      let productionUrl = '';
+      // 将temp的文件copy到production中
+      const [filePosition] = finalUrl.split('/');
+
+      if (filePosition === 'temp') {
+        const tempUrl = finalUrl;
+        productionUrl = finalUrl.replace('temp', 'production');
+        const record = await enterpriseRegistrationOriginalRecordDao.selectProjectManagerRegistrationRecord(
+          registrationUuid
+        );
+
+        if (record?.finalUrl) {
+          await client.delete(record.finalUrl);
+        }
+
+        await client.copy(productionUrl, tempUrl);
+      } else if (filePosition === 'production') {
+        productionUrl = finalUrl;
+      } else {
+        throw new CustomError('oss文件路径错误');
+      }
+
+      return enterpriseRegistrationOriginalRecordDao.updateRegistrationRecord({
+        registrationUuid,
+        finalUrl: productionUrl,
+        projectManagerUuid,
+        projectManagerDate: new Date(),
+        status: 100
+      });
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  /**
+   * 查找原始记录url
+   */
+  selectProjectManagerRegistrationReport: registrationUuid =>
+  enterpriseRegistrationReportDao.selectProjectManagerRegistrationReport(
+      registrationUuid
+    ),
+
+  /**
+   * 保存原始记录url
+   */
+  saveReportFinaltUrl: async ({
+    registrationUuid,
+    finalUrl,
+    projectManagerUuid
+  }) => {
+    try {
+      let productionUrl = '';
+      // 将temp的文件copy到production中
+      const [filePosition] = finalUrl.split('/');
+
+      if (filePosition === 'temp') {
+        const tempUrl = finalUrl;
+        productionUrl = finalUrl.replace('temp', 'production');
+        const report = await enterpriseRegistrationReportDao.selectProjectManagerRegistrationReport(
+          registrationUuid
+        );
+
+        if (report?.finalUrl) {
+          await client.delete(report.finalUrl);
+        }
+
+        await client.copy(productionUrl, tempUrl);
+      } else if (filePosition === 'production') {
+        productionUrl = finalUrl;
+      } else {
+        throw new CustomError('oss文件路径错误');
+      }
+
+      return enterpriseRegistrationReportDao.updateRegistrationReport({
+        registrationUuid,
+        finalUrl: productionUrl,
+        projectManagerUuid,
+        projectManagerDate: new Date(),
+        status: 100
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
 };

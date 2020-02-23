@@ -677,4 +677,122 @@ router.post('/setProjectSpecimenManagerFailStatus', async (ctx, next) => {
   }
 });
 
+/**
+ * 查找原始记录url
+ */
+router.get('/selectProjectManagerRegistrationRecord', async (ctx, next) => {
+  try {
+    const { registrationUuid } = ctx.state.param;
+    const data = await service.selectProjectManagerRegistrationRecord(
+      registrationUuid
+    );
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 保存原始记录url
+ */
+router.post('/saveRecordFinaltUrl', async (ctx, next) => {
+  try {
+    const { registrationUuid, finalUrl } = ctx.state.param;
+    const projectManagerUuid = ctx.state.user.uuid;
+
+    await service.saveRecordFinaltUrl({
+      registrationUuid,
+      finalUrl,
+      projectManagerUuid
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 查找现场报告url
+ */
+router.get('/selectProjectManagerRegistrationReport', async (ctx, next) => {
+  try {
+    const { registrationUuid } = ctx.state.param;
+    const data = await service.selectProjectManagerRegistrationReport(
+      registrationUuid
+    );
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 保存查找现场报告urlurl
+ */
+router.post('/saveReportFinaltUrl', async (ctx, next) => {
+  try {
+    const { registrationUuid, finalUrl } = ctx.state.param;
+    const projectManagerUuid = ctx.state.user.uuid;
+
+    await service.saveReportFinaltUrl({
+      registrationUuid,
+      finalUrl,
+      projectManagerUuid
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 查询现场报告的基本信息
+ */
+router.get('/getProjectRegistrationTestReport', async ctx => {
+  try {
+    const { registrationUuid } = ctx.state.param;
+
+    const data = await service.getRegistrationReportStatus(registrationUuid);
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 查询原始记录的基本信息
+ */
+router.get('/getProjectRegistrationTestRecord', async ctx => {
+  try {
+    const { registrationUuid } = ctx.state.param;
+
+    const data = await service.getRegistrationRecordStatus(registrationUuid);
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
 export default router;
