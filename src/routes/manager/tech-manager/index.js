@@ -191,9 +191,7 @@ router.get('/generateReportWord', async ctx => {
   try {
     const { registrationUuid } = ctx.state.param;
 
-    const data = await service.generateReportWord(
-      registrationUuid
-    );
+    const data = await service.generateReportWord(registrationUuid);
 
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
@@ -211,7 +209,133 @@ router.get('/generateRecordWord', async ctx => {
   try {
     const { registrationUuid } = ctx.state.param;
 
-    const data = await service.generateRecordWord(
+    const data = await service.generateRecordWord(registrationUuid);
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 查询现场记录信息
+ */
+router.get('/selectTechRegistrationRecord', async ctx => {
+  try {
+    const { registrationUuid } = ctx.state.param;
+
+    const data = await service.selectRegistrationRecordByRegistrationUuid(
+      registrationUuid
+    );
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 保存现场记录信息
+ */
+router.post('/saveTechRegistrationRecord', async ctx => {
+  try {
+    const { registrationUuid, url, totalPage } = ctx.state.param;
+    const techManagerUuid = ctx.state.user.uuid;
+
+    const data = await service.saveTechRegistrationRecord({
+      registrationUuid,
+      url,
+      totalPage,
+      techManagerUuid
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 查询现场报告信息
+ */
+router.get('/selectTechRegistrationReport', async ctx => {
+  try {
+    const { registrationUuid } = ctx.state.param;
+
+    const data = await service.selectRegistrationReportByRegistrationUuid(
+      registrationUuid
+    );
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 保存现场报告信息
+ */
+router.post('/saveTechRegistrationReport', async ctx => {
+  try {
+    const { registrationUuid, url, totalPage } = ctx.state.param;
+    const techManagerUuid = ctx.state.user.uuid;
+
+    const data = await service.saveTechRegistrationReport({
+      registrationUuid,
+      url,
+      totalPage,
+      techManagerUuid
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 查询原始记录状态信息
+ */
+router.get('/getTechRegistrationRecordStatus', async ctx => {
+  try {
+    const { registrationUuid } = ctx.state.param;
+
+    const data = await service.getRegistrationRecordStatus(
+      registrationUuid
+    );
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 查询现场报告信息
+ */
+router.get('/getTechRegistrationReportStatus', async ctx => {
+  try {
+    const { registrationUuid } = ctx.state.param;
+
+    const data = await service.getRegistrationReportStatus(
       registrationUuid
     );
 
