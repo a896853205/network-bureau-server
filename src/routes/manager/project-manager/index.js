@@ -487,7 +487,7 @@ router.post('/arrangeTechLeaderManager', async (ctx, next) => {
       status: RESPONSE_CODE.success,
       msg: '已选择技术负责人'
     });
-  } catch {
+  } catch (error) {
     throw error;
   }
 });
@@ -504,7 +504,7 @@ router.put('/setContractManagerSuccessStatus', async (ctx, next) => {
     ctx.body = new Res({
       status: RESPONSE_CODE.success
     });
-  } catch {
+  } catch (error) {
     throw error;
   }
 });
