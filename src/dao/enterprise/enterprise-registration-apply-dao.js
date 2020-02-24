@@ -70,6 +70,7 @@ export default {
     registrationUuid,
     failManagerText,
     techManagerDate,
+    certifierManagerUuid,
     certifierManagerDate,
     techLeaderManagerDate,
     managerStatus,
@@ -81,6 +82,7 @@ export default {
         managerStatus,
         techManagerDate,
         certifierManagerDate,
+        certifierManagerUuid,
         techLeaderManagerDate
       },
       {

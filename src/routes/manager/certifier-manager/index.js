@@ -18,11 +18,11 @@ const router = new Router({
 router.get('/quaryRegistratiomNeedCertified', async (ctx, next) => {
   try {
     const { page } = ctx.state.param;
-    const managerUuid = ctx.state.user.uuid;
+    const certifierManagerUuid = ctx.state.user.uuid;
 
     const data = await service.quaryRegistratiomNeedCertified({
       page,
-      managerUuid
+      certifierManagerUuid
     });
 
     ctx.body = new Res({
@@ -117,7 +117,11 @@ router.post('/setCertifierApplyManagerStatus', async (ctx, next) => {
   try {
     const { registrationUuid } = ctx.state.param;
 
-    await service.setCertifierApplyManagerStatus(registrationUuid);
+    const certifierManagerUuid = ctx.state.user.uuid;
+    await service.setCertifierApplyManagerStatus({
+      registrationUuid,
+      certifierManagerUuid
+    });
 
     ctx.body = new Res({
       status: RESPONSE_CODE.success
