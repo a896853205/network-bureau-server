@@ -430,10 +430,16 @@ export default {
   /**
    * 批准人查找注册登记信息
    */
-  quaryRegistratiomNeedCertified: ({ page }) => {
+  quaryRegistratiomNeedCertified: async ({ page }) => {
     try {
+      const registrationList = await enterpriseRegistrationStepDao.quaryCertifyRegistration();
+
+      const uuidList = registrationList.map(item => item.uuid);
+      console.log('uuidList=', uuidList);
+
       return enterpriseRegistrationDao.quaryRegistratiomNeedCertified({
-        page
+        page,
+        uuidList
       });
     } catch (error) {
       throw error;
@@ -968,7 +974,7 @@ export default {
    * 查找原始记录url
    */
   selectProjectManagerRegistrationReport: registrationUuid =>
-  enterpriseRegistrationReportDao.selectProjectManagerRegistrationReport(
+    enterpriseRegistrationReportDao.selectProjectManagerRegistrationReport(
       registrationUuid
     ),
 
