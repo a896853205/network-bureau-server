@@ -105,7 +105,11 @@ export default {
   /**
    * 更新登记测试的步骤
    */
-  updateRegistrationCurrentStep: ({ registrationUuid, currentStep }) =>
+  updateRegistrationCurrentStep: ({
+    registrationUuid,
+    currentStep,
+    transaction = null
+  }) =>
     enterpriseRegistration.update(
       {
         currentStep
@@ -113,7 +117,8 @@ export default {
       {
         where: {
           uuid: registrationUuid
-        }
+        },
+        transaction
       }
     ),
 

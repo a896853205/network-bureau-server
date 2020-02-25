@@ -95,13 +95,27 @@ const _finishFieldTest = async ({ registrationUuid, transaction }) => {
     ]);
 
     if (record.status === 100 && report.status === 100) {
-      await enterpriseRegistrationStepDao.updateRegistrationStep({
-        registrationUuid,
-        status: 100,
-        statusText: '已完成',
-        step: 4,
-        transaction
-      });
+      await Promise.all([
+        enterpriseRegistrationStepDao.updateRegistrationStep({
+          registrationUuid,
+          status: 100,
+          statusText: '已完成',
+          step: 4,
+          transaction
+        }),
+        enterpriseRegistrationStepDao.updateRegistrationStep({
+          registrationUuid,
+          status: 1,
+          statusText: '企业接受报告和原始记录',
+          step: 5,
+          transaction
+        }),
+        enterpriseRegistrationDao.updateRegistrationCurrentStep({
+          registrationUuid,
+          currentStep: 5,
+          transaction
+        })
+      ]);
     }
   }
 };
