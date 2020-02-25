@@ -50,7 +50,7 @@ export default {
    * 根据名字查询
    */
   selectEnterpriseRegistrationByName: name =>
-    enterpriseRegistrationDao.selectEnterpriseRegistrationByName(name),
+    enterpriseRegistrationDao.selectEnterpriseRegistrationByName({ name }),
 
   /**
    * 根据RegistrationUuid查询
@@ -65,19 +65,25 @@ export default {
    */
   createEnterpriseRegistration: async (name, enterpriseUuid) => {
     try {
-      if (
-        // FIXME 这个查询需要与下面的Promise.all一起事务处理
-        await enterpriseRegistrationDao.selectEnterpriseRegistrationByName(name)
-      ) {
-        throw new CustomError('登记测试名重复');
-      } else {
-        // 查询一个项目管理员
-        const projectManager = await managerUserDao.selectManagerUserByRole(10);
-        const projectManagerUuid = projectManager?.uuid;
+      const enterpriseRegistrationUuid = uuid.v1();
 
-        // 初始化步骤的数据
-        const enterpriseRegistrationUuid = uuid.v1(),
-          enterpriseRegistrationSteps = [
+      await db.transaction(async transaction => {
+        if (
+          await enterpriseRegistrationDao.selectEnterpriseRegistrationByName({
+            name,
+            transaction
+          })
+        ) {
+          throw new CustomError('登记测试名重复');
+        } else {
+          // 查询一个项目管理员
+          const projectManager = await managerUserDao.selectManagerUserByRole({
+            role: 10,
+            transaction
+          });
+          const projectManagerUuid = projectManager?.uuid; // 初始化步骤的数据
+
+          const enterpriseRegistrationSteps = [
             {
               uuid: enterpriseRegistrationUuid,
               step: 1,
@@ -121,7 +127,7 @@ export default {
               managerUuid: projectManagerUuid
             }
           ];
-        await db.transaction(async transaction => {
+
           await Promise.all([
             enterpriseRegistrationDao.insertEnterpriseRegistration({
               uuid: enterpriseRegistrationUuid,
@@ -177,17 +183,16 @@ export default {
               transaction
             })
           ]);
-
           return await enterpriseRegistrationStepDao.bulkInsertRegistrationStep(
             {
               enterpriseRegistrationSteps,
               transaction
             }
           );
-        });
+        }
+      });
 
-        return enterpriseRegistrationUuid;
-      }
+      return enterpriseRegistrationUuid;
     } catch (error) {
       throw error;
     }
