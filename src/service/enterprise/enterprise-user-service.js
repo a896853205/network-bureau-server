@@ -1,8 +1,11 @@
+import { db } from '../../db/db-connect';
+
 import enterpriseUserDao from '../../dao/enterprise/enterprise-user-dao';
 
 // 工具
 import webToken from '../../util/token';
 import CustomError from '../../util/custom-error';
+import CheckSocialCreditCode from '../../util/code';
 
 export default {
   /**
@@ -39,16 +42,38 @@ export default {
    */
   createNewEnterprise: async ({ code, name, password, phone }) => {
     try {
-      if (await enterpriseUserDao.selectEnterpriseByCode(code)) {
-        throw new CustomError('社会统一信用代码已注册');
-      }
+      return db.transaction(async transaction => {
+        if (
+          await enterpriseUserDao.selectEnterpriseByCode({ code, transaction })
+        ) {
+          throw new CustomError('社会统一信用代码已注册');
+        }
+        const phoneReg = /^(\d)(\d|-){4,19}$/;
 
-      // 需要表单认证
-      return enterpriseUserDao.createNewEnterprise({
-        name,
-        password,
-        phone,
-        code
+        if (!name.length || name.length > 32) {
+          throw new CustomError('用户名长度不符合规则!');
+        }
+
+        if (password.length < 6 || password.length > 32) {
+          throw new CustomError('密码长度不符合规则!');
+        }
+
+        if (!phoneReg.test(phone)) {
+          throw new CustomError('电话号码不符合规则!');
+        }
+
+        if (!CheckSocialCreditCode(code)) {
+          throw new CustomError('统一社会信用代码不符合规则!');
+        }
+
+        // 需要表单认证
+        return await enterpriseUserDao.createNewEnterprise({
+          name,
+          password,
+          phone,
+          code,
+          transaction
+        });
       });
     } catch (error) {
       throw error;

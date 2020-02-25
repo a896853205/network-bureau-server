@@ -25,21 +25,31 @@ export default {
   /**
    * 根据用户名查找是否有相同企业
    */
-  selectEnterpriseByCode: code =>
+  selectEnterpriseByCode: ({ code, transaction = null }) => {
     enterpriseUser.findOne({
       where: { code },
+      transaction,
       raw: true
-    }),
+    });
+  },
 
   /**
    * 创建企业用户
    */
-  createNewEnterprise: ({ name, password, phone, code }) =>
+  createNewEnterprise: ({
+    name,
+    password,
+    phone,
+    code,
+    transaction = null
+  }) => {
     enterpriseUser.create({
       name,
       password,
       phone,
+      transaction,
       code,
       uuid: uuid.v1()
-    })
+    });
+  }
 };
