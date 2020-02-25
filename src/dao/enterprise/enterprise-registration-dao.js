@@ -15,9 +15,10 @@ export default {
   /**
    * 通过name查询登记测试
    */
-  selectEnterpriseRegistrationByName: name =>
+  selectEnterpriseRegistrationByName: ({ name, transaction = null }) =>
     enterpriseRegistration.findOne({
-      where: { name }
+      where: { name },
+      transaction
     }),
 
   /**

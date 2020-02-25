@@ -50,7 +50,7 @@ export default {
    * 根据名字查询
    */
   selectEnterpriseRegistrationByName: name =>
-    enterpriseRegistrationDao.selectEnterpriseRegistrationByName(name),
+    enterpriseRegistrationDao.selectEnterpriseRegistrationByName({ name }),
 
   /**
    * 根据RegistrationUuid查询
@@ -65,62 +65,68 @@ export default {
    */
   createEnterpriseRegistration: async (name, enterpriseUuid) => {
     try {
-      if (
-        await enterpriseRegistrationDao.selectEnterpriseRegistrationByName(name)
-      ) {
-        throw new CustomError('登记测试名重复');
-      } else {
-        // 查询一个项目管理员
-        const projectManager = await managerUserDao.selectManagerUserByRole(10);
-        const projectManagerUuid = projectManager?.uuid;
+      await db.transaction(async transaction => {
+        if (
+          await enterpriseRegistrationDao.selectEnterpriseRegistrationByName({
+            name,
+            transaction
+          })
+        ) {
+          throw new CustomError('登记测试名重复');
+        } else {
+          // 查询一个项目管理员
+          const projectManager = await managerUserDao.selectManagerUserByRole({
+            role: 10,
+            transaction
+          });
+          const projectManagerUuid = projectManager?.uuid; // 初始化步骤的数据
 
-        // 初始化步骤的数据
-        const enterpriseRegistrationUuid = uuid.v1(),
-          enterpriseRegistrationSteps = [
-            {
-              uuid: enterpriseRegistrationUuid,
-              step: 1,
-              status: 1,
-              statusText: '正在进行',
-              managerUuid: projectManagerUuid
-            },
-            {
-              uuid: enterpriseRegistrationUuid,
-              step: 2,
-              status: 0,
-              statusText: '未开始',
-              managerUuid: projectManagerUuid
-            },
-            {
-              uuid: enterpriseRegistrationUuid,
-              step: 3,
-              status: 0,
-              statusText: '未开始',
-              managerUuid: projectManagerUuid
-            },
-            {
-              uuid: enterpriseRegistrationUuid,
-              step: 4,
-              status: 0,
-              statusText: '未开始',
-              managerUuid: projectManagerUuid
-            },
-            {
-              uuid: enterpriseRegistrationUuid,
-              step: 5,
-              status: 0,
-              statusText: '未开始',
-              managerUuid: projectManagerUuid
-            },
-            {
-              uuid: enterpriseRegistrationUuid,
-              step: 6,
-              status: 0,
-              statusText: '未开始',
-              managerUuid: projectManagerUuid
-            }
-          ];
-        await db.transaction(async transaction => {
+          const enterpriseRegistrationUuid = uuid.v1(),
+            enterpriseRegistrationSteps = [
+              {
+                uuid: enterpriseRegistrationUuid,
+                step: 1,
+                status: 1,
+                statusText: '正在进行',
+                managerUuid: projectManagerUuid
+              },
+              {
+                uuid: enterpriseRegistrationUuid,
+                step: 2,
+                status: 0,
+                statusText: '未开始',
+                managerUuid: projectManagerUuid
+              },
+              {
+                uuid: enterpriseRegistrationUuid,
+                step: 3,
+                status: 0,
+                statusText: '未开始',
+                managerUuid: projectManagerUuid
+              },
+              {
+                uuid: enterpriseRegistrationUuid,
+                step: 4,
+                status: 0,
+                statusText: '未开始',
+                managerUuid: projectManagerUuid
+              },
+              {
+                uuid: enterpriseRegistrationUuid,
+                step: 5,
+                status: 0,
+                statusText: '未开始',
+                managerUuid: projectManagerUuid
+              },
+              {
+                uuid: enterpriseRegistrationUuid,
+                step: 6,
+                status: 0,
+                statusText: '未开始',
+                managerUuid: projectManagerUuid
+              }
+            ];
+
           await Promise.all([
             enterpriseRegistrationDao.insertEnterpriseRegistration({
               uuid: enterpriseRegistrationUuid,
@@ -176,17 +182,13 @@ export default {
               transaction
             })
           ]);
-
-          return await enterpriseRegistrationStepDao.bulkInsertRegistrationStep(
-            {
-              enterpriseRegistrationSteps,
-              transaction
-            }
-          );
-        });
-
-        return enterpriseRegistrationUuid;
-      }
+          await enterpriseRegistrationStepDao.bulkInsertRegistrationStep({
+            enterpriseRegistrationSteps,
+            transaction
+          });
+          return enterpriseRegistrationUuid;
+        }
+      });
     } catch (error) {
       throw error;
     }

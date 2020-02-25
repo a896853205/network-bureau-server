@@ -53,9 +53,10 @@ export default {
   /**
    * 通过权限查一个管理员
    */
-  selectManagerUserByRole: role =>
+  selectManagerUserByRole: ({ role, transaction = null }) =>
     managerUser.findOne({
       where: { role },
+      transaction,
       attributes: ['uuid', 'phone', 'username', 'password', 'name', 'role'],
       raw: true
     }),
