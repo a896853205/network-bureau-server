@@ -1,3 +1,5 @@
+import { db } from '../../db/db-connect';
+
 import enterpriseUserDao from '../../dao/enterprise/enterprise-user-dao';
 
 // 工具
