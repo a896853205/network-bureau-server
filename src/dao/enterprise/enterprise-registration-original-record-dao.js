@@ -40,7 +40,8 @@ export default {
     finalUrl,
     projectManagerUuid,
     projectManagerDate,
-    failText
+    failText,
+    transaction
   }) =>
     enterpriseRegistrationOriginalRecord.update(
       {
@@ -60,7 +61,8 @@ export default {
       },
       {
         where: { uuid: registrationUuid },
-        raw: true
+        raw: true,
+        transaction
       }
     ),
 
@@ -77,11 +79,15 @@ export default {
   /**
    * 查询现场记录状态信息
    */
-  selectManagerRegistrationRecordByRegistrationUuid: registrationUuid =>
+  selectManagerRegistrationRecordByRegistrationUuid: ({
+    registrationUuid,
+    transaction
+  }) =>
     enterpriseRegistrationOriginalRecord.findOne({
       attributes: ['url', 'status'],
       raw: true,
-      where: { uuid: registrationUuid }
+      where: { uuid: registrationUuid },
+      transaction
     }),
 
   /**

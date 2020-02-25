@@ -59,13 +59,49 @@ const _pushFieldTestStatus = async ({ registrationUuid, transaction }) => {
         }),
         enterpriseRegistrationOriginalRecordDao.updateRegistrationRecord({
           registrationUuid,
-          status: 1
+          status: 1,
+          transaction
         }),
         enterpriseRegistrationReportDao.updateRegistrationReport({
           registrationUuid,
-          status: 1
+          status: 1,
+          transaction
         })
       ]);
+    }
+  }
+};
+
+const _finishFieldTest = async ({ registrationUuid, transaction }) => {
+  // 查询当前步骤,
+  const steps = await enterpriseRegistrationStepDao.queryEnterpriseRegistrationStepByRegistrationUuid(
+    registrationUuid
+  );
+
+  if (steps[3].status === 4) {
+    const [record, report] = await Promise.all([
+      enterpriseRegistrationOriginalRecordDao.selectManagerRegistrationRecordByRegistrationUuid(
+        {
+          registrationUuid,
+          transaction
+        }
+      ),
+      enterpriseRegistrationReportDao.selectManagerRegistrationReportByRegistrationUuid(
+        {
+          registrationUuid,
+          transaction
+        }
+      )
+    ]);
+
+    if (record.status === 100 && report.status === 100) {
+      await enterpriseRegistrationStepDao.updateRegistrationStep({
+        registrationUuid,
+        status: 100,
+        statusText: '已完成',
+        step: 4,
+        transaction
+      });
     }
   }
 };
@@ -751,7 +787,9 @@ export default {
    */
   getManagerRegistrationRecord: registrationUuid =>
     enterpriseRegistrationOriginalRecordDao.selectManagerRegistrationRecordByRegistrationUuid(
-      registrationUuid
+      {
+        registrationUuid
+      }
     ),
 
   /**
@@ -813,7 +851,9 @@ export default {
    */
   getManagerRegistrationReport: registrationUuid =>
     enterpriseRegistrationReportDao.selectManagerRegistrationReportByRegistrationUuid(
-      registrationUuid
+      {
+        registrationUuid
+      }
     ),
 
   /**
@@ -971,12 +1011,16 @@ export default {
         throw new CustomError('oss文件路径错误');
       }
 
-      return enterpriseRegistrationOriginalRecordDao.updateRegistrationRecord({
-        registrationUuid,
-        finalUrl: productionUrl,
-        projectManagerUuid,
-        projectManagerDate: new Date(),
-        status: 100
+      await db.transaction(async transaction => {
+        await enterpriseRegistrationOriginalRecordDao.updateRegistrationRecord({
+          registrationUuid,
+          finalUrl: productionUrl,
+          projectManagerUuid,
+          projectManagerDate: new Date(),
+          status: 100
+        });
+
+        await _finishFieldTest({ registrationUuid, transaction });
       });
     } catch (error) {
       throw error;
@@ -1022,12 +1066,17 @@ export default {
         throw new CustomError('oss文件路径错误');
       }
 
-      return enterpriseRegistrationReportDao.updateRegistrationReport({
-        registrationUuid,
-        finalUrl: productionUrl,
-        projectManagerUuid,
-        projectManagerDate: new Date(),
-        status: 100
+      await db.transaction(async transaction => {
+        await enterpriseRegistrationReportDao.updateRegistrationReport({
+          registrationUuid,
+          finalUrl: productionUrl,
+          projectManagerUuid,
+          projectManagerDate: new Date(),
+          status: 100,
+          transaction
+        });
+
+        await _finishFieldTest({ registrationUuid, transaction });
       });
     } catch (error) {
       throw error;
