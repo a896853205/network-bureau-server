@@ -720,4 +720,23 @@ router.get('/selectEnterpriseRegistrationReport', async (ctx, next) => {
   }
 });
 
+/**
+ * 查询登记测试企业信息(企业评价页面)
+ */
+router.get('/getRegistrationManagerInfo', async (ctx, next) => {
+  try {
+    const { registrationUuid } = ctx.state.param;
+
+    const data = await service.getRegistrationManagerInfo(registrationUuid);
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+
 export default router;
