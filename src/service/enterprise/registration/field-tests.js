@@ -1032,5 +1032,21 @@ export default {
     } catch (error) {
       throw error;
     }
-  }
+  },
+
+  /**
+   * 查找原始记录url
+   */
+  selectEnterpriseRegistrationRecord: registrationUuid =>
+    enterpriseRegistrationOriginalRecordDao.selectEnterpriseRegistrationRecord(
+      registrationUuid
+    ),
+
+  /**
+   * 查找现场报告url
+   */
+  selectEnterpriseRegistrationReport: registrationUuid =>
+    enterpriseRegistrationReportDao.selectEnterpriseRegistrationReport(
+      registrationUuid
+    )
 };
