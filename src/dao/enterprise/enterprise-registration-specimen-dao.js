@@ -86,11 +86,18 @@ export default {
     failManagerText,
     techManagerDate,
     projectManagerDate,
+    projectManagerUuid,
     managerStatus,
     transaction
   }) =>
     enterpriseRegistrationSpecimen.update(
-      { failManagerText, managerStatus, techManagerDate, projectManagerDate },
+      {
+        failManagerText,
+        managerStatus,
+        techManagerDate,
+        projectManagerDate,
+        projectManagerUuid
+      },
       {
         where: { uuid: registrationUuid },
         transaction

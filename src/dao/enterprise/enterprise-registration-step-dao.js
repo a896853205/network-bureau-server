@@ -1,4 +1,6 @@
 import enterpriseRegistrationStep from '../../db/models/enterprise-registration-step';
+import Sequelize from 'Sequelize';
+const { ne } = Sequelize.Op;
 
 export default {
   bulkInsertRegistrationStep: ({
@@ -82,5 +84,19 @@ export default {
       attributes: ['uuid'],
       raw: true,
       where: { managerUuid }
+    }),
+
+  /**
+   * 批准人查找注册登记信息
+   */
+  quaryCertifyRegistration: () =>
+    enterpriseRegistrationStep.findAll({
+      where: {
+        step: 4,
+        status: { [ne]: 0 }
+      },
+      attributes: ['uuid'],
+      raw: true,
+      order: ['status']
     })
 };

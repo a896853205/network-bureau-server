@@ -413,11 +413,12 @@ export default {
   /**
    * 项目管理员设置样品登记表审核通过状态
    */
-  setProjectSpecimenManagerStatus: registrationUuid =>
+  setProjectSpecimenManagerStatus: ({ projectManagerUuid, registrationUuid }) =>
     db.transaction(async transaction => {
       await enterpriseRegistrationSpecimenDao.updateSpecimenManagerStatus({
         registrationUuid,
         projectManagerDate: new Date(),
+        projectManagerUuid,
         failManagerText: null,
         managerStatus: 100,
         transaction
@@ -466,10 +467,16 @@ export default {
   /**
    * 批准人查找注册登记信息
    */
-  quaryRegistratiomNeedCertified: ({ page }) => {
+  quaryRegistratiomNeedCertified: async ({ page, certifierManagerUuid }) => {
     try {
+      const registrationList = await enterpriseRegistrationStepDao.quaryCertifyRegistration();
+
+      const uuidList = registrationList.map(item => item.uuid);
+
       return enterpriseRegistrationDao.quaryRegistratiomNeedCertified({
-        page
+        page,
+        uuidList,
+        certifierManagerUuid
       });
     } catch (error) {
       throw error;
@@ -479,18 +486,30 @@ export default {
   /**
    * 批准人设置现场申请表审核通过状态
    */
-  setCertifierApplyManagerStatus: registrationUuid =>
+  setCertifierApplyManagerStatus: ({
+    registrationUuid,
+    certifierManagerUuid
+  }) => {
     db.transaction(async transaction => {
-      await enterpriseRegistrationApplyDao.updateApplyManagerStatus({
-        registrationUuid,
-        failManagerText: null,
-        certifierManagerDate: new Date(),
-        managerStatus: 100,
-        transaction
-      });
+      await Promise.all([
+        enterpriseRegistrationApplyDao.updateApplyManagerStatus({
+          registrationUuid,
+          failManagerText: null,
+          certifierManagerUuid,
+          certifierManagerDate: new Date(),
+          managerStatus: 100,
+          transaction
+        }),
+        enterpriseRegistrationDao.updateRegistrationCertifierManagerUuid({
+          registrationUuid,
+          certifierManagerUuid,
+          transaction
+        })
+      ]);
 
       return await _pushFieldTestStatus({ registrationUuid, transaction });
-    }),
+    });
+  },
   /**
    * 批准人设置现场申请表审核不通过状态
    */
@@ -1062,5 +1081,21 @@ export default {
     } catch (error) {
       throw error;
     }
-  }
+  },
+
+  /**
+   * 查找原始记录url
+   */
+  selectEnterpriseRegistrationRecord: registrationUuid =>
+    enterpriseRegistrationOriginalRecordDao.selectEnterpriseRegistrationRecord(
+      registrationUuid
+    ),
+
+  /**
+   * 查找现场报告url
+   */
+  selectEnterpriseRegistrationReport: registrationUuid =>
+    enterpriseRegistrationReportDao.selectEnterpriseRegistrationReport(
+      registrationUuid
+    )
 };

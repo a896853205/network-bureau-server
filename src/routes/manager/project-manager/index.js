@@ -643,9 +643,13 @@ router.get('/getProjectRegistrationTestSpecimen', async (ctx, next) => {
  */
 router.post('/setProjectSpecimenManagerStatus', async (ctx, next) => {
   try {
+    const projectManagerUuid = ctx.state.user.uuid;
     const { registrationUuid } = ctx.state.param;
 
-    const res = await service.setProjectSpecimenManagerStatus(registrationUuid);
+    const res = await service.setProjectSpecimenManagerStatus({
+      projectManagerUuid,
+      registrationUuid
+    });
 
     ctx.body = new Res({
       status: RESPONSE_CODE.success,

@@ -682,4 +682,42 @@ router.post('/saveTestRegistrationSpecimen', async ctx => {
   }
 });
 
+/**
+ * 查找原始记录url
+ */
+router.get('/selectEnterpriseRegistrationRecord', async (ctx, next) => {
+  try {
+    const { registrationUuid } = ctx.state.param;
+    const data = await service.selectEnterpriseRegistrationRecord(
+      registrationUuid
+    );
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 查找现场报告url
+ */
+router.get('/selectEnterpriseRegistrationReport', async (ctx, next) => {
+  try {
+    const { registrationUuid } = ctx.state.param;
+    const data = await service.selectEnterpriseRegistrationReport(
+      registrationUuid
+    );
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
 export default router;

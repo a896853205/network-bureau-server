@@ -98,5 +98,15 @@ export default {
       attributes: ['url', 'finalUrl'],
       raw: true,
       where: { uuid: registrationUuid }
+    }),
+
+  /**
+   * 查找原始记录url
+   */
+  selectEnterpriseRegistrationRecord: registrationUuid =>
+    enterpriseRegistrationOriginalRecord.findOne({
+      attributes: ['finalUrl'],
+      raw: true,
+      where: { uuid: registrationUuid }
     })
 };

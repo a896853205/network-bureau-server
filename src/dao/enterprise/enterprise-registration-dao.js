@@ -6,6 +6,9 @@ import enterpriseRegistrationBasic from '../../db/models/enterprise-registration
 import enterpriseRegistrationSpecimen from '../../db/models/enterprise-registration-specimen';
 import enterpriseRegistrationApply from '../../db/models/enterprise-registration-apply';
 
+import Sequelize from 'Sequelize';
+const { or } = Sequelize.Op;
+
 import { REGISTRATION_PAGE_SIZE } from '../../config/system-config';
 
 export default {
@@ -315,6 +318,26 @@ export default {
     ),
 
   /**
+   * 更新负责的批准人
+   */
+  updateRegistrationCertifierManagerUuid: ({
+    registrationUuid,
+    certifierManagerUuid,
+    transaction = null
+  }) =>
+    enterpriseRegistration.update(
+      {
+        certifierManagerUuid
+      },
+      {
+        where: {
+          uuid: registrationUuid
+        },
+        transaction
+      }
+    ),
+
+  /**
    * 查询登记测试企业信息(文件审核页面)
    */
   selectEnterpriseInfoByRegistrationUuid: registrationUuid =>
@@ -356,12 +379,20 @@ export default {
   /**
    *查询待分配批准人的企业登记测试列表
    */
-  quaryRegistratiomNeedCertified: async ({ page }) => {
+  quaryRegistratiomNeedCertified: async ({
+    page,
+    uuidList,
+    certifierManagerUuid
+  }) => {
     const result = await enterpriseRegistration.findAndCountAll({
       attributes: ['uuid'],
       limit: REGISTRATION_PAGE_SIZE,
       offset: (page - 1) * REGISTRATION_PAGE_SIZE,
       raw: true,
+      where: {
+        uuid: uuidList,
+        [or]: [{ certifierManagerUuid }, { certifierManagerUuid: null }]
+      },
       include: [
         {
           model: enterpriseRegistrationBasic,
