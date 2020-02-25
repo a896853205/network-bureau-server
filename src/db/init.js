@@ -34,8 +34,7 @@ const sysRegistrationStepArray = [
   { name: '电子签合同', step: 2 },
   { name: '交付汇款', step: 3 },
   { name: '现场测试', step: 4 },
-  { name: '接受原始记录和测试报告', step: 5 },
-  { name: '给予打分', step: 6 }
+  { name: '接受原始记录和测试报告', step: 5 }
 ];
 
 Promise.all([
