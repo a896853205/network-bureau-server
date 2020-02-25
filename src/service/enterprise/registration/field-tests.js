@@ -105,7 +105,7 @@ const _finishFieldTest = async ({ registrationUuid, transaction }) => {
         }),
         enterpriseRegistrationStepDao.updateRegistrationStep({
           registrationUuid,
-          status: 1,
+          status: 100,
           statusText: '企业接受报告和原始记录',
           step: 5,
           transaction

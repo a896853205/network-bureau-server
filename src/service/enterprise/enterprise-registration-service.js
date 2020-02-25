@@ -66,6 +66,7 @@ export default {
   createEnterpriseRegistration: async (name, enterpriseUuid) => {
     try {
       if (
+        // FIXME 这个查询需要与下面的Promise.all一起事务处理
         await enterpriseRegistrationDao.selectEnterpriseRegistrationByName(name)
       ) {
         throw new CustomError('登记测试名重复');
