@@ -92,21 +92,26 @@ export default {
     devStartTime,
     enterpriseName
   }) => {
-    const phoneReg = /^(\d)(\d|-){4,20}$/;
+    const phoneReg = /^(\d)(\d|-){4,20}$/,
+      versionReg = /^(\d{1,2})(.([1-9]\d|\d)){2}$/;
+
+    if (!versionReg.test(version)) {
+      throw new CustomError('版本不符合规则!');
+    }
     if (!linkman.length || linkman.length > 32) {
       throw new CustomError('联系人长度不符合规则!');
     }
     if (!client.length || client.length > 32) {
-      throw new CustomError('联系人长度不符合规则!');
+      throw new CustomError('委托单位(人)长度不符合规则!');
     }
     if (!address.length || address.length > 32) {
-      throw new CustomError('联系人长度不符合规则!');
+      throw new CustomError('注册地址长度不符合规则!');
     }
     if (!phoneReg.test(phone)) {
       throw new CustomError('电话号码不符合规则!');
     }
     if (!enterpriseName.length || enterpriseName.length > 32) {
-      throw new CustomError('联系人长度不符合规则!');
+      throw new CustomError('开发单位全称长度不符合规则!');
     }
 
     return enterpriseRegistrationBasicDao.updateRegistrationBasic({
@@ -142,8 +147,24 @@ export default {
     postalCode,
     mainFunction,
     techIndex
-  }) =>
-    enterpriseRegistrationContractDao.updateRegistrationContract({
+  }) => {
+    const postalCodeReg = /^\d{6}$/;
+    if (!(amount >= 1 && amount <= 999)) {
+      throw new CustomError('数量不符合规则!');
+    }
+    if (!fax.length || fax.length > 32) {
+      throw new CustomError('传真长度不符合规则!');
+    }
+    if (!postalCodeReg.test(postalCode)) {
+      throw new CustomError('邮政编码不符合规则!');
+    }
+    if (!mainFunction.length || mainFunction.length > 32) {
+      throw new CustomError('主要功能长度不符合规则!');
+    }
+    if (!techIndex.length || techIndex.length > 32) {
+      throw new CustomError('技术指标长度不符合规则!');
+    }
+    return enterpriseRegistrationContractDao.updateRegistrationContract({
       registrationUuid,
       amount,
       fax,
@@ -153,7 +174,8 @@ export default {
       status: 1,
       statusText: '待审核',
       failText: ''
-    }),
+    });
+  },
 
   /**
    * 查询样品登记表信息
@@ -173,8 +195,18 @@ export default {
     securityClassification,
     email,
     unit
-  }) =>
-    enterpriseRegistrationSpecimenDao.updateRegistrationSpecimen({
+  }) => {
+    if (!trademark.length || trademark.length > 32) {
+      throw new CustomError('注册商标长度不符合规则!');
+    }
+    if (!developmentTool.length || developmentTool.length > 32) {
+      throw new CustomError('开发工具长度不符合规则!');
+    }
+    if (!email.length || email.length > 32) {
+      throw new CustomError('邮箱长度不符合规则!');
+    }
+
+    return enterpriseRegistrationSpecimenDao.updateRegistrationSpecimen({
       registrationUuid,
       trademark,
       developmentTool,
@@ -184,7 +216,8 @@ export default {
       status: 1,
       statusText: '待审核',
       failText: ''
-    }),
+    });
+  },
 
   /**
    * 查询现场测试申请表的基本信息
@@ -423,7 +456,7 @@ export default {
         specimen: enterpriseRegistrationSpecimenDao.updateSpecimenStatus
       };
 
-      if (failText.length > 100) {
+      if (failText?.length > 100) {
         throw new CustomError('审核不通过理由文本长度不符合规则!');
       }
 
