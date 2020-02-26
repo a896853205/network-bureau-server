@@ -114,20 +114,50 @@ export default {
   accountantConfirmPayment: registrationUuid => {
     try {
       return db.transaction(async transaction => {
-        const {
-          currentStep
-        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
-          { registrationUuid, transaction }
-        );
-        if (currentStep !== 3) {
+        const [{ currentStep }, steps] = await Promise.all([
+          enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+            { registrationUuid, transaction }
+          ),
+          enterpriseRegistrationStepDao.queryEnterpriseRegistrationStepByRegistrationUuid(
+            {
+              registrationUuid,
+              transaction
+            }
+          )
+        ]);
+
+        if (currentStep !== 3 && steps[2].status !== 3) {
           throw new CustomError('当前步骤不允许更新确认收款状态!');
         }
-        enterpriseRegistrationStepDao.updateRegistrationStep({
-          registrationUuid,
-          status: 4,
-          statusText: '财务已确认收款',
-          step: 3
-        });
+
+        return await Promise.all([
+          enterpriseRegistrationDao.updateRegistrationCurrentStep({
+            registrationUuid,
+            currentStep: 4,
+            transaction
+          }),
+          enterpriseRegistrationStepDao.updateRegistrationStep({
+            registrationUuid,
+            status: 100,
+            statusText: '已完成',
+            step: 3,
+            transaction
+          }),
+          enterpriseRegistrationStepDao.updateRegistrationStep({
+            registrationUuid,
+            status: 1,
+            statusText: '未选择测试管理员',
+            step: 4,
+            transaction
+          }),
+          enterpriseRegistrationStepDao.updateRegistrationStep({
+            registrationUuid,
+            status: 100,
+            statusText: '已完成',
+            step: 3,
+            transaction
+          })
+        ]);
       });
     } catch (error) {
       throw error;

@@ -225,67 +225,6 @@ export default {
    */
   queryRegistration: page => enterpriseRegistrationDao.queryRegistration(page),
 
-  /**
-   * 推进登记测试的进程
-   */
-  pushRegistrationProcess: async registrationUuid => {
-    // 先查询现在的进度,
-    // 然后如果是进度1,就判断8种状态是不是都是2
-    // 最后如果ok就进度改称,而且进度1的text改成已完成
-    try {
-      return db.transaction(async transaction => {
-        const registration = await enterpriseRegistrationDao.selectRegistrationByRegistrationUuid(
-          { registrationUuid, transaction }
-        );
-
-        if (registration) {
-          if (registration.currentStep === 3) {
-            const steps = await enterpriseRegistrationStepDao.queryEnterpriseRegistrationStepByRegistrationUuid(
-              {
-                registrationUuid,
-                transaction
-              }
-            );
-
-            // 财务通过之后
-            if (steps[2].status === 4) {
-              return await Promise.all([
-                enterpriseRegistrationDao.updateRegistrationCurrentStep({
-                  registrationUuid,
-                  currentStep: 4,
-                  transaction
-                }),
-                enterpriseRegistrationStepDao.updateRegistrationStep({
-                  registrationUuid,
-                  status: 100,
-                  statusText: '已完成',
-                  step: 3,
-                  transaction
-                }),
-                enterpriseRegistrationStepDao.updateRegistrationStep({
-                  registrationUuid,
-                  status: 1,
-                  statusText: '未选择测试管理员',
-                  step: 4,
-                  transaction
-                }),
-                enterpriseRegistrationStepDao.updateRegistrationStep({
-                  registrationUuid,
-                  status: 100,
-                  statusText: '已完成',
-                  step: 3,
-                  transaction
-                })
-              ]);
-            }
-          }
-        }
-      });
-    } catch (error) {
-      throw error;
-    }
-  },
-
   downloadProduct: async registrationUuid => {
     try {
       const {
