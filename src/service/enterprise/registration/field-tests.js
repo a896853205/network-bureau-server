@@ -31,7 +31,7 @@ import moment from 'moment';
 const _pushFieldTestStatus = async ({ registrationUuid, transaction }) => {
   // 查询当前步骤,
   const steps = await enterpriseRegistrationStepDao.queryEnterpriseRegistrationStepByRegistrationUuid(
-    registrationUuid
+    { registrationUuid }
   );
 
   if (steps[3].status === 3) {
@@ -75,7 +75,7 @@ const _pushFieldTestStatus = async ({ registrationUuid, transaction }) => {
 const _finishFieldTest = async ({ registrationUuid, transaction }) => {
   // 查询当前步骤,
   const steps = await enterpriseRegistrationStepDao.queryEnterpriseRegistrationStepByRegistrationUuid(
-    registrationUuid
+    { registrationUuid }
   );
 
   if (steps[3].status === 4) {
@@ -283,9 +283,9 @@ export default {
    * 根据RegistrationUuid查询5个管理员信息
    */
   selectRegistrationManagerUuid: registrationUuid =>
-    enterpriseRegistrationDao.selectRegistrationByRegistrationUuid(
+    enterpriseRegistrationDao.selectRegistrationByRegistrationUuid({
       registrationUuid
-    ),
+    }),
 
   /**
    * 根据RegistrationUuid查询5个管理员信息
@@ -293,7 +293,7 @@ export default {
   getRegistrationManagerInfo: async registrationUuid => {
     try {
       const registrationManagerUuidList = await enterpriseRegistrationDao.selectRegistrationByRegistrationUuid(
-        registrationUuid
+        { registrationUuid }
       );
       let managerList = await Promise.all([
         managerUserDao.selectManagerByManagerUuidAndRole({
@@ -587,7 +587,7 @@ export default {
    */
   generateReportWord: async registrationUuid => {
     const statusList = await enterpriseRegistrationStepDao.queryEnterpriseRegistrationStepByRegistrationUuid(
-      registrationUuid
+      { registrationUuid }
     );
 
     // 判断状态是否ok
@@ -611,9 +611,9 @@ export default {
             registrationUuid
           }
         ),
-        enterpriseRegistrationDao.selectRegistrationByRegistrationUuid(
+        enterpriseRegistrationDao.selectRegistrationByRegistrationUuid({
           registrationUuid
-        ),
+        }),
         enterpriseRegistrationContractDao.selectRegistrationContractManager(
           registrationUuid
         ),
@@ -678,7 +678,7 @@ export default {
    */
   generateRecordWord: async registrationUuid => {
     const statusList = await enterpriseRegistrationStepDao.queryEnterpriseRegistrationStepByRegistrationUuid(
-      registrationUuid
+      { registrationUuid }
     );
 
     // 判断状态是否ok
@@ -702,9 +702,9 @@ export default {
             registrationUuid
           }
         ),
-        enterpriseRegistrationDao.selectRegistrationByRegistrationUuid(
+        enterpriseRegistrationDao.selectRegistrationByRegistrationUuid({
           registrationUuid
-        ),
+        }),
         enterpriseRegistrationContractDao.selectRegistrationContractManager(
           registrationUuid
         ),

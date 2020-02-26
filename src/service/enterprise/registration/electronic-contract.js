@@ -6,6 +6,7 @@ import client from '../../../util/oss';
 // dao
 import enterpriseRegistrationContractDao from '../../../dao/enterprise/enterprise-registration-contract-dao';
 import enterpriseRegistrationStepDao from '../../../dao/enterprise/enterprise-registration-step-dao';
+import enterpriseRegistrationDao from '../../../dao/enterprise/enterprise-registration-dao';
 
 // 工具类
 import CustomError from '../../../util/custom-error';
@@ -163,13 +164,45 @@ export default {
   /**
    * 设置第二步合同签署成功状态
    */
-  setContractManagerSuccessStatus: registrationUuid =>
-    enterpriseRegistrationStepDao.updateRegistrationStep({
-      registrationUuid,
-      status: 100,
-      statusText: '审核通过',
-      step: 2
-    }),
+  setContractManagerSuccessStatus: registrationUuid => {
+    return db.transaction(async transaction => {
+      const [registration, steps] = await Promise.all([
+        enterpriseRegistrationDao.selectRegistrationByRegistrationUuid({
+          registrationUuid,
+          transaction
+        }),
+        enterpriseRegistrationStepDao.queryEnterpriseRegistrationStepByRegistrationUuid(
+          { registrationUuid, transaction }
+        )
+      ]);
+
+      if (registration.currentStep === 2 && steps[1].status === 4) {
+        return await Promise.all([
+          enterpriseRegistrationStepDao.updateRegistrationStep({
+            registrationUuid,
+            status: 100,
+            statusText: '已完成',
+            step: 2,
+            transaction
+          }),
+          enterpriseRegistrationDao.updateRegistrationCurrentStep({
+            registrationUuid,
+            currentStep: 3,
+            transaction
+          }),
+          enterpriseRegistrationStepDao.updateRegistrationStep({
+            registrationUuid,
+            status: 1,
+            statusText: '未选择财务人员',
+            step: 3,
+            transaction
+          })
+        ]);
+      } else {
+        throw new CustomError('该流程状态错误');
+      }
+    });
+  },
   /**
    * 设置第二步合同签署失败状态
    */
