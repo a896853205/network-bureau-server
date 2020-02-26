@@ -194,43 +194,61 @@ export default {
     devStartTime,
     enterpriseName
   }) => {
-    const phoneReg = /^(\d)(\d|-){4,20}$/,
-      versionReg = /^(\d{1,2})(.([1-9]\d|\d)){2}$/;
+    try {
+      const phoneReg = /^(\d)(\d|-){4,20}$/,
+        versionReg = /^(\d{1,2})(.([1-9]\d|\d)){2}$/;
 
-    if (!versionReg.test(version)) {
-      throw new CustomError('版本不符合规则!');
-    }
-    if (!linkman.length || linkman.length > 32) {
-      throw new CustomError('联系人长度不符合规则!');
-    }
-    if (!client.length || client.length > 32) {
-      throw new CustomError('委托单位(人)长度不符合规则!');
-    }
-    if (!address.length || address.length > 32) {
-      throw new CustomError('注册地址长度不符合规则!');
-    }
-    if (!phoneReg.test(phone)) {
-      throw new CustomError('电话号码不符合规则!');
-    }
-    if (!enterpriseName.length || enterpriseName.length > 32) {
-      throw new CustomError('开发单位全称长度不符合规则!');
-    }
+      if (!versionReg.test(version)) {
+        throw new CustomError('版本不符合规则!');
+      }
+      if (!linkman.length || linkman.length > 32) {
+        throw new CustomError('联系人长度不符合规则!');
+      }
+      if (!client.length || client.length > 32) {
+        throw new CustomError('委托单位(人)长度不符合规则!');
+      }
+      if (!address.length || address.length > 32) {
+        throw new CustomError('注册地址长度不符合规则!');
+      }
+      if (!phoneReg.test(phone)) {
+        throw new CustomError('电话号码不符合规则!');
+      }
+      if (!enterpriseName.length || enterpriseName.length > 32) {
+        throw new CustomError('开发单位全称长度不符合规则!');
+      }
 
-    return enterpriseRegistrationBasicDao.updateRegistrationBasic({
-      registrationUuid,
-      version,
-      linkman,
-      client,
-      phone,
-      address,
-      devStartTime,
-      enterpriseName,
-      status: 1,
-      statusText: '待审核',
-      failText: ''
-    });
+      return db.transaction(async transaction => {
+        const {
+          currentStep
+        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+          {
+            registrationUuid,
+            transaction
+          }
+        );
+        if (!currentStep === 1) {
+          throw new CustomError('当前步骤不允许保存基本信息!');
+        } else {
+          return await enterpriseRegistrationBasicDao.updateRegistrationBasic({
+            registrationUuid,
+            version,
+            linkman,
+            client,
+            phone,
+            address,
+            devStartTime,
+            enterpriseName,
+            status: 1,
+            statusText: '待审核',
+            failText: '',
+            transaction
+          });
+        }
+      });
+    } catch (error) {
+      throw error;
+    }
   },
-
   /**
    * 查询评测合同的基本信息
    */

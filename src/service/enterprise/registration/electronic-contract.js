@@ -37,22 +37,22 @@ export default {
     contractTime
   }) => {
     try {
+      const paymentReg = /^([1-9])(\d{0,7})$/;
       if (!contractCode.length || contractCode.length > 32) {
         throw new CustomError('合同编号长度不符合规则!');
       }
-      if (!payment.length || payment.length > 32) {
+      if (!paymentReg.test(payment)) {
         throw new CustomError('评测费金额不符合规则!');
       }
 
       return db.transaction(async transaction => {
-        if (
-          await enterpriseRegistrationContractDao.selectRegistrationByContractCode(
-            {
-              contractCode,
-              transaction
-            }
-          )
-        ) {
+        const contractList = await enterpriseRegistrationContractDao.selectRegistrationByContractCode(
+          {
+            contractCode,
+            transaction
+          }
+        );
+        if (contractList && contractList?.uuid !== registrationUuid) {
           throw new CustomError('该合同编号已存在!');
         }
         return await Promise.all([

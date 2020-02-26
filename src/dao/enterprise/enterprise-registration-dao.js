@@ -24,6 +24,17 @@ export default {
   /**
    * 通过RegistrationUuid查询
    */
+  selectRegistrationCurrentStepByRegistrationUuid: ({ registrationUuid, transaction }) =>
+    enterpriseRegistration.findOne({
+      where: { uuid: registrationUuid },
+      attributes: ['currentStep'],
+      raw: true,
+      transaction
+    }),
+
+  /**
+   * 通过RegistrationUuid查询
+   */
   selectRegistrationByRegistrationUuid: ({ registrationUuid, transaction }) =>
     enterpriseRegistration.findOne({
       where: { uuid: registrationUuid },

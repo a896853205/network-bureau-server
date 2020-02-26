@@ -92,6 +92,7 @@ export default {
   selectRegistrationByContractCode: ({ contractCode, transaction = null }) => {
     return enterpriseRegistrationContract.findOne({
       where: { contractCode },
+      attributes: ['contractCode', 'uuid'],
       transaction,
       raw: true
     });
