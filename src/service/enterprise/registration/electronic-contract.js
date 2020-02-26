@@ -210,14 +210,6 @@ export default {
    */
   setContractManagerSuccessStatus: registrationUuid => {
     return db.transaction(async transaction => {
-      const {
-        currentStep
-      } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
-        { registrationUuid, transaction }
-      );
-      if (currentStep !== 2) {
-        throw new CustomError('当前步骤不允许设置合同签署状态!');
-      }
       const [registration, steps] = await Promise.all([
         enterpriseRegistrationDao.selectRegistrationByRegistrationUuid({
           registrationUuid,
