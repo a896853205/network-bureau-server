@@ -584,8 +584,18 @@ export default {
     securityClassification,
     email,
     unit
-  }) =>
-    enterpriseRegistrationSpecimenDao.updateRegistrationSpecimen({
+  }) => {
+    if (!trademark.length || trademark.length > 32) {
+      throw new CustomError('注册商标长度不符合规则!');
+    }
+    if (!developmentTool.length || developmentTool.length > 32) {
+      throw new CustomError('开发工具长度不符合规则!');
+    }
+    if (!email.length || email.length > 32) {
+      throw new CustomError('邮箱长度不符合规则!');
+    }
+
+    return enterpriseRegistrationSpecimenDao.updateRegistrationSpecimen({
       registrationUuid,
       trademark,
       developmentTool,
@@ -594,7 +604,8 @@ export default {
       unit,
       managerStatus: 1,
       failManagerText: null
-    }),
+    });
+  },
   /**
    * 保存现场测试申请表的基本信息
    */
