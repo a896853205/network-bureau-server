@@ -396,12 +396,17 @@ export default {
   /**
    * 技术人员设置现场申请表审核不通过状态
    */
-  setTechApplyManagerFailStatus: ({ registrationUuid, failManagerText }) =>
-    enterpriseRegistrationApplyDao.updateApplyManagerStatus({
+  setTechApplyManagerFailStatus: ({ registrationUuid, failManagerText }) => {
+    if (!failManagerText.length || failManagerText.length > 100) {
+      throw new CustomError('审核不通过理由文本长度不符合规则!');
+    }
+
+    return enterpriseRegistrationApplyDao.updateApplyManagerStatus({
       registrationUuid,
       failManagerText,
       managerStatus: -1
-    }),
+    });
+  },
 
   /**
    * 技术人员设置样品登记表审核通过状态
@@ -417,12 +422,16 @@ export default {
   /**
    * 技术人员设置样品登记表审核不通过状态
    */
-  setTechSpecimenManagerFailStatus: ({ registrationUuid, failManagerText }) =>
-    enterpriseRegistrationSpecimenDao.updateSpecimenManagerStatus({
+  setTechSpecimenManagerFailStatus: ({ registrationUuid, failManagerText }) => {
+    if (!failManagerText.length || failManagerText.length > 100) {
+      throw new CustomError('审核不通过理由文本长度不符合规则!');
+    }
+    return enterpriseRegistrationSpecimenDao.updateSpecimenManagerStatus({
       registrationUuid,
       failManagerText,
       managerStatus: -1
-    }),
+    });
+  },
 
   /**
    * 项目管理员设置样品登记表审核通过状态
@@ -447,12 +456,16 @@ export default {
   setProjectSpecimenManagerFailStatus: ({
     registrationUuid,
     failManagerText
-  }) =>
-    enterpriseRegistrationSpecimenDao.updateSpecimenManagerStatus({
+  }) => {
+    if (!failManagerText.length || failManagerText.length > 100) {
+      throw new CustomError('审核不通过理由文本长度不符合规则!');
+    }
+    return enterpriseRegistrationSpecimenDao.updateSpecimenManagerStatus({
       registrationUuid,
       failManagerText,
       managerStatus: -2
-    }),
+    });
+  },
 
   /**
    * 技术负责人设置现场申请表审核通过状态
@@ -471,12 +484,16 @@ export default {
   setTechLeaderApplyManagerFailStatus: ({
     registrationUuid,
     failManagerText
-  }) =>
-    enterpriseRegistrationApplyDao.updateApplyManagerStatus({
+  }) => {
+    if (!failManagerText.length || failManagerText.length > 100) {
+      throw new CustomError('审核不通过理由文本长度不符合规则!');
+    }
+    return enterpriseRegistrationApplyDao.updateApplyManagerStatus({
       registrationUuid,
       failManagerText,
       managerStatus: -2
-    }),
+    });
+  },
 
   /**
    * 批准人查找注册登记信息
@@ -527,12 +544,19 @@ export default {
   /**
    * 批准人设置现场申请表审核不通过状态
    */
-  setCertifierApplyManagerFailStatus: ({ registrationUuid, failManagerText }) =>
-    enterpriseRegistrationApplyDao.updateApplyManagerStatus({
+  setCertifierApplyManagerFailStatus: ({
+    registrationUuid,
+    failManagerText
+  }) => {
+    if (!failManagerText.length || failManagerText.length > 100) {
+      throw new CustomError('审核不通过理由文本长度不符合规则!');
+    }
+    return enterpriseRegistrationApplyDao.updateApplyManagerStatus({
       registrationUuid,
       failManagerText,
       managerStatus: -3
-    }),
+    });
+  },
 
   /**
    * 企业查询样品登记表信息
@@ -904,12 +928,20 @@ export default {
   /**
    * 设置原始记录审核不通过状态
    */
-  setTechLeaderRegistrationRecordFailStatus: ({ registrationUuid, failText }) =>
-    enterpriseRegistrationOriginalRecordDao.updateRegistrationRecord({
+  setTechLeaderRegistrationRecordFailStatus: ({
+    registrationUuid,
+    failText
+  }) => {
+    if (!failText.length || failText.length > 100) {
+      throw new CustomError('审核不通过理由文本长度不符合规则!');
+    }
+
+    return enterpriseRegistrationOriginalRecordDao.updateRegistrationRecord({
       registrationUuid,
       status: -2,
       failText
-    }),
+    });
+  },
 
   /**
    * 设置现场报告审核通过状态
@@ -929,12 +961,20 @@ export default {
   /**
    * 设置现场报告审核不通过状态
    */
-  setTechLeaderRegistrationReportFailStatus: ({ registrationUuid, failText }) =>
-    enterpriseRegistrationReportDao.updateRegistrationReport({
+  setTechLeaderRegistrationReportFailStatus: ({
+    registrationUuid,
+    failText
+  }) => {
+    if (!failText.length || failText.length > 100) {
+      throw new CustomError('审核不通过理由文本长度不符合规则!');
+    }
+
+    return enterpriseRegistrationReportDao.updateRegistrationReport({
       registrationUuid,
       status: -2,
       failText
-    }),
+    });
+  },
 
   /**
    * 批准人设置原始记录审核通过状态
@@ -954,12 +994,19 @@ export default {
   /**
    * 批准人设置原始记录审核不通过状态
    */
-  setCertifierRegistrationRecordFailStatus: ({ registrationUuid, failText }) =>
-    enterpriseRegistrationOriginalRecordDao.updateRegistrationRecord({
+  setCertifierRegistrationRecordFailStatus: ({
+    registrationUuid,
+    failText
+  }) => {
+    if (!failText.length || failText.length > 100) {
+      throw new CustomError('审核不通过理由文本长度不符合规则!');
+    }
+    return enterpriseRegistrationOriginalRecordDao.updateRegistrationRecord({
       registrationUuid,
       status: -3,
       failText
-    }),
+    });
+  },
 
   /**
    * 批准人设置现场报告审核通过状态
@@ -979,12 +1026,19 @@ export default {
   /**
    * 批准人设置现场报告审核不通过状态
    */
-  setCertifierRegistrationReportFailStatus: ({ registrationUuid, failText }) =>
-    enterpriseRegistrationReportDao.updateRegistrationReport({
+  setCertifierRegistrationReportFailStatus: ({
+    registrationUuid,
+    failText
+  }) => {
+    if (!failText.length || failText.length > 100) {
+      throw new CustomError('审核不通过理由文本长度不符合规则!');
+    }
+    return enterpriseRegistrationReportDao.updateRegistrationReport({
       registrationUuid,
       status: -3,
       failText
-    }),
+    });
+  },
 
   /**
    * 查找原始记录url

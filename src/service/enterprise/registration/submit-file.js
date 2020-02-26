@@ -91,8 +91,25 @@ export default {
     address,
     devStartTime,
     enterpriseName
-  }) =>
-    enterpriseRegistrationBasicDao.updateRegistrationBasic({
+  }) => {
+    const phoneReg = /^(\d)(\d|-){4,20}$/;
+    if (!linkman.length || linkman.length > 32) {
+      throw new CustomError('联系人长度不符合规则!');
+    }
+    if (!client.length || client.length > 32) {
+      throw new CustomError('联系人长度不符合规则!');
+    }
+    if (!address.length || address.length > 32) {
+      throw new CustomError('联系人长度不符合规则!');
+    }
+    if (!phoneReg.test(phone)) {
+      throw new CustomError('电话号码不符合规则!');
+    }
+    if (!enterpriseName.length || enterpriseName.length > 32) {
+      throw new CustomError('联系人长度不符合规则!');
+    }
+
+    return enterpriseRegistrationBasicDao.updateRegistrationBasic({
       registrationUuid,
       version,
       linkman,
@@ -104,7 +121,8 @@ export default {
       status: 1,
       statusText: '待审核',
       failText: ''
-    }),
+    });
+  },
 
   /**
    * 查询评测合同的基本信息
@@ -224,15 +242,13 @@ export default {
         throw new CustomError('oss文件路径错误');
       }
 
-      await enterpriseRegistrationCopyrightDao.updateRegistrationCopyright(
-        {
-          registrationUuid,
-          copyrightUrl: productionUrl,
-          status: 1,
-          statusText: '待审核',
-          failText: ''
-        }
-      );
+      await enterpriseRegistrationCopyrightDao.updateRegistrationCopyright({
+        registrationUuid,
+        copyrightUrl: productionUrl,
+        status: 1,
+        statusText: '待审核',
+        failText: ''
+      });
     } catch (error) {
       throw error;
     }
@@ -406,6 +422,10 @@ export default {
         document: enterpriseRegistrationDocumentDao.updateDocumentStatus,
         specimen: enterpriseRegistrationSpecimenDao.updateSpecimenStatus
       };
+
+      if (failText.length > 100) {
+        throw new CustomError('审核不通过理由文本长度不符合规则!');
+      }
 
       const getStatusDao = type => {
         if (!statusDao[type]) throw new CustomError('错误类型');

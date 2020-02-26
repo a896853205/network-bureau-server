@@ -175,6 +175,9 @@ export default {
    */
   setContractManagerFailStatus: ({ registrationUuid, managerFailText }) => {
     try {
+      if (!managerFailText.length || managerFailText.length > 100) {
+        throw new CustomError('审核不通过理由文本长度不符合规则!');
+      }
       return db.transaction(transaction => {
         return Promise.all([
           enterpriseRegistrationContractDao.updateContractManagerStatus({
