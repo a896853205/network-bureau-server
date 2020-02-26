@@ -16,11 +16,15 @@ export default {
   /**
    * 查询的现场测试软件著作权信息
    */
-  selectRegistrationCopyrightByRegistrationUuid: registrationUuid =>
+  selectRegistrationCopyrightByRegistrationUuid: ({
+    registrationUuid,
+    transaction
+  }) =>
     enterpriseRegistrationCopyright.findOne({
       attributes: ['url', 'failText', 'status', 'statusText'],
       raw: true,
-      where: { uuid: registrationUuid }
+      where: { uuid: registrationUuid },
+      transaction
     }),
 
   /**
@@ -59,11 +63,18 @@ export default {
   /**
    * 设置软件著作权证书的状态
    */
-  updateCopyrightStatus: ({ registrationUuid, status, failText, statusText }) =>
+  updateCopyrightStatus: ({
+    registrationUuid,
+    status,
+    failText,
+    statusText,
+    transaction
+  }) =>
     enterpriseRegistrationCopyright.update(
       { status, failText, statusText },
       {
-        where: { uuid: registrationUuid }
+        where: { uuid: registrationUuid },
+        transaction
       }
     )
 };

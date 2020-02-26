@@ -738,5 +738,4 @@ router.get('/getRegistrationManagerInfo', async (ctx, next) => {
   }
 });
 
-
 export default router;

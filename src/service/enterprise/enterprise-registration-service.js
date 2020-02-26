@@ -56,9 +56,9 @@ export default {
    * 根据RegistrationUuid查询
    */
   selectRegistrationByRegistrationUuid: registrationUuid =>
-    enterpriseRegistrationDao.selectRegistrationByRegistrationUuid(
+    enterpriseRegistrationDao.selectRegistrationByRegistrationUuid({
       registrationUuid
-    ),
+    }),
 
   /**
    * 创建登记测试
@@ -212,7 +212,7 @@ export default {
    */
   queryEnterpriseRegistrationStepByRegistrationUuid: registrationUuid =>
     enterpriseRegistrationStepDao.queryEnterpriseRegistrationStepByRegistrationUuid(
-      registrationUuid
+      { registrationUuid }
     ),
 
   /**
@@ -234,112 +234,11 @@ export default {
     // 最后如果ok就进度改称,而且进度1的text改成已完成
     try {
       const registration = await enterpriseRegistrationDao.selectRegistrationByRegistrationUuid(
-        registrationUuid
+        { registrationUuid }
       );
 
       if (registration) {
-        if (registration.currentStep === 1) {
-          // 第一步
-          const [
-            enterpriseRegistrationBasicStatus,
-            enterpriseRegistrationContractStatus,
-            enterpriseRegistrationCopyrightStatus,
-            enterpriseRegistrationSpecimenStatus,
-            enterpriseRegistrationProductDescriptionStatus,
-            enterpriseRegistrationDocumentStatus,
-            enterpriseRegistrationProductStatus,
-            enterpriseRegistrationApplyStatus
-          ] = await Promise.all([
-            enterpriseRegistrationBasicDao.selectRegistrationBasicByRegistrationUuid(
-              registrationUuid
-            ),
-            enterpriseRegistrationContractDao.selectRegistrationContractByRegistrationUuid(
-              registrationUuid
-            ),
-            enterpriseRegistrationCopyrightDao.selectRegistrationCopyrightByRegistrationUuid(
-              registrationUuid
-            ),
-            enterpriseRegistrationSpecimenDao.selectRegistrationSpecimenByRegistrationUuid(
-              registrationUuid
-            ),
-            enterpriseRegistrationProductDescriptionDao.selectRegistrationProductDescriptionByRegistrationUuid(
-              registrationUuid
-            ),
-            enterpriseRegistrationDocumentDao.selectRegistrationDocumentByRegistrationUuid(
-              registrationUuid
-            ),
-            enterpriseRegistrationProductDao.selectRegistrationProductByRegistrationUuid(
-              registrationUuid
-            ),
-            enterpriseRegistrationApplyDao.selectRegistrationApplyByRegistrationUuid(
-              registrationUuid
-            )
-          ]);
-
-          if (
-            enterpriseRegistrationBasicStatus.status === 100 &&
-            enterpriseRegistrationContractStatus.status === 100 &&
-            enterpriseRegistrationCopyrightStatus.status === 100 &&
-            enterpriseRegistrationSpecimenStatus.status === 100 &&
-            enterpriseRegistrationProductDescriptionStatus.status === 100 &&
-            enterpriseRegistrationDocumentStatus.status === 100 &&
-            enterpriseRegistrationProductStatus.status === 100 &&
-            enterpriseRegistrationApplyStatus.status === 100
-          ) {
-            // 改进度和steps表
-            await Promise.all([
-              enterpriseRegistrationDao.updateRegistrationCurrentStep({
-                registrationUuid,
-                currentStep: 2
-              }),
-              enterpriseRegistrationStepDao.updateRegistrationStep({
-                registrationUuid,
-                status: 100,
-                statusText: '已完成',
-                step: 1
-              }),
-              enterpriseRegistrationStepDao.updateRegistrationStep({
-                registrationUuid,
-                status: 1,
-                statusText: '管理员填写内容',
-                step: 2
-              })
-            ]);
-          }
-        } else if (registration.currentStep === 2) {
-          const steps = await enterpriseRegistrationStepDao.queryEnterpriseRegistrationStepByRegistrationUuid(
-            registrationUuid
-          );
-          // 第二步电子签合同
-          if (steps[1].status === 100) {
-            // 到了最后一步就可以
-            // 下一步的人员先把自己配置上,
-            // 等第三步的第一步配置上人了,企业那边才显示具体交钱信息
-            // 1 是未选择财务人员
-            // 2 已选择财务人员
-            // 3 企业点击已交款按钮
-            // 4 财务点击了确认按钮, 结束
-            // 改进度和steps表
-            return await Promise.all([
-              enterpriseRegistrationDao.updateRegistrationCurrentStep({
-                registrationUuid,
-                currentStep: 3
-              }),
-              enterpriseRegistrationStepDao.updateRegistrationStep({
-                registrationUuid,
-                status: 100,
-                statusText: '已完成',
-                step: 2
-              }),
-              enterpriseRegistrationStepDao.updateRegistrationStep({
-                registrationUuid,
-                status: 1,
-                statusText: '未选择财务人员',
-                step: 3
-              })
-            ]);
-          }
-        } else if (registration.currentStep === 3) {
+        if (registration.currentStep === 3) {
           const steps = await enterpriseRegistrationStepDao.queryEnterpriseRegistrationStepByRegistrationUuid(
             registrationUuid
           );
@@ -440,7 +339,7 @@ export default {
     // 等到上传盖章pdf上传完成后删除word
     try {
       const statusList = await enterpriseRegistrationStepDao.queryEnterpriseRegistrationStepByRegistrationUuid(
-        registrationUuid
+        { registrationUuid }
       );
 
       if (statusList[1].status >= 2) {
@@ -452,14 +351,18 @@ export default {
           contractManager
         ] = await Promise.all([
           enterpriseRegistrationContractDao.selectRegistrationContractByRegistrationUuid(
-            registrationUuid
+            {
+              registrationUuid
+            }
           ),
           enterpriseRegistrationBasicDao.selectRegistrationBasicByRegistrationUuid(
-            registrationUuid
+            {
+              registrationUuid
+            }
           ),
-          enterpriseRegistrationDao.selectRegistrationByRegistrationUuid(
+          enterpriseRegistrationDao.selectRegistrationByRegistrationUuid({
             registrationUuid
-          ),
+          }),
           enterpriseRegistrationContractDao.selectRegistrationContractManager(
             registrationUuid
           )

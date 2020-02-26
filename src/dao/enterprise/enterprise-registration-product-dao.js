@@ -16,11 +16,15 @@ export default {
   /**
    * 查询的产品介质信息
    */
-  selectRegistrationProductByRegistrationUuid: registrationUuid =>
+  selectRegistrationProductByRegistrationUuid: ({
+    registrationUuid,
+    transaction
+  }) =>
     enterpriseRegistrationProduct.findOne({
       attributes: ['url', 'failText', 'status', 'statusText'],
       raw: true,
-      where: { uuid: registrationUuid }
+      where: { uuid: registrationUuid },
+      transaction
     }),
 
   /**
@@ -59,11 +63,18 @@ export default {
   /**
    * 设置产品介质的状态
    */
-  updateProductStatus: ({ registrationUuid, status, failText, statusText }) =>
+  updateProductStatus: ({
+    registrationUuid,
+    status,
+    failText,
+    statusText,
+    transaction
+  }) =>
     enterpriseRegistrationProduct.update(
       { status, failText, statusText },
       {
-        where: { uuid: registrationUuid }
+        where: { uuid: registrationUuid },
+        transaction
       }
     )
 };

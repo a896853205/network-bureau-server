@@ -17,7 +17,10 @@ export default {
   /**
    * 查询的评测合同信息
    */
-  selectRegistrationContractByRegistrationUuid: registrationUuid =>
+  selectRegistrationContractByRegistrationUuid: ({
+    registrationUuid,
+    transaction
+  }) =>
     enterpriseRegistrationContract.findOne({
       attributes: [
         'amount',
@@ -30,7 +33,8 @@ export default {
         'statusText'
       ],
       raw: true,
-      where: { uuid: registrationUuid }
+      where: { uuid: registrationUuid },
+      transaction
     }),
 
   /**
@@ -67,11 +71,18 @@ export default {
   /**
    * 设置评测合同的状态
    */
-  updateContractStatus: ({ registrationUuid, status, failText, statusText }) =>
+  updateContractStatus: ({
+    registrationUuid,
+    status,
+    failText,
+    statusText,
+    transaction
+  }) =>
     enterpriseRegistrationContract.update(
       { status, failText, statusText },
       {
-        where: { uuid: registrationUuid }
+        where: { uuid: registrationUuid },
+        transaction
       }
     ),
 

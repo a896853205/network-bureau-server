@@ -19,11 +19,15 @@ export default {
   /**
    * 查询的用户文档集信息
    */
-  selectRegistrationDocumentByRegistrationUuid: registrationUuid =>
+  selectRegistrationDocumentByRegistrationUuid: ({
+    registrationUuid,
+    transaction
+  }) =>
     enterpriseRegistrationDocument.findOne({
       attributes: ['url', 'failText', 'status', 'statusText'],
       raw: true,
-      where: { uuid: registrationUuid }
+      where: { uuid: registrationUuid },
+      transaction
     }),
 
   /**
@@ -62,11 +66,18 @@ export default {
   /**
    * 设置用户文档集的状态
    */
-  updateDocumentStatus: ({ registrationUuid, status, failText, statusText }) =>
+  updateDocumentStatus: ({
+    registrationUuid,
+    status,
+    failText,
+    statusText,
+    transaction
+  }) =>
     enterpriseRegistrationDocument.update(
       { status, failText, statusText },
       {
-        where: { uuid: registrationUuid }
+        where: { uuid: registrationUuid },
+        transaction
       }
     )
 };

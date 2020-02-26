@@ -45,21 +45,32 @@ export default {
   /**
    * 查询的现场测试申请表信息
    */
-  selectRegistrationApplyByRegistrationUuid: registrationUuid =>
+  selectRegistrationApplyByRegistrationUuid: ({
+    registrationUuid,
+    transaction
+  }) =>
     enterpriseRegistrationApply.findOne({
       attributes: ['content', 'failText', 'status', 'statusText'],
       raw: true,
-      where: { uuid: registrationUuid }
+      where: { uuid: registrationUuid },
+      transaction
     }),
 
   /**
    * 设置现场测试申请表的状态
    */
-  updateApplyStatus: ({ registrationUuid, status, failText, statusText }) =>
+  updateApplyStatus: ({
+    registrationUuid,
+    status,
+    failText,
+    statusText,
+    transaction
+  }) =>
     enterpriseRegistrationApply.update(
       { status, failText, statusText },
       {
-        where: { uuid: registrationUuid }
+        where: { uuid: registrationUuid },
+        transaction
       }
     ),
 

@@ -16,7 +16,10 @@ export default {
   /**
    * 查询的样品登记表信息
    */
-  selectRegistrationSpecimenByRegistrationUuid: registrationUuid =>
+  selectRegistrationSpecimenByRegistrationUuid: ({
+    registrationUuid,
+    transaction
+  }) =>
     enterpriseRegistrationSpecimen.findOne({
       attributes: [
         'trademark',
@@ -29,7 +32,8 @@ export default {
         'statusText'
       ],
       raw: true,
-      where: { uuid: registrationUuid }
+      where: { uuid: registrationUuid },
+      transaction
     }),
 
   /**
@@ -70,11 +74,18 @@ export default {
   /**
    * 设置样品文档集的状态
    */
-  updateSpecimenStatus: ({ registrationUuid, status, failText, statusText }) =>
+  updateSpecimenStatus: ({
+    registrationUuid,
+    status,
+    failText,
+    statusText,
+    transaction
+  }) =>
     enterpriseRegistrationSpecimen.update(
       { status, failText, statusText },
       {
-        where: { uuid: registrationUuid }
+        where: { uuid: registrationUuid },
+        transaction
       }
     ),
 

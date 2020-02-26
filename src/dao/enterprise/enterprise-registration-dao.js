@@ -24,7 +24,7 @@ export default {
   /**
    * 通过RegistrationUuid查询
    */
-  selectRegistrationByRegistrationUuid: registrationUuid =>
+  selectRegistrationByRegistrationUuid: ({ registrationUuid, transaction }) =>
     enterpriseRegistration.findOne({
       where: { uuid: registrationUuid },
       attributes: [
@@ -37,7 +37,8 @@ export default {
         'certifierManagerUuid',
         'accountantManagerUuid'
       ],
-      raw: true
+      raw: true,
+      transaction
     }),
 
   /**
