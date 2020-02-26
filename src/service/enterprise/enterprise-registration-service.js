@@ -240,7 +240,9 @@ export default {
       if (registration) {
         if (registration.currentStep === 3) {
           const steps = await enterpriseRegistrationStepDao.queryEnterpriseRegistrationStepByRegistrationUuid(
-            registrationUuid
+            {
+              registrationUuid
+            }
           );
 
           // 财务通过之后
@@ -363,9 +365,9 @@ export default {
           enterpriseRegistrationDao.selectRegistrationByRegistrationUuid({
             registrationUuid
           }),
-          enterpriseRegistrationContractDao.selectRegistrationContractManager(
+          enterpriseRegistrationContractDao.selectRegistrationContractManager({
             registrationUuid
-          )
+          })
         ]);
 
         // Load the docx file as a binary

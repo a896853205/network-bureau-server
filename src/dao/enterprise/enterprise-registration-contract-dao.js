@@ -87,10 +87,24 @@ export default {
     ),
 
   /**
+   * 查询是否存在相同合同编号的测试
+   */
+  selectRegistrationByContractCode: ({ contractCode, transaction = null }) => {
+    return enterpriseRegistrationContract.findOne({
+      where: { contractCode },
+      transaction,
+      raw: true
+    });
+  },
+
+  /**
    * 查询的评测合同的基本信息
    */
-  selectRegistrationContractManager: registrationUuid =>
-    enterpriseRegistrationContract.findOne({
+  selectRegistrationContractManager: ({
+    registrationUuid,
+    transation = null
+  }) => {
+    return enterpriseRegistrationContract.findOne({
       attributes: [
         'contractCode',
         'specimenHaveTime',
@@ -102,8 +116,10 @@ export default {
         'enterpriseUrl'
       ],
       raw: true,
-      where: { uuid: registrationUuid }
-    }),
+      where: { uuid: registrationUuid },
+      transation
+    });
+  },
 
   /**
    * 保存评测合同的基本信息

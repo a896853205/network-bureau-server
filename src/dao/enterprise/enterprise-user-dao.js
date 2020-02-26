@@ -26,7 +26,7 @@ export default {
    * 根据用户名查找是否有相同企业
    */
   selectEnterpriseByCode: ({ code, transaction = null }) => {
-    enterpriseUser.findOne({
+    return enterpriseUser.findOne({
       where: { code },
       transaction,
       raw: true
@@ -43,7 +43,7 @@ export default {
     code,
     transaction = null
   }) => {
-    enterpriseUser.create({
+    return enterpriseUser.create({
       name,
       password,
       phone,
