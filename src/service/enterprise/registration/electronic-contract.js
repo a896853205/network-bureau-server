@@ -37,6 +37,13 @@ export default {
     contractTime
   }) => {
     try {
+      if (!contractCode.length || contractCode.length > 32) {
+        throw new CustomError('合同编号长度不符合规则!');
+      }
+      if (!payment.length || payment.length > 32) {
+        throw new CustomError('评测费金额不符合规则!');
+      }
+
       return db.transaction(transaction => {
         return Promise.all([
           enterpriseRegistrationContractDao.updateRegistrationContractManager(

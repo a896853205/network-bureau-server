@@ -573,6 +573,10 @@ export default {
           return statusDao[type];
         };
 
+        if (failText?.length > 100) {
+          throw new CustomError('审核不通过理由文本长度不符合规则!');
+        }
+
         if (isPass) {
           await getStatusDao(type)({
             registrationUuid,
