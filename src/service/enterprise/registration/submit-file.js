@@ -1,3 +1,5 @@
+import { db } from '../../../db/db-connect';
+
 // oss
 import client from '../../../util/oss';
 
@@ -10,9 +12,103 @@ import enterpriseRegistrationCopyrightDao from '../../../dao/enterprise/enterpri
 import enterpriseRegistrationDocumentDao from '../../../dao/enterprise/enterprise-registration-document-dao';
 import enterpriseRegistrationProductDescriptionDao from '../../../dao/enterprise/enterprise-registration-product-description-dao';
 import enterpriseRegistrationProductDao from '../../../dao/enterprise/enterprise-registration-product-dao';
+import enterpriseRegistrationStepDao from '../../../dao/enterprise/enterprise-registration-step-dao';
+import enterpriseRegistrationDao from '../../../dao/enterprise/enterprise-registration-dao';
 
 // 工具类
 import CustomError from '../../../util/custom-error';
+
+const _finishSubmitFile = async ({ registrationUuid, transaction }) => {
+  const [
+    enterpriseRegistrationBasicStatus,
+    enterpriseRegistrationContractStatus,
+    enterpriseRegistrationCopyrightStatus,
+    enterpriseRegistrationSpecimenStatus,
+    enterpriseRegistrationProductDescriptionStatus,
+    enterpriseRegistrationDocumentStatus,
+    enterpriseRegistrationProductStatus,
+    enterpriseRegistrationApplyStatus
+  ] = await Promise.all([
+    enterpriseRegistrationBasicDao.selectRegistrationBasicByRegistrationUuid({
+      registrationUuid,
+      transaction
+    }),
+    enterpriseRegistrationContractDao.selectRegistrationContractByRegistrationUuid(
+      {
+        registrationUuid,
+        transaction
+      }
+    ),
+    enterpriseRegistrationCopyrightDao.selectRegistrationCopyrightByRegistrationUuid(
+      {
+        registrationUuid,
+        transaction
+      }
+    ),
+    enterpriseRegistrationSpecimenDao.selectRegistrationSpecimenByRegistrationUuid(
+      {
+        registrationUuid,
+        transaction
+      }
+    ),
+    enterpriseRegistrationProductDescriptionDao.selectRegistrationProductDescriptionByRegistrationUuid(
+      {
+        registrationUuid,
+        transaction
+      }
+    ),
+    enterpriseRegistrationDocumentDao.selectRegistrationDocumentByRegistrationUuid(
+      {
+        registrationUuid,
+        transaction
+      }
+    ),
+    enterpriseRegistrationProductDao.selectRegistrationProductByRegistrationUuid(
+      {
+        registrationUuid,
+        transaction
+      }
+    ),
+    enterpriseRegistrationApplyDao.selectRegistrationApplyByRegistrationUuid({
+      registrationUuid,
+      transaction
+    })
+  ]);
+
+  if (
+    enterpriseRegistrationBasicStatus.status === 100 &&
+    enterpriseRegistrationContractStatus.status === 100 &&
+    enterpriseRegistrationCopyrightStatus.status === 100 &&
+    enterpriseRegistrationSpecimenStatus.status === 100 &&
+    enterpriseRegistrationProductDescriptionStatus.status === 100 &&
+    enterpriseRegistrationDocumentStatus.status === 100 &&
+    enterpriseRegistrationProductStatus.status === 100 &&
+    enterpriseRegistrationApplyStatus.status === 100
+  ) {
+    // 改进度和steps表
+    await Promise.all([
+      enterpriseRegistrationDao.updateRegistrationCurrentStep({
+        registrationUuid,
+        currentStep: 2,
+        transaction
+      }),
+      enterpriseRegistrationStepDao.updateRegistrationStep({
+        registrationUuid,
+        status: 100,
+        statusText: '已完成',
+        step: 1,
+        transaction
+      }),
+      enterpriseRegistrationStepDao.updateRegistrationStep({
+        registrationUuid,
+        status: 1,
+        statusText: '管理员填写内容',
+        step: 2,
+        transaction
+      })
+    ]);
+  }
+};
 
 export default {
   /**
@@ -31,28 +127,34 @@ export default {
         enterpriseRegistrationApplyStatus
       ] = await Promise.all([
         enterpriseRegistrationBasicDao.selectRegistrationBasicByRegistrationUuid(
-          registrationUuid
+          {
+            registrationUuid
+          }
         ),
         enterpriseRegistrationContractDao.selectRegistrationContractByRegistrationUuid(
-          registrationUuid
+          {
+            registrationUuid
+          }
         ),
         enterpriseRegistrationCopyrightDao.selectRegistrationCopyrightByRegistrationUuid(
-          registrationUuid
+          {
+            registrationUuid
+          }
         ),
         enterpriseRegistrationSpecimenDao.selectRegistrationSpecimenByRegistrationUuid(
-          registrationUuid
+          { registrationUuid }
         ),
         enterpriseRegistrationProductDescriptionDao.selectRegistrationProductDescriptionByRegistrationUuid(
-          registrationUuid
+          { registrationUuid }
         ),
         enterpriseRegistrationDocumentDao.selectRegistrationDocumentByRegistrationUuid(
-          registrationUuid
+          { registrationUuid }
         ),
         enterpriseRegistrationProductDao.selectRegistrationProductByRegistrationUuid(
-          registrationUuid
+          { registrationUuid }
         ),
         enterpriseRegistrationApplyDao.selectRegistrationApplyByRegistrationUuid(
-          registrationUuid
+          { registrationUuid }
         )
       ]);
 
@@ -75,9 +177,9 @@ export default {
    * 查询登记测试的基本信息
    */
   selectRegistrationBasicByRegistrationUuid: registrationUuid =>
-    enterpriseRegistrationBasicDao.selectRegistrationBasicByRegistrationUuid(
+    enterpriseRegistrationBasicDao.selectRegistrationBasicByRegistrationUuid({
       registrationUuid
-    ),
+    }),
 
   /**
    * 保存登记测试的基本信息
@@ -111,7 +213,9 @@ export default {
    */
   selectRegistrationContractByRegistrationUuid: registrationUuid =>
     enterpriseRegistrationContractDao.selectRegistrationContractByRegistrationUuid(
-      registrationUuid
+      {
+        registrationUuid
+      }
     ),
 
   /**
@@ -142,7 +246,9 @@ export default {
    */
   selectRegistrationSpecimenByRegistrationUuid: registrationUuid =>
     enterpriseRegistrationSpecimenDao.selectRegistrationSpecimenByRegistrationUuid(
-      registrationUuid
+      {
+        registrationUuid
+      }
     ),
 
   /**
@@ -172,9 +278,9 @@ export default {
    * 查询现场测试申请表的基本信息
    */
   selectRegistrationApplyByRegistrationUuid: registrationUuid =>
-    enterpriseRegistrationApplyDao.selectRegistrationApplyByRegistrationUuid(
+    enterpriseRegistrationApplyDao.selectRegistrationApplyByRegistrationUuid({
       registrationUuid
-    ),
+    }),
 
   /**
    * 保存现场测试申请表的基本信息
@@ -193,7 +299,9 @@ export default {
    */
   selectRegistrationCopyright: ({ registrationUuid }) =>
     enterpriseRegistrationCopyrightDao.selectRegistrationCopyrightByRegistrationUuid(
-      registrationUuid
+      {
+        registrationUuid
+      }
     ),
 
   /**
@@ -210,7 +318,9 @@ export default {
         productionUrl = copyrightUrl.replace('temp', 'production');
 
         const copyright = await enterpriseRegistrationCopyrightDao.selectRegistrationCopyrightByRegistrationUuid(
-          registrationUuid
+          {
+            registrationUuid
+          }
         );
 
         if (copyright?.url) {
@@ -224,15 +334,13 @@ export default {
         throw new CustomError('oss文件路径错误');
       }
 
-      await enterpriseRegistrationCopyrightDao.updateRegistrationCopyright(
-        {
-          registrationUuid,
-          copyrightUrl: productionUrl,
-          status: 1,
-          statusText: '待审核',
-          failText: ''
-        }
-      );
+      await enterpriseRegistrationCopyrightDao.updateRegistrationCopyright({
+        registrationUuid,
+        copyrightUrl: productionUrl,
+        status: 1,
+        statusText: '待审核',
+        failText: ''
+      });
     } catch (error) {
       throw error;
     }
@@ -243,7 +351,7 @@ export default {
    */
   selectRegistrationDocument: ({ registrationUuid }) =>
     enterpriseRegistrationDocumentDao.selectRegistrationDocumentByRegistrationUuid(
-      registrationUuid
+      { registrationUuid }
     ),
 
   /**
@@ -260,7 +368,7 @@ export default {
         productionUrl = documentUrl.replace('temp', 'production');
 
         const document = await enterpriseRegistrationDocumentDao.selectRegistrationDocumentByRegistrationUuid(
-          registrationUuid
+          { registrationUuid }
         );
 
         if (document?.url) {
@@ -291,7 +399,7 @@ export default {
    */
   selectRegistrationProductDescription: ({ registrationUuid }) =>
     enterpriseRegistrationProductDescriptionDao.selectRegistrationProductDescriptionByRegistrationUuid(
-      registrationUuid
+      { registrationUuid }
     ),
 
   /**
@@ -310,7 +418,7 @@ export default {
         const tempUrl = productDescriptionUrl;
         productionUrl = productDescriptionUrl.replace('temp', 'production');
         const productDescription = await enterpriseRegistrationProductDescriptionDao.selectRegistrationProductDescriptionByRegistrationUuid(
-          registrationUuid
+          { registrationUuid }
         );
 
         if (productDescription?.url) {
@@ -343,7 +451,7 @@ export default {
    */
   selectRegistrationProduct: ({ registrationUuid }) =>
     enterpriseRegistrationProductDao.selectRegistrationProductByRegistrationUuid(
-      registrationUuid
+      { registrationUuid }
     ),
 
   /**
@@ -359,7 +467,7 @@ export default {
         const tempUrl = productUrl;
         productionUrl = productUrl.replace('temp', 'production');
         const product = await enterpriseRegistrationProductDao.selectRegistrationProductByRegistrationUuid(
-          registrationUuid
+          { registrationUuid }
         );
 
         if (product?.url) {
@@ -395,29 +503,47 @@ export default {
     isPass
   }) => {
     try {
-      const statusDao = {
-        basic: enterpriseRegistrationBasicDao.updateBasicStatus,
-        contract: enterpriseRegistrationContractDao.updateContractStatus,
-        product: enterpriseRegistrationProductDao.updateProductStatus,
-        productDescription:
-          enterpriseRegistrationProductDescriptionDao.updateProductDescriptionStatus,
-        apply: enterpriseRegistrationApplyDao.updateApplyStatus,
-        copyright: enterpriseRegistrationCopyrightDao.updateCopyrightStatus,
-        document: enterpriseRegistrationDocumentDao.updateDocumentStatus,
-        specimen: enterpriseRegistrationSpecimenDao.updateSpecimenStatus
-      };
+      return db.transaction(async transaction => {
+        const statusDao = {
+          basic: enterpriseRegistrationBasicDao.updateBasicStatus,
+          contract: enterpriseRegistrationContractDao.updateContractStatus,
+          product: enterpriseRegistrationProductDao.updateProductStatus,
+          productDescription:
+            enterpriseRegistrationProductDescriptionDao.updateProductDescriptionStatus,
+          apply: enterpriseRegistrationApplyDao.updateApplyStatus,
+          copyright: enterpriseRegistrationCopyrightDao.updateCopyrightStatus,
+          document: enterpriseRegistrationDocumentDao.updateDocumentStatus,
+          specimen: enterpriseRegistrationSpecimenDao.updateSpecimenStatus
+        };
 
-      const getStatusDao = type => {
-        if (!statusDao[type]) throw new CustomError('错误类型');
+        const getStatusDao = type => {
+          if (!statusDao[type]) throw new CustomError('错误类型');
 
-        return statusDao[type];
-      };
+          return statusDao[type];
+        };
 
-      await getStatusDao(type)({
-        registrationUuid,
-        status: isPass ? 100 : -1,
-        failText,
-        statusText: isPass ? '已审核' : '内容错误'
+        if (isPass) {
+          await getStatusDao(type)({
+            registrationUuid,
+            status: 100,
+            failText,
+            statusText: '已审核',
+            transaction
+          });
+
+          return await _finishSubmitFile({
+            registrationUuid,
+            transaction
+          });
+        } else {
+          return await getStatusDao(type)({
+            registrationUuid,
+            status: -1,
+            failText,
+            statusText: '内容错误',
+            transaction
+          });
+        }
       });
     } catch (error) {
       throw error;

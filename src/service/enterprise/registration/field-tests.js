@@ -602,10 +602,14 @@ export default {
         specimen
       ] = await Promise.all([
         enterpriseRegistrationContractDao.selectRegistrationContractByRegistrationUuid(
-          registrationUuid
+          {
+            registrationUuid
+          }
         ),
         enterpriseRegistrationBasicDao.selectRegistrationBasicByRegistrationUuid(
-          registrationUuid
+          {
+            registrationUuid
+          }
         ),
         enterpriseRegistrationDao.selectRegistrationByRegistrationUuid(
           registrationUuid
@@ -614,7 +618,9 @@ export default {
           registrationUuid
         ),
         enterpriseRegistrationSpecimenDao.selectRegistrationSpecimenByRegistrationUuid(
-          registrationUuid
+          {
+            registrationUuid
+          }
         )
       ]);
 
@@ -687,10 +693,14 @@ export default {
         specimen
       ] = await Promise.all([
         enterpriseRegistrationContractDao.selectRegistrationContractByRegistrationUuid(
-          registrationUuid
+          {
+            registrationUuid
+          }
         ),
         enterpriseRegistrationBasicDao.selectRegistrationBasicByRegistrationUuid(
-          registrationUuid
+          {
+            registrationUuid
+          }
         ),
         enterpriseRegistrationDao.selectRegistrationByRegistrationUuid(
           registrationUuid
@@ -699,7 +709,9 @@ export default {
           registrationUuid
         ),
         enterpriseRegistrationSpecimenDao.selectRegistrationSpecimenByRegistrationUuid(
-          registrationUuid
+          {
+            registrationUuid
+          }
         )
       ]);
 

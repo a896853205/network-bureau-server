@@ -238,75 +238,7 @@ export default {
       );
 
       if (registration) {
-        if (registration.currentStep === 1) {
-          // 第一步
-          const [
-            enterpriseRegistrationBasicStatus,
-            enterpriseRegistrationContractStatus,
-            enterpriseRegistrationCopyrightStatus,
-            enterpriseRegistrationSpecimenStatus,
-            enterpriseRegistrationProductDescriptionStatus,
-            enterpriseRegistrationDocumentStatus,
-            enterpriseRegistrationProductStatus,
-            enterpriseRegistrationApplyStatus
-          ] = await Promise.all([
-            enterpriseRegistrationBasicDao.selectRegistrationBasicByRegistrationUuid(
-              registrationUuid
-            ),
-            enterpriseRegistrationContractDao.selectRegistrationContractByRegistrationUuid(
-              registrationUuid
-            ),
-            enterpriseRegistrationCopyrightDao.selectRegistrationCopyrightByRegistrationUuid(
-              registrationUuid
-            ),
-            enterpriseRegistrationSpecimenDao.selectRegistrationSpecimenByRegistrationUuid(
-              registrationUuid
-            ),
-            enterpriseRegistrationProductDescriptionDao.selectRegistrationProductDescriptionByRegistrationUuid(
-              registrationUuid
-            ),
-            enterpriseRegistrationDocumentDao.selectRegistrationDocumentByRegistrationUuid(
-              registrationUuid
-            ),
-            enterpriseRegistrationProductDao.selectRegistrationProductByRegistrationUuid(
-              registrationUuid
-            ),
-            enterpriseRegistrationApplyDao.selectRegistrationApplyByRegistrationUuid(
-              registrationUuid
-            )
-          ]);
-
-          if (
-            enterpriseRegistrationBasicStatus.status === 100 &&
-            enterpriseRegistrationContractStatus.status === 100 &&
-            enterpriseRegistrationCopyrightStatus.status === 100 &&
-            enterpriseRegistrationSpecimenStatus.status === 100 &&
-            enterpriseRegistrationProductDescriptionStatus.status === 100 &&
-            enterpriseRegistrationDocumentStatus.status === 100 &&
-            enterpriseRegistrationProductStatus.status === 100 &&
-            enterpriseRegistrationApplyStatus.status === 100
-          ) {
-            // 改进度和steps表
-            await Promise.all([
-              enterpriseRegistrationDao.updateRegistrationCurrentStep({
-                registrationUuid,
-                currentStep: 2
-              }),
-              enterpriseRegistrationStepDao.updateRegistrationStep({
-                registrationUuid,
-                status: 100,
-                statusText: '已完成',
-                step: 1
-              }),
-              enterpriseRegistrationStepDao.updateRegistrationStep({
-                registrationUuid,
-                status: 1,
-                statusText: '管理员填写内容',
-                step: 2
-              })
-            ]);
-          }
-        } else if (registration.currentStep === 2) {
+        if (registration.currentStep === 2) {
           const steps = await enterpriseRegistrationStepDao.queryEnterpriseRegistrationStepByRegistrationUuid(
             registrationUuid
           );
@@ -452,10 +384,14 @@ export default {
           contractManager
         ] = await Promise.all([
           enterpriseRegistrationContractDao.selectRegistrationContractByRegistrationUuid(
-            registrationUuid
+            {
+              registrationUuid
+            }
           ),
           enterpriseRegistrationBasicDao.selectRegistrationBasicByRegistrationUuid(
-            registrationUuid
+            {
+              registrationUuid
+            }
           ),
           enterpriseRegistrationDao.selectRegistrationByRegistrationUuid(
             registrationUuid

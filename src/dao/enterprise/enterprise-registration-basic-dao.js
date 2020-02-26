@@ -16,7 +16,10 @@ export default {
   /**
    * 查询的登记测试的基本信息
    */
-  selectRegistrationBasicByRegistrationUuid: registrationUuid =>
+  selectRegistrationBasicByRegistrationUuid: ({
+    registrationUuid,
+    transaction
+  }) =>
     enterpriseRegistrationBasic.findOne({
       attributes: [
         'version',
@@ -31,7 +34,8 @@ export default {
         'statusText'
       ],
       raw: true,
-      where: { uuid: registrationUuid }
+      where: { uuid: registrationUuid },
+      transaction
     }),
 
   /**
@@ -72,11 +76,18 @@ export default {
   /**
    * 设置基本信息的状态
    */
-  updateBasicStatus: ({ registrationUuid, status, failText, statusText }) =>
+  updateBasicStatus: ({
+    registrationUuid,
+    status,
+    failText,
+    statusText,
+    transaction
+  }) =>
     enterpriseRegistrationBasic.update(
       { status, failText, statusText },
       {
-        where: { uuid: registrationUuid }
+        where: { uuid: registrationUuid },
+        transaction
       }
     )
 };
