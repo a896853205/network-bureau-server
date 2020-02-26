@@ -93,12 +93,17 @@ export default {
   /**
    * 查找原始记录url
    */
-  selectProjectManagerRegistrationRecord: registrationUuid =>
-    enterpriseRegistrationOriginalRecord.findOne({
+  selectProjectManagerRegistrationRecord: ({
+    registrationUuid,
+    transaction
+  }) => {
+    return enterpriseRegistrationOriginalRecord.findOne({
       attributes: ['url', 'finalUrl'],
       raw: true,
-      where: { uuid: registrationUuid }
-    }),
+      where: { uuid: registrationUuid },
+      transaction
+    });
+  },
 
   /**
    * 查找原始记录url

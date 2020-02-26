@@ -233,47 +233,54 @@ export default {
     // 然后如果是进度1,就判断8种状态是不是都是2
     // 最后如果ok就进度改称,而且进度1的text改成已完成
     try {
-      const registration = await enterpriseRegistrationDao.selectRegistrationByRegistrationUuid(
-        { registrationUuid }
-      );
+      return db.transaction(async transaction => {
+        const registration = await enterpriseRegistrationDao.selectRegistrationByRegistrationUuid(
+          { registrationUuid, transaction }
+        );
 
-      if (registration) {
-        if (registration.currentStep === 3) {
-          const steps = await enterpriseRegistrationStepDao.queryEnterpriseRegistrationStepByRegistrationUuid(
-            {
-              registrationUuid
+        if (registration) {
+          if (registration.currentStep === 3) {
+            const steps = await enterpriseRegistrationStepDao.queryEnterpriseRegistrationStepByRegistrationUuid(
+              {
+                registrationUuid,
+                transaction
+              }
+            );
+
+            // 财务通过之后
+            if (steps[2].status === 4) {
+              return await Promise.all([
+                enterpriseRegistrationDao.updateRegistrationCurrentStep({
+                  registrationUuid,
+                  currentStep: 4,
+                  transaction
+                }),
+                enterpriseRegistrationStepDao.updateRegistrationStep({
+                  registrationUuid,
+                  status: 100,
+                  statusText: '已完成',
+                  step: 3,
+                  transaction
+                }),
+                enterpriseRegistrationStepDao.updateRegistrationStep({
+                  registrationUuid,
+                  status: 1,
+                  statusText: '未选择测试管理员',
+                  step: 4,
+                  transaction
+                }),
+                enterpriseRegistrationStepDao.updateRegistrationStep({
+                  registrationUuid,
+                  status: 100,
+                  statusText: '已完成',
+                  step: 3,
+                  transaction
+                })
+              ]);
             }
-          );
-
-          // 财务通过之后
-          if (steps[2].status === 4) {
-            return await Promise.all([
-              enterpriseRegistrationDao.updateRegistrationCurrentStep({
-                registrationUuid,
-                currentStep: 4
-              }),
-              enterpriseRegistrationStepDao.updateRegistrationStep({
-                registrationUuid,
-                status: 100,
-                statusText: '已完成',
-                step: 3
-              }),
-              enterpriseRegistrationStepDao.updateRegistrationStep({
-                registrationUuid,
-                status: 1,
-                statusText: '未选择测试管理员',
-                step: 4
-              }),
-              enterpriseRegistrationStepDao.updateRegistrationStep({
-                registrationUuid,
-                status: 100,
-                statusText: '已完成',
-                step: 3
-              })
-            ]);
           }
         }
-      }
+      });
     } catch (error) {
       throw error;
     }
@@ -428,9 +435,9 @@ export default {
       // 查询contract内容
       const {
         enterpriseUrl
-      } = await enterpriseRegistrationContractDao.selectContractUrl(
+      } = await enterpriseRegistrationContractDao.selectContractUrl({
         registrationUuid
-      );
+      });
 
       return await fileService.getFileUrl(enterpriseUrl);
     } catch (error) {

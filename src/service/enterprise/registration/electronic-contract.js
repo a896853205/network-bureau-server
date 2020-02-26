@@ -23,7 +23,7 @@ export default {
    * 查询评测合同的url
    */
   selectContractUrl: registrationUuid =>
-    enterpriseRegistrationContractDao.selectContractUrl(registrationUuid),
+    enterpriseRegistrationContractDao.selectContractUrl({ registrationUuid }),
 
   /**
    * 保存评测合同的基本信息
@@ -37,15 +37,23 @@ export default {
     contractTime
   }) => {
     try {
-      const paymentReg = /^([1-9])(\d{0,7})$/;
-      if (!contractCode.length || contractCode.length > 32) {
-        throw new CustomError('合同编号长度不符合规则!');
-      }
-      if (!paymentReg.test(payment)) {
-        throw new CustomError('评测费金额不符合规则!');
-      }
-
       return db.transaction(async transaction => {
+        const {
+          currentStep
+        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+          { registrationUuid, transaction }
+        );
+        if (currentStep !== 2) {
+          throw new CustomError('当前步骤不允许保存合同信息!');
+        }
+
+        const paymentReg = /^([1-9])(\d{0,7})$/;
+        if (!contractCode.length || contractCode.length > 32) {
+          throw new CustomError('合同编号长度不符合规则!');
+        }
+        if (!paymentReg.test(payment)) {
+          throw new CustomError('评测费金额不符合规则!');
+        }
         const contractList = await enterpriseRegistrationContractDao.selectRegistrationByContractCode(
           {
             contractCode,
@@ -86,29 +94,37 @@ export default {
    */
   saveManagerContractUrl: async ({ registrationUuid, managerUrl }) => {
     try {
-      let productionUrl = '';
-      // 将temp的文件copy到production中
-      const [filePosition] = managerUrl.split('/');
-
-      if (filePosition === 'temp') {
-        const tempUrl = managerUrl;
-        productionUrl = managerUrl.replace('temp', 'production');
-        const contract = await enterpriseRegistrationContractDao.selectContractUrl(
-          registrationUuid
+      return db.transaction(async transaction => {
+        const {
+          currentStep
+        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+          { registrationUuid, transaction }
         );
+        if (currentStep !== 2) {
+          throw new CustomError('当前步骤不允许保存合同信息!');
+        }
+        let productionUrl = '';
+        // 将temp的文件copy到production中
+        const [filePosition] = managerUrl.split('/');
 
-        if (contract?.url) {
-          await client.delete(contract.url);
+        if (filePosition === 'temp') {
+          const tempUrl = managerUrl;
+          productionUrl = managerUrl.replace('temp', 'production');
+          const contract = await enterpriseRegistrationContractDao.selectContractUrl(
+            { registrationUuid, transaction }
+          );
+
+          if (contract?.url) {
+            await client.delete(contract.url);
+          }
+
+          await client.copy(productionUrl, tempUrl);
+        } else if (filePosition === 'production') {
+          productionUrl = managerUrl;
+        } else {
+          throw new CustomError('oss文件路径错误');
         }
 
-        await client.copy(productionUrl, tempUrl);
-      } else if (filePosition === 'production') {
-        productionUrl = managerUrl;
-      } else {
-        throw new CustomError('oss文件路径错误');
-      }
-
-      await db.transaction(transaction => {
         return Promise.all([
           enterpriseRegistrationContractDao.updateManagerContractUrl({
             registrationUuid,
@@ -134,29 +150,40 @@ export default {
    */
   saveEnterpriseContractUrl: async ({ registrationUuid, enterpriseUrl }) => {
     try {
-      let productionUrl = '';
-      // 将temp的文件copy到production中
-      const [filePosition] = enterpriseUrl.split('/');
-
-      if (filePosition === 'temp') {
-        const tempUrl = enterpriseUrl;
-        productionUrl = enterpriseUrl.replace('temp', 'production');
-        const contract = await enterpriseRegistrationContractDao.selectContractUrl(
-          registrationUuid
+      return db.transaction(async transaction => {
+        const {
+          currentStep
+        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+          { registrationUuid, transaction }
         );
+        if (currentStep !== 2) {
+          throw new CustomError('当前步骤不允许保存合同信息!');
+        }
+        let productionUrl = '';
+        // 将temp的文件copy到production中
+        const [filePosition] = enterpriseUrl.split('/');
 
-        if (contract?.url) {
-          await client.delete(contract.url);
+        if (filePosition === 'temp') {
+          const tempUrl = enterpriseUrl;
+          productionUrl = enterpriseUrl.replace('temp', 'production');
+          const contract = await enterpriseRegistrationContractDao.selectContractUrl(
+            {
+              registrationUuid,
+              transaction
+            }
+          );
+
+          if (contract?.url) {
+            await client.delete(contract.url);
+          }
+
+          await client.copy(productionUrl, tempUrl);
+        } else if (filePosition === 'production') {
+          productionUrl = enterpriseUrl;
+        } else {
+          throw new CustomError('oss文件路径错误');
         }
 
-        await client.copy(productionUrl, tempUrl);
-      } else if (filePosition === 'production') {
-        productionUrl = enterpriseUrl;
-      } else {
-        throw new CustomError('oss文件路径错误');
-      }
-
-      await db.transaction(transaction => {
         return Promise.all([
           enterpriseRegistrationContractDao.updateEnterpriseContractUrl({
             registrationUuid,
@@ -183,6 +210,14 @@ export default {
    */
   setContractManagerSuccessStatus: registrationUuid => {
     return db.transaction(async transaction => {
+      const {
+        currentStep
+      } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+        { registrationUuid, transaction }
+      );
+      if (currentStep !== 2) {
+        throw new CustomError('当前步骤不允许设置合同签署状态!');
+      }
       const [registration, steps] = await Promise.all([
         enterpriseRegistrationDao.selectRegistrationByRegistrationUuid({
           registrationUuid,
@@ -228,7 +263,15 @@ export default {
       if (!managerFailText.length || managerFailText.length > 100) {
         throw new CustomError('审核不通过理由文本长度不符合规则!');
       }
-      return db.transaction(transaction => {
+      return db.transaction(async transaction => {
+        const {
+          currentStep
+        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+          { registrationUuid, transaction }
+        );
+        if (currentStep !== 2) {
+          throw new CustomError('当前步骤不允许设置合同签署状态!');
+        }
         return Promise.all([
           enterpriseRegistrationContractDao.updateContractManagerStatus({
             registrationUuid,

@@ -45,7 +45,8 @@ export default {
     copyrightUrl,
     status,
     statusText,
-    failText
+    failText,
+    transaction = null
   }) =>
     enterpriseRegistrationCopyright.update(
       {
@@ -56,7 +57,8 @@ export default {
       },
       {
         where: { uuid: registrationUuid },
-        raw: true
+        raw: true,
+        transaction
       }
     ),
 

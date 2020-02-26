@@ -161,8 +161,16 @@ export default {
    */
   arrangeTechLeaderManager: ({ registrationUuid, technicalManagerUuid }) => {
     try {
-      return db.transaction(transaction => {
-        return Promise.all([
+      return db.transaction(async transaction => {
+        const {
+          currentStep
+        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+          { registrationUuid, transaction }
+        );
+        if (currentStep !== 4) {
+          throw new CustomError('当前步骤不允许安排技术负责人!');
+        }
+        return await Promise.all([
           enterpriseRegistrationStepDao.updateRegistrationStep({
             registrationUuid,
             status: 2,
@@ -222,8 +230,16 @@ export default {
    */
   arrangeTechManager: ({ registrationUuid, techManagerUuid }) => {
     try {
-      return db.transaction(transaction => {
-        return Promise.all([
+      return db.transaction(async transaction => {
+        const {
+          currentStep
+        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+          { registrationUuid, transaction }
+        );
+        if (currentStep !== 4) {
+          throw new CustomError('当前步骤不允许安排技术人员!');
+        }
+        return await Promise.all([
           enterpriseRegistrationStepDao.updateRegistrationStep({
             registrationUuid,
             status: 3,
@@ -385,70 +401,151 @@ export default {
   /**
    * 技术人员设置现场申请表审核通过状态
    */
-  setTechApplyManagerStatus: registrationUuid =>
-    enterpriseRegistrationApplyDao.updateApplyManagerStatus({
-      registrationUuid,
-      failManagerText: null,
-      techManagerDate: new Date(),
-      managerStatus: 2
-    }),
+  setTechApplyManagerStatus: registrationUuid => {
+    try {
+      return db.transaction(async transaction => {
+        const {
+          currentStep
+        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+          { registrationUuid, transaction }
+        );
+        if (currentStep !== 4) {
+          throw new CustomError('当前步骤不允许设置现场申请表审核通过状态!');
+        }
+        return await enterpriseRegistrationApplyDao.updateApplyManagerStatus({
+          registrationUuid,
+          failManagerText: null,
+          techManagerDate: new Date(),
+          managerStatus: 2,
+          transaction
+        });
+      });
+    } catch (error) {
+      throw error;
+    }
+  },
 
   /**
    * 技术人员设置现场申请表审核不通过状态
    */
   setTechApplyManagerFailStatus: ({ registrationUuid, failManagerText }) => {
-    if (!failManagerText.length || failManagerText.length > 100) {
-      throw new CustomError('审核不通过理由文本长度不符合规则!');
+    try {
+      if (!failManagerText.length || failManagerText.length > 100) {
+        throw new CustomError('审核不通过理由文本长度不符合规则!');
+      }
+      return db.transaction(async transaction => {
+        const {
+          currentStep
+        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+          { registrationUuid, transaction }
+        );
+        if (currentStep !== 4) {
+          throw new CustomError('当前步骤不允许设置现场申请表审核通过状态!');
+        }
+        return await enterpriseRegistrationApplyDao.updateApplyManagerStatus({
+          registrationUuid,
+          failManagerText,
+          managerStatus: -1,
+          transaction
+        });
+      });
+    } catch (error) {
+      throw error;
     }
-
-    return enterpriseRegistrationApplyDao.updateApplyManagerStatus({
-      registrationUuid,
-      failManagerText,
-      managerStatus: -1
-    });
   },
 
   /**
    * 技术人员设置样品登记表审核通过状态
    */
-  setTechSpecimenManagerStatus: registrationUuid =>
-    enterpriseRegistrationSpecimenDao.updateSpecimenManagerStatus({
-      registrationUuid,
-      techManagerDate: new Date(),
-      failManagerText: null,
-      managerStatus: 2
-    }),
+  setTechSpecimenManagerStatus: registrationUuid => {
+    try {
+      return db.transaction(async transaction => {
+        const {
+          currentStep
+        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+          { registrationUuid, transaction }
+        );
+        if (currentStep !== 4) {
+          throw new CustomError('当前步骤不允许设置样品登记表审核通过状态!');
+        }
+        return await enterpriseRegistrationSpecimenDao.updateSpecimenManagerStatus(
+          {
+            registrationUuid,
+            techManagerDate: new Date(),
+            failManagerText: null,
+            managerStatus: 2,
+            transaction
+          }
+        );
+      });
+    } catch (error) {
+      throw error;
+    }
+  },
 
   /**
    * 技术人员设置样品登记表审核不通过状态
    */
   setTechSpecimenManagerFailStatus: ({ registrationUuid, failManagerText }) => {
-    if (!failManagerText.length || failManagerText.length > 100) {
-      throw new CustomError('审核不通过理由文本长度不符合规则!');
+    try {
+      if (!failManagerText.length || failManagerText.length > 100) {
+        throw new CustomError('审核不通过理由文本长度不符合规则!');
+      }
+      return db.transaction(async transaction => {
+        const {
+          currentStep
+        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+          { registrationUuid, transaction }
+        );
+        if (currentStep !== 4) {
+          throw new CustomError('当前步骤不允许设置样品登记表审核通过状态!');
+        }
+        return await enterpriseRegistrationSpecimenDao.updateSpecimenManagerStatus(
+          {
+            registrationUuid,
+            failManagerText,
+            managerStatus: -1,
+            transaction
+          }
+        );
+      });
+    } catch (error) {
+      throw error;
     }
-    return enterpriseRegistrationSpecimenDao.updateSpecimenManagerStatus({
-      registrationUuid,
-      failManagerText,
-      managerStatus: -1
-    });
   },
 
   /**
    * 项目管理员设置样品登记表审核通过状态
    */
-  setProjectSpecimenManagerStatus: ({ projectManagerUuid, registrationUuid }) =>
-    db.transaction(async transaction => {
-      await enterpriseRegistrationSpecimenDao.updateSpecimenManagerStatus({
-        registrationUuid,
-        projectManagerDate: new Date(),
-        projectManagerUuid,
-        failManagerText: null,
-        managerStatus: 100,
-        transaction
-      });
+  setProjectSpecimenManagerStatus: ({
+    projectManagerUuid,
+    registrationUuid
+  }) => {
+    try {
+      return db.transaction(async transaction => {
+        const {
+          currentStep
+        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+          { registrationUuid, transaction }
+        );
+        if (currentStep !== 4) {
+          throw new CustomError('当前步骤不允许设置样品登记表审核通过状态!');
+        }
+        await enterpriseRegistrationSpecimenDao.updateSpecimenManagerStatus({
+          registrationUuid,
+          projectManagerDate: new Date(),
+          projectManagerUuid,
+          failManagerText: null,
+          managerStatus: 100,
+          transaction
+        });
 
-      return await _pushFieldTestStatus({ registrationUuid, transaction });
-    }),
+        return await _pushFieldTestStatus({ registrationUuid, transaction });
+      });
+    } catch (error) {
+      throw error;
+    }
+  },
 
   /**
    * 项目管理员设置样品登记表审核不通过状态
@@ -457,27 +554,59 @@ export default {
     registrationUuid,
     failManagerText
   }) => {
-    if (!failManagerText.length || failManagerText.length > 100) {
-      throw new CustomError('审核不通过理由文本长度不符合规则!');
+    try {
+      if (!failManagerText.length || failManagerText.length > 100) {
+        throw new CustomError('审核不通过理由文本长度不符合规则!');
+      }
+      return db.transaction(async transaction => {
+        const {
+          currentStep
+        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+          { registrationUuid, transaction }
+        );
+        if (currentStep !== 4) {
+          throw new CustomError('当前步骤不允许设置样品登记表审核通过状态!');
+        }
+        return await enterpriseRegistrationSpecimenDao.updateSpecimenManagerStatus(
+          {
+            registrationUuid,
+            failManagerText,
+            managerStatus: -2,
+            transaction
+          }
+        );
+      });
+    } catch (error) {
+      throw error;
     }
-    return enterpriseRegistrationSpecimenDao.updateSpecimenManagerStatus({
-      registrationUuid,
-      failManagerText,
-      managerStatus: -2
-    });
   },
 
   /**
    * 技术负责人设置现场申请表审核通过状态
    */
-  setTechLeaderApplyManagerStatus: registrationUuid =>
-    enterpriseRegistrationApplyDao.updateApplyManagerStatus({
-      registrationUuid,
-      failManagerText: null,
-      techLeaderManagerDate: new Date(),
-      managerStatus: 3
-    }),
-
+  setTechLeaderApplyManagerStatus: registrationUuid => {
+    try {
+      return db.transaction(async transaction => {
+        const {
+          currentStep
+        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+          { registrationUuid, transaction }
+        );
+        if (currentStep !== 4) {
+          throw new CustomError('当前步骤不允许设置现场申请表审核通过状态!');
+        }
+        await enterpriseRegistrationApplyDao.updateApplyManagerStatus({
+          registrationUuid,
+          failManagerText: null,
+          techLeaderManagerDate: new Date(),
+          managerStatus: 3,
+          transaction
+        });
+      });
+    } catch (error) {
+      throw error;
+    }
+  },
   /**
    * 技术负责人设置现场申请表审核不通过状态
    */
@@ -485,14 +614,29 @@ export default {
     registrationUuid,
     failManagerText
   }) => {
-    if (!failManagerText.length || failManagerText.length > 100) {
-      throw new CustomError('审核不通过理由文本长度不符合规则!');
+    try {
+      if (!failManagerText.length || failManagerText.length > 100) {
+        throw new CustomError('审核不通过理由文本长度不符合规则!');
+      }
+      return db.transaction(async transaction => {
+        const {
+          currentStep
+        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+          { registrationUuid, transaction }
+        );
+        if (currentStep !== 4) {
+          throw new CustomError('当前步骤不允许设置现场申请表审核通过状态!');
+        }
+        return await enterpriseRegistrationApplyDao.updateApplyManagerStatus({
+          registrationUuid,
+          failManagerText,
+          managerStatus: -2,
+          transaction
+        });
+      });
+    } catch (error) {
+      throw error;
     }
-    return enterpriseRegistrationApplyDao.updateApplyManagerStatus({
-      registrationUuid,
-      failManagerText,
-      managerStatus: -2
-    });
   },
 
   /**
@@ -521,25 +665,37 @@ export default {
     registrationUuid,
     certifierManagerUuid
   }) => {
-    db.transaction(async transaction => {
-      await Promise.all([
-        enterpriseRegistrationApplyDao.updateApplyManagerStatus({
-          registrationUuid,
-          failManagerText: null,
-          certifierManagerUuid,
-          certifierManagerDate: new Date(),
-          managerStatus: 100,
-          transaction
-        }),
-        enterpriseRegistrationDao.updateRegistrationCertifierManagerUuid({
-          registrationUuid,
-          certifierManagerUuid,
-          transaction
-        })
-      ]);
+    try {
+      return db.transaction(async transaction => {
+        const {
+          currentStep
+        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+          { registrationUuid, transaction }
+        );
+        if (currentStep !== 4) {
+          throw new CustomError('当前步骤不允许设置现场申请表审核通过状态!');
+        }
+        await Promise.all([
+          enterpriseRegistrationApplyDao.updateApplyManagerStatus({
+            registrationUuid,
+            failManagerText: null,
+            certifierManagerUuid,
+            certifierManagerDate: new Date(),
+            managerStatus: 100,
+            transaction
+          }),
+          enterpriseRegistrationDao.updateRegistrationCertifierManagerUuid({
+            registrationUuid,
+            certifierManagerUuid,
+            transaction
+          })
+        ]);
 
-      return await _pushFieldTestStatus({ registrationUuid, transaction });
-    });
+        return await _pushFieldTestStatus({ registrationUuid, transaction });
+      });
+    } catch (error) {
+      throw error;
+    }
   },
   /**
    * 批准人设置现场申请表审核不通过状态
@@ -548,14 +704,29 @@ export default {
     registrationUuid,
     failManagerText
   }) => {
-    if (!failManagerText.length || failManagerText.length > 100) {
-      throw new CustomError('审核不通过理由文本长度不符合规则!');
+    try {
+      if (!failManagerText.length || failManagerText.length > 100) {
+        throw new CustomError('审核不通过理由文本长度不符合规则!');
+      }
+      return db.transaction(async transaction => {
+        const {
+          currentStep
+        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+          { registrationUuid, transaction }
+        );
+        if (currentStep !== 4) {
+          throw new CustomError('当前步骤不允许设置现场申请表审核通过状态!');
+        }
+        return await enterpriseRegistrationApplyDao.updateApplyManagerStatus({
+          registrationUuid,
+          failManagerText,
+          managerStatus: -3,
+          transaction
+        });
+      });
+    } catch (error) {
+      throw error;
     }
-    return enterpriseRegistrationApplyDao.updateApplyManagerStatus({
-      registrationUuid,
-      failManagerText,
-      managerStatus: -3
-    });
   },
 
   /**
@@ -594,29 +765,63 @@ export default {
     if (!email.length || email.length > 32) {
       throw new CustomError('邮箱长度不符合规则!');
     }
-
-    return enterpriseRegistrationSpecimenDao.updateRegistrationSpecimen({
-      registrationUuid,
-      trademark,
-      developmentTool,
-      securityClassification,
-      email,
-      unit,
-      managerStatus: 1,
-      failManagerText: null
-    });
+    try {
+      if (!failManagerText.length || failManagerText.length > 100) {
+        throw new CustomError('审核不通过理由文本长度不符合规则!');
+      }
+      return db.transaction(async transaction => {
+        const {
+          currentStep
+        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+          { registrationUuid, transaction }
+        );
+        if (currentStep !== 4) {
+          throw new CustomError('当前步骤不允许修改样品登记表!');
+        }
+        return await enterpriseRegistrationSpecimenDao.updateRegistrationSpecimen(
+          {
+            registrationUuid,
+            trademark,
+            developmentTool,
+            securityClassification,
+            email,
+            unit,
+            managerStatus: 1,
+            failManagerText: null,
+            transaction
+          }
+        );
+      });
+    } catch (error) {
+      throw error;
+    }
   },
   /**
    * 保存现场测试申请表的基本信息
    */
-  saveTestRegistrationApply: ({ registrationUuid, content }) =>
-    enterpriseRegistrationApplyDao.updateRegistrationApply({
-      registrationUuid,
-      content,
-      managerStatus: 1,
-      failManagerText: null
-    }),
-
+  saveTestRegistrationApply: ({ registrationUuid, content }) => {
+    try {
+      return db.transaction(async transaction => {
+        const {
+          currentStep
+        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+          { registrationUuid, transaction }
+        );
+        if (currentStep !== 4) {
+          throw new CustomError('当前步骤不允许修改现场测试申请表!');
+        }
+        return await enterpriseRegistrationApplyDao.updateRegistrationApply({
+          registrationUuid,
+          content,
+          managerStatus: 1,
+          failManagerText: null,
+          transaction
+        });
+      });
+    } catch (error) {
+      throw error;
+    }
+  },
   /**
    * 生成报告模板
    */
@@ -807,36 +1012,49 @@ export default {
     techManagerUuid
   }) => {
     try {
-      let productionUrl = '';
-      // 将temp的文件copy到production中
-      const [filePosition] = url.split('/');
-
-      if (filePosition === 'temp') {
-        const tempUrl = url;
-        productionUrl = url.replace('temp', 'production');
-        const record = await enterpriseRegistrationOriginalRecordDao.selectRegistrationRecordByRegistrationUuid(
-          registrationUuid
+      return db.transaction(async transaction => {
+        const {
+          currentStep
+        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+          { registrationUuid, transaction }
         );
+        if (currentStep !== 4) {
+          throw new CustomError('当前步骤不允许保存现场记录信息!');
+        }
+        let productionUrl = '';
+        // 将temp的文件copy到production中
+        const [filePosition] = url.split('/');
 
-        if (record?.url) {
-          await client.delete(record.url);
+        if (filePosition === 'temp') {
+          const tempUrl = url;
+          productionUrl = url.replace('temp', 'production');
+          const record = await enterpriseRegistrationOriginalRecordDao.selectRegistrationRecordByRegistrationUuid(
+            registrationUuid
+          );
+
+          if (record?.url) {
+            await client.delete(record.url);
+          }
+
+          await client.copy(productionUrl, tempUrl);
+        } else if (filePosition === 'production') {
+          productionUrl = url;
+        } else {
+          throw new CustomError('oss文件路径错误');
         }
 
-        await client.copy(productionUrl, tempUrl);
-      } else if (filePosition === 'production') {
-        productionUrl = url;
-      } else {
-        throw new CustomError('oss文件路径错误');
-      }
-
-      await enterpriseRegistrationOriginalRecordDao.updateRegistrationRecord({
-        registrationUuid,
-        url: productionUrl,
-        status: 2,
-        totalPage,
-        failText: null,
-        techManagerUuid,
-        techManagerDate: new Date()
+        return await enterpriseRegistrationOriginalRecordDao.updateRegistrationRecord(
+          {
+            registrationUuid,
+            url: productionUrl,
+            status: 2,
+            totalPage,
+            failText: null,
+            techManagerUuid,
+            techManagerDate: new Date(),
+            transaction
+          }
+        );
       });
     } catch (error) {
       throw error;
@@ -871,36 +1089,47 @@ export default {
     techManagerUuid
   }) => {
     try {
-      let productionUrl = '';
-      // 将temp的文件copy到production中
-      const [filePosition] = url.split('/');
-
-      if (filePosition === 'temp') {
-        const tempUrl = url;
-        productionUrl = url.replace('temp', 'production');
-        const report = await enterpriseRegistrationReportDao.selectRegistrationReportByRegistrationUuid(
-          registrationUuid
+      return db.transaction(async transaction => {
+        const {
+          currentStep
+        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+          { registrationUuid, transaction }
         );
+        if (currentStep !== 4) {
+          throw new CustomError('当前步骤不允许保存现场报告信息!');
+        }
+        let productionUrl = '';
+        // 将temp的文件copy到production中
+        const [filePosition] = url.split('/');
 
-        if (report?.url) {
-          await client.delete(report.url);
+        if (filePosition === 'temp') {
+          const tempUrl = url;
+          productionUrl = url.replace('temp', 'production');
+          const report = await enterpriseRegistrationReportDao.selectRegistrationReportByRegistrationUuid(
+            registrationUuid
+          );
+
+          if (report?.url) {
+            await client.delete(report.url);
+          }
+
+          await client.copy(productionUrl, tempUrl);
+        } else if (filePosition === 'production') {
+          productionUrl = url;
+        } else {
+          throw new CustomError('oss文件路径错误');
         }
 
-        await client.copy(productionUrl, tempUrl);
-      } else if (filePosition === 'production') {
-        productionUrl = url;
-      } else {
-        throw new CustomError('oss文件路径错误');
-      }
-
-      await enterpriseRegistrationReportDao.updateRegistrationReport({
-        registrationUuid,
-        url: productionUrl,
-        status: 2,
-        totalPage,
-        techManagerUuid,
-        failText: null,
-        techManagerDate: new Date()
+        return await enterpriseRegistrationReportDao.updateRegistrationReport({
+          registrationUuid,
+          url: productionUrl,
+          status: 2,
+          totalPage,
+          techManagerUuid,
+          failText: null,
+          techManagerDate: new Date(),
+          transaction
+        });
       });
     } catch (error) {
       throw error;
@@ -939,14 +1168,32 @@ export default {
   setTechLeaderRegistrationRecordSuccessStatus: ({
     techLeaderManagerUuid,
     registrationUuid
-  }) =>
-    enterpriseRegistrationOriginalRecordDao.updateRegistrationRecord({
-      registrationUuid,
-      status: 3,
-      techLeaderManagerUuid,
-      failText: null,
-      techLeaderManagerDate: new Date()
-    }),
+  }) => {
+    try {
+      return db.transaction(async transaction => {
+        const {
+          currentStep
+        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+          { registrationUuid, transaction }
+        );
+        if (currentStep !== 4) {
+          throw new CustomError('当前步骤不允许设置原始记录审核通过状态!');
+        }
+        return await enterpriseRegistrationOriginalRecordDao.updateRegistrationRecord(
+          {
+            registrationUuid,
+            status: 3,
+            techLeaderManagerUuid,
+            failText: null,
+            techLeaderManagerDate: new Date(),
+            transaction
+          }
+        );
+      });
+    } catch (error) {
+      throw error;
+    }
+  },
 
   /**
    * 设置原始记录审核不通过状态
@@ -958,12 +1205,28 @@ export default {
     if (!failText.length || failText.length > 100) {
       throw new CustomError('审核不通过理由文本长度不符合规则!');
     }
-
-    return enterpriseRegistrationOriginalRecordDao.updateRegistrationRecord({
-      registrationUuid,
-      status: -2,
-      failText
-    });
+    try {
+      return db.transaction(async transaction => {
+        const {
+          currentStep
+        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+          { registrationUuid, transaction }
+        );
+        if (currentStep !== 4) {
+          throw new CustomError('当前步骤不允许设置原始记录审核通过状态!');
+        }
+        return await enterpriseRegistrationOriginalRecordDao.updateRegistrationRecord(
+          {
+            registrationUuid,
+            status: -2,
+            failText,
+            transaction
+          }
+        );
+      });
+    } catch (error) {
+      throw error;
+    }
   },
 
   /**
@@ -972,15 +1235,30 @@ export default {
   setTechLeaderRegistrationReportSuccessStatus: ({
     techLeaderManagerUuid,
     registrationUuid
-  }) =>
-    enterpriseRegistrationReportDao.updateRegistrationReport({
-      registrationUuid,
-      status: 3,
-      techLeaderManagerUuid,
-      failText: null,
-      techLeaderManagerDate: new Date()
-    }),
-
+  }) => {
+    try {
+      return db.transaction(async transaction => {
+        const {
+          currentStep
+        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+          { registrationUuid, transaction }
+        );
+        if (currentStep !== 4) {
+          throw new CustomError('当前步骤不允许设置现场报告审核通过状态!');
+        }
+        return await enterpriseRegistrationReportDao.updateRegistrationReport({
+          registrationUuid,
+          status: 3,
+          techLeaderManagerUuid,
+          failText: null,
+          techLeaderManagerDate: new Date(),
+          transaction
+        });
+      });
+    } catch (error) {
+      throw error;
+    }
+  },
   /**
    * 设置现场报告审核不通过状态
    */
@@ -991,12 +1269,26 @@ export default {
     if (!failText.length || failText.length > 100) {
       throw new CustomError('审核不通过理由文本长度不符合规则!');
     }
-
-    return enterpriseRegistrationReportDao.updateRegistrationReport({
-      registrationUuid,
-      status: -2,
-      failText
-    });
+    try {
+      return db.transaction(async transaction => {
+        const {
+          currentStep
+        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+          { registrationUuid, transaction }
+        );
+        if (currentStep !== 4) {
+          throw new CustomError('当前步骤不允许设置现场报告审核通过状态!');
+        }
+        return await enterpriseRegistrationReportDao.updateRegistrationReport({
+          registrationUuid,
+          status: -2,
+          failText,
+          transaction
+        });
+      });
+    } catch (error) {
+      throw error;
+    }
   },
 
   /**
@@ -1005,14 +1297,32 @@ export default {
   setCertifierRegistrationRecordSuccessStatus: ({
     certifierManagerUuid,
     registrationUuid
-  }) =>
-    enterpriseRegistrationOriginalRecordDao.updateRegistrationRecord({
-      registrationUuid,
-      status: 4,
-      certifierManagerUuid,
-      failText: null,
-      certifierManagerDate: new Date()
-    }),
+  }) => {
+    try {
+      return db.transaction(async transaction => {
+        const {
+          currentStep
+        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+          { registrationUuid, transaction }
+        );
+        if (currentStep !== 4) {
+          throw new CustomError('当前步骤不允许设置原始记录审核通过状态!');
+        }
+        return await enterpriseRegistrationOriginalRecordDao.updateRegistrationRecord(
+          {
+            registrationUuid,
+            status: 4,
+            certifierManagerUuid,
+            failText: null,
+            certifierManagerDate: new Date(),
+            transaction
+          }
+        );
+      });
+    } catch (error) {
+      throw error;
+    }
+  },
 
   /**
    * 批准人设置原始记录审核不通过状态
@@ -1024,11 +1334,28 @@ export default {
     if (!failText.length || failText.length > 100) {
       throw new CustomError('审核不通过理由文本长度不符合规则!');
     }
-    return enterpriseRegistrationOriginalRecordDao.updateRegistrationRecord({
-      registrationUuid,
-      status: -3,
-      failText
-    });
+    try {
+      return db.transaction(async transaction => {
+        const {
+          currentStep
+        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+          { registrationUuid, transaction }
+        );
+        if (currentStep !== 4) {
+          throw new CustomError('当前步骤不允许设置原始记录审核通过状态!');
+        }
+        return await enterpriseRegistrationOriginalRecordDao.updateRegistrationRecord(
+          {
+            registrationUuid,
+            status: -3,
+            failText,
+            transaction
+          }
+        );
+      });
+    } catch (error) {
+      throw error;
+    }
   },
 
   /**
@@ -1037,14 +1364,30 @@ export default {
   setCertifierRegistrationReportSuccessStatus: ({
     certifierManagerUuid,
     registrationUuid
-  }) =>
-    enterpriseRegistrationReportDao.updateRegistrationReport({
-      registrationUuid,
-      status: 4,
-      certifierManagerUuid,
-      failText: null,
-      certifierManagerDate: new Date()
-    }),
+  }) => {
+    try {
+      return db.transaction(async transaction => {
+        const {
+          currentStep
+        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+          { registrationUuid, transaction }
+        );
+        if (currentStep !== 4) {
+          throw new CustomError('当前步骤不允许设置现场报告审核通过状态!');
+        }
+        return await enterpriseRegistrationReportDao.updateRegistrationReport({
+          registrationUuid,
+          status: 4,
+          certifierManagerUuid,
+          failText: null,
+          certifierManagerDate: new Date(),
+          transaction
+        });
+      });
+    } catch (error) {
+      throw error;
+    }
+  },
 
   /**
    * 批准人设置现场报告审核不通过状态
@@ -1056,11 +1399,26 @@ export default {
     if (!failText.length || failText.length > 100) {
       throw new CustomError('审核不通过理由文本长度不符合规则!');
     }
-    return enterpriseRegistrationReportDao.updateRegistrationReport({
-      registrationUuid,
-      status: -3,
-      failText
-    });
+    try {
+      return db.transaction(async transaction => {
+        const {
+          currentStep
+        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+          { registrationUuid, transaction }
+        );
+        if (currentStep !== 4) {
+          throw new CustomError('当前步骤不允许设置现场报告审核通过状态!');
+        }
+        return await enterpriseRegistrationReportDao.updateRegistrationReport({
+          registrationUuid,
+          status: -3,
+          failText,
+          transaction
+        });
+      });
+    } catch (error) {
+      throw error;
+    }
   },
 
   /**
@@ -1068,7 +1426,9 @@ export default {
    */
   selectProjectManagerRegistrationRecord: registrationUuid =>
     enterpriseRegistrationOriginalRecordDao.selectProjectManagerRegistrationRecord(
-      registrationUuid
+      {
+        registrationUuid
+      }
     ),
 
   /**
@@ -1080,38 +1440,47 @@ export default {
     projectManagerUuid
   }) => {
     try {
-      let productionUrl = '';
-      // 将temp的文件copy到production中
-      const [filePosition] = finalUrl.split('/');
-
-      if (filePosition === 'temp') {
-        const tempUrl = finalUrl;
-        productionUrl = finalUrl.replace('temp', 'production');
-        const record = await enterpriseRegistrationOriginalRecordDao.selectProjectManagerRegistrationRecord(
-          registrationUuid
+      return db.transaction(async transaction => {
+        const {
+          currentStep
+        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+          { registrationUuid, transaction }
         );
+        if (currentStep !== 4) {
+          throw new CustomError('当前步骤不允许设置现场报告审核通过状态!');
+        }
+        let productionUrl = '';
+        // 将temp的文件copy到production中
+        const [filePosition] = finalUrl.split('/');
 
-        if (record?.finalUrl) {
-          await client.delete(record.finalUrl);
+        if (filePosition === 'temp') {
+          const tempUrl = finalUrl;
+          productionUrl = finalUrl.replace('temp', 'production');
+          const record = await enterpriseRegistrationOriginalRecordDao.selectProjectManagerRegistrationRecord(
+            { registrationUuid, transaction }
+          );
+
+          if (record?.finalUrl) {
+            await client.delete(record.finalUrl);
+          }
+
+          await client.copy(productionUrl, tempUrl);
+        } else if (filePosition === 'production') {
+          productionUrl = finalUrl;
+        } else {
+          throw new CustomError('oss文件路径错误');
         }
 
-        await client.copy(productionUrl, tempUrl);
-      } else if (filePosition === 'production') {
-        productionUrl = finalUrl;
-      } else {
-        throw new CustomError('oss文件路径错误');
-      }
-
-      await db.transaction(async transaction => {
         await enterpriseRegistrationOriginalRecordDao.updateRegistrationRecord({
           registrationUuid,
           finalUrl: productionUrl,
           projectManagerUuid,
           projectManagerDate: new Date(),
-          status: 100
+          status: 100,
+          transaction
         });
 
-        await _finishFieldTest({ registrationUuid, transaction });
+        return await _finishFieldTest({ registrationUuid, transaction });
       });
     } catch (error) {
       throw error;
@@ -1122,9 +1491,9 @@ export default {
    * 查找原始记录url
    */
   selectProjectManagerRegistrationReport: registrationUuid =>
-    enterpriseRegistrationReportDao.selectProjectManagerRegistrationReport(
+    enterpriseRegistrationReportDao.selectProjectManagerRegistrationReport({
       registrationUuid
-    ),
+    }),
 
   /**
    * 保存原始记录url
@@ -1135,29 +1504,37 @@ export default {
     projectManagerUuid
   }) => {
     try {
-      let productionUrl = '';
-      // 将temp的文件copy到production中
-      const [filePosition] = finalUrl.split('/');
-
-      if (filePosition === 'temp') {
-        const tempUrl = finalUrl;
-        productionUrl = finalUrl.replace('temp', 'production');
-        const report = await enterpriseRegistrationReportDao.selectProjectManagerRegistrationReport(
-          registrationUuid
+      return db.transaction(async transaction => {
+        const {
+          currentStep
+        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+          { registrationUuid, transaction }
         );
+        if (currentStep !== 4) {
+          throw new CustomError('当前步骤不允许设置现场报告审核通过状态!');
+        }
+        let productionUrl = '';
+        // 将temp的文件copy到production中
+        const [filePosition] = finalUrl.split('/');
 
-        if (report?.finalUrl) {
-          await client.delete(report.finalUrl);
+        if (filePosition === 'temp') {
+          const tempUrl = finalUrl;
+          productionUrl = finalUrl.replace('temp', 'production');
+          const report = await enterpriseRegistrationReportDao.selectProjectManagerRegistrationReport(
+            { registrationUuid, transaction }
+          );
+
+          if (report?.finalUrl) {
+            await client.delete(report.finalUrl);
+          }
+
+          await client.copy(productionUrl, tempUrl);
+        } else if (filePosition === 'production') {
+          productionUrl = finalUrl;
+        } else {
+          throw new CustomError('oss文件路径错误');
         }
 
-        await client.copy(productionUrl, tempUrl);
-      } else if (filePosition === 'production') {
-        productionUrl = finalUrl;
-      } else {
-        throw new CustomError('oss文件路径错误');
-      }
-
-      await db.transaction(async transaction => {
         await enterpriseRegistrationReportDao.updateRegistrationReport({
           registrationUuid,
           finalUrl: productionUrl,
@@ -1167,7 +1544,7 @@ export default {
           transaction
         });
 
-        await _finishFieldTest({ registrationUuid, transaction });
+        return await _finishFieldTest({ registrationUuid, transaction });
       });
     } catch (error) {
       throw error;

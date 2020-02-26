@@ -270,33 +270,52 @@ export default {
     mainFunction,
     techIndex
   }) => {
-    const postalCodeReg = /^\d{6}$/;
-    if (!(amount >= 1 && amount <= 999)) {
-      throw new CustomError('数量不符合规则!');
+    try {
+      return db.transaction(async transaction => {
+        const {
+          currentStep
+        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+          {
+            registrationUuid,
+            transaction
+          }
+        );
+        if (currentStep !== 1) {
+          throw new CustomError('当前步骤不允许保存评测合同信息!');
+        } else {
+          const postalCodeReg = /^\d{6}$/;
+          if (!(amount >= 1 && amount <= 999)) {
+            throw new CustomError('数量不符合规则!');
+          }
+          if (!fax.length || fax.length > 32) {
+            throw new CustomError('传真长度不符合规则!');
+          }
+          if (!postalCodeReg.test(postalCode)) {
+            throw new CustomError('邮政编码不符合规则!');
+          }
+          if (!mainFunction.length || mainFunction.length > 32) {
+            throw new CustomError('主要功能长度不符合规则!');
+          }
+          if (!techIndex.length || techIndex.length > 32) {
+            throw new CustomError('技术指标长度不符合规则!');
+          }
+          return enterpriseRegistrationContractDao.updateRegistrationContract({
+            registrationUuid,
+            amount,
+            fax,
+            postalCode,
+            mainFunction,
+            techIndex,
+            status: 1,
+            statusText: '待审核',
+            failText: '',
+            transaction
+          });
+        }
+      });
+    } catch (error) {
+      throw error;
     }
-    if (!fax.length || fax.length > 32) {
-      throw new CustomError('传真长度不符合规则!');
-    }
-    if (!postalCodeReg.test(postalCode)) {
-      throw new CustomError('邮政编码不符合规则!');
-    }
-    if (!mainFunction.length || mainFunction.length > 32) {
-      throw new CustomError('主要功能长度不符合规则!');
-    }
-    if (!techIndex.length || techIndex.length > 32) {
-      throw new CustomError('技术指标长度不符合规则!');
-    }
-    return enterpriseRegistrationContractDao.updateRegistrationContract({
-      registrationUuid,
-      amount,
-      fax,
-      postalCode,
-      mainFunction,
-      techIndex,
-      status: 1,
-      statusText: '待审核',
-      failText: ''
-    });
   },
 
   /**
@@ -320,27 +339,46 @@ export default {
     email,
     unit
   }) => {
-    if (!trademark.length || trademark.length > 32) {
-      throw new CustomError('注册商标长度不符合规则!');
-    }
-    if (!developmentTool.length || developmentTool.length > 32) {
-      throw new CustomError('开发工具长度不符合规则!');
-    }
-    if (!email.length || email.length > 32) {
-      throw new CustomError('邮箱长度不符合规则!');
-    }
+    try {
+      return db.transaction(async transaction => {
+        const {
+          currentStep
+        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+          {
+            registrationUuid,
+            transaction
+          }
+        );
+        if (currentStep !== 1) {
+          throw new CustomError('当前步骤不允许保存样品登记表信息!');
+        } else {
+          if (!trademark.length || trademark.length > 32) {
+            throw new CustomError('注册商标长度不符合规则!');
+          }
+          if (!developmentTool.length || developmentTool.length > 32) {
+            throw new CustomError('开发工具长度不符合规则!');
+          }
+          if (!email.length || email.length > 32) {
+            throw new CustomError('邮箱长度不符合规则!');
+          }
 
-    return enterpriseRegistrationSpecimenDao.updateRegistrationSpecimen({
-      registrationUuid,
-      trademark,
-      developmentTool,
-      securityClassification,
-      email,
-      unit,
-      status: 1,
-      statusText: '待审核',
-      failText: ''
-    });
+          return enterpriseRegistrationSpecimenDao.updateRegistrationSpecimen({
+            registrationUuid,
+            trademark,
+            developmentTool,
+            securityClassification,
+            email,
+            unit,
+            status: 1,
+            statusText: '待审核',
+            failText: '',
+            transaction
+          });
+        }
+      });
+    } catch (error) {
+      throw error;
+    }
   },
 
   /**
@@ -354,15 +392,33 @@ export default {
   /**
    * 保存现场测试申请表的基本信息
    */
-  saveRegistrationApply: ({ registrationUuid, content }) =>
-    enterpriseRegistrationApplyDao.updateRegistrationApply({
-      registrationUuid,
-      content,
-      status: 1,
-      statusText: '待审核',
-      failText: ''
-    }),
-
+  saveRegistrationApply: ({ registrationUuid, content }) => {
+    try {
+      return db.transaction(async transaction => {
+        const {
+          currentStep
+        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+          {
+            registrationUuid,
+            transaction
+          }
+        );
+        if (currentStep !== 1) {
+          throw new CustomError('当前步骤不允许保存现场测试申请表信息!');
+        } else {
+          enterpriseRegistrationApplyDao.updateRegistrationApply({
+            registrationUuid,
+            content,
+            status: 1,
+            statusText: '待审核',
+            failText: ''
+          });
+        }
+      });
+    } catch (error) {
+      throw error;
+    }
+  },
   /**
    * 获取软件著作权的信息
    */
@@ -378,37 +434,52 @@ export default {
    */
   saveRegistrationCopyright: async ({ registrationUuid, copyrightUrl }) => {
     try {
-      let productionUrl = '';
-      // 将temp的文件copy到production中
-      const [filePosition] = copyrightUrl.split('/');
-
-      if (filePosition === 'temp') {
-        const tempUrl = copyrightUrl;
-        productionUrl = copyrightUrl.replace('temp', 'production');
-
-        const copyright = await enterpriseRegistrationCopyrightDao.selectRegistrationCopyrightByRegistrationUuid(
+      return db.transaction(async transaction => {
+        const {
+          currentStep
+        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
           {
-            registrationUuid
+            registrationUuid,
+            transaction
           }
         );
+        if (currentStep !== 1) {
+          throw new CustomError('当前步骤不允许保存软件著作权文件!');
+        } else {
+          let productionUrl = '';
+          // 将temp的文件copy到production中
+          const [filePosition] = copyrightUrl.split('/');
 
-        if (copyright?.url) {
-          await client.delete(copyright.url);
+          if (filePosition === 'temp') {
+            const tempUrl = copyrightUrl;
+            productionUrl = copyrightUrl.replace('temp', 'production');
+
+            const copyright = await enterpriseRegistrationCopyrightDao.selectRegistrationCopyrightByRegistrationUuid(
+              {
+                registrationUuid
+              }
+            );
+
+            if (copyright?.url) {
+              await client.delete(copyright.url);
+            }
+
+            await client.copy(productionUrl, tempUrl);
+          } else if (filePosition === 'production') {
+            productionUrl = copyrightUrl;
+          } else {
+            throw new CustomError('oss文件路径错误');
+          }
+
+          await enterpriseRegistrationCopyrightDao.updateRegistrationCopyright({
+            registrationUuid,
+            copyrightUrl: productionUrl,
+            status: 1,
+            statusText: '待审核',
+            failText: '',
+            transaction
+          });
         }
-
-        await client.copy(productionUrl, tempUrl);
-      } else if (filePosition === 'production') {
-        productionUrl = copyrightUrl;
-      } else {
-        throw new CustomError('oss文件路径错误');
-      }
-
-      await enterpriseRegistrationCopyrightDao.updateRegistrationCopyright({
-        registrationUuid,
-        copyrightUrl: productionUrl,
-        status: 1,
-        statusText: '待审核',
-        failText: ''
       });
     } catch (error) {
       throw error;
@@ -428,35 +499,50 @@ export default {
    */
   saveRegistrationDocument: async ({ registrationUuid, documentUrl }) => {
     try {
-      let productionUrl = '';
-      // 将temp的文件copy到production中
-      const [filePosition] = documentUrl.split('/');
-
-      if (filePosition === 'temp') {
-        const tempUrl = documentUrl;
-        productionUrl = documentUrl.replace('temp', 'production');
-
-        const document = await enterpriseRegistrationDocumentDao.selectRegistrationDocumentByRegistrationUuid(
-          { registrationUuid }
+      return db.transaction(async transaction => {
+        const {
+          currentStep
+        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+          {
+            registrationUuid,
+            transaction
+          }
         );
+        if (currentStep !== 1) {
+          throw new CustomError('当前步骤不允许保存用户文档集文件!');
+        } else {
+          let productionUrl = '';
+          // 将temp的文件copy到production中
+          const [filePosition] = documentUrl.split('/');
 
-        if (document?.url) {
-          await client.delete(document.url);
+          if (filePosition === 'temp') {
+            const tempUrl = documentUrl;
+            productionUrl = documentUrl.replace('temp', 'production');
+
+            const document = await enterpriseRegistrationDocumentDao.selectRegistrationDocumentByRegistrationUuid(
+              { registrationUuid }
+            );
+
+            if (document?.url) {
+              await client.delete(document.url);
+            }
+
+            await client.copy(productionUrl, tempUrl);
+          } else if (filePosition === 'production') {
+            productionUrl = documentUrl;
+          } else {
+            throw new CustomError('oss文件路径错误');
+          }
+
+          await enterpriseRegistrationDocumentDao.updateRegistrationDocument({
+            registrationUuid,
+            documentUrl: productionUrl,
+            status: 1,
+            statusText: '待审核',
+            failText: '',
+            transaction
+          });
         }
-
-        await client.copy(productionUrl, tempUrl);
-      } else if (filePosition === 'production') {
-        productionUrl = documentUrl;
-      } else {
-        throw new CustomError('oss文件路径错误');
-      }
-
-      await enterpriseRegistrationDocumentDao.updateRegistrationDocument({
-        registrationUuid,
-        documentUrl: productionUrl,
-        status: 1,
-        statusText: '待审核',
-        failText: ''
       });
     } catch (error) {
       throw error;
@@ -479,37 +565,51 @@ export default {
     productDescriptionUrl
   }) => {
     try {
-      let productionUrl = '';
-      // 将temp的文件copy到production中
-      const [filePosition] = productDescriptionUrl.split('/');
-
-      if (filePosition === 'temp') {
-        const tempUrl = productDescriptionUrl;
-        productionUrl = productDescriptionUrl.replace('temp', 'production');
-        const productDescription = await enterpriseRegistrationProductDescriptionDao.selectRegistrationProductDescriptionByRegistrationUuid(
-          { registrationUuid }
+      return db.transaction(async transaction => {
+        const {
+          currentStep
+        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+          {
+            registrationUuid,
+            transaction
+          }
         );
+        if (currentStep !== 1) {
+          throw new CustomError('当前步骤不允许保存产品说明文件!');
+        } else {
+          let productionUrl = '';
+          // 将temp的文件copy到production中
+          const [filePosition] = productDescriptionUrl.split('/');
 
-        if (productDescription?.url) {
-          await client.delete(productDescription.url);
+          if (filePosition === 'temp') {
+            const tempUrl = productDescriptionUrl;
+            productionUrl = productDescriptionUrl.replace('temp', 'production');
+            const productDescription = await enterpriseRegistrationProductDescriptionDao.selectRegistrationProductDescriptionByRegistrationUuid(
+              { registrationUuid }
+            );
+
+            if (productDescription?.url) {
+              await client.delete(productDescription.url);
+            }
+
+            await client.copy(productionUrl, tempUrl);
+          } else if (filePosition === 'production') {
+            productionUrl = productDescriptionUrl;
+          } else {
+            throw new CustomError('oss文件路径错误');
+          }
+
+          await enterpriseRegistrationProductDescriptionDao.updateRegistrationProductDescription(
+            {
+              registrationUuid,
+              productDescriptionUrl: productionUrl,
+              status: 1,
+              statusText: '待审核',
+              failText: ''
+            }
+          );
         }
-
-        await client.copy(productionUrl, tempUrl);
-      } else if (filePosition === 'production') {
-        productionUrl = productDescriptionUrl;
-      } else {
-        throw new CustomError('oss文件路径错误');
-      }
-
-      await enterpriseRegistrationProductDescriptionDao.updateRegistrationProductDescription(
-        {
-          registrationUuid,
-          productDescriptionUrl: productionUrl,
-          status: 1,
-          statusText: '待审核',
-          failText: ''
-        }
-      );
+      });
     } catch (error) {
       throw error;
     }
@@ -528,34 +628,48 @@ export default {
    */
   saveRegistrationProduct: async ({ registrationUuid, productUrl }) => {
     try {
-      let productionUrl = '';
-      // 将temp的文件copy到production中
-      const [filePosition] = productUrl.split('/');
-
-      if (filePosition === 'temp') {
-        const tempUrl = productUrl;
-        productionUrl = productUrl.replace('temp', 'production');
-        const product = await enterpriseRegistrationProductDao.selectRegistrationProductByRegistrationUuid(
-          { registrationUuid }
+      return db.transaction(async transaction => {
+        const {
+          currentStep
+        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+          {
+            registrationUuid,
+            transaction
+          }
         );
+        if (currentStep !== 1) {
+          throw new CustomError('当前步骤不允许保存产品说明文件!');
+        } else {
+          let productionUrl = '';
+          // 将temp的文件copy到production中
+          const [filePosition] = productUrl.split('/');
 
-        if (product?.url) {
-          await client.delete(product.url);
+          if (filePosition === 'temp') {
+            const tempUrl = productUrl;
+            productionUrl = productUrl.replace('temp', 'production');
+            const product = await enterpriseRegistrationProductDao.selectRegistrationProductByRegistrationUuid(
+              { registrationUuid }
+            );
+
+            if (product?.url) {
+              await client.delete(product.url);
+            }
+
+            await client.copy(productionUrl, tempUrl);
+          } else if (filePosition === 'production') {
+            productionUrl = productUrl;
+          } else {
+            throw new CustomError('oss文件路径错误');
+          }
+
+          await enterpriseRegistrationProductDao.updateRegistrationProduct({
+            registrationUuid,
+            productUrl: productionUrl,
+            status: 1,
+            statusText: '待审核',
+            failText: ''
+          });
         }
-
-        await client.copy(productionUrl, tempUrl);
-      } else if (filePosition === 'production') {
-        productionUrl = productUrl;
-      } else {
-        throw new CustomError('oss文件路径错误');
-      }
-
-      await enterpriseRegistrationProductDao.updateRegistrationProduct({
-        registrationUuid,
-        productUrl: productionUrl,
-        status: 1,
-        statusText: '待审核',
-        failText: ''
       });
     } catch (error) {
       throw error;
@@ -573,49 +687,61 @@ export default {
   }) => {
     try {
       return db.transaction(async transaction => {
-        const statusDao = {
-          basic: enterpriseRegistrationBasicDao.updateBasicStatus,
-          contract: enterpriseRegistrationContractDao.updateContractStatus,
-          product: enterpriseRegistrationProductDao.updateProductStatus,
-          productDescription:
-            enterpriseRegistrationProductDescriptionDao.updateProductDescriptionStatus,
-          apply: enterpriseRegistrationApplyDao.updateApplyStatus,
-          copyright: enterpriseRegistrationCopyrightDao.updateCopyrightStatus,
-          document: enterpriseRegistrationDocumentDao.updateDocumentStatus,
-          specimen: enterpriseRegistrationSpecimenDao.updateSpecimenStatus
-        };
-
-        const getStatusDao = type => {
-          if (!statusDao[type]) throw new CustomError('错误类型');
-
-          return statusDao[type];
-        };
-
-        if (failText?.length > 100) {
-          throw new CustomError('审核不通过理由文本长度不符合规则!');
-        }
-
-        if (isPass) {
-          await getStatusDao(type)({
-            registrationUuid,
-            status: 100,
-            failText,
-            statusText: '已审核',
-            transaction
-          });
-
-          return await _finishSubmitFile({
+        const {
+          currentStep
+        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+          {
             registrationUuid,
             transaction
-          });
+          }
+        );
+        if (currentStep !== 1) {
+          throw new CustomError('当前步骤不允许设置审核通过状态!');
         } else {
-          return await getStatusDao(type)({
-            registrationUuid,
-            status: -1,
-            failText,
-            statusText: '内容错误',
-            transaction
-          });
+          const statusDao = {
+            basic: enterpriseRegistrationBasicDao.updateBasicStatus,
+            contract: enterpriseRegistrationContractDao.updateContractStatus,
+            product: enterpriseRegistrationProductDao.updateProductStatus,
+            productDescription:
+              enterpriseRegistrationProductDescriptionDao.updateProductDescriptionStatus,
+            apply: enterpriseRegistrationApplyDao.updateApplyStatus,
+            copyright: enterpriseRegistrationCopyrightDao.updateCopyrightStatus,
+            document: enterpriseRegistrationDocumentDao.updateDocumentStatus,
+            specimen: enterpriseRegistrationSpecimenDao.updateSpecimenStatus
+          };
+
+          const getStatusDao = type => {
+            if (!statusDao[type]) throw new CustomError('错误类型');
+
+            return statusDao[type];
+          };
+
+          if (failText?.length > 100) {
+            throw new CustomError('审核不通过理由文本长度不符合规则!');
+          }
+
+          if (isPass) {
+            await getStatusDao(type)({
+              registrationUuid,
+              status: 100,
+              failText,
+              statusText: '已审核',
+              transaction
+            });
+
+            return await _finishSubmitFile({
+              registrationUuid,
+              transaction
+            });
+          } else {
+            return await getStatusDao(type)({
+              registrationUuid,
+              status: -1,
+              failText,
+              statusText: '内容错误',
+              transaction
+            });
+          }
         }
       });
     } catch (error) {

@@ -3,6 +3,9 @@ import { db } from '../../../db/db-connect';
 import enterpriseRegistrationStepDao from '../../../dao/enterprise/enterprise-registration-step-dao';
 import enterpriseRegistrationDao from '../../../dao/enterprise/enterprise-registration-dao';
 
+// 工具类
+import CustomError from '../../../util/custom-error';
+
 export default {
   /**
    * 查询企业的缴费信息
@@ -29,8 +32,16 @@ export default {
    */
   updateFinanceManager: ({ registrationUuid, financeManagerUuid }) => {
     try {
-      return db.transaction(transaction => {
-        return Promise.all([
+      return db.transaction(async transaction => {
+        const {
+          currentStep
+        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+          { registrationUuid, transaction }
+        );
+        if (currentStep !== 3) {
+          throw new CustomError('当前步骤不允许更新财务人员信息!');
+        }
+        return await Promise.all([
           enterpriseRegistrationStepDao.updateRegistrationStep({
             registrationUuid,
             status: 2,
@@ -59,14 +70,29 @@ export default {
   /**
    * 更新支付汇款状态
    */
-  noticeAccountPayment: registrationUuid =>
-    enterpriseRegistrationStepDao.updateRegistrationStep({
-      registrationUuid,
-      status: 3,
-      statusText: '企业点击已交款按钮',
-      step: 3
-    }),
-
+  noticeAccountPayment: registrationUuid => {
+    try {
+      return db.transaction(async transaction => {
+        const {
+          currentStep
+        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+          { registrationUuid, transaction }
+        );
+        if (currentStep !== 3) {
+          throw new CustomError('当前步骤不允许更新支付汇款状态!');
+        }
+        return await enterpriseRegistrationStepDao.updateRegistrationStep({
+          registrationUuid,
+          status: 3,
+          statusText: '企业点击已交款按钮',
+          step: 3,
+          transaction
+        });
+      });
+    } catch (error) {
+      throw error;
+    }
+  },
   /**
    * 查询登记测试财务管理员的uuid
    */
@@ -85,11 +111,26 @@ export default {
   /**
    * 财务确认已付款
    */
-  accountantConfirmPayment: registrationUuid =>
-    enterpriseRegistrationStepDao.updateRegistrationStep({
-      registrationUuid,
-      status: 4,
-      statusText: '财务已确认收款',
-      step: 3
-    })
+  accountantConfirmPayment: registrationUuid => {
+    try {
+      return db.transaction(async transaction => {
+        const {
+          currentStep
+        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+          { registrationUuid, transaction }
+        );
+        if (currentStep !== 3) {
+          throw new CustomError('当前步骤不允许更新确认收款状态!');
+        }
+        enterpriseRegistrationStepDao.updateRegistrationStep({
+          registrationUuid,
+          status: 4,
+          statusText: '财务已确认收款',
+          step: 3
+        });
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
 };

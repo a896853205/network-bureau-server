@@ -49,7 +49,8 @@ export default {
     techIndex,
     status,
     statusText,
-    failText
+    failText,
+    transaction = null
   }) =>
     enterpriseRegistrationContract.update(
       {
@@ -64,7 +65,8 @@ export default {
       },
       {
         where: { uuid: registrationUuid },
-        raw: true
+        raw: true,
+        transaction
       }
     ),
 
@@ -152,11 +154,12 @@ export default {
   /**
    * 查询的评测合同的两个url
    */
-  selectContractUrl: registrationUuid =>
+  selectContractUrl: ({ registrationUuid, transaction = null }) =>
     enterpriseRegistrationContract.findOne({
       attributes: ['managerUrl', 'enterpriseUrl'],
       raw: true,
-      where: { uuid: registrationUuid }
+      where: { uuid: registrationUuid },
+      transaction
     }),
 
   /**

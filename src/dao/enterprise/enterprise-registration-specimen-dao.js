@@ -50,7 +50,8 @@ export default {
     statusText,
     failText,
     managerStatus,
-    failManagerText
+    failManagerText,
+    transaction = null
   }) =>
     enterpriseRegistrationSpecimen.update(
       {
@@ -63,7 +64,8 @@ export default {
         statusText,
         failText,
         managerStatus,
-        failManagerText
+        failManagerText,
+        transaction
       },
       {
         where: { uuid: registrationUuid },

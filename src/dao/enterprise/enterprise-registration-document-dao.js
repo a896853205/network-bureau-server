@@ -48,7 +48,8 @@ export default {
     documentUrl,
     status,
     statusText,
-    failText
+    failText,
+    transaction = null
   }) =>
     enterpriseRegistrationDocument.update(
       {
@@ -59,7 +60,8 @@ export default {
       },
       {
         where: { uuid: registrationUuid },
-        raw: true
+        raw: true,
+        transaction
       }
     ),
 
