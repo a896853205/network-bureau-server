@@ -37,6 +37,16 @@ export default {
     contractTime
   }) => {
     try {
+      const paymentReg = /^(\d{1,8})$/;
+
+      if (!contractCode.length || contractCode.length > 32) {
+        throw new CustomError('合同编号长度不符合规则!');
+      }
+
+      if (!paymentReg.test(payment)) {
+        throw new CustomError('评测费金额不符合规则!');
+      }
+
       return db.transaction(async transaction => {
         const [registration, steps] = await Promise.all([
           enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
@@ -51,15 +61,6 @@ export default {
           throw new CustomError('当前步骤不允许保存合同信息!');
         }
 
-        const paymentReg = /^(\d{1,8})$/;
-        
-        if (!contractCode.length || contractCode.length > 32) {
-          throw new CustomError('合同编号长度不符合规则!');
-        }
-
-        if (!paymentReg.test(payment)) {
-          throw new CustomError('评测费金额不符合规则!');
-        }
         const contractList = await enterpriseRegistrationContractDao.selectRegistrationByContractCode(
           {
             contractCode,
@@ -115,6 +116,7 @@ export default {
         if (registration.currentStep !== 2 || steps[1].status !== 2) {
           throw new CustomError('当前步骤不允许保存合同信息!');
         }
+
         let productionUrl = '';
         // 将temp的文件copy到production中
         const [filePosition] = managerUrl.split('/');
@@ -174,10 +176,11 @@ export default {
 
         if (
           registration.currentStep !== 2 ||
-          (steps[1].status !== 3 & steps[1].status !== -1)
+          (steps[1].status !== 3) & (steps[1].status !== -1)
         ) {
           throw new CustomError('当前步骤不允许保存合同信息!');
         }
+
         let productionUrl = '';
         // 将temp的文件copy到production中
         const [filePosition] = enterpriseUrl.split('/');
@@ -273,6 +276,7 @@ export default {
       if (!managerFailText.length || managerFailText.length > 100) {
         throw new CustomError('审核不通过理由文本长度不符合规则!');
       }
+
       return db.transaction(async transaction => {
         const [registration, steps] = await Promise.all([
           enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
@@ -286,6 +290,7 @@ export default {
         if (registration.currentStep !== 2 || steps[1].status !== 4) {
           throw new CustomError('当前步骤不允许设置合同签署状态!');
         }
+        
         return Promise.all([
           enterpriseRegistrationContractDao.updateContractManagerStatus({
             registrationUuid,

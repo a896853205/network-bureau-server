@@ -1079,9 +1079,9 @@ export default {
    * 查询现场记录信息
    */
   selectRegistrationRecordByRegistrationUuid: registrationUuid =>
-    enterpriseRegistrationOriginalRecordDao.selectRegistrationRecordByRegistrationUuid(
+    enterpriseRegistrationOriginalRecordDao.selectRegistrationRecordByRegistrationUuid({
       registrationUuid
-    ),
+    }),
 
   /**
    * 保存现场记录信息
@@ -1093,6 +1093,10 @@ export default {
     techManagerUuid
   }) => {
     try {
+      if (!(totalPage >= 1 && totalPage <= 999)) {
+        throw new CustomError('原始记录总页数不符合规则!');
+      }
+
       return db.transaction(async transaction => {
         const [{ currentStep }, record] = await Promise.all([
           enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
@@ -1180,6 +1184,10 @@ export default {
     techManagerUuid
   }) => {
     try {
+      if (!(totalPage >= 1 && totalPage <= 999)) {
+        throw new CustomError('现场报告总页数不符合规则!');
+      }
+
       return db.transaction(async transaction => {
         const [{ currentStep }, report] = await Promise.all([
           enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(

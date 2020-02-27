@@ -21,7 +21,7 @@ export default db.define('enterprise_registration_original_record', {
   // 3 待批准人审查
   // 4 待项目管理员上传盖章之后的pdf
   failText: Sequelize.STRING(100), // 错误提示
-  totalPage: Sequelize.STRING(100), // 页码总数
+  totalPage: Sequelize.BIGINT(3), // 页码总数
   url: Sequelize.TEXT,
   finalUrl: Sequelize.TEXT,
   techManagerUuid: Sequelize.STRING(36),

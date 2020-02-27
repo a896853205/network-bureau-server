@@ -422,7 +422,7 @@ router.put(
 /**
  * 设置第二步合同签署失败状态
  */
-router.post('/setTechLeaderRegistrationRecordFailStatus', async ctx => {
+router.put('/setTechLeaderRegistrationRecordFailStatus', async ctx => {
   try {
     const { registrationUuid, failText } = ctx.state.param;
 
