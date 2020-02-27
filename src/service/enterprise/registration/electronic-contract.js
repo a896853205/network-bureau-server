@@ -52,9 +52,11 @@ export default {
         }
 
         const paymentReg = /^(\d{1,8})$/;
+        
         if (!contractCode.length || contractCode.length > 32) {
           throw new CustomError('合同编号长度不符合规则!');
         }
+
         if (!paymentReg.test(payment)) {
           throw new CustomError('评测费金额不符合规则!');
         }
@@ -64,9 +66,11 @@ export default {
             transaction
           }
         );
+
         if (contractList && contractList?.uuid !== registrationUuid) {
           throw new CustomError('该合同编号已存在!');
         }
+
         return await Promise.all([
           enterpriseRegistrationContractDao.updateRegistrationContractManager(
             {

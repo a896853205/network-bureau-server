@@ -6,6 +6,7 @@ import webToken from '../../util/token';
 
 // oss
 import client from '../../util/oss';
+import { db } from '../../db/db-connect';
 
 export default {
   /**
@@ -112,6 +113,7 @@ export default {
     // #TODO 删除之前判断是否有此管理员是否是项目管理员最后一个
     // #TODO 判断此管理员是否被项目所依赖(登记测试有两个表, enterpriseRegistrationStep和enterpriseRegistration)
     // #TODO 委托测试和委托合同的时候都要有所判断
+    // #TODO 头像oss也得删除
     return managerUserDao.deleteManager(managerUuid);
   },
 
