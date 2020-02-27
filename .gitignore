@@ -37,3 +37,5 @@ src/keys/*
 
 # 合同文件
 src/contract/*
+
+package-lock.json
