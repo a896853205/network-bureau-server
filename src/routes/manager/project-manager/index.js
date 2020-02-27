@@ -327,24 +327,6 @@ router.get('/selectRegistrationCopyright', async (ctx, next) => {
 });
 
 /**
- * 修改登记测试主流程进程修改
- */
-router.post('/pushRegistrationProcess', async (ctx, next) => {
-  try {
-    const { registrationUuid } = ctx.state.param;
-
-    await service.pushRegistrationProcess(registrationUuid);
-
-    ctx.body = new Res({
-      status: RESPONSE_CODE.success,
-      msg: '成功推进登记测试进度'
-    });
-  } catch (error) {
-    throw error;
-  }
-});
-
-/**
  * 查询经管部门填写评测合同的基本信息
  */
 router.get('/selectRegistrationContractManager', async (ctx, next) => {
