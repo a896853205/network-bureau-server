@@ -75,6 +75,31 @@ export default {
     headPortraitUrl
   ) => {
     try {
+      const usernameReg = /^\S{3,12}$/,
+        confirmReg = /^\S{6,12}$/,
+        passwordReg = /^\S{6,12}$/,
+        phoneReg = /^(\d)(\d|-){4,19}$/;
+
+      if (!usernameReg.test(version)) {
+        throw new CustomError('账号长度不符合规则!');
+      }
+
+      if (!confirmReg.test(version)) {
+        throw new CustomError('密码长度不符合规则!');
+      }
+
+      if (!passwordReg.test(version)) {
+        throw new CustomError('密码长度不符合规则!');
+      }
+
+      if (!phoneReg.test(version)) {
+        throw new CustomError('电话号码不符合规则!');
+      }
+
+      if (!name?.length || name?.length > 32) {
+        throw new CustomError('名字长度不符合规则!');
+      }
+
       if (await managerUserDao.selectManagerUserByUsername(username)) {
         throw new CustomError('管理员账号已存在');
       }

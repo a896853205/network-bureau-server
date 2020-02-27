@@ -25,8 +25,8 @@ export default db.define('enterprise_registration_contract', {
   amount: Sequelize.BIGINT(3), // 数量(最多999)
   fax: Sequelize.STRING(32), // 传真
   postalCode: Sequelize.STRING(32), // 邮政编码
-  mainFunction: Sequelize.STRING(32), // 主要功能
-  techIndex: Sequelize.STRING(32), // 技术指标
+  mainFunction: Sequelize.STRING(200), // 主要功能
+  techIndex: Sequelize.STRING(200), // 技术指标
   enterpriseUrl: Sequelize.TEXT, // 企业上传文件地址
   failText: Sequelize.STRING(100), // 错误提示
   // 经营管理部门填写
