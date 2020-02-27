@@ -43,13 +43,15 @@ export default {
     code,
     transaction = null
   }) => {
-    return enterpriseUser.create({
-      name,
-      password,
-      phone,
-      transaction,
-      code,
-      uuid: uuid.v1()
-    });
+    return enterpriseUser.create(
+      {
+        name,
+        password,
+        phone,
+        code,
+        uuid: uuid.v1()
+      },
+      { transaction }
+    );
   }
 };

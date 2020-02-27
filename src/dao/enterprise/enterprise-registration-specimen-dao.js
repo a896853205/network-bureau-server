@@ -51,7 +51,7 @@ export default {
     failText,
     managerStatus,
     failManagerText,
-    transaction = null
+    transaction
   }) =>
     enterpriseRegistrationSpecimen.update(
       {
@@ -64,12 +64,12 @@ export default {
         statusText,
         failText,
         managerStatus,
-        failManagerText,
-        transaction
+        failManagerText
       },
       {
         where: { uuid: registrationUuid },
-        raw: true
+        raw: true,
+        transaction
       }
     ),
 
@@ -123,7 +123,7 @@ export default {
     registrationUuid,
     projectManagerUuid,
     techManagerUuid,
-    transaction = null
+    transaction
   }) =>
     enterpriseRegistrationSpecimen.update(
       {
@@ -150,6 +150,20 @@ export default {
         'failManagerText',
         'managerStatus'
       ],
+      raw: true,
+      where: { uuid: registrationUuid },
+      transaction
+    }),
+
+  /**
+   * 查询样品登记表管理员审核状态
+   */
+  selectRegistrationSpecimenManagerStatus: ({
+    registrationUuid,
+    transaction
+  }) =>
+    enterpriseRegistrationSpecimen.findOne({
+      attributes: ['managerStatus'],
       raw: true,
       where: { uuid: registrationUuid },
       transaction

@@ -38,16 +38,20 @@ export default {
   }) => {
     try {
       return db.transaction(async transaction => {
-        const {
-          currentStep
-        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
-          { registrationUuid, transaction }
-        );
-        if (currentStep !== 2) {
+        const [registration, steps] = await Promise.all([
+          enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+            { registrationUuid, transaction }
+          ),
+          enterpriseRegistrationStepDao.queryEnterpriseRegistrationStepByRegistrationUuid(
+            { registrationUuid, transaction }
+          )
+        ]);
+
+        if (registration.currentStep !== 2 || steps[1].status !== 1) {
           throw new CustomError('当前步骤不允许保存合同信息!');
         }
 
-        const paymentReg = /^([1-9])(\d{0,7})$/;
+        const paymentReg = /^(\d{1,8})$/;
         if (!contractCode.length || contractCode.length > 32) {
           throw new CustomError('合同编号长度不符合规则!');
         }
@@ -95,12 +99,16 @@ export default {
   saveManagerContractUrl: async ({ registrationUuid, managerUrl }) => {
     try {
       return db.transaction(async transaction => {
-        const {
-          currentStep
-        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
-          { registrationUuid, transaction }
-        );
-        if (currentStep !== 2) {
+        const [registration, steps] = await Promise.all([
+          enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+            { registrationUuid, transaction }
+          ),
+          enterpriseRegistrationStepDao.queryEnterpriseRegistrationStepByRegistrationUuid(
+            { registrationUuid, transaction }
+          )
+        ]);
+
+        if (registration.currentStep !== 2 || steps[1].status !== 2) {
           throw new CustomError('当前步骤不允许保存合同信息!');
         }
         let productionUrl = '';
@@ -151,12 +159,19 @@ export default {
   saveEnterpriseContractUrl: async ({ registrationUuid, enterpriseUrl }) => {
     try {
       return db.transaction(async transaction => {
-        const {
-          currentStep
-        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
-          { registrationUuid, transaction }
-        );
-        if (currentStep !== 2) {
+        const [registration, steps] = await Promise.all([
+          enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+            { registrationUuid, transaction }
+          ),
+          enterpriseRegistrationStepDao.queryEnterpriseRegistrationStepByRegistrationUuid(
+            { registrationUuid, transaction }
+          )
+        ]);
+
+        if (
+          registration.currentStep !== 2 ||
+          (steps[1].status !== 3 & steps[1].status !== -1)
+        ) {
           throw new CustomError('当前步骤不允许保存合同信息!');
         }
         let productionUrl = '';
@@ -255,12 +270,16 @@ export default {
         throw new CustomError('审核不通过理由文本长度不符合规则!');
       }
       return db.transaction(async transaction => {
-        const {
-          currentStep
-        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
-          { registrationUuid, transaction }
-        );
-        if (currentStep !== 2) {
+        const [registration, steps] = await Promise.all([
+          enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+            { registrationUuid, transaction }
+          ),
+          enterpriseRegistrationStepDao.queryEnterpriseRegistrationStepByRegistrationUuid(
+            { registrationUuid, transaction }
+          )
+        ]);
+
+        if (registration.currentStep !== 2 || steps[1].status !== 4) {
           throw new CustomError('当前步骤不允许设置合同签署状态!');
         }
         return Promise.all([

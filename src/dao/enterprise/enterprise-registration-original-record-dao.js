@@ -16,11 +16,15 @@ export default {
   /**
    * 查询现场记录信息
    */
-  selectRegistrationRecordByRegistrationUuid: registrationUuid =>
+  selectRegistrationRecordByRegistrationUuid: ({
+    registrationUuid,
+    transaction = null
+  }) =>
     enterpriseRegistrationOriginalRecord.findOne({
       attributes: ['url', 'totalPage', 'failText'],
       raw: true,
-      where: { uuid: registrationUuid }
+      where: { uuid: registrationUuid },
+      transaction
     }),
 
   /**
@@ -69,11 +73,12 @@ export default {
   /**
    * 查询现场记录状态信息
    */
-  selectRegistrationRecordStatus: registrationUuid =>
+  selectRegistrationRecordStatus: ({ registrationUuid, transaction = null }) =>
     enterpriseRegistrationOriginalRecord.findOne({
       attributes: ['status'],
       raw: true,
-      where: { uuid: registrationUuid }
+      where: { uuid: registrationUuid },
+      transaction
     }),
 
   /**

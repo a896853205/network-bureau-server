@@ -299,18 +299,20 @@ export default {
           if (!techIndex.length || techIndex.length > 32) {
             throw new CustomError('技术指标长度不符合规则!');
           }
-          return enterpriseRegistrationContractDao.updateRegistrationContract({
-            registrationUuid,
-            amount,
-            fax,
-            postalCode,
-            mainFunction,
-            techIndex,
-            status: 1,
-            statusText: '待审核',
-            failText: '',
-            transaction
-          });
+          return await enterpriseRegistrationContractDao.updateRegistrationContract(
+            {
+              registrationUuid,
+              amount,
+              fax,
+              postalCode,
+              mainFunction,
+              techIndex,
+              status: 1,
+              statusText: '待审核',
+              failText: '',
+              transaction
+            }
+          );
         }
       });
     } catch (error) {
@@ -362,18 +364,20 @@ export default {
             throw new CustomError('邮箱长度不符合规则!');
           }
 
-          return enterpriseRegistrationSpecimenDao.updateRegistrationSpecimen({
-            registrationUuid,
-            trademark,
-            developmentTool,
-            securityClassification,
-            email,
-            unit,
-            status: 1,
-            statusText: '待审核',
-            failText: '',
-            transaction
-          });
+          return await enterpriseRegistrationSpecimenDao.updateRegistrationSpecimen(
+            {
+              registrationUuid,
+              trademark,
+              developmentTool,
+              securityClassification,
+              email,
+              unit,
+              status: 1,
+              statusText: '待审核',
+              failText: '',
+              transaction
+            }
+          );
         }
       });
     } catch (error) {
@@ -406,12 +410,13 @@ export default {
         if (currentStep !== 1) {
           throw new CustomError('当前步骤不允许保存现场测试申请表信息!');
         } else {
-          enterpriseRegistrationApplyDao.updateRegistrationApply({
+          return await enterpriseRegistrationApplyDao.updateRegistrationApply({
             registrationUuid,
             content,
             status: 1,
             statusText: '待审核',
-            failText: ''
+            failText: '',
+            transaction
           });
         }
       });
@@ -456,7 +461,8 @@ export default {
 
             const copyright = await enterpriseRegistrationCopyrightDao.selectRegistrationCopyrightByRegistrationUuid(
               {
-                registrationUuid
+                registrationUuid,
+                transaction
               }
             );
 
@@ -471,14 +477,16 @@ export default {
             throw new CustomError('oss文件路径错误');
           }
 
-          await enterpriseRegistrationCopyrightDao.updateRegistrationCopyright({
-            registrationUuid,
-            copyrightUrl: productionUrl,
-            status: 1,
-            statusText: '待审核',
-            failText: '',
-            transaction
-          });
+          return await enterpriseRegistrationCopyrightDao.updateRegistrationCopyright(
+            {
+              registrationUuid,
+              copyrightUrl: productionUrl,
+              status: 1,
+              statusText: '待审核',
+              failText: '',
+              transaction
+            }
+          );
         }
       });
     } catch (error) {
@@ -520,7 +528,7 @@ export default {
             productionUrl = documentUrl.replace('temp', 'production');
 
             const document = await enterpriseRegistrationDocumentDao.selectRegistrationDocumentByRegistrationUuid(
-              { registrationUuid }
+              { registrationUuid, transaction }
             );
 
             if (document?.url) {
@@ -534,14 +542,16 @@ export default {
             throw new CustomError('oss文件路径错误');
           }
 
-          await enterpriseRegistrationDocumentDao.updateRegistrationDocument({
-            registrationUuid,
-            documentUrl: productionUrl,
-            status: 1,
-            statusText: '待审核',
-            failText: '',
-            transaction
-          });
+          return await enterpriseRegistrationDocumentDao.updateRegistrationDocument(
+            {
+              registrationUuid,
+              documentUrl: productionUrl,
+              status: 1,
+              statusText: '待审核',
+              failText: '',
+              transaction
+            }
+          );
         }
       });
     } catch (error) {
@@ -585,7 +595,7 @@ export default {
             const tempUrl = productDescriptionUrl;
             productionUrl = productDescriptionUrl.replace('temp', 'production');
             const productDescription = await enterpriseRegistrationProductDescriptionDao.selectRegistrationProductDescriptionByRegistrationUuid(
-              { registrationUuid }
+              { registrationUuid, transaction }
             );
 
             if (productDescription?.url) {
@@ -599,13 +609,14 @@ export default {
             throw new CustomError('oss文件路径错误');
           }
 
-          await enterpriseRegistrationProductDescriptionDao.updateRegistrationProductDescription(
+          return await enterpriseRegistrationProductDescriptionDao.updateRegistrationProductDescription(
             {
               registrationUuid,
               productDescriptionUrl: productionUrl,
               status: 1,
               statusText: '待审核',
-              failText: ''
+              failText: '',
+              transaction
             }
           );
         }
@@ -648,7 +659,7 @@ export default {
             const tempUrl = productUrl;
             productionUrl = productUrl.replace('temp', 'production');
             const product = await enterpriseRegistrationProductDao.selectRegistrationProductByRegistrationUuid(
-              { registrationUuid }
+              { registrationUuid, transaction }
             );
 
             if (product?.url) {
@@ -662,13 +673,16 @@ export default {
             throw new CustomError('oss文件路径错误');
           }
 
-          await enterpriseRegistrationProductDao.updateRegistrationProduct({
-            registrationUuid,
-            productUrl: productionUrl,
-            status: 1,
-            statusText: '待审核',
-            failText: ''
-          });
+          return await enterpriseRegistrationProductDao.updateRegistrationProduct(
+            {
+              registrationUuid,
+              productUrl: productionUrl,
+              status: 1,
+              statusText: '待审核',
+              failText: '',
+              transaction
+            }
+          );
         }
       });
     } catch (error) {

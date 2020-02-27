@@ -33,12 +33,19 @@ export default {
   updateFinanceManager: ({ registrationUuid, financeManagerUuid }) => {
     try {
       return db.transaction(async transaction => {
-        const {
-          currentStep
-        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
-          { registrationUuid, transaction }
-        );
-        if (currentStep !== 3) {
+        const [{ currentStep }, steps] = await Promise.all([
+          enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+            { registrationUuid, transaction }
+          ),
+          enterpriseRegistrationStepDao.queryEnterpriseRegistrationStepByRegistrationUuid(
+            {
+              registrationUuid,
+              transaction
+            }
+          )
+        ]);
+
+        if (currentStep !== 3 || steps[2].status !== 1) {
           throw new CustomError('当前步骤不允许更新财务人员信息!');
         }
         return await Promise.all([
@@ -73,12 +80,19 @@ export default {
   noticeAccountPayment: registrationUuid => {
     try {
       return db.transaction(async transaction => {
-        const {
-          currentStep
-        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
-          { registrationUuid, transaction }
-        );
-        if (currentStep !== 3) {
+        const [{ currentStep }, steps] = await Promise.all([
+          enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+            { registrationUuid, transaction }
+          ),
+          enterpriseRegistrationStepDao.queryEnterpriseRegistrationStepByRegistrationUuid(
+            {
+              registrationUuid,
+              transaction
+            }
+          )
+        ]);
+
+        if (currentStep !== 3 || steps[2].status !== 2) {
           throw new CustomError('当前步骤不允许更新支付汇款状态!');
         }
         return await enterpriseRegistrationStepDao.updateRegistrationStep({
@@ -126,7 +140,7 @@ export default {
           )
         ]);
 
-        if (currentStep !== 3 && steps[2].status !== 3) {
+        if (currentStep !== 3 || steps[2].status !== 3) {
           throw new CustomError('当前步骤不允许更新确认收款状态!');
         }
 

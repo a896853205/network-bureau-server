@@ -69,11 +69,12 @@ export default {
   /**
    * 查询现场报告信息
    */
-  selectRegistrationReportStatus: registrationUuid =>
+  selectRegistrationReportStatus: ({ registrationUuid, transaction = null }) =>
     enterpriseRegistrationReport.findOne({
       attributes: ['status'],
       raw: true,
-      where: { uuid: registrationUuid }
+      where: { uuid: registrationUuid },
+      transaction
     }),
 
   /**

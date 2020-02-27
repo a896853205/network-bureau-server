@@ -52,7 +52,8 @@ export default {
     enterpriseName,
     status,
     statusText,
-    failText
+    failText,
+    transaction
   }) =>
     enterpriseRegistrationBasic.update(
       {
@@ -69,7 +70,8 @@ export default {
       },
       {
         where: { uuid: registrationUuid },
-        raw: true
+        raw: true,
+        transaction
       }
     ),
 

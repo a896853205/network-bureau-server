@@ -31,7 +31,7 @@ import moment from 'moment';
 const _pushFieldTestStatus = async ({ registrationUuid, transaction }) => {
   // 查询当前步骤,
   const steps = await enterpriseRegistrationStepDao.queryEnterpriseRegistrationStepByRegistrationUuid(
-    { registrationUuid }
+    { registrationUuid, transaction }
   );
 
   if (steps[3].status === 3) {
@@ -75,7 +75,7 @@ const _pushFieldTestStatus = async ({ registrationUuid, transaction }) => {
 const _finishFieldTest = async ({ registrationUuid, transaction }) => {
   // 查询当前步骤,
   const steps = await enterpriseRegistrationStepDao.queryEnterpriseRegistrationStepByRegistrationUuid(
-    { registrationUuid }
+    { registrationUuid, transaction }
   );
 
   if (steps[3].status === 4) {
@@ -162,12 +162,19 @@ export default {
   arrangeTechLeaderManager: ({ registrationUuid, technicalManagerUuid }) => {
     try {
       return db.transaction(async transaction => {
-        const {
-          currentStep
-        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
-          { registrationUuid, transaction }
-        );
-        if (currentStep !== 4) {
+        const [{ currentStep }, steps] = await Promise.all([
+          enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+            { registrationUuid, transaction }
+          ),
+          enterpriseRegistrationStepDao.queryEnterpriseRegistrationStepByRegistrationUuid(
+            {
+              registrationUuid,
+              transaction
+            }
+          )
+        ]);
+
+        if (currentStep !== 4 || steps[3].status !== 1) {
           throw new CustomError('当前步骤不允许安排技术负责人!');
         }
         return await Promise.all([
@@ -231,12 +238,19 @@ export default {
   arrangeTechManager: ({ registrationUuid, techManagerUuid }) => {
     try {
       return db.transaction(async transaction => {
-        const {
-          currentStep
-        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
-          { registrationUuid, transaction }
-        );
-        if (currentStep !== 4) {
+        const [{ currentStep }, steps] = await Promise.all([
+          enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+            { registrationUuid, transaction }
+          ),
+          enterpriseRegistrationStepDao.queryEnterpriseRegistrationStepByRegistrationUuid(
+            {
+              registrationUuid,
+              transaction
+            }
+          )
+        ]);
+
+        if (currentStep !== 4 || steps[3].status !== 2) {
           throw new CustomError('当前步骤不允许安排技术人员!');
         }
         return await Promise.all([
@@ -404,12 +418,17 @@ export default {
   setTechApplyManagerStatus: registrationUuid => {
     try {
       return db.transaction(async transaction => {
-        const {
-          currentStep
-        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
-          { registrationUuid, transaction }
-        );
-        if (currentStep !== 4) {
+        const [{ currentStep }, apply] = await Promise.all([
+          enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+            { registrationUuid, transaction }
+          ),
+          enterpriseRegistrationApplyDao.selectRegistrationApplyManagerStatus({
+            registrationUuid,
+            transaction
+          })
+        ]);
+
+        if (currentStep !== 4 || apply.managerStatus !== 1) {
           throw new CustomError('当前步骤不允许设置现场申请表审核通过状态!');
         }
         return await enterpriseRegistrationApplyDao.updateApplyManagerStatus({
@@ -434,12 +453,17 @@ export default {
         throw new CustomError('审核不通过理由文本长度不符合规则!');
       }
       return db.transaction(async transaction => {
-        const {
-          currentStep
-        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
-          { registrationUuid, transaction }
-        );
-        if (currentStep !== 4) {
+        const [{ currentStep }, apply] = await Promise.all([
+          enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+            { registrationUuid, transaction }
+          ),
+          enterpriseRegistrationApplyDao.selectRegistrationApplyManagerStatus({
+            registrationUuid,
+            transaction
+          })
+        ]);
+
+        if (currentStep !== 4 || apply.managerStatus !== 1) {
           throw new CustomError('当前步骤不允许设置现场申请表审核通过状态!');
         }
         return await enterpriseRegistrationApplyDao.updateApplyManagerStatus({
@@ -460,12 +484,19 @@ export default {
   setTechSpecimenManagerStatus: registrationUuid => {
     try {
       return db.transaction(async transaction => {
-        const {
-          currentStep
-        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
-          { registrationUuid, transaction }
-        );
-        if (currentStep !== 4) {
+        const [{ currentStep }, specimen] = await Promise.all([
+          enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+            { registrationUuid, transaction }
+          ),
+          enterpriseRegistrationSpecimenDao.selectRegistrationSpecimenManagerStatus(
+            {
+              registrationUuid,
+              transaction
+            }
+          )
+        ]);
+
+        if (currentStep !== 4 || specimen.managerStatus !== 1) {
           throw new CustomError('当前步骤不允许设置样品登记表审核通过状态!');
         }
         return await enterpriseRegistrationSpecimenDao.updateSpecimenManagerStatus(
@@ -492,12 +523,19 @@ export default {
         throw new CustomError('审核不通过理由文本长度不符合规则!');
       }
       return db.transaction(async transaction => {
-        const {
-          currentStep
-        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
-          { registrationUuid, transaction }
-        );
-        if (currentStep !== 4) {
+        const [{ currentStep }, specimen] = await Promise.all([
+          enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+            { registrationUuid, transaction }
+          ),
+          enterpriseRegistrationSpecimenDao.selectRegistrationSpecimenManagerStatus(
+            {
+              registrationUuid,
+              transaction
+            }
+          )
+        ]);
+
+        if (currentStep !== 4 || specimen.managerStatus !== 1) {
           throw new CustomError('当前步骤不允许设置样品登记表审核通过状态!');
         }
         return await enterpriseRegistrationSpecimenDao.updateSpecimenManagerStatus(
@@ -523,12 +561,19 @@ export default {
   }) => {
     try {
       return db.transaction(async transaction => {
-        const {
-          currentStep
-        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
-          { registrationUuid, transaction }
-        );
-        if (currentStep !== 4) {
+        const [{ currentStep }, specimen] = await Promise.all([
+          enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+            { registrationUuid, transaction }
+          ),
+          enterpriseRegistrationSpecimenDao.selectRegistrationSpecimenManagerStatus(
+            {
+              registrationUuid,
+              transaction
+            }
+          )
+        ]);
+
+        if (currentStep !== 4 || specimen.managerStatus !== 2) {
           throw new CustomError('当前步骤不允许设置样品登记表审核通过状态!');
         }
         await enterpriseRegistrationSpecimenDao.updateSpecimenManagerStatus({
@@ -559,12 +604,19 @@ export default {
         throw new CustomError('审核不通过理由文本长度不符合规则!');
       }
       return db.transaction(async transaction => {
-        const {
-          currentStep
-        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
-          { registrationUuid, transaction }
-        );
-        if (currentStep !== 4) {
+        const [{ currentStep }, specimen] = await Promise.all([
+          enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+            { registrationUuid, transaction }
+          ),
+          enterpriseRegistrationSpecimenDao.selectRegistrationSpecimenManagerStatus(
+            {
+              registrationUuid,
+              transaction
+            }
+          )
+        ]);
+
+        if (currentStep !== 4 || specimen.managerStatus !== 2) {
           throw new CustomError('当前步骤不允许设置样品登记表审核通过状态!');
         }
         return await enterpriseRegistrationSpecimenDao.updateSpecimenManagerStatus(
@@ -587,12 +639,17 @@ export default {
   setTechLeaderApplyManagerStatus: registrationUuid => {
     try {
       return db.transaction(async transaction => {
-        const {
-          currentStep
-        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
-          { registrationUuid, transaction }
-        );
-        if (currentStep !== 4) {
+        const [{ currentStep }, apply] = await Promise.all([
+          enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+            { registrationUuid, transaction }
+          ),
+          enterpriseRegistrationApplyDao.selectRegistrationApplyManagerStatus({
+            registrationUuid,
+            transaction
+          })
+        ]);
+
+        if (currentStep !== 4 || apply.managerStatus !== 2) {
           throw new CustomError('当前步骤不允许设置现场申请表审核通过状态!');
         }
         await enterpriseRegistrationApplyDao.updateApplyManagerStatus({
@@ -619,12 +676,17 @@ export default {
         throw new CustomError('审核不通过理由文本长度不符合规则!');
       }
       return db.transaction(async transaction => {
-        const {
-          currentStep
-        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
-          { registrationUuid, transaction }
-        );
-        if (currentStep !== 4) {
+        const [{ currentStep }, apply] = await Promise.all([
+          enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+            { registrationUuid, transaction }
+          ),
+          enterpriseRegistrationApplyDao.selectRegistrationApplyManagerStatus({
+            registrationUuid,
+            transaction
+          })
+        ]);
+
+        if (currentStep !== 4 || apply.managerStatus !== 2) {
           throw new CustomError('当前步骤不允许设置现场申请表审核通过状态!');
         }
         return await enterpriseRegistrationApplyDao.updateApplyManagerStatus({
@@ -667,12 +729,17 @@ export default {
   }) => {
     try {
       return db.transaction(async transaction => {
-        const {
-          currentStep
-        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
-          { registrationUuid, transaction }
-        );
-        if (currentStep !== 4) {
+        const [{ currentStep }, apply] = await Promise.all([
+          enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+            { registrationUuid, transaction }
+          ),
+          enterpriseRegistrationApplyDao.selectRegistrationApplyManagerStatus({
+            registrationUuid,
+            transaction
+          })
+        ]);
+
+        if (currentStep !== 4 || apply.managerStatus !== 3) {
           throw new CustomError('当前步骤不允许设置现场申请表审核通过状态!');
         }
         await Promise.all([
@@ -709,12 +776,17 @@ export default {
         throw new CustomError('审核不通过理由文本长度不符合规则!');
       }
       return db.transaction(async transaction => {
-        const {
-          currentStep
-        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
-          { registrationUuid, transaction }
-        );
-        if (currentStep !== 4) {
+        const [{ currentStep }, apply] = await Promise.all([
+          enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+            { registrationUuid, transaction }
+          ),
+          enterpriseRegistrationApplyDao.selectRegistrationApplyManagerStatus({
+            registrationUuid,
+            transaction
+          })
+        ]);
+
+        if (currentStep !== 4 || apply.managerStatus !== 3) {
           throw new CustomError('当前步骤不允许设置现场申请表审核通过状态!');
         }
         return await enterpriseRegistrationApplyDao.updateApplyManagerStatus({
@@ -766,16 +838,20 @@ export default {
       throw new CustomError('邮箱长度不符合规则!');
     }
     try {
-      if (!failManagerText.length || failManagerText.length > 100) {
-        throw new CustomError('审核不通过理由文本长度不符合规则!');
-      }
       return db.transaction(async transaction => {
-        const {
-          currentStep
-        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
-          { registrationUuid, transaction }
-        );
-        if (currentStep !== 4) {
+        const [{ currentStep }, specimen] = await Promise.all([
+          enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+            { registrationUuid, transaction }
+          ),
+          enterpriseRegistrationSpecimenDao.selectRegistrationSpecimenManagerStatus(
+            {
+              registrationUuid,
+              transaction
+            }
+          )
+        ]);
+
+        if (currentStep !== 4 || specimen.managerStatus > 0) {
           throw new CustomError('当前步骤不允许修改样品登记表!');
         }
         return await enterpriseRegistrationSpecimenDao.updateRegistrationSpecimen(
@@ -802,12 +878,17 @@ export default {
   saveTestRegistrationApply: ({ registrationUuid, content }) => {
     try {
       return db.transaction(async transaction => {
-        const {
-          currentStep
-        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
-          { registrationUuid, transaction }
-        );
-        if (currentStep !== 4) {
+        const [{ currentStep }, apply] = await Promise.all([
+          enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+            { registrationUuid, transaction }
+          ),
+          enterpriseRegistrationApplyDao.selectRegistrationApplyManagerStatus({
+            registrationUuid,
+            transaction
+          })
+        ]);
+
+        if (currentStep !== 4 || apply.managerStatus > 0) {
           throw new CustomError('当前步骤不允许修改现场测试申请表!');
         }
         return await enterpriseRegistrationApplyDao.updateRegistrationApply({
@@ -1013,12 +1094,19 @@ export default {
   }) => {
     try {
       return db.transaction(async transaction => {
-        const {
-          currentStep
-        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
-          { registrationUuid, transaction }
-        );
-        if (currentStep !== 4) {
+        const [{ currentStep }, record] = await Promise.all([
+          enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+            { registrationUuid, transaction }
+          ),
+          enterpriseRegistrationOriginalRecordDao.selectRegistrationRecordStatus(
+            {
+              registrationUuid,
+              transaction
+            }
+          )
+        ]);
+
+        if (currentStep !== 4 || record.status > 1 || record.status === 0) {
           throw new CustomError('当前步骤不允许保存现场记录信息!');
         }
         let productionUrl = '';
@@ -1029,7 +1117,10 @@ export default {
           const tempUrl = url;
           productionUrl = url.replace('temp', 'production');
           const record = await enterpriseRegistrationOriginalRecordDao.selectRegistrationRecordByRegistrationUuid(
-            registrationUuid
+            {
+              registrationUuid,
+              transaction
+            }
           );
 
           if (record?.url) {
@@ -1090,12 +1181,17 @@ export default {
   }) => {
     try {
       return db.transaction(async transaction => {
-        const {
-          currentStep
-        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
-          { registrationUuid, transaction }
-        );
-        if (currentStep !== 4) {
+        const [{ currentStep }, report] = await Promise.all([
+          enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+            { registrationUuid, transaction }
+          ),
+          enterpriseRegistrationReportDao.selectRegistrationReportStatus({
+            registrationUuid,
+            transaction
+          })
+        ]);
+
+        if (currentStep !== 4 || report.status > 1 || report.status === 0) {
           throw new CustomError('当前步骤不允许保存现场报告信息!');
         }
         let productionUrl = '';
@@ -1150,17 +1246,17 @@ export default {
    * 查询原始记录信息
    */
   getRegistrationRecordStatus: registrationUuid =>
-    enterpriseRegistrationOriginalRecordDao.selectRegistrationRecordStatus(
+    enterpriseRegistrationOriginalRecordDao.selectRegistrationRecordStatus({
       registrationUuid
-    ),
+    }),
 
   /**
    * 查询现场记录信息
    */
   getRegistrationReportStatus: registrationUuid =>
-    enterpriseRegistrationReportDao.selectRegistrationReportStatus(
+    enterpriseRegistrationReportDao.selectRegistrationReportStatus({
       registrationUuid
-    ),
+    }),
 
   /**
    * 设置原始记录审核通过状态
@@ -1171,12 +1267,19 @@ export default {
   }) => {
     try {
       return db.transaction(async transaction => {
-        const {
-          currentStep
-        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
-          { registrationUuid, transaction }
-        );
-        if (currentStep !== 4) {
+        const [{ currentStep }, record] = await Promise.all([
+          enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+            { registrationUuid, transaction }
+          ),
+          enterpriseRegistrationOriginalRecordDao.selectRegistrationRecordStatus(
+            {
+              registrationUuid,
+              transaction
+            }
+          )
+        ]);
+
+        if (currentStep !== 4 || record.status !== 2) {
           throw new CustomError('当前步骤不允许设置原始记录审核通过状态!');
         }
         return await enterpriseRegistrationOriginalRecordDao.updateRegistrationRecord(
@@ -1207,12 +1310,19 @@ export default {
     }
     try {
       return db.transaction(async transaction => {
-        const {
-          currentStep
-        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
-          { registrationUuid, transaction }
-        );
-        if (currentStep !== 4) {
+        const [{ currentStep }, record] = await Promise.all([
+          enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+            { registrationUuid, transaction }
+          ),
+          enterpriseRegistrationOriginalRecordDao.selectRegistrationRecordStatus(
+            {
+              registrationUuid,
+              transaction
+            }
+          )
+        ]);
+
+        if (currentStep !== 4 || record.status !== 2) {
           throw new CustomError('当前步骤不允许设置原始记录审核通过状态!');
         }
         return await enterpriseRegistrationOriginalRecordDao.updateRegistrationRecord(
@@ -1238,12 +1348,17 @@ export default {
   }) => {
     try {
       return db.transaction(async transaction => {
-        const {
-          currentStep
-        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
-          { registrationUuid, transaction }
-        );
-        if (currentStep !== 4) {
+        const [{ currentStep }, report] = await Promise.all([
+          enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+            { registrationUuid, transaction }
+          ),
+          enterpriseRegistrationReportDao.selectRegistrationReportStatus({
+            registrationUuid,
+            transaction
+          })
+        ]);
+
+        if (currentStep !== 4 || report.status !== 2) {
           throw new CustomError('当前步骤不允许设置现场报告审核通过状态!');
         }
         return await enterpriseRegistrationReportDao.updateRegistrationReport({
@@ -1271,12 +1386,17 @@ export default {
     }
     try {
       return db.transaction(async transaction => {
-        const {
-          currentStep
-        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
-          { registrationUuid, transaction }
-        );
-        if (currentStep !== 4) {
+        const [{ currentStep }, report] = await Promise.all([
+          enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+            { registrationUuid, transaction }
+          ),
+          enterpriseRegistrationReportDao.selectRegistrationReportStatus({
+            registrationUuid,
+            transaction
+          })
+        ]);
+
+        if (currentStep !== 4 || report.status !== 2) {
           throw new CustomError('当前步骤不允许设置现场报告审核通过状态!');
         }
         return await enterpriseRegistrationReportDao.updateRegistrationReport({
@@ -1300,12 +1420,19 @@ export default {
   }) => {
     try {
       return db.transaction(async transaction => {
-        const {
-          currentStep
-        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
-          { registrationUuid, transaction }
-        );
-        if (currentStep !== 4) {
+        const [{ currentStep }, record] = await Promise.all([
+          enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+            { registrationUuid, transaction }
+          ),
+          enterpriseRegistrationOriginalRecordDao.selectRegistrationRecordStatus(
+            {
+              registrationUuid,
+              transaction
+            }
+          )
+        ]);
+
+        if (currentStep !== 4 || record.status !== 3) {
           throw new CustomError('当前步骤不允许设置原始记录审核通过状态!');
         }
         return await enterpriseRegistrationOriginalRecordDao.updateRegistrationRecord(
@@ -1336,12 +1463,19 @@ export default {
     }
     try {
       return db.transaction(async transaction => {
-        const {
-          currentStep
-        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
-          { registrationUuid, transaction }
-        );
-        if (currentStep !== 4) {
+        const [{ currentStep }, record] = await Promise.all([
+          enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+            { registrationUuid, transaction }
+          ),
+          enterpriseRegistrationOriginalRecordDao.selectRegistrationRecordStatus(
+            {
+              registrationUuid,
+              transaction
+            }
+          )
+        ]);
+
+        if (currentStep !== 4 || record.status !== 3) {
           throw new CustomError('当前步骤不允许设置原始记录审核通过状态!');
         }
         return await enterpriseRegistrationOriginalRecordDao.updateRegistrationRecord(
@@ -1367,12 +1501,17 @@ export default {
   }) => {
     try {
       return db.transaction(async transaction => {
-        const {
-          currentStep
-        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
-          { registrationUuid, transaction }
-        );
-        if (currentStep !== 4) {
+        const [{ currentStep }, report] = await Promise.all([
+          enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+            { registrationUuid, transaction }
+          ),
+          enterpriseRegistrationReportDao.selectRegistrationReportStatus({
+            registrationUuid,
+            transaction
+          })
+        ]);
+
+        if (currentStep !== 4 || report.status !== 3) {
           throw new CustomError('当前步骤不允许设置现场报告审核通过状态!');
         }
         return await enterpriseRegistrationReportDao.updateRegistrationReport({
@@ -1401,12 +1540,17 @@ export default {
     }
     try {
       return db.transaction(async transaction => {
-        const {
-          currentStep
-        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
-          { registrationUuid, transaction }
-        );
-        if (currentStep !== 4) {
+        const [{ currentStep }, report] = await Promise.all([
+          enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+            { registrationUuid, transaction }
+          ),
+          enterpriseRegistrationReportDao.selectRegistrationReportStatus({
+            registrationUuid,
+            transaction
+          })
+        ]);
+
+        if (currentStep !== 4 || report.status !== 3) {
           throw new CustomError('当前步骤不允许设置现场报告审核通过状态!');
         }
         return await enterpriseRegistrationReportDao.updateRegistrationReport({
@@ -1441,12 +1585,19 @@ export default {
   }) => {
     try {
       return db.transaction(async transaction => {
-        const {
-          currentStep
-        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
-          { registrationUuid, transaction }
-        );
-        if (currentStep !== 4) {
+        const [{ currentStep }, record] = await Promise.all([
+          enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+            { registrationUuid, transaction }
+          ),
+          enterpriseRegistrationOriginalRecordDao.selectRegistrationRecordStatus(
+            {
+              registrationUuid,
+              transaction
+            }
+          )
+        ]);
+
+        if (currentStep !== 4 || record.status !== 4) {
           throw new CustomError('当前步骤不允许设置现场报告审核通过状态!');
         }
         let productionUrl = '';
@@ -1496,7 +1647,7 @@ export default {
     }),
 
   /**
-   * 保存原始记录url
+   * 保存现场报告url
    */
   saveReportFinaltUrl: async ({
     registrationUuid,
@@ -1505,12 +1656,17 @@ export default {
   }) => {
     try {
       return db.transaction(async transaction => {
-        const {
-          currentStep
-        } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
-          { registrationUuid, transaction }
-        );
-        if (currentStep !== 4) {
+        const [{ currentStep }, report] = await Promise.all([
+          enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
+            { registrationUuid, transaction }
+          ),
+          enterpriseRegistrationReportDao.selectRegistrationReportStatus({
+            registrationUuid,
+            transaction
+          })
+        ]);
+
+        if (currentStep !== 4 || report.status !== 4) {
           throw new CustomError('当前步骤不允许设置现场报告审核通过状态!');
         }
         let productionUrl = '';

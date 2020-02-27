@@ -25,7 +25,8 @@ export default {
     statusText,
     failText,
     managerStatus,
-    failManagerText
+    failManagerText,
+    transaction
   }) =>
     enterpriseRegistrationApply.update(
       {
@@ -38,7 +39,8 @@ export default {
       },
       {
         where: { uuid: registrationUuid },
-        raw: true
+        raw: true,
+        transaction
       }
     ),
 
@@ -130,6 +132,17 @@ export default {
   selectRegistrationTestApply: ({ registrationUuid, transaction }) =>
     enterpriseRegistrationApply.findOne({
       attributes: ['content', 'failManagerText', 'managerStatus'],
+      raw: true,
+      where: { uuid: registrationUuid },
+      transaction
+    }),
+
+  /**
+   * 查询样品登记表管理员审核状态
+   */
+  selectRegistrationApplyManagerStatus: ({ registrationUuid, transaction }) =>
+    enterpriseRegistrationApply.findOne({
+      attributes: ['managerStatus'],
       raw: true,
       where: { uuid: registrationUuid },
       transaction

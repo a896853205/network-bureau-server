@@ -413,7 +413,7 @@ router.put(
       ctx.body = new Res({
         status: RESPONSE_CODE.success
       });
-    } catch {
+    } catch (error) {
       throw error;
     }
   }
@@ -475,7 +475,7 @@ router.put(
       ctx.body = new Res({
         status: RESPONSE_CODE.success
       });
-    } catch {
+    } catch (error) {
       throw error;
     }
   }
