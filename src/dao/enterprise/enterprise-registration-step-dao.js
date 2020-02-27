@@ -1,5 +1,5 @@
 import enterpriseRegistrationStep from '../../db/models/enterprise-registration-step';
-import Sequelize from 'Sequelize';
+import Sequelize from 'sequelize';
 const { ne } = Sequelize.Op;
 
 export default {

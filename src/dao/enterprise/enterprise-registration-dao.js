@@ -6,7 +6,7 @@ import enterpriseRegistrationBasic from '../../db/models/enterprise-registration
 import enterpriseRegistrationSpecimen from '../../db/models/enterprise-registration-specimen';
 import enterpriseRegistrationApply from '../../db/models/enterprise-registration-apply';
 
-import Sequelize from 'Sequelize';
+import Sequelize from 'sequelize';
 const { or } = Sequelize.Op;
 
 import { REGISTRATION_PAGE_SIZE } from '../../config/system-config';
