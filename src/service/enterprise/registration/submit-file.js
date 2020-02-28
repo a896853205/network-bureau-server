@@ -293,10 +293,10 @@ export default {
           if (!postalCodeReg.test(postalCode)) {
             throw new CustomError('邮政编码不符合规则!');
           }
-          if (!mainFunction.length || mainFunction.length > 32) {
+          if (!mainFunction.length || mainFunction.length > 200) {
             throw new CustomError('主要功能长度不符合规则!');
           }
-          if (!techIndex.length || techIndex.length > 32) {
+          if (!techIndex.length || techIndex.length > 200) {
             throw new CustomError('技术指标长度不符合规则!');
           }
           return await enterpriseRegistrationContractDao.updateRegistrationContract(
