@@ -76,23 +76,18 @@ export default {
   ) => {
     try {
       const usernameReg = /^\S{3,12}$/,
-        confirmReg = /^\S{6,12}$/,
         passwordReg = /^\S{6,12}$/,
         phoneReg = /^(\d)(\d|-){4,19}$/;
 
-      if (!usernameReg.test(version)) {
+      if (!usernameReg.test(username)) {
         throw new CustomError('账号长度不符合规则!');
       }
 
-      if (!confirmReg.test(version)) {
+      if (!passwordReg.test(password)) {
         throw new CustomError('密码长度不符合规则!');
       }
 
-      if (!passwordReg.test(version)) {
-        throw new CustomError('密码长度不符合规则!');
-      }
-
-      if (!phoneReg.test(version)) {
+      if (!phoneReg.test(phone)) {
         throw new CustomError('电话号码不符合规则!');
       }
 
@@ -103,20 +98,22 @@ export default {
       if (await managerUserDao.selectManagerUserByUsername(username)) {
         throw new CustomError('管理员账号已存在');
       }
-      let productionUrl = '';
-      // 将temp的文件copy到production中
-      const [filePosition] = headPortraitUrl.split('/');
+      if (headPortraitUrl) {
+        let productionUrl = '';
+        // 将temp的文件copy到production中
+        const [filePosition] = headPortraitUrl.split('/');
 
-      if (filePosition === 'temp') {
-        const tempUrl = headPortraitUrl;
-        productionUrl = headPortraitUrl.replace('temp', 'production');
+        if (filePosition === 'temp') {
+          const tempUrl = headPortraitUrl;
+          productionUrl = headPortraitUrl.replace('temp', 'production');
 
-        await client.copy(productionUrl, tempUrl);
-      } else if (filePosition === 'production') {
-        productionUrl = headPortraitUrl;
-      } else {
-        throw new CustomError('oss文件路径错误');
+          await client.copy(productionUrl, tempUrl);
+        } else if (filePosition === 'production') {
+          productionUrl = headPortraitUrl;
+        } else {
+          throw new CustomError('oss文件路径错误');
       }
+    }
 
       await managerUserDao.createNewManagerUser(
         username,
@@ -154,25 +151,29 @@ export default {
   ) => {
     try {
       let productionUrl = '';
-      // 将temp的文件copy到production中
-      const [filePosition] = headPortraitUrl.split('/');
+      if (headPortraitUrl) {
+        // 将temp的文件copy到production中
+        const [filePosition] = headPortraitUrl.split('/');
 
-      if (filePosition === 'temp') {
-        const tempUrl = headPortraitUrl;
-        productionUrl = headPortraitUrl.replace('temp', 'production');
-        const managerUser = await managerUserDao.selectManagerByManagerUuid(
-          managerUuid
-        );
+        if (filePosition === 'temp') {
+          const tempUrl = headPortraitUrl;
+          productionUrl = headPortraitUrl.replace('temp', 'production');
+          const managerUser = await managerUserDao.selectManagerByManagerUuid(
+            managerUuid
+          );
 
-        if (managerUser?.headPortraitUrl) {
-          await client.delete(managerUser.headPortraitUrl);
+          if (managerUser?.headPortraitUrl) {
+            await client.delete(managerUser.headPortraitUrl);
+          }
+
+          await client.copy(productionUrl, tempUrl);
+        } else if (filePosition === 'production') {
+          productionUrl = headPortraitUrl;
+        } else {
+          throw new CustomError('oss文件路径错误');
         }
-
-        await client.copy(productionUrl, tempUrl);
-      } else if (filePosition === 'production') {
-        productionUrl = headPortraitUrl;
       } else {
-        throw new CustomError('oss文件路径错误');
+        throw new CustomError('请上传头像!');
       }
 
       await managerUserDao.updeteManager(
