@@ -287,7 +287,7 @@ export default {
           if (!(amount >= 1 && amount <= 999)) {
             throw new CustomError('数量不符合规则!');
           }
-          if (!fax.length || fax.length > 32) {
+          if (fax?.length > 32) {
             throw new CustomError('传真长度不符合规则!');
           }
           if (!postalCodeReg.test(postalCode)) {

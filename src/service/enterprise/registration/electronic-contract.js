@@ -176,7 +176,9 @@ export default {
 
         if (
           registration.currentStep !== 2 ||
-          (steps[1].status !== 3) && (steps[1].status !== -1)
+          (steps[1].status !== 3
+          && steps[1].status !== 4
+          && steps[1].status !== -1)
         ) {
           throw new CustomError('当前步骤不允许保存合同信息!');
         }
