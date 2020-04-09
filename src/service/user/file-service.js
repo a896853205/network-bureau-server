@@ -88,6 +88,8 @@ export default {
       // 后缀名
       const extensionName = file.originalname.split('.')[1].toLowerCase();
 
+      console.log(extensionName);
+      console.log(!verifyExtensionName(['pdf'], extensionName))
       // 判断后缀名是否非法
       if (!verifyExtensionName(['pdf'], extensionName)) {
         throw new CustomError('文件格式必须为pdf');
