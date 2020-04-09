@@ -76,15 +76,10 @@ export default {
   ) => {
     try {
       const usernameReg = /^\S{3,12}$/,
-        passwordReg = /^\S{6,12}$/,
         phoneReg = /^(\d)(\d|-){4,19}$/;
 
       if (!usernameReg.test(username)) {
         throw new CustomError('账号长度不符合规则!');
-      }
-
-      if (!passwordReg.test(password)) {
-        throw new CustomError('密码长度不符合规则!');
       }
 
       if (!phoneReg.test(phone)) {
@@ -98,8 +93,10 @@ export default {
       if (await managerUserDao.selectManagerUserByUsername(username)) {
         throw new CustomError('管理员账号已存在');
       }
+
+      let productionUrl = '';
+
       if (headPortraitUrl) {
-        let productionUrl = '';
         // 将temp的文件copy到production中
         const [filePosition] = headPortraitUrl.split('/');
 
