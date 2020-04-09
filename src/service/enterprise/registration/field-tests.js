@@ -1026,9 +1026,9 @@ export default {
         enterpriseRegistrationDao.selectRegistrationByRegistrationUuid({
           registrationUuid
         }),
-        enterpriseRegistrationContractDao.selectRegistrationContractManager(
+        enterpriseRegistrationContractDao.selectRegistrationContractManager({
           registrationUuid
-        ),
+        }),
         enterpriseRegistrationSpecimenDao.selectRegistrationSpecimenByRegistrationUuid(
           {
             registrationUuid
