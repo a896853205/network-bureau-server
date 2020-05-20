@@ -234,7 +234,6 @@ router.post('/saveRegistrationContract', async ctx => {
     const {
       registrationUuid,
       amount,
-      fax,
       postalCode,
       mainFunction,
       techIndex
@@ -243,7 +242,6 @@ router.post('/saveRegistrationContract', async ctx => {
     const data = await service.saveRegistrationContract({
       registrationUuid,
       amount,
-      fax,
       postalCode,
       mainFunction,
       techIndex
@@ -475,7 +473,7 @@ router.post('/saveRegistrationProductDescription', async ctx => {
 });
 
 /**
- * 获取产品介质的信息
+ * 获取样品的信息
  */
 router.get('/selectRegistrationProduct', async ctx => {
   try {
@@ -495,7 +493,7 @@ router.get('/selectRegistrationProduct', async ctx => {
 });
 
 /**
- * 保存产品介质的信息
+ * 保存样品的信息
  */
 router.post('/saveRegistrationProduct', async ctx => {
   try {

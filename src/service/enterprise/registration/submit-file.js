@@ -195,8 +195,8 @@ export default {
     enterpriseName
   }) => {
     try {
-      const phoneReg = /^(\d)(\d|-){4,20}$/,
-        versionReg = /^(\d{1,2})(.([1-9]\d|\d)){2}$/;
+      const phoneReg = /^([1])(\d){10}$/,
+        versionReg = /^(\d{1,2})(.([1-9]\d|\d)){1,2}$/;
 
       if (!versionReg.test(version)) {
         throw new CustomError('版本不符合规则!');
@@ -215,6 +215,10 @@ export default {
       }
       if (!enterpriseName.length || enterpriseName.length > 32) {
         throw new CustomError('开发单位全称长度不符合规则!');
+      }
+
+      if (client !==enterpriseName){
+        throw new CustomError('开发单位和委托单位应一致!');
       }
 
       return db.transaction(async transaction => {
@@ -265,7 +269,6 @@ export default {
   saveRegistrationContract: ({
     registrationUuid,
     amount,
-    fax,
     postalCode,
     mainFunction,
     techIndex
@@ -287,9 +290,6 @@ export default {
           if (!(amount >= 1 && amount <= 999)) {
             throw new CustomError('数量不符合规则!');
           }
-          if (fax?.length > 32) {
-            throw new CustomError('传真长度不符合规则!');
-          }
           if (!postalCodeReg.test(postalCode)) {
             throw new CustomError('邮政编码不符合规则!');
           }
@@ -303,7 +303,6 @@ export default {
             {
               registrationUuid,
               amount,
-              fax,
               postalCode,
               mainFunction,
               techIndex,
@@ -627,7 +626,7 @@ export default {
   },
 
   /**
-   * 获取产品介质的信息
+   * 获取样品的信息
    */
   selectRegistrationProduct: ({ registrationUuid }) =>
     enterpriseRegistrationProductDao.selectRegistrationProductByRegistrationUuid(
@@ -635,7 +634,7 @@ export default {
     ),
 
   /**
-   * 保存产品介质的信息
+   * 保存样品的信息
    */
   saveRegistrationProduct: async ({ registrationUuid, productUrl }) => {
     try {

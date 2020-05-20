@@ -28,7 +28,7 @@ export default {
     }),
 
   /**
-   * 保存产品介质信息
+   * 保存样品信息
    */
   updateRegistrationRecord: ({
     registrationUuid,

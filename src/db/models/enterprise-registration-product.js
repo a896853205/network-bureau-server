@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 const { db } = require('../db-connect');
 
 /**
- * 产品介质
+ * 样品
  */
 export default db.define('enterprise_registration_product', {
   id: {

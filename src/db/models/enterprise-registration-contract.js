@@ -23,7 +23,6 @@ export default db.define('enterprise_registration_contract', {
   statusText: Sequelize.STRING(32),
   // 以下都是企业表单内容
   amount: Sequelize.BIGINT(3), // 数量(最多999)
-  fax: Sequelize.STRING(32), // 传真
   postalCode: Sequelize.STRING(32), // 邮政编码
   mainFunction: Sequelize.STRING(200), // 主要功能
   techIndex: Sequelize.STRING(200), // 技术指标

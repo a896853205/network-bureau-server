@@ -267,7 +267,7 @@ router.get('/selectRegistrationProductDescription', async (ctx, next) => {
 });
 
 /**
- * 获取产品介质的信息
+ * 获取样品的信息
  */
 router.get('/selectRegistrationProduct', async (ctx, next) => {
   try {

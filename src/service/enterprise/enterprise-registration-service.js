@@ -333,9 +333,6 @@ export default {
 
         moment.locale('zh-cn');
         // 数据整理
-        if (!data.fax) {
-          data.fax = '';
-        }
 
         if (data.devStartTime) {
           data.devStartTime = moment(data.devStartTime).format('YYYY/MM/DD');

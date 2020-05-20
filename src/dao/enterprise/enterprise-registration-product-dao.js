@@ -2,7 +2,7 @@ import enterpriseRegistrationProduct from '../../db/models/enterprise-registrati
 
 export default {
   /**
-   * 新增产品介质信息
+   * 新增样品信息
    */
   insertRegistrationProduct: ({ uuid, transaction = null }) =>
     enterpriseRegistrationProduct.create(
@@ -14,7 +14,7 @@ export default {
       { transaction }
     ),
   /**
-   * 查询的产品介质信息
+   * 查询的样品信息
    */
   selectRegistrationProductByRegistrationUuid: ({
     registrationUuid,
@@ -28,7 +28,7 @@ export default {
     }),
 
   /**
-   * 查询的产品介质url信息
+   * 查询的样品url信息
    */
   selectRegistrationProductUrlByRegistrationUuid: registrationUuid =>
     enterpriseRegistrationProduct.findOne({
@@ -38,7 +38,7 @@ export default {
     }),
 
   /**
-   * 保存产品介质信息
+   * 保存样品信息
    */
   updateRegistrationProduct: ({
     registrationUuid,
@@ -63,7 +63,7 @@ export default {
     ),
 
   /**
-   * 设置产品介质的状态
+   * 设置样品的状态
    */
   updateProductStatus: ({
     registrationUuid,

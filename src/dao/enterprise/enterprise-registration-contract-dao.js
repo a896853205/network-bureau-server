@@ -24,7 +24,6 @@ export default {
     enterpriseRegistrationContract.findOne({
       attributes: [
         'amount',
-        'fax',
         'postalCode',
         'mainFunction',
         'techIndex',
@@ -43,7 +42,6 @@ export default {
   updateRegistrationContract: ({
     registrationUuid,
     amount,
-    fax,
     postalCode,
     mainFunction,
     techIndex,
@@ -55,7 +53,6 @@ export default {
     enterpriseRegistrationContract.update(
       {
         amount,
-        fax,
         postalCode,
         mainFunction,
         techIndex,
