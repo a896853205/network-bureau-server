@@ -27,52 +27,52 @@ const _finishSubmitFile = async ({ registrationUuid, transaction }) => {
     enterpriseRegistrationProductDescriptionStatus,
     enterpriseRegistrationDocumentStatus,
     enterpriseRegistrationProductStatus,
-    enterpriseRegistrationApplyStatus
+    enterpriseRegistrationApplyStatus,
   ] = await Promise.all([
     enterpriseRegistrationBasicDao.selectRegistrationBasicByRegistrationUuid({
       registrationUuid,
-      transaction
+      transaction,
     }),
     enterpriseRegistrationContractDao.selectRegistrationContractByRegistrationUuid(
       {
         registrationUuid,
-        transaction
+        transaction,
       }
     ),
     enterpriseRegistrationCopyrightDao.selectRegistrationCopyrightByRegistrationUuid(
       {
         registrationUuid,
-        transaction
+        transaction,
       }
     ),
     enterpriseRegistrationSpecimenDao.selectRegistrationSpecimenByRegistrationUuid(
       {
         registrationUuid,
-        transaction
+        transaction,
       }
     ),
     enterpriseRegistrationProductDescriptionDao.selectRegistrationProductDescriptionByRegistrationUuid(
       {
         registrationUuid,
-        transaction
+        transaction,
       }
     ),
     enterpriseRegistrationDocumentDao.selectRegistrationDocumentByRegistrationUuid(
       {
         registrationUuid,
-        transaction
+        transaction,
       }
     ),
     enterpriseRegistrationProductDao.selectRegistrationProductByRegistrationUuid(
       {
         registrationUuid,
-        transaction
+        transaction,
       }
     ),
     enterpriseRegistrationApplyDao.selectRegistrationApplyByRegistrationUuid({
       registrationUuid,
-      transaction
-    })
+      transaction,
+    }),
   ]);
 
   if (
@@ -90,22 +90,22 @@ const _finishSubmitFile = async ({ registrationUuid, transaction }) => {
       enterpriseRegistrationDao.updateRegistrationCurrentStep({
         registrationUuid,
         currentStep: 2,
-        transaction
+        transaction,
       }),
       enterpriseRegistrationStepDao.updateRegistrationStep({
         registrationUuid,
         status: 100,
         statusText: '已完成',
         step: 1,
-        transaction
+        transaction,
       }),
       enterpriseRegistrationStepDao.updateRegistrationStep({
         registrationUuid,
         status: 1,
         statusText: '管理员填写内容',
         step: 2,
-        transaction
-      })
+        transaction,
+      }),
     ]);
   }
 };
@@ -114,7 +114,7 @@ export default {
   /**
    * 查询企业用户登记测试八个状态通过uuid
    */
-  selectRegistrationStatusByRegistrationUuid: async registrationUuid => {
+  selectRegistrationStatusByRegistrationUuid: async (registrationUuid) => {
     try {
       const [
         enterpriseRegistrationBasicStatus,
@@ -124,21 +124,21 @@ export default {
         enterpriseRegistrationProductDescriptionStatus,
         enterpriseRegistrationDocumentStatus,
         enterpriseRegistrationProductStatus,
-        enterpriseRegistrationApplyStatus
+        enterpriseRegistrationApplyStatus,
       ] = await Promise.all([
         enterpriseRegistrationBasicDao.selectRegistrationBasicByRegistrationUuid(
           {
-            registrationUuid
+            registrationUuid,
           }
         ),
         enterpriseRegistrationContractDao.selectRegistrationContractByRegistrationUuid(
           {
-            registrationUuid
+            registrationUuid,
           }
         ),
         enterpriseRegistrationCopyrightDao.selectRegistrationCopyrightByRegistrationUuid(
           {
-            registrationUuid
+            registrationUuid,
           }
         ),
         enterpriseRegistrationSpecimenDao.selectRegistrationSpecimenByRegistrationUuid(
@@ -155,7 +155,7 @@ export default {
         ),
         enterpriseRegistrationApplyDao.selectRegistrationApplyByRegistrationUuid(
           { registrationUuid }
-        )
+        ),
       ]);
 
       return {
@@ -166,7 +166,7 @@ export default {
         enterpriseRegistrationProductDescriptionStatus,
         enterpriseRegistrationDocumentStatus,
         enterpriseRegistrationProductStatus,
-        enterpriseRegistrationApplyStatus
+        enterpriseRegistrationApplyStatus,
       };
     } catch (error) {
       throw error;
@@ -176,9 +176,9 @@ export default {
   /**
    * 查询登记测试的基本信息
    */
-  selectRegistrationBasicByRegistrationUuid: registrationUuid =>
+  selectRegistrationBasicByRegistrationUuid: (registrationUuid) =>
     enterpriseRegistrationBasicDao.selectRegistrationBasicByRegistrationUuid({
-      registrationUuid
+      registrationUuid,
     }),
 
   /**
@@ -192,7 +192,7 @@ export default {
     phone,
     address,
     devStartTime,
-    enterpriseName
+    enterpriseName,
   }) => {
     try {
       const phoneReg = /^([1])(\d){10}$/,
@@ -217,17 +217,17 @@ export default {
         throw new CustomError('开发单位全称长度不符合规则!');
       }
 
-      if (client !==enterpriseName){
+      if (client !== enterpriseName) {
         throw new CustomError('开发单位和委托单位应一致!');
       }
 
-      return db.transaction(async transaction => {
+      return db.transaction(async (transaction) => {
         const {
-          currentStep
+          currentStep,
         } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
           {
             registrationUuid,
-            transaction
+            transaction,
           }
         );
         if (!currentStep === 1) {
@@ -243,9 +243,9 @@ export default {
             devStartTime,
             enterpriseName,
             status: 1,
-            statusText: '待审核',
+            statusText: '已填写',
             failText: '',
-            transaction
+            transaction,
           });
         }
       });
@@ -256,10 +256,10 @@ export default {
   /**
    * 查询评测合同的基本信息
    */
-  selectRegistrationContractByRegistrationUuid: registrationUuid =>
+  selectRegistrationContractByRegistrationUuid: (registrationUuid) =>
     enterpriseRegistrationContractDao.selectRegistrationContractByRegistrationUuid(
       {
-        registrationUuid
+        registrationUuid,
       }
     ),
 
@@ -271,16 +271,16 @@ export default {
     amount,
     postalCode,
     mainFunction,
-    techIndex
+    techIndex,
   }) => {
     try {
-      return db.transaction(async transaction => {
+      return db.transaction(async (transaction) => {
         const {
-          currentStep
+          currentStep,
         } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
           {
             registrationUuid,
-            transaction
+            transaction,
           }
         );
         if (currentStep !== 1) {
@@ -307,9 +307,9 @@ export default {
               mainFunction,
               techIndex,
               status: 1,
-              statusText: '待审核',
+              statusText: '已填写',
               failText: '',
-              transaction
+              transaction,
             }
           );
         }
@@ -322,10 +322,10 @@ export default {
   /**
    * 查询样品登记表信息
    */
-  selectRegistrationSpecimenByRegistrationUuid: registrationUuid =>
+  selectRegistrationSpecimenByRegistrationUuid: (registrationUuid) =>
     enterpriseRegistrationSpecimenDao.selectRegistrationSpecimenByRegistrationUuid(
       {
-        registrationUuid
+        registrationUuid,
       }
     ),
 
@@ -338,16 +338,16 @@ export default {
     developmentTool,
     securityClassification,
     email,
-    unit
+    unit,
   }) => {
     try {
-      return db.transaction(async transaction => {
+      return db.transaction(async (transaction) => {
         const {
-          currentStep
+          currentStep,
         } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
           {
             registrationUuid,
-            transaction
+            transaction,
           }
         );
         if (currentStep !== 1) {
@@ -372,9 +372,9 @@ export default {
               email,
               unit,
               status: 1,
-              statusText: '待审核',
+              statusText: '已填写',
               failText: '',
-              transaction
+              transaction,
             }
           );
         }
@@ -387,9 +387,9 @@ export default {
   /**
    * 查询现场测试申请表的基本信息
    */
-  selectRegistrationApplyByRegistrationUuid: registrationUuid =>
+  selectRegistrationApplyByRegistrationUuid: (registrationUuid) =>
     enterpriseRegistrationApplyDao.selectRegistrationApplyByRegistrationUuid({
-      registrationUuid
+      registrationUuid,
     }),
 
   /**
@@ -397,13 +397,13 @@ export default {
    */
   saveRegistrationApply: ({ registrationUuid, content }) => {
     try {
-      return db.transaction(async transaction => {
+      return db.transaction(async (transaction) => {
         const {
-          currentStep
+          currentStep,
         } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
           {
             registrationUuid,
-            transaction
+            transaction,
           }
         );
         if (currentStep !== 1) {
@@ -413,9 +413,9 @@ export default {
             registrationUuid,
             content,
             status: 1,
-            statusText: '待审核',
+            statusText: '已填写',
             failText: '',
-            transaction
+            transaction,
           });
         }
       });
@@ -429,7 +429,7 @@ export default {
   selectRegistrationCopyright: ({ registrationUuid }) =>
     enterpriseRegistrationCopyrightDao.selectRegistrationCopyrightByRegistrationUuid(
       {
-        registrationUuid
+        registrationUuid,
       }
     ),
 
@@ -438,13 +438,13 @@ export default {
    */
   saveRegistrationCopyright: async ({ registrationUuid, copyrightUrl }) => {
     try {
-      return db.transaction(async transaction => {
+      return db.transaction(async (transaction) => {
         const {
-          currentStep
+          currentStep,
         } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
           {
             registrationUuid,
-            transaction
+            transaction,
           }
         );
         if (currentStep !== 1) {
@@ -461,7 +461,7 @@ export default {
             const copyright = await enterpriseRegistrationCopyrightDao.selectRegistrationCopyrightByRegistrationUuid(
               {
                 registrationUuid,
-                transaction
+                transaction,
               }
             );
 
@@ -481,9 +481,9 @@ export default {
               registrationUuid,
               copyrightUrl: productionUrl,
               status: 1,
-              statusText: '待审核',
+              statusText: '已上传',
               failText: '',
-              transaction
+              transaction,
             }
           );
         }
@@ -506,13 +506,13 @@ export default {
    */
   saveRegistrationDocument: async ({ registrationUuid, documentUrl }) => {
     try {
-      return db.transaction(async transaction => {
+      return db.transaction(async (transaction) => {
         const {
-          currentStep
+          currentStep,
         } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
           {
             registrationUuid,
-            transaction
+            transaction,
           }
         );
         if (currentStep !== 1) {
@@ -546,9 +546,9 @@ export default {
               registrationUuid,
               documentUrl: productionUrl,
               status: 1,
-              statusText: '待审核',
+              statusText: '已上传',
               failText: '',
-              transaction
+              transaction,
             }
           );
         }
@@ -571,16 +571,16 @@ export default {
    */
   saveRegistrationProductDescription: async ({
     registrationUuid,
-    productDescriptionUrl
+    productDescriptionUrl,
   }) => {
     try {
-      return db.transaction(async transaction => {
+      return db.transaction(async (transaction) => {
         const {
-          currentStep
+          currentStep,
         } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
           {
             registrationUuid,
-            transaction
+            transaction,
           }
         );
         if (currentStep !== 1) {
@@ -613,9 +613,9 @@ export default {
               registrationUuid,
               productDescriptionUrl: productionUrl,
               status: 1,
-              statusText: '待审核',
+              statusText: '已上传',
               failText: '',
-              transaction
+              transaction,
             }
           );
         }
@@ -638,13 +638,13 @@ export default {
    */
   saveRegistrationProduct: async ({ registrationUuid, productUrl }) => {
     try {
-      return db.transaction(async transaction => {
+      return db.transaction(async (transaction) => {
         const {
-          currentStep
+          currentStep,
         } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
           {
             registrationUuid,
-            transaction
+            transaction,
           }
         );
         if (currentStep !== 1) {
@@ -677,9 +677,9 @@ export default {
               registrationUuid,
               productUrl: productionUrl,
               status: 1,
-              statusText: '待审核',
+              statusText: '已上传',
               failText: '',
-              transaction
+              transaction,
             }
           );
         }
@@ -696,16 +696,16 @@ export default {
     registrationUuid,
     type,
     failText,
-    isPass
+    isPass,
   }) => {
     try {
-      return db.transaction(async transaction => {
+      return db.transaction(async (transaction) => {
         const {
-          currentStep
+          currentStep,
         } = await enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
           {
             registrationUuid,
-            transaction
+            transaction,
           }
         );
         if (currentStep !== 1) {
@@ -720,10 +720,10 @@ export default {
             apply: enterpriseRegistrationApplyDao.updateApplyStatus,
             copyright: enterpriseRegistrationCopyrightDao.updateCopyrightStatus,
             document: enterpriseRegistrationDocumentDao.updateDocumentStatus,
-            specimen: enterpriseRegistrationSpecimenDao.updateSpecimenStatus
+            specimen: enterpriseRegistrationSpecimenDao.updateSpecimenStatus,
           };
 
-          const getStatusDao = type => {
+          const getStatusDao = (type) => {
             if (!statusDao[type]) throw new CustomError('错误类型');
 
             return statusDao[type];
@@ -739,12 +739,12 @@ export default {
               status: 100,
               failText,
               statusText: '已审核',
-              transaction
+              transaction,
             });
 
             return await _finishSubmitFile({
               registrationUuid,
-              transaction
+              transaction,
             });
           } else {
             return await getStatusDao(type)({
@@ -752,7 +752,7 @@ export default {
               status: -1,
               failText,
               statusText: '内容错误',
-              transaction
+              transaction,
             });
           }
         }
@@ -760,5 +760,169 @@ export default {
     } catch (error) {
       throw error;
     }
-  }
+  },
+
+  /**
+   * 企业点击提交8种信息
+   */
+  submitAllFile: async ({ registrationUuid }) => {
+    try {
+      return db.transaction(async (transaction) => {
+        const [
+          { status: basicStatus },
+          { status: contractStatus },
+          { status: specimenStatus },
+          { status: applyStatus },
+          { status: copyrightStatus },
+          { status: documentStatus },
+          { status: productDescriptionStatus },
+          { status: productStatus },
+        ] = await Promise.all([
+          enterpriseRegistrationBasicDao.selectRegistrationBasicStatusByRegistrationUuid(
+            {
+              registrationUuid,
+              transaction,
+            }
+          ),
+          enterpriseRegistrationContractDao.selectRegistrationContractStatusByRegistrationUuid(
+            {
+              registrationUuid,
+              transaction,
+            }
+          ),
+          enterpriseRegistrationSpecimenDao.selectRegistrationSpecimenStatusByRegistrationUuid(
+            {
+              registrationUuid,
+              transaction,
+            }
+          ),
+          enterpriseRegistrationApplyDao.selectRegistrationApplyStatusByRegistrationUuid(
+            {
+              registrationUuid,
+              transaction,
+            }
+          ),
+          enterpriseRegistrationCopyrightDao.selectRegistrationCopyrightStatusByRegistrationUuid(
+            {
+              registrationUuid,
+              transaction,
+            }
+          ),
+          enterpriseRegistrationDocumentDao.selectRegistrationDocumentStatusByRegistrationUuid(
+            {
+              registrationUuid,
+              transaction,
+            }
+          ),
+          enterpriseRegistrationProductDescriptionDao.selectRegistrationProductDescriptionStatusByRegistrationUuid(
+            {
+              registrationUuid,
+              transaction,
+            }
+          ),
+          enterpriseRegistrationProductDao.selectRegistrationProductStatusByRegistrationUuid(
+            {
+              registrationUuid,
+              transaction,
+            }
+          ),
+        ]);
+
+        if (
+          basicStatus !== 0 &&
+          basicStatus !== 3 &&
+          contractStatus !== 0 &&
+          contractStatus !== 3 &&
+          specimenStatus !== 0 &&
+          specimenStatus !== 3 &&
+          applyStatus !== 0 &&
+          applyStatus !== 3 &&
+          copyrightStatus !== 0 &&
+          copyrightStatus !== 3 &&
+          documentStatus !== 0 &&
+          documentStatus !== 3 &&
+          productDescriptionStatus !== 0 &&
+          productDescriptionStatus !== 3 &&
+          productStatus !== 0 &&
+          productStatus !== 3
+        ) {
+          if (basicStatus === 1) {
+            enterpriseRegistrationBasicDao.updateBasicStatus({
+              registrationUuid,
+              status: 2,
+              statusText: '待审核',
+              transaction,
+            });
+          }
+          if (contractStatus === 1) {
+            enterpriseRegistrationContractDao.updateContractStatus({
+              registrationUuid,
+              status: 2,
+              statusText: '待审核',
+              transaction,
+            });
+          }
+          if (specimenStatus === 1) {
+            enterpriseRegistrationSpecimenDao.updateSpecimenStatus({
+              registrationUuid,
+              status: 2,
+              statusText: '待审核',
+              transaction,
+            });
+          }
+          if (applyStatus === 1) {
+            enterpriseRegistrationApplyDao.updateApplyStatus({
+              registrationUuid,
+              status: 2,
+              statusText: '待审核',
+              transaction,
+            });
+          }
+          if (copyrightStatus === 1) {
+            enterpriseRegistrationCopyrightDao.updateCopyrightStatus({
+              registrationUuid,
+              status: 2,
+              statusText: '待审核',
+              transaction,
+            });
+          }
+          if (documentStatus === 1) {
+            enterpriseRegistrationDocumentDao.updateDocumentStatus({
+              registrationUuid,
+              status: 2,
+              statusText: '待审核',
+              transaction,
+            });
+          }
+          if (productDescriptionStatus === 1) {
+            enterpriseRegistrationProductDescriptionDao.updateProductDescriptionStatus({
+              registrationUuid,
+              status: 2,
+              statusText: '待审核',
+              transaction,
+            });
+          }
+          if (productStatus === 1) {
+            enterpriseRegistrationProductDao.updateProductStatus({
+              registrationUuid,
+              status: 2,
+              statusText: '待审核',
+              transaction,
+            });
+          }
+          return await enterpriseRegistrationStepDao.updateRegistrationStep({
+            registrationUuid,
+            status: 2,
+            statusText: '企业已提交',
+            step: 1,
+            transaction,
+          });
+        } else {
+          throw new CustomError('请确认全部填写或修改完毕再提交!');
+        }
+      });
+    } catch (error) {
+      throw error;
+    }
+  },
 };

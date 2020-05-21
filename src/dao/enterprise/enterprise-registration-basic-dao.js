@@ -76,6 +76,20 @@ export default {
     ),
 
   /**
+   * 查询的登记测试的状态信息
+   */
+  selectRegistrationBasicStatusByRegistrationUuid: ({
+    registrationUuid,
+    transaction
+  }) =>
+    enterpriseRegistrationBasic.findOne({
+      attributes: ['status',],
+      raw: true,
+      where: { uuid: registrationUuid },
+      transaction
+    }),
+
+  /**
    * 设置基本信息的状态
    */
   updateBasicStatus: ({

@@ -59,6 +59,20 @@ export default {
     }),
 
   /**
+   * 查询的登记测试的状态信息
+   */
+  selectRegistrationApplyStatusByRegistrationUuid: ({
+    registrationUuid,
+    transaction
+  }) =>
+    enterpriseRegistrationApply.findOne({
+      attributes: ['status',],
+      raw: true,
+      where: { uuid: registrationUuid },
+      transaction
+    }),
+
+  /**
    * 设置现场测试申请表的状态
    */
   updateApplyStatus: ({

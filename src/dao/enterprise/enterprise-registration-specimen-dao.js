@@ -37,6 +37,20 @@ export default {
     }),
 
   /**
+   * 查询的登记测试的状态信息
+   */
+  selectRegistrationSpecimenStatusByRegistrationUuid: ({
+    registrationUuid,
+    transaction
+  }) =>
+    enterpriseRegistrationSpecimen.findOne({
+      attributes: ['status',],
+      raw: true,
+      where: { uuid: registrationUuid },
+      transaction
+    }),
+
+  /**
    * 保存样品登记表信息
    */
   updateRegistrationSpecimen: ({

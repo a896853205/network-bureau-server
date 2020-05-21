@@ -736,4 +736,22 @@ router.get('/getRegistrationManagerInfo', async (ctx, next) => {
   }
 });
 
+/**
+ * 企业点击提交8种信息
+ */
+router.post('/submitAllFile', async ctx => {
+  try {
+    const { registrationUuid } = ctx.state.param;
+
+    const data = await service.submitAllFile({ registrationUuid });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
 export default router;

@@ -31,6 +31,20 @@ export default {
     }),
 
   /**
+   * 查询的登记测试的状态信息
+   */
+  selectRegistrationDocumentStatusByRegistrationUuid: ({
+    registrationUuid,
+    transaction
+  }) =>
+    enterpriseRegistrationDocument.findOne({
+      attributes: ['status'],
+      raw: true,
+      where: { uuid: registrationUuid },
+      transaction
+    }),
+
+  /**
    * 查询的用户文档集url信息
    */
   selectRegistrationDocumentUrlByRegistrationUuid: registrationUuid =>

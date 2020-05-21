@@ -20,6 +20,7 @@ export default db.define('enterprise_registration_contract', {
   // 1 已填写 待审核
   // 2 已审核
   // 3 填写错误
+  // 4 填写错误,修改中
   statusText: Sequelize.STRING(32),
   // 以下都是企业表单内容
   amount: Sequelize.BIGINT(3), // 数量(最多999)

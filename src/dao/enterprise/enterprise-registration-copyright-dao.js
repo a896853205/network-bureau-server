@@ -27,6 +27,21 @@ export default {
       transaction
     }),
 
+  
+  /**
+   * 查询的登记测试的状态信息
+   */
+  selectRegistrationCopyrightStatusByRegistrationUuid: ({
+    registrationUuid,
+    transaction
+  }) =>
+    enterpriseRegistrationCopyright.findOne({
+      attributes: ['status',],
+      raw: true,
+      where: { uuid: registrationUuid },
+      transaction
+    }),
+
   /**
    * 查询的现场测试软件著作权url信息
    */

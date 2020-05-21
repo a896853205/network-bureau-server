@@ -37,6 +37,20 @@ export default {
     }),
 
   /**
+   * 查询的登记测试的状态信息
+   */
+  selectRegistrationContractStatusByRegistrationUuid: ({
+    registrationUuid,
+    transaction
+  }) =>
+    enterpriseRegistrationContract.findOne({
+      attributes: ['status',],
+      raw: true,
+      where: { uuid: registrationUuid },
+      transaction
+    }),
+
+  /**
    * 保存评测合同的基本信息
    */
   updateRegistrationContract: ({

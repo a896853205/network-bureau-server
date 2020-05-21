@@ -28,6 +28,20 @@ export default {
     }),
 
   /**
+   * 查询的登记测试的状态信息
+   */
+  selectRegistrationProductStatusByRegistrationUuid: ({
+    registrationUuid,
+    transaction
+  }) =>
+    enterpriseRegistrationProduct.findOne({
+      attributes: ['status'],
+      raw: true,
+      where: { uuid: registrationUuid },
+      transaction
+    }),
+
+  /**
    * 查询的样品url信息
    */
   selectRegistrationProductUrlByRegistrationUuid: registrationUuid =>
