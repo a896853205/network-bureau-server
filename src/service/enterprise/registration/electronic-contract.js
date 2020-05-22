@@ -15,14 +15,14 @@ export default {
   /**
    * 查询评测合同的基本信息
    */
-  selectRegistrationContractManager: registrationUuid =>
+  selectRegistrationContractManager: (registrationUuid) =>
     enterpriseRegistrationContractDao.selectRegistrationContractManager({
-      registrationUuid
+      registrationUuid,
     }),
   /**
    * 查询评测合同的url
    */
-  selectContractUrl: registrationUuid =>
+  selectContractUrl: (registrationUuid) =>
     enterpriseRegistrationContractDao.selectContractUrl({ registrationUuid }),
 
   /**
@@ -33,8 +33,7 @@ export default {
     contractCode,
     specimenHaveTime,
     payment,
-    paymentTime,
-    contractTime
+    contractTime,
   }) => {
     try {
       const paymentReg = /^(\d{1,8})$/;
@@ -47,14 +46,14 @@ export default {
         throw new CustomError('评测费金额不符合规则!');
       }
 
-      return db.transaction(async transaction => {
+      return db.transaction(async (transaction) => {
         const [registration, steps] = await Promise.all([
           enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
             { registrationUuid, transaction }
           ),
           enterpriseRegistrationStepDao.queryEnterpriseRegistrationStepByRegistrationUuid(
             { registrationUuid, transaction }
-          )
+          ),
         ]);
 
         if (registration.currentStep !== 2 || steps[1].status !== 1) {
@@ -64,7 +63,7 @@ export default {
         const contractList = await enterpriseRegistrationContractDao.selectRegistrationByContractCode(
           {
             contractCode,
-            transaction
+            transaction,
           }
         );
 
@@ -79,18 +78,17 @@ export default {
               contractCode,
               specimenHaveTime,
               payment,
-              paymentTime,
               contractTime,
-              transaction
+              transaction,
             },
             enterpriseRegistrationStepDao.updateRegistrationStep({
               registrationUuid,
               status: 2,
-              statusText: '管理员生成合同',
+              statusText: '企业上传合同',
               step: 2,
-              transaction
+              transaction,
             })
-          )
+          ),
         ]);
       });
     } catch (error) {
@@ -103,17 +101,17 @@ export default {
    */
   saveManagerContractUrl: async ({ registrationUuid, managerUrl }) => {
     try {
-      return db.transaction(async transaction => {
+      return db.transaction(async (transaction) => {
         const [registration, steps] = await Promise.all([
           enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
             { registrationUuid, transaction }
           ),
           enterpriseRegistrationStepDao.queryEnterpriseRegistrationStepByRegistrationUuid(
             { registrationUuid, transaction }
-          )
+          ),
         ]);
 
-        if (registration.currentStep !== 2 || steps[1].status !== 2) {
+        if (registration.currentStep !== 2 || steps[1].status !== 4) {
           throw new CustomError('当前步骤不允许保存合同信息!');
         }
 
@@ -143,15 +141,27 @@ export default {
           enterpriseRegistrationContractDao.updateManagerContractUrl({
             registrationUuid,
             managerUrl: productionUrl,
-            transaction
+            transaction,
           }),
           enterpriseRegistrationStepDao.updateRegistrationStep({
             registrationUuid,
-            status: 3,
-            statusText: '企业上传合同',
+            status: 100,
+            statusText: '已完成',
             step: 2,
-            transaction
-          })
+            transaction,
+          }),
+          enterpriseRegistrationDao.updateRegistrationCurrentStep({
+            registrationUuid,
+            currentStep: 3,
+            transaction,
+          }),
+          enterpriseRegistrationStepDao.updateRegistrationStep({
+            registrationUuid,
+            status: 1,
+            statusText: '未选择财务人员',
+            step: 3,
+            transaction,
+          }),
         ]);
       });
     } catch (error) {
@@ -164,21 +174,19 @@ export default {
    */
   saveEnterpriseContractUrl: async ({ registrationUuid, enterpriseUrl }) => {
     try {
-      return db.transaction(async transaction => {
+      return db.transaction(async (transaction) => {
         const [registration, steps] = await Promise.all([
           enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
             { registrationUuid, transaction }
           ),
           enterpriseRegistrationStepDao.queryEnterpriseRegistrationStepByRegistrationUuid(
             { registrationUuid, transaction }
-          )
+          ),
         ]);
 
         if (
           registration.currentStep !== 2 ||
-          (steps[1].status !== 3
-          && steps[1].status !== 4
-          && steps[1].status !== -1)
+          (steps[1].status !== 2 && steps[1].status !== -1)
         ) {
           throw new CustomError('当前步骤不允许保存合同信息!');
         }
@@ -193,7 +201,7 @@ export default {
           const contract = await enterpriseRegistrationContractDao.selectContractUrl(
             {
               registrationUuid,
-              transaction
+              transaction,
             }
           );
 
@@ -213,15 +221,15 @@ export default {
             registrationUuid,
             enterpriseUrl: productionUrl,
             managerFailText: '',
-            transaction
+            transaction,
           }),
           enterpriseRegistrationStepDao.updateRegistrationStep({
-            status: 4,
+            status: 3,
             step: 2,
             registrationUuid,
-            statusText: '审核最终合同',
-            transaction
-          })
+            statusText: '审核乙方合同',
+            transaction,
+          }),
         ]);
       });
     } catch (error) {
@@ -232,39 +240,46 @@ export default {
   /**
    * 设置第二步合同签署成功状态
    */
-  setContractManagerSuccessStatus: registrationUuid => {
-    return db.transaction(async transaction => {
+  setContractManagerSuccessStatus: (registrationUuid) => {
+    return db.transaction(async (transaction) => {
       const [registration, steps] = await Promise.all([
         enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
           { registrationUuid, transaction }
         ),
         enterpriseRegistrationStepDao.queryEnterpriseRegistrationStepByRegistrationUuid(
           { registrationUuid, transaction }
-        )
+        ),
       ]);
 
-      if (registration.currentStep === 2 && steps[1].status === 4) {
-        return await Promise.all([
-          enterpriseRegistrationStepDao.updateRegistrationStep({
-            registrationUuid,
-            status: 100,
-            statusText: '已完成',
-            step: 2,
-            transaction
-          }),
-          enterpriseRegistrationDao.updateRegistrationCurrentStep({
-            registrationUuid,
-            currentStep: 3,
-            transaction
-          }),
-          enterpriseRegistrationStepDao.updateRegistrationStep({
-            registrationUuid,
-            status: 1,
-            statusText: '未选择财务人员',
-            step: 3,
-            transaction
-          })
-        ]);
+      if (registration.currentStep === 2 && steps[1].status === 3) {
+        // return await Promise.all([
+        //   enterpriseRegistrationStepDao.updateRegistrationStep({
+        //     registrationUuid,
+        //     status: 100,
+        //     statusText: '已完成',
+        //     step: 2,
+        //     transaction
+        //   }),
+        //   enterpriseRegistrationDao.updateRegistrationCurrentStep({
+        //     registrationUuid,
+        //     currentStep: 3,
+        //     transaction
+        //   }),
+        //   enterpriseRegistrationStepDao.updateRegistrationStep({
+        //     registrationUuid,
+        //     status: 1,
+        //     statusText: '未选择财务人员',
+        //     step: 3,
+        //     transaction
+        //   })
+        // ]);
+        return await enterpriseRegistrationStepDao.updateRegistrationStep({
+          registrationUuid,
+          status: 4,
+          statusText: '管理员合同盖章上传',
+          step: 2,
+          transaction,
+        });
       } else {
         throw new CustomError('该流程状态错误');
       }
@@ -279,33 +294,33 @@ export default {
         throw new CustomError('审核不通过理由文本长度不符合规则!');
       }
 
-      return db.transaction(async transaction => {
+      return db.transaction(async (transaction) => {
         const [registration, steps] = await Promise.all([
           enterpriseRegistrationDao.selectRegistrationCurrentStepByRegistrationUuid(
             { registrationUuid, transaction }
           ),
           enterpriseRegistrationStepDao.queryEnterpriseRegistrationStepByRegistrationUuid(
             { registrationUuid, transaction }
-          )
+          ),
         ]);
 
-        if (registration.currentStep !== 2 || steps[1].status !== 4) {
+        if (registration.currentStep !== 2 || steps[1].status !== 3) {
           throw new CustomError('当前步骤不允许设置合同签署状态!');
         }
-        
+
         return Promise.all([
           enterpriseRegistrationContractDao.updateContractManagerStatus({
             registrationUuid,
             managerFailText,
-            transaction
+            transaction,
           }),
           enterpriseRegistrationStepDao.updateRegistrationStep({
             registrationUuid,
             status: -1,
             statusText: '审核未通过',
             step: 2,
-            transaction
-          })
+            transaction,
+          }),
         ]);
       });
     } catch (error) {
@@ -316,8 +331,8 @@ export default {
   /**
    * 查询第二步合同错误信息
    */
-  selectContractManagerFailText: registrationUuid =>
+  selectContractManagerFailText: (registrationUuid) =>
     enterpriseRegistrationContractDao.selectContractManagerFailText(
       registrationUuid
-    )
+    ),
 };

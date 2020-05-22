@@ -373,7 +373,6 @@ router.post('/saveRegistrationContractManager', async (ctx, next) => {
       contractCode,
       specimenHaveTime,
       payment,
-      paymentTime,
       contractTime
     } = ctx.state.param;
 
@@ -382,7 +381,6 @@ router.post('/saveRegistrationContractManager', async (ctx, next) => {
       contractCode,
       specimenHaveTime,
       payment,
-      paymentTime,
       contractTime
     });
 
@@ -394,23 +392,23 @@ router.post('/saveRegistrationContractManager', async (ctx, next) => {
   }
 });
 
-/**
- * 管理员下载合同word
- */
-router.get('/downloadContractWord', async ctx => {
-  try {
-    const { registrationUuid } = ctx.state.param;
+// /**
+//  * 管理员下载合同word
+//  */
+// router.get('/downloadContractWord', async ctx => {
+//   try {
+//     const { registrationUuid } = ctx.state.param;
 
-    const data = await service.generateContractWord(registrationUuid);
+//     const data = await service.generateContractWord(registrationUuid);
 
-    ctx.body = new Res({
-      status: RESPONSE_CODE.success,
-      data
-    });
-  } catch (error) {
-    throw error;
-  }
-});
+//     ctx.body = new Res({
+//       status: RESPONSE_CODE.success,
+//       data
+//     });
+//   } catch (error) {
+//     throw error;
+//   }
+// });
 
 /**
  * 保存评测合同甲方上传pdf合同的信息

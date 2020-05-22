@@ -33,14 +33,14 @@ export default db.define('enterprise_registration_contract', {
   contractCode: Sequelize.STRING(32), // 合同编号
   specimenHaveTime: Sequelize.STRING(36), // 样品接受日期
   payment: Sequelize.BIGINT(8), // 评测费金额
-  paymentTime: Sequelize.STRING(36), // 交钱时间
   contractTime: Sequelize.STRING(36), // 合同日期
   managerUrl: Sequelize.TEXT, // 管理员上传文件地址
   managerFailText: Sequelize.STRING(100) // 合同阶段错误提示
   // 1 开始进行
   // 2 管理者填写完成
-  // 3 管理者盖章上传完成
-  // 4 企业盖章上传完成
-  // 5 审查合格
-  // 6 审查不合格
+  // 3 企业盖章上传完成
+  // 4 审查合格
+  // 5 管理者盖章上传完成
+  // 100 企业下载完成
+  // -1 审查不合格
 });

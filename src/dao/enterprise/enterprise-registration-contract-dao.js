@@ -123,7 +123,6 @@ export default {
         'contractCode',
         'specimenHaveTime',
         'payment',
-        'paymentTime',
         'contractTime',
         'failText',
         'managerUrl',
@@ -143,7 +142,6 @@ export default {
     contractCode,
     specimenHaveTime,
     payment,
-    paymentTime,
     contractTime,
     transaction = null
   }) =>
@@ -152,7 +150,6 @@ export default {
         contractCode,
         specimenHaveTime,
         payment,
-        paymentTime,
         contractTime
       },
       {

@@ -342,10 +342,6 @@ export default {
           data.specimenHaveTime = moment(data.specimenHaveTime).format('LL');
         }
 
-        if (data.paymentTime) {
-          data.paymentTime = moment(data.paymentTime).format('LL');
-        }
-
         if (data.contractTime) {
           data.contractTime = moment(data.contractTime).format('LL');
         }

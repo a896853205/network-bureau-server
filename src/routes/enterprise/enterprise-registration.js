@@ -754,4 +754,23 @@ router.post('/submitAllFile', async ctx => {
   }
 });
 
+
+/**
+ * 下载合同word
+ */
+router.get('/downloadContractWord', async ctx => {
+  try {
+    const { registrationUuid } = ctx.state.param;
+
+    const data = await service.generateContractWord(registrationUuid);
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
 export default router;
