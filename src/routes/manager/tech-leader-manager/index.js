@@ -132,124 +132,124 @@ router.get('/selectRegistrationManagerUuid', async (ctx, next) => {
   }
 });
 
-/**
- * 查询登记测试企业信息(文件审核页面)
- */
-router.get('/getRegistrationManagerInfo', async (ctx, next) => {
-  try {
-    const { registrationUuid } = ctx.state.param;
+// /**
+//  * 查询登记测试企业信息(文件审核页面)
+//  */
+// router.get('/getRegistrationManagerInfo', async (ctx, next) => {
+//   try {
+//     const { registrationUuid } = ctx.state.param;
 
-    const data = await service.getRegistrationManagerInfo(registrationUuid);
+//     const data = await service.getRegistrationManagerInfo(registrationUuid);
 
-    ctx.body = new Res({
-      status: RESPONSE_CODE.success,
-      data
-    });
-  } catch (error) {
-    throw error;
-  }
-});
+//     ctx.body = new Res({
+//       status: RESPONSE_CODE.success,
+//       data
+//     });
+//   } catch (error) {
+//     throw error;
+//   }
+// });
 
-/**
- * 查询登记测试企业信息(文件审核页面)
- */
-router.get(
-  '/selectEnterpriseInfoByFileDownloadRegistrationUuid',
-  async (ctx, next) => {
-    try {
-      const { registrationUuid } = ctx.state.param;
+// /**
+//  * 查询登记测试企业信息(文件审核页面)
+//  */
+// router.get(
+//   '/selectEnterpriseInfoByFileDownloadRegistrationUuid',
+//   async (ctx, next) => {
+//     try {
+//       const { registrationUuid } = ctx.state.param;
 
-      const data = await service.selectEnterpriseInfoByFileDownloadRegistrationUuid(
-        registrationUuid
-      );
+//       const data = await service.selectEnterpriseInfoByFileDownloadRegistrationUuid(
+//         registrationUuid
+//       );
 
-      ctx.body = new Res({
-        status: RESPONSE_CODE.success,
-        data
-      });
-    } catch (error) {
-      throw error;
-    }
-  }
-);
+//       ctx.body = new Res({
+//         status: RESPONSE_CODE.success,
+//         data
+//       });
+//     } catch (error) {
+//       throw error;
+//     }
+//   }
+// );
 
-router.get('/downloadProduct', async ctx => {
-  try {
-    const { registrationUuid } = ctx.state.param;
+// router.get('/downloadProduct', async ctx => {
+//   try {
+//     const { registrationUuid } = ctx.state.param;
 
-    const data = await service.downloadProduct(registrationUuid);
+//     const data = await service.downloadProduct(registrationUuid);
 
-    ctx.body = new Res({
-      status: RESPONSE_CODE.success,
-      data
-    });
-  } catch (error) {
-    throw error;
-  }
-});
+//     ctx.body = new Res({
+//       status: RESPONSE_CODE.success,
+//       data
+//     });
+//   } catch (error) {
+//     throw error;
+//   }
+// });
 
-router.get('/downloadProductDescription', async ctx => {
-  try {
-    const { registrationUuid } = ctx.state.param;
+// router.get('/downloadProductDescription', async ctx => {
+//   try {
+//     const { registrationUuid } = ctx.state.param;
 
-    const data = await service.downloadProductDescription(registrationUuid);
+//     const data = await service.downloadProductDescription(registrationUuid);
 
-    ctx.body = new Res({
-      status: RESPONSE_CODE.success,
-      data
-    });
-  } catch (error) {
-    throw error;
-  }
-});
+//     ctx.body = new Res({
+//       status: RESPONSE_CODE.success,
+//       data
+//     });
+//   } catch (error) {
+//     throw error;
+//   }
+// });
 
-router.get('/downloadDocument', async ctx => {
-  try {
-    const { registrationUuid } = ctx.state.param;
+// router.get('/downloadDocument', async ctx => {
+//   try {
+//     const { registrationUuid } = ctx.state.param;
 
-    const data = await service.downloadDocument(registrationUuid);
+//     const data = await service.downloadDocument(registrationUuid);
 
-    ctx.body = new Res({
-      status: RESPONSE_CODE.success,
-      data
-    });
-  } catch (error) {
-    throw error;
-  }
-});
+//     ctx.body = new Res({
+//       status: RESPONSE_CODE.success,
+//       data
+//     });
+//   } catch (error) {
+//     throw error;
+//   }
+// });
 
-router.get('/downloadCopyright', async ctx => {
-  try {
-    const { registrationUuid } = ctx.state.param;
+// router.get('/downloadCopyright', async ctx => {
+//   try {
+//     const { registrationUuid } = ctx.state.param;
 
-    const data = await service.downloadCopyright(registrationUuid);
+//     const data = await service.downloadCopyright(registrationUuid);
 
-    ctx.body = new Res({
-      status: RESPONSE_CODE.success,
-      data
-    });
-  } catch (error) {
-    throw error;
-  }
-});
+//     ctx.body = new Res({
+//       status: RESPONSE_CODE.success,
+//       data
+//     });
+//   } catch (error) {
+//     throw error;
+//   }
+// });
 
-/**
- * 管理员下载合同word
- */
-router.get('/downloadContract', async ctx => {
-  try {
-    const { registrationUuid } = ctx.state.param;
+// /**
+//  * 管理员下载合同word
+//  */
+// router.get('/downloadContract', async ctx => {
+//   try {
+//     const { registrationUuid } = ctx.state.param;
 
-    const data = await service.downloadContract(registrationUuid);
+//     const data = await service.downloadContract(registrationUuid);
 
-    ctx.body = new Res({
-      status: RESPONSE_CODE.success,
-      data
-    });
-  } catch (error) {
-    throw error;
-  }
-});
+//     ctx.body = new Res({
+//       status: RESPONSE_CODE.success,
+//       data
+//     });
+//   } catch (error) {
+//     throw error;
+//   }
+// });
 
 router.get('/selectTechLeaderRegistration', async ctx => {
   try {

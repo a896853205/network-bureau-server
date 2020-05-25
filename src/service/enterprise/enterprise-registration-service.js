@@ -366,12 +366,12 @@ export default {
     try {
       // 查询contract内容
       const {
-        enterpriseUrl
+        managerUrl
       } = await enterpriseRegistrationContractDao.selectContractUrl({
         registrationUuid
       });
 
-      return await fileService.getFileUrl(enterpriseUrl);
+      return await fileService.getFileUrl(managerUrl);
     } catch (error) {
       throw error;
     }
