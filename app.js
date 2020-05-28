@@ -17,6 +17,7 @@ import techLeaderManager from './src/routes/manager/tech-leader-manager';
 import techManager from './src/routes/manager/tech-manager';
 import certifier from './src/routes/manager/certifier-manager';
 import enterpriseRegistration from './src/routes/enterprise/enterprise-registration';
+import enterpriseDelegation from './src/routes/enterprise/enterprise-delegation';
 
 import file from './src/routes/user/file';
 
@@ -71,6 +72,10 @@ app.use(certifier.routes(), certifier.allowedMethods());
 app.use(
   enterpriseRegistration.routes(),
   enterpriseRegistration.allowedMethods()
+);
+app.use(
+  enterpriseDelegation.routes(),
+  enterpriseDelegation.allowedMethods()
 );
 app.use(file.routes(), file.allowedMethods());
 

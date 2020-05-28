@@ -331,7 +331,7 @@ export default {
   /**
    * 查询第二步合同错误信息
    */
-  selectContractManagerFailText: (registrationUuid) =>
+  selectContractManagerFailText: registrationUuid =>
     enterpriseRegistrationContractDao.selectContractManagerFailText(
       registrationUuid
     ),

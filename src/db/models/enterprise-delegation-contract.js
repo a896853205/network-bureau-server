@@ -1,0 +1,46 @@
+const Sequelize = require('sequelize');
+const { db } = require('../db-connect');
+
+/**
+ * 评测合同
+ */
+export default db.define('enterprise_delegation_contract', {
+  id: {
+    type: Sequelize.BIGINT(11),
+    allowNull: false,
+    unique: true,
+    autoIncrement: true
+  },
+  uuid: {
+    primaryKey: true,
+    type: Sequelize.STRING(36)
+  }, // 这个uuid要与enterprise-delegation的uuid一致
+  status: Sequelize.BIGINT(3),
+  // 0 未填写
+  // 1 已填写 待审核
+  // 2 已审核
+  // 3 填写错误
+  // 4 填写错误,修改中
+  statusText: Sequelize.STRING(32),
+  // 以下都是企业表单内容
+  amount: Sequelize.BIGINT(3), // 数量(最多999)
+  postalCode: Sequelize.STRING(32), // 邮政编码
+  mainFunction: Sequelize.STRING(200), // 主要功能
+  techIndex: Sequelize.STRING(200), // 技术指标
+  enterpriseUrl: Sequelize.TEXT, // 企业上传文件地址
+  failText: Sequelize.STRING(100), // 错误提示
+  // 经营管理部门填写
+  contractCode: Sequelize.STRING(32), // 合同编号
+  specimenHaveTime: Sequelize.STRING(36), // 样品接受日期
+  payment: Sequelize.BIGINT(8), // 评测费金额
+  contractTime: Sequelize.STRING(36), // 合同日期
+  managerUrl: Sequelize.TEXT, // 管理员上传文件地址
+  managerFailText: Sequelize.STRING(100) // 合同阶段错误提示
+  // 1 开始进行
+  // 2 管理者填写完成
+  // 3 企业盖章上传完成
+  // 4 审查合格
+  // 5 管理者盖章上传完成
+  // 100 企业下载完成
+  // -1 审查不合格
+});

@@ -112,25 +112,25 @@ router.get('/selectRegistrationTechManagerUuid', async (ctx, next) => {
   }
 });
 
-/**
- * 查询登记测试管理员信息(文件审核页面)
- */
-router.get('/selectRegistrationManagerUuid', async (ctx, next) => {
-  try {
-    const { registrationUuid } = ctx.state.param;
+// /**
+//  * 查询登记测试管理员信息(文件审核页面)
+//  */
+// router.get('/selectRegistrationManagerUuid', async (ctx, next) => {
+//   try {
+//     const { registrationUuid } = ctx.state.param;
 
-    const data = await service.selectRegistrationByRegistrationUuid(
-      registrationUuid
-    );
+//     const data = await service.selectRegistrationByRegistrationUuid(
+//       registrationUuid
+//     );
 
-    ctx.body = new Res({
-      status: RESPONSE_CODE.success,
-      data
-    });
-  } catch (error) {
-    throw error;
-  }
-});
+//     ctx.body = new Res({
+//       status: RESPONSE_CODE.success,
+//       data
+//     });
+//   } catch (error) {
+//     throw error;
+//   }
+// });
 
 // /**
 //  * 查询登记测试企业信息(文件审核页面)
@@ -500,5 +500,378 @@ router.put('/setTechLeaderRegistrationReportFailStatus', async ctx => {
     throw error;
   }
 });
+
+// 委托测试
+
+/**
+ * 查询待分配技术负责人员的企业登记测试列表
+ */
+router.get('/queryDelegationNeedAssigned', async (ctx, next) => {
+  try {
+    const { page } = ctx.state.param;
+    const managerUuid = ctx.state.user.uuid;
+
+    const data = await service.queryDelegationNeedAssigned({
+      page,
+      managerUuid
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 查询技术人员
+ */
+router.get('/queryDelegationTechManager', async (ctx, next) => {
+  try {
+    const { page } = ctx.state.param;
+
+    const data = await service.queryDelegationTechManager(page);
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 更新技术人员
+ */
+router.post('/arrangeDelegationTechManager', async (ctx, next) => {
+  try {
+    const { delegationUuid, techManagerUuid } = ctx.state.param;
+
+    await service.arrangeDelegationTechManager({
+      delegationUuid,
+      techManagerUuid
+    });
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      msg: '已选择技术人员'
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 根据delegationUuid查询具体步骤
+ */
+router.get('/queryTechLeaderEnterpriseDelegationStep', async (ctx, next) => {
+  try {
+    const { delegationUuid } = ctx.state.param;
+
+    const data = await service.queryEnterpriseDelegationStepByDelegationUuid(
+      delegationUuid
+    );
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 查询登记测试技术人员uuid
+ */
+router.get('/selectDelegationTechManagerUuid', async (ctx, next) => {
+  try {
+    const { delegationUuid } = ctx.state.param;
+
+    const data = await service.selectDelegationTechManagerUuid(
+      delegationUuid
+    );
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+// /**
+//  * 查询登记测试管理员信息(文件审核页面)
+//  */
+// router.get('/selectDelegationManagerUuid', async (ctx, next) => {
+//   try {
+//     const { delegationUuid } = ctx.state.param;
+
+//     const data = await service.selectDelegationByDelegationUuid(
+//       delegationUuid
+//     );
+
+//     ctx.body = new Res({
+//       status: RESPONSE_CODE.success,
+//       data
+//     });
+//   } catch (error) {
+//     throw error;
+//   }
+// });
+
+router.get('/selectTechLeaderDelegation', async ctx => {
+  try {
+    const { delegationUuid } = ctx.state.param;
+
+    const data = await service.selectDelegationByDelegationUuid(
+      delegationUuid
+    );
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 技术负责人查询样品文档集的基本信息
+ */
+router.get('/getTechLeaderDelegationTestSpecimen', async (ctx, next) => {
+  try {
+    const { delegationUuid } = ctx.state.param;
+
+    const data = await service.getDelegationTestSpecimen(delegationUuid);
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 技术负责人查询现场测试申请表的基本信息
+ */
+router.get('/getTechLeaderDelegationTestApply', async (ctx, next) => {
+  try {
+    const { delegationUuid } = ctx.state.param;
+
+    const data = await service.getDelegationTestApply(delegationUuid);
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 技术负责人设置现场申请表审核通过状态
+ */
+router.post('/setDelegationTechLeaderApplyManagerStatus', async (ctx, next) => {
+  try {
+    const { delegationUuid } = ctx.state.param;
+
+    await service.setDelegationTechLeaderApplyManagerStatus(delegationUuid);
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 技术负责人设置现场申请表审核不通过状态
+ */
+router.post('/setDelegationTechLeaderApplyManagerFailStatus', async (ctx, next) => {
+  try {
+    const { delegationUuid, failManagerText } = ctx.state.param;
+
+    await service.setDelegationTechLeaderApplyManagerFailStatus({
+      delegationUuid,
+      failManagerText
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 查询原始记录状态信息
+ */
+router.get('/getTechLeaderDelegationRecordStatus', async ctx => {
+  try {
+    const { delegationUuid } = ctx.state.param;
+
+    const data = await service.getDelegationRecordStatus(delegationUuid);
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 查询现场报告信息
+ */
+router.get('/getTechLeaderDelegationReportStatus', async ctx => {
+  try {
+    const { delegationUuid } = ctx.state.param;
+
+    const data = await service.getDelegationReportStatus(delegationUuid);
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 查询原始记录的基本信息
+ */
+router.get('/getTechLeaderDelegationRecord', async ctx => {
+  try {
+    const { delegationUuid } = ctx.state.param;
+
+    const data = await service.getManagerDelegationRecord(delegationUuid);
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 设置第二步合同签署成功状态
+ */
+router.put(
+  '/setTechLeaderDelegationRecordSuccessStatus',
+  async (ctx, next) => {
+    try {
+      const { delegationUuid } = ctx.state.param;
+      const techLeaderManagerUuid = ctx.state.user.uuid;
+
+      await service.setTechLeaderDelegationRecordSuccessStatus({
+        techLeaderManagerUuid,
+        delegationUuid
+      });
+
+      ctx.body = new Res({
+        status: RESPONSE_CODE.success
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+
+/**
+ * 设置第二步合同签署失败状态
+ */
+router.put('/setTechLeaderDelegationRecordFailStatus', async ctx => {
+  try {
+    const { delegationUuid, failText } = ctx.state.param;
+
+    await service.setTechLeaderDelegationRecordFailStatus({
+      delegationUuid,
+      failText
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 查询原始记录的基本信息
+ */
+router.get('/getTechLeaderDelegationReport', async ctx => {
+  try {
+    const { delegationUuid } = ctx.state.param;
+
+    const data = await service.getManagerDelegationReport(delegationUuid);
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 设置第二步合同签署成功状态
+ */
+router.put(
+  '/setTechLeaderDelegationReportSuccessStatus',
+  async (ctx, next) => {
+    try {
+      const { delegationUuid } = ctx.state.param;
+      const techLeaderManagerUuid = ctx.state.user.uuid;
+
+      await service.setTechLeaderDelegationReportSuccessStatus({
+        techLeaderManagerUuid,
+        delegationUuid
+      });
+
+      ctx.body = new Res({
+        status: RESPONSE_CODE.success
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+
+/**
+ * 设置第二步合同签署失败状态
+ */
+router.put('/setTechLeaderDelegationReportFailStatus', async ctx => {
+  try {
+    const { delegationUuid, failText } = ctx.state.param;
+
+    await service.setTechLeaderDelegationReportFailStatus({
+      delegationUuid,
+      failText
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
 
 export default router;

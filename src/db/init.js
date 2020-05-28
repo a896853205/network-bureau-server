@@ -15,6 +15,7 @@ require('@babel/register')({
 const enterpriseUser = require('./models/enterprise-user').default;
 const managerUser = require('./models/manager-user').default;
 const sysRegistrationStep = require('./models/sys-registration-step').default;
+const sysDelegationStep = require('./models/sys-delegation-step').default;
 require('./models/enterprise-registration').default;
 require('./models/enterprise-registration-step').default;
 require('./models/enterprise-registration-copyright').default;
@@ -27,9 +28,29 @@ require('./models/enterprise-registration-contract').default;
 require('./models/enterprise-registration-basic').default;
 require('./models/enterprise-registration-original-record').default;
 require('./models/enterprise-registration-report').default;
+require('./models/enterprise-delegation').default;
+require('./models/enterprise-delegation-step').default;
+require('./models/enterprise-delegation-copyright').default;
+require('./models/enterprise-delegation-product').default;
+require('./models/enterprise-delegation-product-description').default;
+require('./models/enterprise-delegation-document').default;
+require('./models/enterprise-delegation-apply').default;
+require('./models/enterprise-delegation-specimen').default;
+require('./models/enterprise-delegation-contract').default;
+require('./models/enterprise-delegation-basic').default;
+require('./models/enterprise-delegation-original-record').default;
+require('./models/enterprise-delegation-report').default;
 const sequelize = require('./db-connect');
 
 const sysRegistrationStepArray = [
+  { name: '提交上传8种材料', step: 1 },
+  { name: '电子签合同', step: 2 },
+  { name: '交付汇款', step: 3 },
+  { name: '现场测试', step: 4 },
+  { name: '接受原始记录和测试报告', step: 5 }
+];
+
+const sysDelegationStepArray = [
   { name: '提交上传8种材料', step: 1 },
   { name: '电子签合同', step: 2 },
   { name: '交付汇款', step: 3 },
@@ -107,7 +128,8 @@ Promise.all([
         phone: '15998133472',
         star: 5
       }),
-      sysRegistrationStep.bulkCreate(sysRegistrationStepArray)
+      sysRegistrationStep.bulkCreate(sysRegistrationStepArray),
+      sysDelegationStep.bulkCreate(sysDelegationStepArray)
     ])
   )
   .then(() => {
