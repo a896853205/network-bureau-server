@@ -744,7 +744,25 @@ router.get('/downloadDelegationContractWord', async ctx => {
   try {
     const { delegationUuid } = ctx.state.param;
 
-    const data = await service.downloadDelegationContractWord(delegationUuid);
+    const data = await service.generateDelegationContractWord(delegationUuid);
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 查询登记测试企业信息(企业评价页面)
+ */
+router.get('/getDelegationManagerInfo', async (ctx, next) => {
+  try {
+    const { delegationUuid } = ctx.state.param;
+
+    const data = await service.getDelegationManagerInfo(delegationUuid);
 
     ctx.body = new Res({
       status: RESPONSE_CODE.success,

@@ -211,7 +211,7 @@ export default {
   /**
    *查询待分配技术负责人员的企业登记测试列表
    */
-  quaryDelegationRegistratiomNeedFieldTest: async ({ page, managerUuid }) => {
+  quaryDelegationNeedFieldTest: async ({ page, managerUuid }) => {
     const result = await enterpriseDelegation.findAndCountAll({
       attributes: ['uuid'],
       limit: REGISTRATION_PAGE_SIZE,
@@ -397,7 +397,7 @@ export default {
   /**
    *查询待分配批准人的企业登记测试列表
    */
-  quaryDelegationRegistratiomNeedCertified: async ({
+  quaryDelegationNeedCertified: async ({
     page,
     uuidList,
     certifierManagerUuid

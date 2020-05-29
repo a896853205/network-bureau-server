@@ -712,15 +712,15 @@ export default {
           throw new CustomError('当前步骤不允许设置审核通过状态!');
         } else {
           const statusDao = {
-            basic: enterpriseDelegationBasicDao.updateBasicStatus,
-            contract: enterpriseDelegationContractDao.updateContractStatus,
-            product: enterpriseDelegationProductDao.updateProductStatus,
+            basic: enterpriseDelegationBasicDao.updateDelegationBasicStatus,
+            contract: enterpriseDelegationContractDao.updateDelegationContractStatus,
+            product: enterpriseDelegationProductDao.updateDelegationProductStatus,
             productDescription:
-              enterpriseDelegationProductDescriptionDao.updateProductDescriptionStatus,
-            apply: enterpriseDelegationApplyDao.updateApplyStatus,
-            copyright: enterpriseDelegationCopyrightDao.updateCopyrightStatus,
-            document: enterpriseDelegationDocumentDao.updateDocumentStatus,
-            specimen: enterpriseDelegationSpecimenDao.updateSpecimenStatus,
+              enterpriseDelegationProductDescriptionDao.updateDelegationProductDescriptionStatus,
+            apply: enterpriseDelegationApplyDao.updateDelegationApplyStatus,
+            copyright: enterpriseDelegationCopyrightDao.updateDelegationCopyrightStatus,
+            document: enterpriseDelegationDocumentDao.updateDelegationDocumentStatus,
+            specimen: enterpriseDelegationSpecimenDao.updateDelegationSpecimenStatus,
           };
 
           const getStatusDao = (type) => {
@@ -910,7 +910,7 @@ export default {
               transaction,
             });
           }
-          return await enterpriseDelegationStepDao.updateDelegationDelegationStep({
+          return await enterpriseDelegationStepDao.updateDelegationStep({
             delegationUuid,
             status: 2,
             statusText: '企业已提交',

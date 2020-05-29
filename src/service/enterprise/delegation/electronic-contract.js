@@ -469,7 +469,7 @@ export default {
             managerUrl: productionUrl,
             transaction,
           }),
-          enterpriseDelegationStepDao.updateDelegationDelegationStep({
+          enterpriseDelegationStepDao.updateDelegationStep({
             delegationUuid,
             status: 100,
             statusText: '已完成',

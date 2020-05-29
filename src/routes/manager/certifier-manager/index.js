@@ -340,7 +340,7 @@ router.get('/selectCertifierDelegation', async ctx => {
   try {
     const { delegationUuid } = ctx.state.param;
 
-    const data = await service.selectDelegationnByDelegationUuid(
+    const data = await service.selectDelegationByDelegationUuid(
       delegationUuid
     );
 
