@@ -25,10 +25,10 @@ module.exports = {
   deploy: {
     production: {
       user: 'root',
-      host: '47.94.133.12',
-      ref: 'origin/master',
+      host: '39.97.175.30',
+      ref: 'origin/borong',
       repo: 'git@github.com:a896853205/network-bureau-server.git',
-      path: '/network-bureau/network-bureau-server',
+      path: '/network-bureau/network-bureau-registration-final-server',
       'post-deploy':
         'npm install && pm2 reload ecosystem.config.js --env production',
       'post-setup': 'npm install'
