@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: 'API',
+      name: 'registrationAPI',
       script: './bin/www',
 
       // Options reference: https://pm2.keymetrics.io/docs/usage/application-declaration/
